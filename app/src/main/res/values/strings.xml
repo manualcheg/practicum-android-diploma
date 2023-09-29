@@ -43,4 +43,6 @@
     <string name="the_list_is_empty">Список пуст</string>
     <string name="worked_on_the_application">Над приложением работали</string>
 
+    <string name="vacancy_icon">иконка вакансии</string>
+
 </resources>
