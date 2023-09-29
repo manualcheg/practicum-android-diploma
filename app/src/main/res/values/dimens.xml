@@ -6,8 +6,13 @@
     <dimen name="text_size_menu">12sp</dimen>
 
     <dimen name="padding_horizontal">16dp</dimen>
+    <dimen name="padding_horizontal_small">12dp</dimen>
+
     <dimen name="padding_vertical">8dp</dimen>
     <dimen name="padding_vertical_small">4dp</dimen>
+
+    <dimen name="margin_vertical_big">32dp</dimen>
+    <dimen name="margin_vertical">24dp</dimen>
 
     <dimen name="margin_icon">4dp</dimen>
 </resources>
