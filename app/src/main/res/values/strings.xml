@@ -1,3 +1,46 @@
 <resources>
-    <string name="app_name">Practicum-Android-Diploma</string>
+    <string name="main">Главная</string>
+    <string name="favorites">Избранное</string>
+    <string name="team">Команда</string>
+
+    <string name="vacancy_search">Поиск ваканский</string>
+    <string name="filtering_settings">Настройки фильтрации</string>
+    <string name="choosing_a_place_of_work">Выбор места работы</string>
+    <string name="choosing_a_country">Выбор страны</string>
+    <string name="choosing_a_region">Выбор региона</string>
+    <string name="choosing_a_sector">Выбор отрасли</string>
+
+    <string name="type_a_request">Введите запрос</string>
+    <string name="there_are_no_such_vacancies">Таких вакансий нет</string>
+    <string name="vacancies_1">вакансия</string>
+    <string name="vacancies_2">вакансии</string>
+    <string name="vacancies_3">вакансий</string>
+
+    <string name="workplace">Место работы</string>
+    <string name="sector">Отрасль</string>
+    <string name="expected_salary">Ожидаемая ЗП</string>
+    <string name="enter_the_amount">Введите сумму</string>
+    <string name="do_not_show_without_salary">Не показывать без ЗП</string>
+    <string name="country">Страна</string>
+    <string name="type_a_region">Введите регион</string>
+    <string name="type_a_sector">Введите отрасль</string>
+    <string name="select">выбрать</string>
+    <string name="apply">Применить</string>
+    <string name="reset">Сбросить</string>
+
+    <string name="required_experience">Требуемый опыт</string>
+    <string name="vacancy_description">Описание вакансии</string>
+    <string name="duties">Обязанности</string>
+    <string name="requirements">Требования</string>
+    <string name="conditions">Условия</string>
+    <string name="key_skills">Ключевые навыки</string>
+    <string name="contact_person">Контактное лицо</string>
+    <string name="phone_number">Телефон</string>
+    <string name="similar_vacancies">Похожие вакансии</string>
+    <string name="from">От</string>
+    <string name="to">до</string>
+
+    <string name="the_list_is_empty">Список пуст</string>
+    <string name="worked_on_the_application">Над приложением работали</string>
+
 </resources>
