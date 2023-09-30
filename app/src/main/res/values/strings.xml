@@ -12,6 +12,16 @@
 
     <string name="type_a_request">Введите запрос</string>
     <string name="there_are_no_such_vacancies">Таких вакансий нет</string>
+
+    <plurals name="vacancy_plural">
+        <item quantity="zero">%1$d ваканский></item>
+        <item quantity="one">%1$d ваканския></item>
+        <item quantity="two">%1$d ваканскии></item>
+        <item quantity="few">%1$d ваканскии></item>
+        <item quantity="many">%1$d ваканский></item>
+        <item quantity="other">%1$d ваканский></item>
+    </plurals>
+
     <string name="vacancies_1">вакансия</string>
     <string name="vacancies_2">вакансии</string>
     <string name="vacancies_3">вакансий</string>
@@ -22,9 +32,10 @@
     <string name="enter_the_amount">Введите сумму</string>
     <string name="do_not_show_without_salary">Не показывать без ЗП</string>
     <string name="country">Страна</string>
+    <string name="region">Регион</string>
     <string name="type_a_region">Введите регион</string>
     <string name="type_a_sector">Введите отрасль</string>
-    <string name="select">выбрать</string>
+    <string name="select">Выбрать</string>
     <string name="apply">Применить</string>
     <string name="reset">Сбросить</string>
 
@@ -34,7 +45,9 @@
     <string name="requirements">Требования</string>
     <string name="conditions">Условия</string>
     <string name="key_skills">Ключевые навыки</string>
+    <string name="contacts">Контакты</string>
     <string name="contact_person">Контактное лицо</string>
+    <string name="email">E-mail</string>
     <string name="phone_number">Телефон</string>
     <string name="similar_vacancies">Похожие вакансии</string>
     <string name="from">От</string>
@@ -42,6 +55,24 @@
 
     <string name="the_list_is_empty">Список пуст</string>
     <string name="worked_on_the_application">Над приложением работали</string>
+
+    <string name="shurygin_evgenii">Шурыгин Евгений</string>
+    <string name="valiev_ilnur">Валиев Ильнур</string>
+    <string name="vladislav_gorodilov">Владислав Городилов</string>
+    <string name="kochubeev_andrei">Кочубеев Андрей</string>
+
+
+
+    <string name="RUB">₽</string>
+    <string name="BYR">Br</string>
+    <string name="USD">$</string>
+    <string name="EUR">€</string>
+    <string name="KZT">₸</string>
+    <string name="UAH">₴</string>
+    <string name="AZN">₼</string>
+    <string name="UZS">лв</string>
+    <string name="GEL">₾</string>
+    <string name="KGT">с</string>
 
     <string name="vacancy_icon">иконка вакансии</string>
 
