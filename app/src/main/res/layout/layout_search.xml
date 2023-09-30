@@ -8,12 +8,11 @@
     <LinearLayout
         android:id="@+id/search_screen_header_layout"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
+        android:layout_height="@dimen/search_screen_header"
         android:orientation="horizontal"
         android:paddingStart="@dimen/padding_horizontal"
         android:paddingEnd="@dimen/padding_horizontal_small"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -29,28 +28,77 @@
 
         <ImageView
             android:id="@+id/search_screen_header_filter_button"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="@dimen/search_screen_filter_button"
+            android:layout_height="@dimen/search_screen_filter_button"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/filters_icon_unselected" />
+            android:src="@drawable/filters_icon_unselected"
+            android:contentDescription="@string/filter_description" />
     </LinearLayout>
 
-    <SearchView
-        android:layout_marginTop="@dimen/padding_vertical"
-        android:id="@+id/search_screen_search_view"
+    <EditText
+        android:id="@+id/search_screen_edit_text"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="@dimen/search_screen_edit_text_height"
+        android:layout_gravity="center"
         android:layout_marginHorizontal="@dimen/padding_horizontal"
+        android:layout_marginTop="@dimen/padding_vertical"
         android:background="@drawable/rectangle_with_corners"
-        android:backgroundTint="@color/light_gray"
-        android:queryHint="введите чтото"
+        android:backgroundTint="@color/light_gray_gray"
+        android:drawableEnd="@drawable/loupe_icon"
+        android:drawablePadding="@dimen/padding_horizontal"
+        android:drawableTint="@color/black_universal"
+        android:hint="@string/type_a_request"
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        android:maxLength="22"
+        android:maxLines="1"
+        android:paddingStart="@dimen/padding_horizontal"
+        android:singleLine="true"
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray_white"
+        android:textCursorDrawable="@drawable/cursor_edittext_blue"
+        android:textStyle="normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/search_screen_header_layout"
-        android:searchIcon="@drawable/loupe_icon"
-        android:layoutDirection="rtl"
-        app:defaultQueryHint = "dfsdfsdfsdf"
-        />
+        tools:ignore="Autofill,RtlSymmetry" />
+
+    <TextView
+        android:id="@+id/counter_vacancies_text_view"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="@dimen/search_screen_counter_vacancies_margin"
+        android:paddingHorizontal="@dimen/padding_horizontal_small"
+        android:paddingVertical="@dimen/padding_vertical_small"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rectangle_with_corners"
+        app:layout_constraintTop_toBottomOf="@id/search_screen_edit_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@color/white_universal"
+        tools:text="Найдено 234 вакансии"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/search_screen_recycler_view"
+        android:layout_marginHorizontal="@dimen/padding_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/counter_vacancies_text_view"
+        tools:listitem="@android:layout/list_content"/>
+
+    <ProgressBar
+        android:id="@+id/search_screen_progress_bar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="@dimen/progress_bar"
+        android:layout_height="@dimen/progress_bar"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/blue"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:layout_margin="@dimen/padding_horizontal"/>
 
     <ImageView
         android:layout_width="match_parent"
@@ -61,5 +109,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_screen_search_view" />
+        app:layout_constraintTop_toBottomOf="@id/search_screen_edit_text"
+        tools:visibility="visible"
+        android:contentDescription="@string/nothing_found_image"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

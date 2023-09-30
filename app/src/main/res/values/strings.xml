@@ -77,5 +77,7 @@
     <string name="KGT">с</string>
 
     <string name="vacancy_icon">иконка вакансии</string>
+    <string name="filter_description">filter</string>
+    <string name="nothing_found_image">nothing found image</string>
 
 </resources>
