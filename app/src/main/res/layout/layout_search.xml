@@ -8,7 +8,7 @@
     <LinearLayout
         android:id="@+id/search_screen_header_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/search_screen_header"
+        android:layout_height="@dimen/search_screen_header_height"
         android:orientation="horizontal"
         android:paddingStart="@dimen/padding_horizontal"
         android:paddingEnd="@dimen/padding_horizontal_small"

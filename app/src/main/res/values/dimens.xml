@@ -16,7 +16,7 @@
 
     <dimen name="margin_icon">4dp</dimen>
     <dimen name="_0dp">0dp</dimen>
-    <dimen name="search_screen_header">64dp</dimen>
+    <dimen name="search_screen_header_height">64dp</dimen>
     <dimen name="search_screen_filter_button">48dp</dimen>
     <dimen name="search_screen_edit_text_height">56dp</dimen>
     <dimen name="search_screen_counter_vacancies_margin">11dp</dimen>
