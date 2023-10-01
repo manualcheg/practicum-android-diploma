@@ -31,8 +31,8 @@
             android:layout_width="@dimen/search_screen_filter_button"
             android:layout_height="@dimen/search_screen_filter_button"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/filters_icon_unselected"
-            android:contentDescription="@string/filter_description" />
+            android:contentDescription="@string/filter_description"
+            android:src="@drawable/filters_icon_unselected" />
     </LinearLayout>
 
     <EditText
@@ -56,7 +56,6 @@
         android:singleLine="true"
         android:textColor="@color/black"
         android:textColorHint="@color/gray_white"
-        android:textCursorDrawable="@drawable/cursor_edittext_blue"
         android:textStyle="normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -66,50 +65,51 @@
     <TextView
         android:id="@+id/counter_vacancies_text_view"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/search_screen_counter_vacancies_margin"
+        android:background="@drawable/rectangle_with_corners"
         android:paddingHorizontal="@dimen/padding_horizontal_small"
         android:paddingVertical="@dimen/padding_vertical_small"
-        android:layout_height="wrap_content"
-        android:background="@drawable/rectangle_with_corners"
-        app:layout_constraintTop_toBottomOf="@id/search_screen_edit_text"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:textColor="@color/white_universal"
-        tools:text="Найдено 234 вакансии"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_screen_edit_text"
+        tools:text="Найдено 234 вакансии" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/search_screen_recycler_view"
-        android:layout_marginHorizontal="@dimen/padding_horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginHorizontal="@dimen/padding_horizontal"
+        android:layout_marginTop="@dimen/padding_vertical"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/counter_vacancies_text_view"
-        tools:listitem="@android:layout/list_content"/>
+        tools:listitem="@android:layout/list_content" />
 
     <ProgressBar
         android:id="@+id/search_screen_progress_bar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_width="@dimen/progress_bar"
         android:layout_height="@dimen/progress_bar"
         android:layout_gravity="center"
+        android:layout_margin="@dimen/padding_horizontal"
         android:indeterminateTint="@color/blue"
         android:visibility="gone"
-        tools:visibility="visible"
-        android:layout_margin="@dimen/padding_horizontal"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:visibility="visible" />
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/padding_horizontal"
+        android:contentDescription="@string/nothing_found_image"
         android:src="@drawable/search_screen_placeholder"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/search_screen_edit_text"
-        tools:visibility="visible"
-        android:contentDescription="@string/nothing_found_image"/>
+        tools:visibility="visible" />
 </androidx.constraintlayout.widget.ConstraintLayout>
