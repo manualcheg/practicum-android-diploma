@@ -16,17 +16,13 @@
     <string name="there_are_no_such_vacancies">Таких вакансий нет</string>
 
     <plurals name="vacancy_plural">
-        <item quantity="zero">%1$d ваканский></item>
-        <item quantity="one">%1$d ваканския></item>
-        <item quantity="two">%1$d ваканскии></item>
-        <item quantity="few">%1$d ваканскии></item>
-        <item quantity="many">%1$d ваканский></item>
-        <item quantity="other">%1$d ваканский></item>
+        <item quantity="zero">%1$d вакансий></item>
+        <item quantity="one">%1$d вакансия></item>
+        <item quantity="two">%1$d вакансии></item>
+        <item quantity="few">%1$d вакансии></item>
+        <item quantity="many">%1$d вакансий></item>
+        <item quantity="other">%1$d вакансий></item>
     </plurals>
-
-    <string name="vacancies_1">вакансия</string>
-    <string name="vacancies_2">вакансии</string>
-    <string name="vacancies_3">вакансий</string>
 
     <string name="workplace">Место работы</string>
     <string name="sector">Отрасль</string>
