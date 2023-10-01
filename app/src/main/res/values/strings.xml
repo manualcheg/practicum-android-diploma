@@ -75,5 +75,6 @@
     <string name="vacancy_icon">иконка вакансии</string>
     <string name="filter_description">фильтр</string>
     <string name="nothing_found_image">картинка ничего не найдено</string>
+    <string name="favourites_placeholder_image_description">Картинка список пуст</string>
 
 </resources>
