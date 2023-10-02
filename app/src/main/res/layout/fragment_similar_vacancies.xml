@@ -7,9 +7,10 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/_0dp"
         android:layout_height="wrap_content"
         app:contentInsetStartWithNavigation="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_left_arrow"
@@ -19,7 +20,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/similarVacanciesRecyclerView"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/_0dp"
         android:layout_height="@dimen/_0dp"
         android:layout_marginHorizontal="@dimen/padding_horizontal"
         android:layout_marginTop="@dimen/padding_vertical_big"
