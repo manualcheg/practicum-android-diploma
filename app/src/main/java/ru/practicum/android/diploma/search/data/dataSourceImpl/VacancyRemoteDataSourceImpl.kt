@@ -34,7 +34,7 @@ class VacancyRemoteDataSourceImpl(
     companion object {
         const val NO_CONNECTION = -1
         const val RESPONSE_SUCCESS = 200
-        const val RESPONSE_BAD_REQUEST = 200
+        const val RESPONSE_BAD_REQUEST = 400
         const val RESPONSE_ERROR = 500
     }
 }
