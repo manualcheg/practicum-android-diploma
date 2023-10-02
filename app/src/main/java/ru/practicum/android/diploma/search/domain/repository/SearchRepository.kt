@@ -1,7 +1,7 @@
 package ru.practicum.android.diploma.search.domain.repository
 
 import kotlinx.coroutines.flow.Flow
-import ru.practicum.android.diploma.common.domain.models.Vacancy
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.Vacancy
 import ru.practicum.android.diploma.common.util.Resource
 
 // интерфейс для связи слоя Domain со слоем Data

@@ -1,6 +1,8 @@
 package ru.practicum.android.diploma.common.util
 
-sealed class Resource<T>(val data: T? = null, val errorCode: Int? = null) {
-    class Success<T>(data: T) : Resource<T>(data)
-    class Error<T>(errorCode: Int, data: T? = null) : Resource<T>(data, errorCode)
+import ru.practicum.android.diploma.search.data.model.ErrorRemoteDataSource
+
+sealed class Resource<T>(val data: T? = null, val errorStatus: ErrorRemoteDataSource? = null) {
+    class Success<T>(data: T) : Resource<T>(data = data)
+    class Error<T>(errorStatus: ErrorRemoteDataSource) : Resource<T>(errorStatus = errorStatus)
 }

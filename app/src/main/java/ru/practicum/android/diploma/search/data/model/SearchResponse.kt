@@ -1,5 +1,6 @@
-package ru.practicum.android.diploma.search.data.model.dto
+package ru.practicum.android.diploma.search.data.model
 
+import ru.practicum.android.diploma.search.data.model.dto.VacancyDto
 import ru.practicum.android.diploma.search.data.network.Response
 
 // класс описывающий ответ сервера

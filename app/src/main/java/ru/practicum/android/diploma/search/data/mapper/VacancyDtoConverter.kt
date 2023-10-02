@@ -1,15 +1,15 @@
 package ru.practicum.android.diploma.search.data.mapper
 
-import ru.practicum.android.diploma.common.domain.models.Contacts
-import ru.practicum.android.diploma.common.domain.models.Employer
-import ru.practicum.android.diploma.common.domain.models.Employment
-import ru.practicum.android.diploma.common.domain.models.Experience
-import ru.practicum.android.diploma.common.domain.models.KeySkill
-import ru.practicum.android.diploma.common.domain.models.LogoUrls
-import ru.practicum.android.diploma.common.domain.models.Phone
-import ru.practicum.android.diploma.common.domain.models.Salary
-import ru.practicum.android.diploma.common.domain.models.Schedule
-import ru.practicum.android.diploma.common.domain.models.Vacancy
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.Contacts
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.Employer
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.Employment
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.Experience
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.KeySkill
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.LogoUrls
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.Phone
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.Salary
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.Schedule
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.Vacancy
 import ru.practicum.android.diploma.search.data.model.dto.ContactsDto
 import ru.practicum.android.diploma.search.data.model.dto.EmployerDto
 import ru.practicum.android.diploma.search.data.model.dto.EmploymentDto

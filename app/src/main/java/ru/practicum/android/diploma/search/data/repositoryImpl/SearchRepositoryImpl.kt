@@ -2,31 +2,30 @@ package ru.practicum.android.diploma.search.data.repositoryImpl
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import ru.practicum.android.diploma.common.domain.models.Vacancy
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.Vacancy
 import ru.practicum.android.diploma.common.util.Resource
+import ru.practicum.android.diploma.search.data.dataSource.VacancyRemoteDataSource
 import ru.practicum.android.diploma.search.data.mapper.VacancyDtoConverter
-import ru.practicum.android.diploma.search.data.model.dto.SearchRequest
-import ru.practicum.android.diploma.search.data.model.dto.SearchResponse
-import ru.practicum.android.diploma.search.data.network.NetworkClient
+import ru.practicum.android.diploma.search.data.model.ErrorRemoteDataSource
+import ru.practicum.android.diploma.search.data.model.SearchRequest
+import ru.practicum.android.diploma.search.data.model.SearchResponse
 import ru.practicum.android.diploma.search.domain.repository.SearchRepository
 
-// Класс SearchRepositoryImpl - реализация интерфейса SearchRepository
-// Задача этой реализации — сделать запрос и получить ответ от сервера, используя сетевой клиент
 class SearchRepositoryImpl(
-    private val networkClient: NetworkClient,
+    private val vacancyRemoteDataSource: VacancyRemoteDataSource,
     private val vacancyDbConverter: VacancyDtoConverter
 ) : SearchRepository {
 
     override fun search(expression: String): Flow<Resource<List<Vacancy>>> = flow {
 
-        val response = networkClient.doRequest(SearchRequest(expression))
+        val response = vacancyRemoteDataSource.doRequest(SearchRequest(expression))
 
         when (response.resultCode) {
-            -1 -> {
-                emit(Resource.Error(response.resultCode)) // "Проверьте подключение к интернету"
+            NO_CONNECTION -> {
+                emit(Resource.Error(ErrorRemoteDataSource.NO_CONNECTION))
             }
 
-            200 -> {
+            RESPONSE_SUCCESS -> {
                 val vacancies: List<Vacancy> = (response as SearchResponse).items.map {
                     vacancyDbConverter.map(it)
                 }
@@ -34,10 +33,13 @@ class SearchRepositoryImpl(
             }
 
             else -> {
-                emit(Resource.Error(response.resultCode)) // другая ошибка
+                emit(Resource.Error(ErrorRemoteDataSource.ERROR_OCCURRED))
             }
         }
-
     }
 
+    companion object {
+        const val NO_CONNECTION = -1
+        const val RESPONSE_SUCCESS = 200
+    }
 }
