@@ -10,16 +10,16 @@ import ru.practicum.android.diploma.common.domain.models.Phone
 import ru.practicum.android.diploma.common.domain.models.Salary
 import ru.practicum.android.diploma.common.domain.models.Schedule
 import ru.practicum.android.diploma.common.domain.models.Vacancy
-import ru.practicum.android.diploma.vacancy.data.db.ContactsEntity
-import ru.practicum.android.diploma.vacancy.data.db.EmployerEntity
-import ru.practicum.android.diploma.vacancy.data.db.EmploymentEntity
-import ru.practicum.android.diploma.vacancy.data.db.ExperienceEntity
-import ru.practicum.android.diploma.vacancy.data.db.FavoritesVacancyEntity
-import ru.practicum.android.diploma.vacancy.data.db.KeySkillEntity
-import ru.practicum.android.diploma.vacancy.data.db.LogoUrlsEntity
-import ru.practicum.android.diploma.vacancy.data.db.PhoneEntity
-import ru.practicum.android.diploma.vacancy.data.db.SalaryEntity
-import ru.practicum.android.diploma.vacancy.data.db.ScheduleEntity
+import ru.practicum.android.diploma.favorites.data.db.ContactsEntity
+import ru.practicum.android.diploma.favorites.data.db.EmployerEntity
+import ru.practicum.android.diploma.favorites.data.db.EmploymentEntity
+import ru.practicum.android.diploma.favorites.data.db.ExperienceEntity
+import ru.practicum.android.diploma.favorites.data.db.FavoritesVacancyEntity
+import ru.practicum.android.diploma.favorites.data.db.KeySkillEntity
+import ru.practicum.android.diploma.favorites.data.db.LogoUrlsEntity
+import ru.practicum.android.diploma.favorites.data.db.PhoneEntity
+import ru.practicum.android.diploma.favorites.data.db.SalaryEntity
+import ru.practicum.android.diploma.favorites.data.db.ScheduleEntity
 import java.util.Calendar
 
 class VacancyDbConverter {

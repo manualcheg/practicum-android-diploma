@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.vacancy.data.db
+package ru.practicum.android.diploma.favorites.data.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
