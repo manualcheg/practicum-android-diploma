@@ -21,7 +21,7 @@ import ru.practicum.android.diploma.search.data.model.dto.SalaryDto
 import ru.practicum.android.diploma.search.data.model.dto.ScheduleDto
 import ru.practicum.android.diploma.search.data.model.dto.VacancyDto
 
-class VacancyDbConverter {
+class VacancyDtoConverter {
 
     fun map(vacancyDto: VacancyDto): Vacancy {
         vacancyDto.apply {
