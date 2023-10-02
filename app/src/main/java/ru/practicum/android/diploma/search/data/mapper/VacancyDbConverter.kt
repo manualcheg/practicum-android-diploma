@@ -26,6 +26,7 @@ class VacancyDbConverter {
     fun map(vacancyDto: VacancyDto): Vacancy {
         vacancyDto.apply {
             return Vacancy(
+                id,
                 name,
                 employer?.let { map(it) },
                 salary?.let { map(it) },
