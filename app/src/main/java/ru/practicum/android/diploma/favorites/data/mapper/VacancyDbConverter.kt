@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.search.data.mapper
+package ru.practicum.android.diploma.favorites.data.mapper
 
 import ru.practicum.android.diploma.common.domain.models.Contacts
 import ru.practicum.android.diploma.common.domain.models.Employer
