@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/backButton"
+        android:id="@+id/backButtonImageView"
         android:layout_width="@dimen/back_button"
         android:layout_height="@dimen/back_button"
         android:layout_marginVertical="@dimen/padding_vertical"
@@ -18,7 +18,7 @@
         android:contentDescription="@string/back_button" />
 
     <TextView
-        android:id="@+id/similarVacanciesHeader"
+        android:id="@+id/similarVacanciesHeaderTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/padding_horizontal_very_small"
@@ -26,9 +26,9 @@
         android:text="@string/similar_vacancies"
         android:textColor="@color/black"
         android:textSize="@dimen/text_size_header"
-        app:layout_constraintBottom_toBottomOf="@id/backButton"
-        app:layout_constraintStart_toEndOf="@id/backButton"
-        app:layout_constraintTop_toTopOf="@id/backButton" />
+        app:layout_constraintBottom_toBottomOf="@id/backButtonImageView"
+        app:layout_constraintStart_toEndOf="@id/backButtonImageView"
+        app:layout_constraintTop_toTopOf="@id/backButtonImageView" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/similarVacanciesRecyclerView"
@@ -39,7 +39,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/backButton"
+        app:layout_constraintTop_toBottomOf="@id/backButtonImageView"
         tools:listitem="@android:layout/list_content" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
