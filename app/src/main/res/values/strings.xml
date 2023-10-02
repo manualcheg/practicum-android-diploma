@@ -11,6 +11,7 @@
     <string name="choosing_a_country">Выбор страны</string>
     <string name="choosing_a_region">Выбор региона</string>
     <string name="choosing_a_sector">Выбор отрасли</string>
+    <string name="vacancy">Вакансия</string>
 
     <string name="type_a_request">Введите запрос</string>
     <string name="there_are_no_such_vacancies">Таких вакансий нет</string>
