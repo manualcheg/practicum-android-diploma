@@ -43,13 +43,12 @@
             app:titleMarginStart="@dimen/margin_icon"
             app:titleTextAppearance="@style/Toolbar.TitleText" />
 
-
-
         <ImageView
             android:id="@+id/shareImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_icon"
+            android:contentDescription="@string/share_button"
             android:src="@drawable/share_icon"
             app:layout_constraintBottom_toBottomOf="@id/vacancyToolbar"
             app:layout_constraintEnd_toStartOf="@id/likeImageView"
@@ -61,6 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/padding_horizontal_small"
+            android:contentDescription="@string/like_button"
             android:src="@drawable/like_icon_unselected"
             app:layout_constraintBottom_toBottomOf="@id/vacancyToolbar"
             app:layout_constraintEnd_toEndOf="parent"
@@ -99,6 +99,7 @@
             android:layout_marginTop="@dimen/margin_vertical"
             android:backgroundTint="@color/light_gray"
             app:cardCornerRadius="@dimen/card_corner_radius"
+            app:cardElevation="@dimen/_0dp"
             app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
             app:layout_constraintStart_toStartOf="@id/guidLineStart"
             app:layout_constraintTop_toBottomOf="@id/salaryTextView">
@@ -285,11 +286,11 @@
             style="@style/MediumTextWhite"
             android:layout_width="@dimen/_0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/button_horizontal_margin"
             android:layout_marginTop="@dimen/margin_vertical"
+            android:layout_marginEnd="@dimen/button_horizontal_margin"
             android:layout_marginBottom="@dimen/margin_vertical"
             android:background="@drawable/rectangle_with_corners"
-            android:layout_marginStart="@dimen/button_horizontal_margin"
-            android:layout_marginEnd="@dimen/button_horizontal_margin"
             android:gravity="center"
             android:paddingTop="@dimen/button_vertical_padding"
             android:paddingBottom="@dimen/button_vertical_padding"
