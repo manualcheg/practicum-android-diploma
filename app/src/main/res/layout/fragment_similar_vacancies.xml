@@ -11,7 +11,7 @@
         android:layout_height="@dimen/back_button"
         android:layout_marginVertical="@dimen/padding_vertical"
         android:layout_marginStart="@dimen/padding_horizontal_very_small"
-        android:src="@drawable/left_arrow"
+        android:src="@drawable/ic_left_arrow"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/black"
