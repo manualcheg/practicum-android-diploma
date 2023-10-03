@@ -8,7 +8,8 @@
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/similarVacanciesToolbar"
         android:layout_width="@dimen/_0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/search_screen_header_height"
+        android:minHeight="@dimen/search_screen_header_height"
         app:contentInsetStartWithNavigation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
