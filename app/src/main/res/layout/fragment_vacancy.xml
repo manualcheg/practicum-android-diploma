@@ -25,7 +25,7 @@
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/vacancyToolbar"
-            android:gravity="center"
+            app:buttonGravity="center_vertical"
             android:layout_width="@dimen/_0dp"
             android:layout_height="wrap_content"
             android:paddingStart="@dimen/padding_vertical_small"
