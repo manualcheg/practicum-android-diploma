@@ -48,6 +48,7 @@
     <string name="contact_person">Контактное лицо</string>
     <string name="email">E-mail</string>
     <string name="phone_number">Телефон</string>
+    <string name="comment">Комментарий</string>
     <string name="similar_vacancies">Похожие вакансии</string>
     <string name="from">От</string>
     <string name="to">до</string>

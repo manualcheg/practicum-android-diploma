@@ -7,6 +7,7 @@
 
     <dimen name="padding_horizontal">16dp</dimen>
     <dimen name="padding_horizontal_small">12dp</dimen>
+    <dimen name="padding_horizontal_smaller">8dp</dimen>
     <dimen name="padding_horizontal_very_small">4dp</dimen>
 
     <dimen name="padding_vertical">8dp</dimen>
@@ -27,10 +28,15 @@
 
     <dimen name="back_button">48dp</dimen>
 
+    <dimen name="logo_dim">48dp</dimen>
+
+
     <dimen name="card_corner_radius">12dp</dimen>
 
     <dimen name="button_horizontal_margin">17dp</dimen>
     <dimen name="button_vertical_padding">17dp</dimen>
+
+
 
 
 
