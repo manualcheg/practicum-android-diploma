@@ -27,4 +27,6 @@
 
     <dimen name="back_button">48dp</dimen>
 
+    <dimen name="corner_radius">12dp</dimen>
+
 </resources>
