@@ -5,4 +5,62 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/favouritesHeaderTextView"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/favourites_header_height"
+        android:layout_marginStart="@dimen/padding_horizontal"
+        android:layout_marginEnd="@dimen/padding_horizontal_small"
+        android:fontFamily="@font/ys_display_medium"
+        android:gravity="center_vertical"
+        android:text="@string/favorites"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_header"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/favouritesPlaceholderLinearLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/padding_horizontal"
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/favouritesHeaderTextView">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/favourites_placeholder_image_description"
+            android:src="@drawable/placeholder_empty_favorites_list" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_vertical_16dp"
+            android:fontFamily="@font/ys_display_medium"
+            android:text="@string/the_list_is_empty"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_header" />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/favouritesRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="@dimen/padding_horizontal"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/favouritesHeaderTextView"
+        tools:listitem="@android:layout/list_content"
+        tools:visibility="visible" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
