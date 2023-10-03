@@ -1,15 +1,15 @@
-package ru.practicum.android.diploma.search.ui.fragment
+package ru.practicum.android.diploma.favorites.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import ru.practicum.android.diploma.databinding.FragmentSearchBinding
+import ru.practicum.android.diploma.databinding.FragmentFavoritesBinding
 
-class SearchFragment: Fragment() {
+class FavoritesFragment: Fragment() {
 
-    private var _binding: FragmentSearchBinding? =null
+    private var _binding: FragmentFavoritesBinding? =null
     private val binding get()= _binding!!
 
     override fun onCreateView(
@@ -17,7 +17,7 @@ class SearchFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        _binding = FragmentFavoritesBinding.inflate(inflater, container, false)
         return binding.root
     }
 
