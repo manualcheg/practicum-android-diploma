@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.search.data.mapper
 
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.Area
 import ru.practicum.android.diploma.common.domain.model.vacancy_models.Contacts
 import ru.practicum.android.diploma.common.domain.model.vacancy_models.Employer
 import ru.practicum.android.diploma.common.domain.model.vacancy_models.Employment
@@ -10,6 +11,7 @@ import ru.practicum.android.diploma.common.domain.model.vacancy_models.Phone
 import ru.practicum.android.diploma.common.domain.model.vacancy_models.Salary
 import ru.practicum.android.diploma.common.domain.model.vacancy_models.Schedule
 import ru.practicum.android.diploma.common.domain.model.vacancy_models.Vacancy
+import ru.practicum.android.diploma.search.data.model.dto.AreaDto
 import ru.practicum.android.diploma.search.data.model.dto.ContactsDto
 import ru.practicum.android.diploma.search.data.model.dto.EmployerDto
 import ru.practicum.android.diploma.search.data.model.dto.EmploymentDto
@@ -28,6 +30,7 @@ class VacancyDtoConverter {
             return Vacancy(
                 id,
                 name,
+                area?.let { map(it) },
                 employer?.let { map(it) },
                 salary?.let { map(it) },
                 experience?.let { map(it) },
@@ -44,13 +47,9 @@ class VacancyDtoConverter {
     private fun map(employerDto: EmployerDto): Employer {
         employerDto.apply {
             return Employer(
-                alternateUrl,
-                blacklisted,
                 id,
                 logoUrls?.let { map(it) },
                 name,
-                trusted,
-                url
             )
         }
     }
@@ -91,6 +90,7 @@ class VacancyDtoConverter {
             keySkillDto.name
         )
     }
+
     private fun convertKeySkills(keySkillsDto: List<KeySkillDto>): List<KeySkill> {
         return keySkillsDto.map { keySkillDto -> map(keySkillDto) }
     }
@@ -120,8 +120,15 @@ class VacancyDtoConverter {
             phoneDto.number
         )
     }
+
+    private fun map(areaDto: AreaDto): Area {
+        return Area(
+            id = areaDto.id,
+            name = areaDto.name
+        )
+    }
+
     private fun convertPhones(phonesDto: List<PhoneDto>): List<Phone> {
         return phonesDto.map { phoneDto -> map(phoneDto) }
     }
-
 }

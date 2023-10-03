@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class VacancyDto(
     val id: Int,
     val name: String, // "name": "Секретарь",
+    val area: AreaDto?,
     val employer: EmployerDto?, // Информация о компании работодателя
     val salary: SalaryDto?, // Зарплата
     val experience: ExperienceDto?, // Опыт работы
