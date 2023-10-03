@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/selectRegionAndSectorToolbar"
+        android:layout_width="@dimen/_0dp"
+        android:layout_height="@dimen/search_screen_header_height"
+        android:minHeight="@dimen/search_screen_header_height"
+        app:contentInsetStartWithNavigation="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_left_arrow"
+        app:navigationIconTint="@color/black"
+        app:title="@string/choosing_a_region"
+        app:titleMarginStart="0dp" />
+
+    <EditText
+        android:id="@+id/selectRegionAndSectorEditText"
+        android:layout_width="@dimen/_0dp"
+        android:layout_height="@dimen/search_screen_edit_text_height"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="@dimen/padding_horizontal"
+        android:layout_marginTop="@dimen/padding_vertical"
+        android:background="@drawable/rectangle_with_corners"
+        android:backgroundTint="@color/light_gray_gray"
+        android:drawableEnd="@drawable/loupe_icon"
+        android:drawablePadding="@dimen/padding_horizontal"
+        android:drawableTint="@color/black_universal"
+        android:hint="@string/type_a_region"
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        android:maxLength="22"
+        android:maxLines="1"
+        android:paddingStart="@dimen/padding_horizontal"
+        android:singleLine="true"
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray_white"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/selectRegionAndSectorToolbar"
+        tools:ignore="Autofill,RtlSymmetry" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="@dimen/_0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/padding_vertical_big"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/selectRegionAndSectorEditText"
+        tools:listitem="@android:layout/list_content" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
