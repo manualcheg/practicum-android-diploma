@@ -107,7 +107,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/padding_horizontal"
         android:contentDescription="@string/nothing_found_image"
-        android:src="@drawable/search_screen_placeholder"
+        android:src="@drawable/placeholder_search_screen"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
