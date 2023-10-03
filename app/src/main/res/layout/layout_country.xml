@@ -5,7 +5,7 @@
     android:id="@+id/countryFrameLayout"
     android:layout_width="match_parent"
     android:layout_height="@dimen/layout_height"
-    android:layout_marginVertical="@dimen/padding_vertical_small">
+    android:layout_marginVertical="@dimen/margin_vertical_for_layout">
 
     <TextView
         android:id="@+id/countryTextView"

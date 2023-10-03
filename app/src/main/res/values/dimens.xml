@@ -17,6 +17,7 @@
     <dimen name="margin_vertical_big">32dp</dimen>
     <dimen name="margin_vertical">24dp</dimen>
     <dimen name="margin_vertical_small">16dp</dimen>
+    <dimen name="margin_vertical_for_layout">6dp</dimen>
 
     <dimen name="margin_icon">4dp</dimen>
     <dimen name="_0dp">0dp</dimen>
