@@ -13,7 +13,7 @@
         android:background="@drawable/rectangle_with_corners"
         android:backgroundTint="@color/light_gray">
         <ImageView
-            android:id="@+id/vacancyLogoImageView"
+            android:id="@+id/vacancyLayoutLogoImageView"
             android:layout_width="46dp"
             android:layout_height="46dp"
             android:layout_gravity="center"
@@ -30,7 +30,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/vacancyHeaderTextView"
+            android:id="@+id/vacancyLayoutHeaderTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/ys_display_medium"
@@ -39,7 +39,7 @@
             tools:text="Android-разработчик, Москва" />
 
         <TextView
-            android:id="@+id/vacancyDescriptionTextView"
+            android:id="@+id/vacancyLayoutDescriptionTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/ys_display_regular"
@@ -48,7 +48,7 @@
             tools:text="Еда" />
 
         <TextView
-            android:id="@+id/vacancySalaryTextView"
+            android:id="@+id/vacancyLayoutSalaryTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/ys_display_regular"
