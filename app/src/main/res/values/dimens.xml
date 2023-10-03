@@ -34,7 +34,7 @@
     <dimen name="card_corner_radius">12dp</dimen>
 
     <dimen name="button_horizontal_margin">17dp</dimen>
-    <dimen name="button_vertical_padding">17dp</dimen>
+    <dimen name="button_vertical_padding">20dp</dimen>
 
 
 
