@@ -62,7 +62,6 @@
     <string name="kochubeev_andrei">Кочубеев Андрей</string>
 
 
-
     <string name="RUB">₽</string>
     <string name="BYR">Br</string>
     <string name="USD">$</string>
@@ -80,5 +79,8 @@
     <string name="back_button">кнопка назад</string>
     <string name="share_button">кнопка поделиться</string>
     <string name="like_button">кнопка добавить в избранные</string>
+
+    <string name="share">Поделиться</string>
+    <string name="add_to_favorites">Добавить в избранное</string>
 
 </resources>

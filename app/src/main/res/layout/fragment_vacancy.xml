@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".vacancy.ui.fragment.VacancyFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -24,17 +25,18 @@
             app:layout_constraintGuide_end="@dimen/padding_horizontal" />
 
         <com.google.android.material.appbar.MaterialToolbar
+            app:menu="@menu/menu_vacancy_toolbar"
             android:id="@+id/vacancyToolbar"
             app:buttonGravity="center_vertical"
             android:layout_width="@dimen/_0dp"
             android:layout_height="wrap_content"
             android:paddingStart="@dimen/padding_vertical_small"
             android:paddingTop="@dimen/padding_vertical"
-            android:paddingEnd="@dimen/padding_vertical"
+            android:paddingEnd="@dimen/padding_horizontal_very_small"
             android:paddingBottom="@dimen/padding_vertical"
             app:contentInsetStartWithNavigation="0dp"
             app:layout_constrainedWidth="true"
-            app:layout_constraintEnd_toStartOf="@id/shareImageView"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -43,33 +45,6 @@
             app:title="@string/vacancy"
             app:titleMarginStart="@dimen/margin_icon"
             app:titleTextAppearance="@style/Toolbar.TitleText" />
-
-        <ImageView
-            android:id="@+id/shareImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_icon"
-            android:layout_marginEnd="@dimen/margin_icon"
-            android:contentDescription="@string/share_button"
-            android:src="@drawable/share_icon"
-            app:layout_constraintBottom_toBottomOf="@id/vacancyToolbar"
-            app:layout_constraintEnd_toStartOf="@id/likeImageView"
-            app:layout_constraintStart_toEndOf="@id/vacancyToolbar"
-            app:layout_constraintTop_toTopOf="@id/vacancyToolbar"
-            app:tint="@color/black" />
-
-        <ImageView
-            android:id="@+id/likeImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/padding_horizontal_smaller"
-            android:contentDescription="@string/like_button"
-            android:src="@drawable/like_icon_unselected"
-            app:layout_constraintBottom_toBottomOf="@id/vacancyToolbar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/shareImageView"
-            app:layout_constraintTop_toTopOf="@id/vacancyToolbar"
-            app:tint="@color/black" />
 
         <TextView
             android:id="@+id/vacancyHeaderTextView"
