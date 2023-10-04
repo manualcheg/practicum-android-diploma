@@ -7,4 +7,8 @@ class VacancyRepositoryImpl: VacancyRepository {
     override suspend fun findVacancy(vacancyId: Int): Vacancy {
         TODO("Not yet implemented")
     }
+
+    override suspend fun getVacancyById(vacancyId: Int): Vacancy {
+        TODO("Not yet implemented")
+    }
 }
