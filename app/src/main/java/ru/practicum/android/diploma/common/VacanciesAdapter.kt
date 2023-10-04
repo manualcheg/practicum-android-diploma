@@ -71,7 +71,8 @@ class VacancyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private val vacancyLogo: ImageView = itemView.findViewById(R.id.vacancyLogoImageView)
     private val vacancyHeader: TextView = itemView.findViewById(R.id.vacancyHeaderTextView)
-    private val vacancyDescription: TextView = itemView.findViewById(R.id.vacancyDescriptionTextView)
+    private val vacancyDescription: TextView =
+        itemView.findViewById(R.id.vacancyDescriptionTextView)
     private val vacancySalary: TextView = itemView.findViewById(R.id.vacancySalaryTextView)
 
     fun bind(vacancy: Vacancy) {
@@ -80,16 +81,18 @@ class VacancyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         vacancyHeader.text = vacancy.name
 
         // если указан работодатель
-        vacancy.employer?.let { employer ->
+        if (vacancy.employer != null) {
+
+            val employer = vacancy.employer
 
             // название работодателя
             vacancyDescription.text = employer.name
 
-            // если у работодателя указаны лого
-            employer.logoUrls?.let { logoUrls ->
+            if (employer.logoUrls != null) {
+                // если у работодателя указаны лого
                 Glide
                     .with(itemView)
-                    .load(logoUrls.logo90)
+                    .load(employer.logoUrls.logo90)
                     .placeholder(R.drawable.ic_placeholder)
                     .centerCrop()
                     .transform(
@@ -100,8 +103,15 @@ class VacancyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                         )
                     )
                     .into(vacancyLogo)
+            } else {
+                // если лого не указаны, то ставим стандартный плейсхолдер
+                vacancyLogo.setImageResource(R.drawable.ic_placeholder)
             }
 
+        } else {
+            // если работодательнее указан, то обнуляем название и ставим стандартный плейсхолдер
+            vacancyDescription.text = ""
+            vacancyLogo.setImageResource(R.drawable.ic_placeholder)
         }
 
         vacancy.salary?.let {
