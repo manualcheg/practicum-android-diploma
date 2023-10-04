@@ -1,7 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <style name="BigHeaderText">
+        <item name="android:fontFamily">@font/ys_display_bold</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/text_size_big_header</item>
+    </style>
+
+    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">@dimen/text_size_header</item>
+        <item name="fontFamily">@font/ys_display_medium</item>
+    </style>
+
+    <style name="TitleText">
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/text_size_header</item>
+    </style>
+
+    <style name="TitleTextBlack" parent="TitleText">
+        <item name="android:textColor">@color/black_universal</item>
+    </style>
+
+    <style name="RegularText">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/text_size_main</item>
+    </style>
+
+    <style name="RegularTextBlue" parent="RegularText">
+        <item name="android:textColor">@color/blue</item>
+    </style>
+
+    <style name="RegularTextBlack" parent="RegularText">
+        <item name="android:textColor">@color/black_universal</item>
+    </style>
+
+    <style name="MediumText">
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/text_size_main</item>
+    </style>
+
+    <style name="MediumTextWhite" parent="MediumText">
+        <item name="android:textColor">@color/white_universal</item>
+    </style>
     <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">@dimen/text_size_header</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
     </style>
+
 </resources>
