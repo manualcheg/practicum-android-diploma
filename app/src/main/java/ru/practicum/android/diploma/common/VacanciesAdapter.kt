@@ -69,7 +69,7 @@ class VacanciesAdapter(
 
 class VacancyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    private val vacancyLogo: ImageView = itemView.findViewById(R.id.vacancyLogoImageView)
+    private val vacancyLogo: ImageView = itemView.findViewById(R.id.vacancyLayoutLogoImageView)
     private val vacancyHeader: TextView = itemView.findViewById(R.id.vacancyHeaderTextView)
     private val vacancyDescription: TextView =
         itemView.findViewById(R.id.vacancyDescriptionTextView)
