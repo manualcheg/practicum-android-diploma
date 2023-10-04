@@ -18,7 +18,8 @@
         app:navigationIcon="@drawable/ic_arrow_left"
         app:navigationIconTint="@color/black"
         app:title="@string/choosing_a_region"
-        app:titleMarginStart="0dp" />
+        app:titleMarginStart="0dp"
+        app:titleTextAppearance="@style/Toolbar.TitleText" />
 
     <EditText
         android:id="@+id/selectRegionAndSectorEditText"
