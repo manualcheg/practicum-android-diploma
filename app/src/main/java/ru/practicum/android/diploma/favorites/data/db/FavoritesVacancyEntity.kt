@@ -8,6 +8,7 @@ class FavoritesVacancyEntity(
     @PrimaryKey
     val id: Int,
     val name: String, // "name": "Секретарь",
+    val area: AreaEntity,
     val employer: EmployerEntity?, // Информация о компании работодателя
     val salary: SalaryEntity?, // Зарплата
     val experience: ExperienceEntity?, // Опыт работы
@@ -20,13 +21,9 @@ class FavoritesVacancyEntity(
 )
 
 data class EmployerEntity(
-    val alternateUrl: String?, // ссылка на представление компании на сайте: "https://hh.ru/employer/1455"
-    val blacklisted: Boolean, // Добавлены ли все вакансии работодателя в список скрытых
     val id: String?, // Идентификатор компании
     val logoUrls: LogoUrlsEntity?, // cсылки на логотипы работодателя разных размеров
     val name: String, // Название компании "HeadHunter"
-    val trusted: Boolean, // флаг, показывающий, прошла ли компания проверку на сайте
-    val url: String? // URL, на который нужно сделать GET-запрос, чтобы получить информацию о компании
 )
 
 data class LogoUrlsEntity(
@@ -72,4 +69,9 @@ data class PhoneEntity(
     val comment: String?, // комментарий
     val country: String, // код страны: "7"
     val number: String // номер телефона: "000-00-00"
+)
+
+data class AreaEntity(
+    val id: String, //Идентификатор региона из справочника
+    val name: String, //Название региона
 )
