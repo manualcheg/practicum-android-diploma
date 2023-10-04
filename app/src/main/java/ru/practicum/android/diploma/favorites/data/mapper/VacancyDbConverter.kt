@@ -34,7 +34,7 @@ class VacancyDbConverter {
                 experience?.let { map(it) },
                 employment?.let { map(it) },
                 description,
-                convertKeySkills(keySkills),
+                convertKeySkillsEntityToKeySkill(keySkills),
                 schedule?.let { map(it) },
                 contacts?.let { map(it) }
             )
@@ -51,7 +51,7 @@ class VacancyDbConverter {
                 experience?.let { map(it) },
                 employment?.let { map(it) },
                 description,
-                convertKeySkills(keySkills),
+                convertKeySkillsToKeySkillEntity(keySkills),
                 schedule?.let { map(it) },
                 contacts?.let { map(it) },
                 createdAt = Calendar.getInstance().timeInMillis
@@ -161,11 +161,11 @@ class VacancyDbConverter {
         )
     }
 
-    private fun convertKeySkills(keySkillsEntity: List<KeySkillEntity>): List<KeySkill> {
+    private fun convertKeySkillsEntityToKeySkill(keySkillsEntity: List<KeySkillEntity>): List<KeySkill> {
         return keySkillsEntity.map { keySkillEntity -> map(keySkillEntity) }
     }
 
-    private fun convertKeySkills(keySkills: List<KeySkill>): List<KeySkillEntity> {
+    private fun convertKeySkillsToKeySkillEntity(keySkills: List<KeySkill>): List<KeySkillEntity> {
         return keySkills.map { keySkill -> map(keySkill) }
     }
 
@@ -188,7 +188,7 @@ class VacancyDbConverter {
             contactsEntity.email,
             contactsEntity.name,
             contactsEntity.phones?.let {
-                convertPhones(it)
+                convertPhoneEntityToPhone(it)
             }
         )
     }
@@ -198,7 +198,7 @@ class VacancyDbConverter {
             contacts.email,
             contacts.name,
             contacts.phones?.let {
-                convertPhones(it)
+                convertPhonesToPhoneEntity(it)
             }
         )
     }
@@ -221,11 +221,11 @@ class VacancyDbConverter {
         )
     }
 
-    private fun convertPhones(phonesEntity: List<PhoneEntity>): List<Phone> {
+    private fun convertPhoneEntityToPhone(phonesEntity: List<PhoneEntity>): List<Phone> {
         return phonesEntity.map { phoneEntity -> map(phoneEntity) }
     }
 
-    private fun convertPhones(phones: List<Phone>): List<PhoneEntity> {
+    private fun convertPhonesToPhoneEntity(phones: List<Phone>): List<PhoneEntity> {
         return phones.map { phone -> map(phone) }
     }
 
