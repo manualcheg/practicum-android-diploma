@@ -20,12 +20,12 @@
     <string name="server_error">Ошибка сервера</string>
 
     <plurals name="vacancy_plural">
-        <item quantity="zero">%1$d вакансий></item>
-        <item quantity="one">%1$d вакансия></item>
-        <item quantity="two">%1$d вакансии></item>
-        <item quantity="few">%1$d вакансии></item>
-        <item quantity="many">%1$d вакансий></item>
-        <item quantity="other">%1$d вакансий></item>
+        <item quantity="zero">Найдено %1$d вакансий</item>
+        <item quantity="one">Найдено %1$d вакансия</item>
+        <item quantity="two">Найдено %1$d вакансии</item>
+        <item quantity="few">Найдено %1$d вакансии</item>
+        <item quantity="many">Найдено %1$d вакансий</item>
+        <item quantity="other">Найдено %1$d вакансий</item>
     </plurals>
 
     <string name="workplace">Место работы</string>

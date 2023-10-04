@@ -10,6 +10,9 @@
         android:name="ru.practicum.android.diploma.search.ui.fragment.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search">
+        <action
+            android:id="@+id/action_searchFragment_to_vacancyFragment"
+            app:destination="@id/vacancyFragment" />
     </fragment>
     <fragment
         android:id="@+id/favoritesFragment"
@@ -22,6 +25,15 @@
         android:name="ru.practicum.android.diploma.team.ui.fragment.TeamFragment"
         android:label="fragment_team"
         tools:layout="@layout/fragment_team">
+    </fragment>
+    <fragment
+        android:id="@+id/vacancyFragment"
+        android:name="ru.practicum.android.diploma.vacancy.ui.fragment.VacancyFragment"
+        android:label="fragment_vacancy"
+        tools:layout="@layout/fragment_vacancy" >
+        <argument
+            android:name="vacansyId"
+            app:argType="integer" />
     </fragment>
 
 </navigation>
