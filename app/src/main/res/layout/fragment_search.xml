@@ -44,7 +44,7 @@
         android:layout_marginTop="@dimen/padding_vertical"
         android:background="@drawable/rectangle_with_corners"
         android:backgroundTint="@color/light_gray_gray"
-        android:drawableEnd="@drawable/loupe_icon"
+        android:drawableEnd="@drawable/ic_search"
         android:drawablePadding="@dimen/padding_horizontal"
         android:drawableTint="@color/black_universal"
         android:hint="@string/type_a_request"
