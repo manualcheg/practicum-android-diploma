@@ -1,8 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/padding_horizontal">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/team_screen_header_height"
+        android:fontFamily="@font/ys_display_medium"
+        android:gravity="center_vertical"
+        android:text="@string/team"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_header" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/margin_vertical"
+        android:fontFamily="@font/ys_display_bold"
+        android:gravity="center_vertical"
+        android:text="@string/worked_on_the_application"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_big_header" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/AuthorsTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_vertical_small"
+            android:gravity="center_vertical"
+            android:text="@string/shurygin_evgenii" />
+
+        <TextView
+            style="@style/AuthorsTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_vertical_small"
+            android:gravity="center_vertical"
+            android:text="@string/valiev_ilnur" />
+
+        <TextView
+            style="@style/AuthorsTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_vertical_small"
+            android:gravity="center_vertical"
+            android:text="@string/vladislav_gorodilov" />
+
+        <TextView
+            style="@style/AuthorsTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="@string/kochubeev_andrei" />
+    </LinearLayout>
+
+</LinearLayout>
+

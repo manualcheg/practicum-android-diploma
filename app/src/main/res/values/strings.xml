@@ -15,6 +15,9 @@
 
     <string name="type_a_request">Введите запрос</string>
     <string name="there_are_no_such_vacancies">Таких вакансий нет</string>
+    <string name="no_internet">Нет интернета</string>
+    <string name="failed_to_get_a_list_of_vacancies">Не удалось получить\nсписок вакансий</string>
+    <string name="server_error">Ошибка сервера</string>
 
     <plurals name="vacancy_plural">
         <item quantity="zero">%1$d вакансий></item>
@@ -33,6 +36,8 @@
     <string name="country">Страна</string>
     <string name="region">Регион</string>
     <string name="type_a_region">Введите регион</string>
+    <string name="no_such_region">Такого региона нет</string>
+    <string name="failed_to_get_a_list">Не удалось получить список</string>
     <string name="type_a_sector">Введите отрасль</string>
     <string name="select">Выбрать</string>
     <string name="apply">Применить</string>
@@ -75,7 +80,8 @@
 
     <string name="vacancy_icon">иконка вакансии</string>
     <string name="filter_description">фильтр</string>
-    <string name="nothing_found_image">картинка ничего не найдено</string>
+    <string name="nothing_found_image">картинка поиск вакансий</string>
+    <string name="favourites_placeholder_image_description">Картинка список пуст</string>
     <string name="back_button">кнопка назад</string>
     <string name="share_button">кнопка поделиться</string>
     <string name="like_button">кнопка добавить в избранные</string>

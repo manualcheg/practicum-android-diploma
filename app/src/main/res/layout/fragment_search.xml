@@ -6,8 +6,8 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/search_screen_header_layout"
-        android:layout_width="match_parent"
+        android:id="@+id/searchScreenHeaderLinearLayout"
+        android:layout_width="@dimen/_0dp"
         android:layout_height="@dimen/search_screen_header_height"
         android:orientation="horizontal"
         android:paddingStart="@dimen/padding_horizontal"
@@ -27,24 +27,24 @@
             android:textSize="@dimen/text_size_header" />
 
         <ImageView
-            android:id="@+id/search_screen_header_filter_button"
+            android:id="@+id/searchScreenHeaderFilterImageView"
             android:layout_width="@dimen/search_screen_filter_button"
             android:layout_height="@dimen/search_screen_filter_button"
             android:layout_gravity="center_vertical"
             android:contentDescription="@string/filter_description"
-            android:src="@drawable/filters_icon_unselected" />
+            android:src="@drawable/ic_filters_unselected" />
     </LinearLayout>
 
     <EditText
-        android:id="@+id/search_screen_edit_text"
-        android:layout_width="match_parent"
+        android:id="@+id/searchScreenEditText"
+        android:layout_width="@dimen/_0dp"
         android:layout_height="@dimen/search_screen_edit_text_height"
         android:layout_gravity="center"
         android:layout_marginHorizontal="@dimen/padding_horizontal"
         android:layout_marginTop="@dimen/padding_vertical"
         android:background="@drawable/rectangle_with_corners"
         android:backgroundTint="@color/light_gray_gray"
-        android:drawableEnd="@drawable/loupe_icon"
+        android:drawableEnd="@drawable/ic_search"
         android:drawablePadding="@dimen/padding_horizontal"
         android:drawableTint="@color/black_universal"
         android:hint="@string/type_a_request"
@@ -59,11 +59,11 @@
         android:textStyle="normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_screen_header_layout"
+        app:layout_constraintTop_toBottomOf="@id/searchScreenHeaderLinearLayout"
         tools:ignore="Autofill,RtlSymmetry" />
 
     <TextView
-        android:id="@+id/counter_vacancies_text_view"
+        android:id="@+id/counterVacanciesTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/search_screen_counter_vacancies_margin"
@@ -71,24 +71,25 @@
         android:paddingHorizontal="@dimen/padding_horizontal_small"
         android:paddingVertical="@dimen/padding_vertical_small"
         android:textColor="@color/white_universal"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_screen_edit_text"
+        app:layout_constraintTop_toBottomOf="@id/searchScreenEditText"
         tools:text="Найдено 234 вакансии" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/search_screen_recycler_view"
-        android:layout_width="match_parent"
+        android:id="@+id/searchScreenRecyclerView"
+        android:layout_width="@dimen/_0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/padding_horizontal"
         android:layout_marginTop="@dimen/padding_vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/counter_vacancies_text_view"
-        tools:listitem="@android:layout/list_content" />
+        app:layout_constraintTop_toBottomOf="@id/counterVacanciesTextView"
+        android:visibility="gone"
+        tools:listitem="@layout/item_vacancy" />
 
     <ProgressBar
-        android:id="@+id/search_screen_progress_bar"
+        android:id="@+id/searchScreenPaginationProgressBar"
         android:layout_width="@dimen/progress_bar"
         android:layout_height="@dimen/progress_bar"
         android:layout_gravity="center"
@@ -97,19 +98,121 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:visibility="visible" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/_0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/padding_horizontal"
         android:contentDescription="@string/nothing_found_image"
-        android:src="@drawable/search_screen_placeholder"
-        android:visibility="invisible"
+        android:src="@drawable/placeholder_search_screen"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_screen_edit_text"
-        tools:visibility="visible" />
+        app:layout_constraintTop_toBottomOf="@id/searchScreenEditText" />
+
+    <ProgressBar
+        android:id="@+id/searchScreenFirstLoadingProgressBar"
+        android:layout_width="@dimen/progress_bar"
+        android:layout_height="@dimen/progress_bar"
+        android:indeterminateTint="@color/blue"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/searchScreenNoInternetPlaceholder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/no_internet"
+            android:src="@drawable/placeholder_no_internet" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/margin_vertical_small"
+            android:fontFamily="@font/ys_display_medium"
+            android:text="@string/no_internet"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_header" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/searchScreenNothingFoundPlaceholder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/nothing_found_image"
+            android:src="@drawable/placeholder_not_found" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/margin_vertical_small"
+            android:fontFamily="@font/ys_display_medium"
+            android:gravity="center_horizontal"
+            android:text="@string/failed_to_get_a_list_of_vacancies"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_header" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/searchScreenServerErrorPlaceholder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/server_error"
+            android:src="@drawable/placeholder_server_error_1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/margin_vertical_small"
+            android:fontFamily="@font/ys_display_medium"
+            android:gravity="center_horizontal"
+            android:text="@string/server_error"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_header" />
+
+    </LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
