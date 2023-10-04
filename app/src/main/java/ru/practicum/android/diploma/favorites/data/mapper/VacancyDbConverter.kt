@@ -1,15 +1,17 @@
 package ru.practicum.android.diploma.favorites.data.mapper
 
-import ru.practicum.android.diploma.common.domain.models.Contacts
-import ru.practicum.android.diploma.common.domain.models.Employer
-import ru.practicum.android.diploma.common.domain.models.Employment
-import ru.practicum.android.diploma.common.domain.models.Experience
-import ru.practicum.android.diploma.common.domain.models.KeySkill
-import ru.practicum.android.diploma.common.domain.models.LogoUrls
-import ru.practicum.android.diploma.common.domain.models.Phone
-import ru.practicum.android.diploma.common.domain.models.Salary
-import ru.practicum.android.diploma.common.domain.models.Schedule
-import ru.practicum.android.diploma.common.domain.models.Vacancy
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.Area
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.Contacts
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.Employer
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.Employment
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.Experience
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.KeySkill
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.LogoUrls
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.Phone
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.Salary
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.Schedule
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.Vacancy
+import ru.practicum.android.diploma.favorites.data.db.AreaEntity
 import ru.practicum.android.diploma.favorites.data.db.ContactsEntity
 import ru.practicum.android.diploma.favorites.data.db.EmployerEntity
 import ru.practicum.android.diploma.favorites.data.db.EmploymentEntity
@@ -29,14 +31,15 @@ class VacancyDbConverter {
             return Vacancy(
                 id,
                 name,
+                map(area),
                 employer?.let { map(it) },
                 salary?.let { map(it) },
                 experience?.let { map(it) },
                 employment?.let { map(it) },
                 description,
-                convertKeySkills(keySkills),
+                convertKeySkillsEntityToKeySkill(keySkills),
                 schedule?.let { map(it) },
-                contacts?.let { map(it) }
+                contacts?.let { map(it) },
             )
         }
     }
@@ -46,12 +49,13 @@ class VacancyDbConverter {
             return FavoritesVacancyEntity(
                 id,
                 name,
+                map(area),
                 employer?.let { map(it) },
                 salary?.let { map(it) },
                 experience?.let { map(it) },
                 employment?.let { map(it) },
                 description,
-                convertKeySkills(keySkills),
+                convertKeySkillsToKeySkillEntity(keySkills),
                 schedule?.let { map(it) },
                 contacts?.let { map(it) },
                 createdAt = Calendar.getInstance().timeInMillis
@@ -62,13 +66,9 @@ class VacancyDbConverter {
     private fun map(employerEntity: EmployerEntity): Employer {
         employerEntity.apply {
             return Employer(
-                alternateUrl,
-                blacklisted,
                 id,
                 logoUrls?.let { map(it) },
                 name,
-                trusted,
-                url
             )
         }
     }
@@ -76,13 +76,9 @@ class VacancyDbConverter {
     private fun map(employer: Employer): EmployerEntity {
         employer.apply {
             return EmployerEntity(
-                alternateUrl,
-                blacklisted,
                 id,
                 logoUrls?.let { map(it) },
-                name,
-                trusted,
-                url
+                name
             )
         }
     }
@@ -161,11 +157,11 @@ class VacancyDbConverter {
         )
     }
 
-    private fun convertKeySkills(keySkillsEntity: List<KeySkillEntity>): List<KeySkill> {
+    private fun convertKeySkillsEntityToKeySkill(keySkillsEntity: List<KeySkillEntity>): List<KeySkill> {
         return keySkillsEntity.map { keySkillEntity -> map(keySkillEntity) }
     }
 
-    private fun convertKeySkills(keySkills: List<KeySkill>): List<KeySkillEntity> {
+    private fun convertKeySkillsToKeySkillEntity(keySkills: List<KeySkill>): List<KeySkillEntity> {
         return keySkills.map { keySkill -> map(keySkill) }
     }
 
@@ -188,7 +184,7 @@ class VacancyDbConverter {
             contactsEntity.email,
             contactsEntity.name,
             contactsEntity.phones?.let {
-                convertPhones(it)
+                convertPhoneEntityToPhone(it)
             }
         )
     }
@@ -198,7 +194,7 @@ class VacancyDbConverter {
             contacts.email,
             contacts.name,
             contacts.phones?.let {
-                convertPhones(it)
+                convertPhonesToPhoneEntity(it)
             }
         )
     }
@@ -221,11 +217,25 @@ class VacancyDbConverter {
         )
     }
 
-    private fun convertPhones(phonesEntity: List<PhoneEntity>): List<Phone> {
+    private fun map(area: Area): AreaEntity {
+        return AreaEntity(
+            area.id,
+            area.name
+        )
+    }
+
+    private fun map(areaEntity: AreaEntity): Area {
+        return Area(
+            areaEntity.id,
+            areaEntity.name
+        )
+    }
+
+    private fun convertPhoneEntityToPhone(phonesEntity: List<PhoneEntity>): List<Phone> {
         return phonesEntity.map { phoneEntity -> map(phoneEntity) }
     }
 
-    private fun convertPhones(phones: List<Phone>): List<PhoneEntity> {
+    private fun convertPhonesToPhoneEntity(phones: List<Phone>): List<PhoneEntity> {
         return phones.map { phone -> map(phone) }
     }
 
