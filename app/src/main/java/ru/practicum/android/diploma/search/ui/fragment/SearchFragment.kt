@@ -161,6 +161,10 @@ class SearchFragment : Fragment() {
             binding.searchScreenEditText.windowToken, 0
         )
         binding.searchScreenEditText.setText(DEFAULT_TEXT)
+
+        binding.searchScreenHeaderFilterImageView.setOnClickListener {
+            findNavController().navigate(R.id.action_searchFragment_to_filteringSettingsFragment)
+        }
     }
 
     private fun setOnTextWatchersTextChangeListeners() {

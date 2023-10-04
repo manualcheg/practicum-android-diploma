@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_searchFragment_to_vacancyFragment"
             app:destination="@id/vacancyFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_filteringSettingsFragment"
+            app:destination="@id/filteringSettingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/favoritesFragment"
@@ -35,5 +38,9 @@
             android:name="vacansyId"
             app:argType="integer" />
     </fragment>
+    <fragment
+        android:id="@+id/filteringSettingsFragment"
+        android:name="ru.practicum.android.diploma.filter.ui.fragment.FilteringSettingsFragment"
+        android:label="FilteringSettingsFragment" />
 
 </navigation>
