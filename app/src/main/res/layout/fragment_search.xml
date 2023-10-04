@@ -75,8 +75,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/searchScreenEditText"
-        tools:text="Найдено 234 вакансии"
-        tools:visibility="gone" />
+        tools:text="Найдено 234 вакансии" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/searchScreenRecyclerView"
@@ -99,8 +98,7 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:visibility="gone" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:layout_width="@dimen/_0dp"
@@ -108,12 +106,10 @@
         android:layout_marginHorizontal="@dimen/padding_horizontal"
         android:contentDescription="@string/nothing_found_image"
         android:src="@drawable/placeholder_search_screen"
-        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchScreenEditText"
-        tools:visibility="visible" />
+        app:layout_constraintTop_toBottomOf="@id/searchScreenEditText" />
 
     <ProgressBar
         android:id="@+id/searchScreenFirstLoadingProgressBar"
@@ -124,8 +120,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="gone" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/searchScreenNoInternetPlaceholder"
@@ -193,12 +188,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="UseCompoundDrawables"
-        tools:visibility="gone">
+        tools:ignore="UseCompoundDrawables">
 
         <ImageView
             android:layout_width="wrap_content"
