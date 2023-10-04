@@ -82,13 +82,12 @@
         android:id="@+id/searchScreenRecyclerView"
         android:layout_width="@dimen/_0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/padding_horizontal"
         android:layout_marginTop="@dimen/padding_vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/counterVacanciesTextView"
-        tools:listitem="@android:layout/list_content"
         android:visibility="gone"/>
+        tools:listitem="@layout/item_vacancy" />
 
     <ProgressBar
         android:id="@+id/searchScreenPaginationProgressBar"
