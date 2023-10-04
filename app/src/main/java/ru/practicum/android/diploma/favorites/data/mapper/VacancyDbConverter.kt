@@ -31,13 +31,13 @@ class VacancyDbConverter {
             return Vacancy(
                 id,
                 name,
-                map(area),
+                area?.let { map(it) },
                 employer?.let { map(it) },
                 salary?.let { map(it) },
                 experience?.let { map(it) },
                 employment?.let { map(it) },
                 description,
-                convertKeySkillsEntityToKeySkill(keySkills),
+                keySkills?.let { convertKeySkillsEntityToKeySkill(it) },
                 schedule?.let { map(it) },
                 contacts?.let { map(it) },
             )
@@ -49,13 +49,13 @@ class VacancyDbConverter {
             return FavoritesVacancyEntity(
                 id,
                 name,
-                map(area),
+                area?.let { map(it) },
                 employer?.let { map(it) },
                 salary?.let { map(it) },
                 experience?.let { map(it) },
                 employment?.let { map(it) },
                 description,
-                convertKeySkillsToKeySkillEntity(keySkills),
+                keySkills?.let { convertKeySkillsToKeySkillEntity(it) },
                 schedule?.let { map(it) },
                 contacts?.let { map(it) },
                 createdAt = Calendar.getInstance().timeInMillis

@@ -8,13 +8,13 @@ class FavoritesVacancyEntity(
     @PrimaryKey
     val id: Int,
     val name: String, // "name": "Секретарь",
-    val area: AreaEntity,
+    val area: AreaEntity?,
     val employer: EmployerEntity?, // Информация о компании работодателя
     val salary: SalaryEntity?, // Зарплата
     val experience: ExperienceEntity?, // Опыт работы
     val employment: EmploymentEntity?, // Тип занятости
-    val description: String, // string html
-    val keySkills: List<KeySkillEntity>, // (Ключевые навыки) Список ключевых навыков, не более 30
+    val description: String?, // string html
+    val keySkills: List<KeySkillEntity>?, // (Ключевые навыки) Список ключевых навыков, не более 30
     val schedule: ScheduleEntity?, // График работы
     val contacts: ContactsEntity?,
     val createdAt: Long // дата создания записи для сортировки
