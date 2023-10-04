@@ -5,35 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/searchScreenHeaderLinearLayout"
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/searchVacanciesToolbar"
         android:layout_width="@dimen/_0dp"
         android:layout_height="@dimen/search_screen_header_height"
-        android:orientation="horizontal"
-        android:paddingStart="@dimen/padding_horizontal"
-        android:paddingEnd="@dimen/padding_horizontal_small"
+        android:minHeight="@dimen/search_screen_header_height"
+        android:paddingEnd="@dimen/padding_horizontal_very_small"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:fontFamily="@font/ys_display_medium"
-            android:gravity="center_vertical"
-            android:text="@string/vacancy_search"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_header" />
-
-        <ImageView
-            android:id="@+id/searchScreenHeaderFilterImageView"
-            android:layout_width="@dimen/search_screen_filter_button"
-            android:layout_height="@dimen/search_screen_filter_button"
-            android:layout_gravity="center_vertical"
-            android:contentDescription="@string/filter_description"
-            android:src="@drawable/ic_filters_unselected" />
-    </LinearLayout>
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/menu_search_toolbar"
+        app:title="@string/vacancy_search" />
 
     <EditText
         android:id="@+id/searchScreenEditText"
@@ -59,7 +41,7 @@
         android:textStyle="normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchScreenHeaderLinearLayout"
+        app:layout_constraintTop_toBottomOf="@id/searchVacanciesToolbar"
         tools:ignore="Autofill,RtlSymmetry" />
 
     <TextView
@@ -82,10 +64,10 @@
         android:layout_width="@dimen/_0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/padding_vertical"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/counterVacanciesTextView"
-        android:visibility="gone"
         tools:listitem="@layout/item_vacancy" />
 
     <ProgressBar
