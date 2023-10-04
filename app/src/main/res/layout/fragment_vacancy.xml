@@ -40,7 +40,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:navigationIcon="@drawable/ic_left_arrow"
+            app:navigationIcon="@drawable/ic_arrow_left"
             app:navigationIconTint="@color/black"
             app:title="@string/vacancy"
             app:titleMarginStart="@dimen/margin_icon"
@@ -89,7 +89,7 @@
                 android:layout_width="@dimen/logo_dim"
                 android:layout_height="@dimen/logo_dim"
                 android:contentDescription="@string/vacancy_icon"
-                tools:src="@drawable/logo_placeholder"
+                tools:src="@drawable/ic_placeholder"
                 android:backgroundTint="@color/gray"/>
 
             <LinearLayout
