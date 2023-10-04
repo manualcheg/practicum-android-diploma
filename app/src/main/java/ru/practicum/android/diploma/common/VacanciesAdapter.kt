@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.common.domain.models.Vacancy
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.Vacancy
 
 /*
 * Использование VacanciesAdapter

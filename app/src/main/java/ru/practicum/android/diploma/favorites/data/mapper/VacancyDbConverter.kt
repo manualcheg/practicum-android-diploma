@@ -1,15 +1,17 @@
 package ru.practicum.android.diploma.favorites.data.mapper
 
-import ru.practicum.android.diploma.common.domain.models.Contacts
-import ru.practicum.android.diploma.common.domain.models.Employer
-import ru.practicum.android.diploma.common.domain.models.Employment
-import ru.practicum.android.diploma.common.domain.models.Experience
-import ru.practicum.android.diploma.common.domain.models.KeySkill
-import ru.practicum.android.diploma.common.domain.models.LogoUrls
-import ru.practicum.android.diploma.common.domain.models.Phone
-import ru.practicum.android.diploma.common.domain.models.Salary
-import ru.practicum.android.diploma.common.domain.models.Schedule
-import ru.practicum.android.diploma.common.domain.models.Vacancy
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.Area
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.Contacts
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.Employer
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.Employment
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.Experience
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.KeySkill
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.LogoUrls
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.Phone
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.Salary
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.Schedule
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.Vacancy
+import ru.practicum.android.diploma.favorites.data.db.AreaEntity
 import ru.practicum.android.diploma.favorites.data.db.ContactsEntity
 import ru.practicum.android.diploma.favorites.data.db.EmployerEntity
 import ru.practicum.android.diploma.favorites.data.db.EmploymentEntity
@@ -29,6 +31,7 @@ class VacancyDbConverter {
             return Vacancy(
                 id,
                 name,
+                map(area),
                 employer?.let { map(it) },
                 salary?.let { map(it) },
                 experience?.let { map(it) },
@@ -36,7 +39,7 @@ class VacancyDbConverter {
                 description,
                 convertKeySkillsEntityToKeySkill(keySkills),
                 schedule?.let { map(it) },
-                contacts?.let { map(it) }
+                contacts?.let { map(it) },
             )
         }
     }
@@ -46,6 +49,7 @@ class VacancyDbConverter {
             return FavoritesVacancyEntity(
                 id,
                 name,
+                map(area),
                 employer?.let { map(it) },
                 salary?.let { map(it) },
                 experience?.let { map(it) },
@@ -62,13 +66,9 @@ class VacancyDbConverter {
     private fun map(employerEntity: EmployerEntity): Employer {
         employerEntity.apply {
             return Employer(
-                alternateUrl,
-                blacklisted,
                 id,
                 logoUrls?.let { map(it) },
                 name,
-                trusted,
-                url
             )
         }
     }
@@ -76,13 +76,9 @@ class VacancyDbConverter {
     private fun map(employer: Employer): EmployerEntity {
         employer.apply {
             return EmployerEntity(
-                alternateUrl,
-                blacklisted,
                 id,
                 logoUrls?.let { map(it) },
-                name,
-                trusted,
-                url
+                name
             )
         }
     }
@@ -218,6 +214,20 @@ class VacancyDbConverter {
             phone.comment,
             phone.country,
             phone.number
+        )
+    }
+
+    private fun map(area: Area): AreaEntity {
+        return AreaEntity(
+            area.id,
+            area.name
+        )
+    }
+
+    private fun map(areaEntity: AreaEntity): Area {
+        return Area(
+            areaEntity.id,
+            areaEntity.name
         )
     }
 
