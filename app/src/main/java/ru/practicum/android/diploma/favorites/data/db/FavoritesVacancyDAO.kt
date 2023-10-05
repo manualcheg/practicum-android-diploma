@@ -19,4 +19,7 @@ interface FavoritesVacanciesDao {
     //для просмотра вакансии из БД. Можно и для проверки присуствия в Избранном.
     @Query("SELECT * FROM favorites_vacancies_table WHERE id = :id")
     suspend fun getVacancy(id: Int): FavoritesVacancyEntity
+
+    @Query("SELECT EXISTS(SELECT * FROM favorites_vacancies_table WHERE id = :id)")
+    suspend fun isVacancyContains(id: Int): Boolean
 }
