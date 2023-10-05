@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/choosingWorkplaceToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/search_screen_header_height"
+        android:minHeight="@dimen/search_screen_header_height"
+        app:contentInsetStartWithNavigation="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_arrow_left"
+        app:navigationIconTint="@color/black"
+        app:title="@string/choosing_a_place_of_work"
+        app:titleMarginStart="0dp"
+        app:titleTextAppearance="@style/Toolbar.TitleText"
+        app:titleTextColor="@color/black" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/countyTextInputLayout"
+        style="@style/textInputLayoutStyle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/text_input_layout_height"
+        android:layout_marginTop="@dimen/margin_vertical_16dp"
+        android:hint="@string/country"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/choosingWorkplaceToolbar">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/selectedCountryTextInputEditText"
+            style="@style/textInputEditTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/regionTextInputLayout"
+        style="@style/textInputLayoutStyle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/text_input_layout_height"
+        android:hint="@string/region"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/choosingWorkplaceToolbar">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/selectedRegionTextInputEditText"
+            style="@style/textInputEditTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:text="Москва" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+</LinearLayout>

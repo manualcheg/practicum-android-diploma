@@ -11,11 +11,12 @@
     <string name="choosing_a_country">Выбор страны</string>
     <string name="choosing_a_region">Выбор региона</string>
     <string name="choosing_a_sector">Выбор отрасли</string>
+    <string name="vacancy">Вакансия</string>
 
     <string name="type_a_request">Введите запрос</string>
     <string name="there_are_no_such_vacancies">Таких вакансий нет</string>
     <string name="no_internet">Нет интернета</string>
-    <string name="failed_to_get_a_list_of_vacancies">Не удалось получить список вакансий</string>
+    <string name="failed_to_get_a_list_of_vacancies">Не удалось получить\nсписок вакансий</string>
     <string name="server_error">Ошибка сервера</string>
 
     <plurals name="vacancy_plural">
@@ -52,6 +53,7 @@
     <string name="contact_person">Контактное лицо</string>
     <string name="email">E-mail</string>
     <string name="phone_number">Телефон</string>
+    <string name="comment">Комментарий</string>
     <string name="similar_vacancies">Похожие вакансии</string>
     <string name="from">От</string>
     <string name="to">до</string>
@@ -63,7 +65,6 @@
     <string name="valiev_ilnur">Валиев Ильнур</string>
     <string name="vladislav_gorodilov">Владислав Городилов</string>
     <string name="kochubeev_andrei">Кочубеев Андрей</string>
-
 
 
     <string name="RUB">₽</string>
@@ -79,8 +80,13 @@
 
     <string name="vacancy_icon">иконка вакансии</string>
     <string name="filter_description">фильтр</string>
-    <string name="nothing_found_image">картинка ничего не найдено</string>
+    <string name="nothing_found_image">картинка поиск вакансий</string>
     <string name="favourites_placeholder_image_description">Картинка список пуст</string>
     <string name="back_button">кнопка назад</string>
+    <string name="share_button">кнопка поделиться</string>
+    <string name="like_button">кнопка добавить в избранные</string>
+
+    <string name="share">Поделиться</string>
+    <string name="add_to_favorites">Добавить в избранное</string>
 
 </resources>
