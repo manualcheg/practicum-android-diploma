@@ -18,6 +18,7 @@
     <dimen name="margin_vertical_big">32dp</dimen>
     <dimen name="margin_vertical">24dp</dimen>
     <dimen name="margin_vertical_small">16dp</dimen>
+    <dimen name="margin_vertical_for_layout">6dp</dimen>
 
     <dimen name="margin_icon">4dp</dimen>
     <dimen name="_0dp">0dp</dimen>
@@ -30,6 +31,7 @@
     <dimen name="margin_vertical_16dp">16dp</dimen>
     <dimen name="favourites_header_height">64dp</dimen>
     <dimen name="back_button">48dp</dimen>
+    <dimen name="layout_height">48dp</dimen>
     <dimen name="logo_dim">48dp</dimen>
     <dimen name="card_corner_radius">12dp</dimen>
     <dimen name="button_horizontal_margin">17dp</dimen>
