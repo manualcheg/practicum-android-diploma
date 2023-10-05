@@ -132,7 +132,7 @@ class VacancyDomainToVacancyUiConverter(private val context: Context) {
         else {
             contacts.phones.map { phone ->
                 val phoneNumber = buildString {
-                    append("+${phone.city} (${phone.country}) ${mapPhoneNumber(phone.number)}")
+                    append("+${phone.country} (${phone.city}) ${mapPhoneNumber(phone.number)}")
                 }
                 PhoneUi(
                     formattedNumber = phoneNumber,
