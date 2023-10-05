@@ -8,9 +8,7 @@ data class VacancyUi(
     val employerLogoUrl90: String = "",
     val employerLogoUrlOriginal: String = "",
     val employerName: String = "", // Название компании "HeadHunter"
-    val salaryCurrency: String = "", // Зарплата
-    val salaryFrom: String = "",
-    val salaryTo: String = "",
+    val salaryAmount: String = "", // Зарплата
     val experienceName: String = "", // Опыт работы ("От 1 года до 3 лет")
     val employmentName: String = "", // Тип занятости ("Полная занятость")
     val description: String = "", // string html

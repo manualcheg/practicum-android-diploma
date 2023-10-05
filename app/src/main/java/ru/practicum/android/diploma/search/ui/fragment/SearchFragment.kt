@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.VacanciesAdapter
-import ru.practicum.android.diploma.common.domain.model.vacancy_models.Vacancy
+import ru.practicum.android.diploma.common.ui.model.VacancyUi
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.search.ui.model.ErrorStatusUi
 import ru.practicum.android.diploma.search.ui.model.SearchState
@@ -92,7 +92,7 @@ class SearchFragment : Fragment() {
         }
     }
 
-    private fun showContent(vacancies: List<Vacancy>) {
+    private fun showContent(vacancies: List<VacancyUi>) {
         emptyScreen()
         vacanciesAdapter?.vacancies = vacancies
         binding.searchScreenRecyclerView.isVisible = true
@@ -162,9 +162,9 @@ class SearchFragment : Fragment() {
         )
         binding.searchScreenEditText.setText(DEFAULT_TEXT)
 
-        binding.searchScreenHeaderFilterImageView.setOnClickListener {
-            findNavController().navigate(R.id.action_searchFragment_to_filteringSettingsFragment)
-        }
+//        binding.searchScreenHeaderFilterImageView.setOnClickListener {
+//            findNavController().navigate(R.id.action_searchFragment_to_filteringSettingsFragment)
+//        }
     }
 
     private fun setOnTextWatchersTextChangeListeners() {

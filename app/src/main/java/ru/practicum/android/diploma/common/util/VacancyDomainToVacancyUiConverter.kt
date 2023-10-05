@@ -21,9 +21,11 @@ class VacancyDomainToVacancyUiConverter(private val context: Context) {
                 employerLogoUrl90 = employer?.logoUrls?.logo90 ?: "",
                 employerLogoUrlOriginal = employer?.logoUrls?.original ?: "",
                 employerName = employer?.name ?: "",
-                salaryCurrency = mapSalaryCurrency(salary),
-                salaryFrom = mapSalaryDigitFrom(salary),
-                salaryTo = mapSalaryDigitTo(salary),
+                salaryAmount = getSalary(
+                    mapSalaryDigitFrom(salary),
+                    mapSalaryDigitTo(salary),
+                    mapSalaryCurrency(salary)
+                ),
                 experienceName = experience?.name ?: "",
                 employmentName = employment?.name ?: "",
                 description = description ?: "",
@@ -104,6 +106,18 @@ class VacancyDomainToVacancyUiConverter(private val context: Context) {
             dec.format(amount).replace(",", " ")
         } catch (e: Exception) {
             ""
+        }
+        return result
+    }
+
+    private fun getSalary(salaryFrom: String, salaryTo: String, currency: String): String {
+        val result = buildString {
+            if (salaryFrom.isNotBlank()) {
+                append("${context.getString(R.string.from)} $salaryFrom $currency ")
+            }
+            if (salaryTo.isNotBlank()) {
+                append("${context.getString(R.string.to)} $salaryTo $currency")
+            }
         }
         return result
     }

@@ -1,14 +1,14 @@
 package ru.practicum.android.diploma.search.ui.model
 
-import ru.practicum.android.diploma.common.domain.model.vacancy_models.Vacancy
+import ru.practicum.android.diploma.common.ui.model.VacancyUi
 
 
 sealed interface SearchState {
     object Loading : SearchState
 
-    sealed class Success(open val vacancies: List<Vacancy>) : SearchState {
+    sealed class Success(open val vacancies: List<VacancyUi>) : SearchState {
         data class SearchContent(
-            override val vacancies: List<Vacancy>
+            override val vacancies: List<VacancyUi>
         ) : Success(vacancies)
 
         object Empty : Success(emptyList())
