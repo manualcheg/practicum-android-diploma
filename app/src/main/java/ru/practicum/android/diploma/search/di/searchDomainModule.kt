@@ -4,7 +4,7 @@ import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
-import ru.practicum.android.diploma.common.util.VacancyDomainToVacancyUiConverter
+import ru.practicum.android.diploma.common.ui.mapper.VacancyDomainToVacancyUiConverter
 import ru.practicum.android.diploma.search.domain.repository.NetworkConnectionProvider
 import ru.practicum.android.diploma.search.domain.useCase.SearchUseCase
 import ru.practicum.android.diploma.search.domain.useCase.SearchUseCaseImpl

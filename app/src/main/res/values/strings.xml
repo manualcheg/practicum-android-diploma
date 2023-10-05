@@ -57,6 +57,9 @@
     <string name="similar_vacancies">Похожие вакансии</string>
     <string name="from">От</string>
     <string name="to">до</string>
+    <string name="no_salary">ЗП не указана</string>
+
+
 
     <string name="the_list_is_empty">Список пуст</string>
     <string name="worked_on_the_application">Над приложением работали</string>

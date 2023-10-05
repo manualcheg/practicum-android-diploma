@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.common.util
+package ru.practicum.android.diploma.common.ui.mapper
 
 import android.content.Context
 import ru.practicum.android.diploma.R
@@ -111,7 +111,7 @@ class VacancyDomainToVacancyUiConverter(private val context: Context) {
     }
 
     private fun getSalary(salaryFrom: String, salaryTo: String, currency: String): String {
-        val result = buildString {
+        var result = buildString {
             if (salaryFrom.isNotBlank()) {
                 append("${context.getString(R.string.from)} $salaryFrom $currency ")
             }
@@ -119,6 +119,8 @@ class VacancyDomainToVacancyUiConverter(private val context: Context) {
                 append("${context.getString(R.string.to)} $salaryTo $currency")
             }
         }
+        if (result.isBlank()) result = context.getString(R.string.no_salary)
+
         return result
     }
 

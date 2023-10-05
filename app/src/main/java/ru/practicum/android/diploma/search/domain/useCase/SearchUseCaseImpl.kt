@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import ru.practicum.android.diploma.common.ui.model.VacancyUi
 import ru.practicum.android.diploma.common.util.Resource
-import ru.practicum.android.diploma.common.util.VacancyDomainToVacancyUiConverter
+import ru.practicum.android.diploma.common.ui.mapper.VacancyDomainToVacancyUiConverter
 import ru.practicum.android.diploma.search.data.model.ErrorRemoteDataSource
 import ru.practicum.android.diploma.search.domain.model.ErrorStatusDomain
 import ru.practicum.android.diploma.search.domain.repository.SearchRepository
