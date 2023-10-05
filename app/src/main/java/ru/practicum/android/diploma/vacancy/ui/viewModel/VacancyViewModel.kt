@@ -15,6 +15,6 @@ class VacancyViewModel(private val vacancyId: Int) : ViewModel() {
     }
 
     private fun setState(state: VacancyState) {
-        _state.postValue(state)
+        _state.value = state
     }
 }

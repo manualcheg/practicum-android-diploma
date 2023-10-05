@@ -10,16 +10,24 @@ import androidx.fragment.app.Fragment
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
 import ru.practicum.android.diploma.vacancy.ui.viewModel.VacancyViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import ru.practicum.android.diploma.vacancy.ui.VacancyState
 
 class VacancyFragment : Fragment() {
 
-    private val viewModel: VacancyViewModel by viewModel()
+    private val viewModel: VacancyViewModel by viewModel {
+        parametersOf(
+            vacancyId
+        )
+    }
     private var _binding: FragmentVacancyBinding? = null
     private val binding get() = _binding!!
 
     private var vacancyProgressBar: ProgressBar? = null
     private var vacancyServerErrorPlaceholder: LinearLayout? = null
+
+    private val vacancyId: Int? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
