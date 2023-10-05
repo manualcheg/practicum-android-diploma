@@ -7,21 +7,12 @@
     android:layout_marginVertical="@dimen/padding_vertical"
     android:orientation="horizontal">
 
-    <FrameLayout
+    <ImageView
+        android:id="@+id/vacancyLogoImageView"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:background="@drawable/rectangle_with_corners"
-        android:backgroundTint="@color/light_gray">
-        <ImageView
-            android:id="@+id/vacancyLayoutLogoImageView"
-            android:layout_width="46dp"
-            android:layout_height="46dp"
-            android:layout_gravity="center"
-            android:contentDescription="@string/vacancy_icon"
-            tools:src="@drawable/ic_placeholder"
-            android:background="@drawable/rectangle_with_corners"
-            android:backgroundTint="@color/light_gray"/>
-    </FrameLayout>
+        android:contentDescription="@string/vacancy_icon"
+        tools:src="@drawable/logo_placeholder" />
 
     <LinearLayout
         android:layout_width="match_parent"

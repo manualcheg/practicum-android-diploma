@@ -44,7 +44,7 @@
             android:layout_marginVertical="@dimen/padding_vertical_small"
             android:layout_marginEnd="@dimen/padding_horizontal_very_small"
             android:contentDescription="@string/workplace"
-            android:src="@drawable/ic_right_arrow"
+            android:src="@drawable/ic_chevron_right"
             app:tint="@color/black" />
 
     </FrameLayout>
@@ -120,7 +120,7 @@
             android:layout_marginVertical="@dimen/padding_vertical_small"
             android:layout_marginEnd="@dimen/padding_horizontal_very_small"
             android:contentDescription="@string/sector"
-            android:src="@drawable/ic_right_arrow"
+            android:src="@drawable/ic_chevron_right"
             app:tint="@color/black" />
 
     </FrameLayout>
