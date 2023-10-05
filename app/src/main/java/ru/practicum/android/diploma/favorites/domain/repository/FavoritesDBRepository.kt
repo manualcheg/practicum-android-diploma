@@ -8,7 +8,7 @@ interface FavoritesDBRepository {
 
     suspend fun deleteFromFavorites(id: Int)
 
-    suspend fun getFavorites(): Flow<List<Vacancy>>
+    fun getFavorites(): Flow<List<Vacancy>>
 
     suspend fun getVacancy(id: Int): Vacancy
 }
