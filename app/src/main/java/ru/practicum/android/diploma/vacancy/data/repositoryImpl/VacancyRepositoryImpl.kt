@@ -9,11 +9,15 @@ class VacancyRepositoryImpl(
     private val appDataBase: AppDataBase,
     private val vacancyDbConverter: VacancyDbConverter
 ) : VacancyRepository {
-    override suspend fun findVacancy(vacancyId: Int): Vacancy {
-        TODO()
+    override suspend fun findVacancyById(vacancyId: Int): Vacancy {
+        // есть ли вакансия в базе данных?
+        if (appDataBase.FavoritesVacanciesDao().isVacancyContains(vacancyId)) {
+            return vacancyDbConverter.map(appDataBase.FavoritesVacanciesDao().getVacancy(vacancyId))
+        }
+        else{
+            TODO()
+        }
+
     }
 
-    override suspend fun getVacancyFromDataBaseById(vacancyId: Int): Vacancy {
-        return vacancyDbConverter.map(appDataBase.FavoritesVacanciesDao().getVacancy(vacancyId))
-    }
 }
