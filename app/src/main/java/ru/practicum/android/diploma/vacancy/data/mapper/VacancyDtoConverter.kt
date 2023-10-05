@@ -30,13 +30,13 @@ class VacancyDtoConverter {
             return Vacancy(
                 id,
                 name,
-                map(area),
+                area?.let { map(it) },
                 employer?.let { map(it) },
                 salary?.let { map(it) },
                 experience?.let { map(it) },
                 employment?.let { map(it) },
                 description,
-                convertKeySkills(keySkills),
+                keySkills?.let { convertKeySkills(it) },
                 schedule?.let { map(it) },
                 contacts?.let { map(it) }
             )
