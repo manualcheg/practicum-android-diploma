@@ -18,8 +18,10 @@ class FavoritesStorageImpl(
         appDataBase.FavoritesVacanciesDao().deleteFromFavorites(id)
     }
 
+    //    override suspend fun getFavorites(): Flow<List<Vacancy>> {
     override suspend fun getFavorites(): List<Vacancy> {
         return mapList(appDataBase.FavoritesVacanciesDao().getFavorites())
+//        return appDataBase.FavoritesVacanciesDao().getFavorites()
     }
 
     override suspend fun getVacancy(id: Int): Vacancy {
@@ -27,6 +29,6 @@ class FavoritesStorageImpl(
     }
 
     private fun mapList(favouritesList: List<FavoritesVacancyEntity>): List<Vacancy> {
-        return favouritesList.map { track -> vacancyDbConverter.map(track) }
+        return favouritesList.map { favoritesVacancyEntity -> vacancyDbConverter.map(favoritesVacancyEntity) }
     }
 }
