@@ -5,7 +5,7 @@ import ru.practicum.android.diploma.vacancy.domain.repository.VacancyRepository
 
 class LoadVacancyFromDatabaseUseCaseImpl(private val repository: VacancyRepository) :
     LoadVacancyFromDatabaseUseCase {
-    override suspend fun getVacancyById(vacancyId: Int): Vacancy {
-        return repository.getVacancyById(vacancyId)
+    override suspend fun getVacancyFromDataBaseById(vacancyId: Int): Vacancy {
+        return repository.getVacancyFromDataBaseById(vacancyId)
     }
 }
