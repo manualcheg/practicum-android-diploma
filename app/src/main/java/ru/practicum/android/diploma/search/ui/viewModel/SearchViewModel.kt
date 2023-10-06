@@ -4,18 +4,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.Vacancy
+import ru.practicum.android.diploma.common.ui.mapper.VacancyDomainToVacancyUiConverter
 import ru.practicum.android.diploma.common.ui.model.VacancyUi
+import ru.practicum.android.diploma.common.util.debounce
 import ru.practicum.android.diploma.search.domain.model.ErrorStatusDomain
 import ru.practicum.android.diploma.search.domain.useCase.SearchUseCase
 import ru.practicum.android.diploma.search.ui.model.ErrorStatusUi
 import ru.practicum.android.diploma.search.ui.model.SearchState
 
 class SearchViewModel(
-    private val searchUseCase: SearchUseCase
+    private val searchUseCase: SearchUseCase,
+    private val vacancyDomainToVacancyUiConverter: VacancyDomainToVacancyUiConverter
 ) : ViewModel() {
 
     private var latestSearchText: String? = null
@@ -53,10 +54,11 @@ class SearchViewModel(
         }
     }
 
-    private fun processResult(foundVacancies: List<VacancyUi>?, errorStatus: ErrorStatusDomain?) {
-        val vacancies = mutableListOf<VacancyUi>()
+    private fun processResult(foundVacancies: List<Vacancy>?, errorStatus: ErrorStatusDomain?) {
+        val vacanciesUi = mutableListOf<VacancyUi>()
         if (foundVacancies != null) {
-            vacancies.addAll(foundVacancies)
+            val foundVacancyUi = foundVacancies.map { vacancyDomainToVacancyUiConverter.map(it) }
+            vacanciesUi.addAll(foundVacancyUi)
         }
         when {
             errorStatus != null -> {
@@ -73,35 +75,16 @@ class SearchViewModel(
                 }
             }
 
-            vacancies.isEmpty() -> setState(SearchState.Error(ErrorStatusUi.NOTHING_FOUND))
+            vacanciesUi.isEmpty() -> setState(SearchState.Error(ErrorStatusUi.NOTHING_FOUND))
 
             else -> {
-                setState(SearchState.Success.SearchContent(vacancies))
+                setState(SearchState.Success.SearchContent(vacanciesUi))
             }
         }
     }
 
     fun clearSearchInput() {
         setState(SearchState.Success.Empty)
-    }
-
-    fun <T> debounce(delayMillis: Long,
-                     coroutineScope: CoroutineScope,
-                     useLastParam: Boolean,
-                     action: (T) -> Unit): (T) -> Unit {
-        var debounceJob: Job? = null
-        return { param: T ->
-            if (useLastParam) {
-                debounceJob?.cancel()
-            }
-            if (debounceJob?.isCompleted != false || useLastParam) {
-                debounceJob = coroutineScope.launch {
-                    delay(delayMillis)
-
-                    action(param)
-                }
-            }
-        }
     }
 
     companion object {

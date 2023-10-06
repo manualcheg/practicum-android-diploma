@@ -89,4 +89,6 @@ dependencies {
     implementation("androidx.room:room-runtime:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
 
+    implementation ("com.squareup.okhttp3:logging-interceptor:4.11.0")
+
 }
