@@ -76,7 +76,15 @@ class VacancyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val vacancySalary: TextView = itemView.findViewById(R.id.vacancySalaryTextView)
 
     fun bind(vacancy: VacancyUi) {
-        vacancyHeader.text = vacancy.name
+        if (vacancy.areaName.isNotBlank()){
+            val header = buildString {
+                append(vacancy.name)
+                append(", ")
+                append(vacancy.areaName)
+            }
+            vacancyHeader.text = header
+        } else vacancyHeader.text = vacancy.name
+
         vacancyDescription.text = vacancy.employerName
         Glide.with(itemView).load(vacancy.employerLogoUrl90).placeholder(R.drawable.ic_placeholder)
             .centerCrop().transform(
