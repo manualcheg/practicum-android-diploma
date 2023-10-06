@@ -14,7 +14,7 @@ class FavoritesViewModel(private val getFavoritesUseCase: GetFavoritesUseCase) :
     private val _stateLiveData = MutableLiveData<FavoritesState>()
     fun stateLiveData(): LiveData<FavoritesState> = _stateLiveData
 
-    val coroutineExceptionHandler =
+    private val coroutineExceptionHandler =
         CoroutineExceptionHandler { _, _ -> _stateLiveData.postValue(FavoritesState.Error()) }
 
     fun getFavorites() {
