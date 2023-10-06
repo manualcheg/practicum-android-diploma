@@ -3,7 +3,7 @@ package ru.practicum.android.diploma.favorites.data.dataSource
 import kotlinx.coroutines.flow.Flow
 import ru.practicum.android.diploma.common.domain.model.vacancy_models.Vacancy
 
-interface FavoritesStorage {
+interface FavoritesLocalDataSource {
     suspend fun addToFavorites(vacancy: Vacancy)
 
     suspend fun deleteFromFavorites(id: Int)

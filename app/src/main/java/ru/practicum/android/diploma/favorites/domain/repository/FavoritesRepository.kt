@@ -3,7 +3,7 @@ package ru.practicum.android.diploma.favorites.domain.repository
 import kotlinx.coroutines.flow.Flow
 import ru.practicum.android.diploma.common.domain.model.vacancy_models.Vacancy
 
-interface FavoritesDBRepository {
+interface FavoritesRepository {
     suspend fun addToFavorites(vacancy: Vacancy)
 
     suspend fun deleteFromFavorites(id: Int)

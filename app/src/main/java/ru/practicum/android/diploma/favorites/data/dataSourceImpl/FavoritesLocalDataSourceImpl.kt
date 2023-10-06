@@ -3,15 +3,15 @@ package ru.practicum.android.diploma.favorites.data.dataSourceImpl
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import ru.practicum.android.diploma.common.domain.model.vacancy_models.Vacancy
-import ru.practicum.android.diploma.favorites.data.dataSource.FavoritesStorage
+import ru.practicum.android.diploma.favorites.data.dataSource.FavoritesLocalDataSource
 import ru.practicum.android.diploma.favorites.data.db.AppDataBase
 import ru.practicum.android.diploma.favorites.data.db.FavoritesVacancyEntity
 import ru.practicum.android.diploma.favorites.data.mapper.VacancyDbConverter
 
-class FavoritesStorageImpl(
+class FavoritesLocalDataSourceImpl(
     private val appDataBase: AppDataBase,
     private val vacancyDbConverter: VacancyDbConverter
-) : FavoritesStorage {
+) : FavoritesLocalDataSource {
     override suspend fun addToFavorites(vacancy: Vacancy) {
         appDataBase.FavoritesVacanciesDao().addToFavorites(vacancyDbConverter.map(vacancy))
     }

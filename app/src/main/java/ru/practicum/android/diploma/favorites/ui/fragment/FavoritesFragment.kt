@@ -20,7 +20,7 @@ class FavoritesFragment : Fragment() {
 
     private val favouritesViewModel: FavoritesViewModel by viewModel()
     private var favoritesVacancies: List<Vacancy> = listOf()
-    private val vacanciesAdapter = VacanciesAdapter {
+    private var vacanciesAdapter: VacanciesAdapter? = VacanciesAdapter {
         clickOnVacancy(it)
     }
 
@@ -52,6 +52,9 @@ class FavoritesFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
+
+        binding.favouritesRecyclerView.adapter = null
+        vacanciesAdapter = null
         _binding = null
     }
 
@@ -73,7 +76,7 @@ class FavoritesFragment : Fragment() {
     private fun showContent(vacancies: List<Vacancy>) {
         binding.favouritesRecyclerView.visibility = View.VISIBLE
         binding.favouritesPlaceholderLinearLayout.visibility = View.GONE
-        vacanciesAdapter.vacancies = vacancies
+        vacanciesAdapter?.vacancies = vacancies
     }
 
     private fun showError() {

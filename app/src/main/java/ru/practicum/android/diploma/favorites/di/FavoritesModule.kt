@@ -4,12 +4,12 @@ import androidx.room.Room
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
-import ru.practicum.android.diploma.favorites.data.dataSource.FavoritesStorage
-import ru.practicum.android.diploma.favorites.data.dataSourceImpl.FavoritesStorageImpl
+import ru.practicum.android.diploma.favorites.data.dataSource.FavoritesLocalDataSource
+import ru.practicum.android.diploma.favorites.data.dataSourceImpl.FavoritesLocalDataSourceImpl
 import ru.practicum.android.diploma.favorites.data.db.AppDataBase
 import ru.practicum.android.diploma.favorites.data.mapper.VacancyDbConverter
-import ru.practicum.android.diploma.favorites.data.repositoryImpl.FavoritesDBRepositoryImpl
-import ru.practicum.android.diploma.favorites.domain.repository.FavoritesDBRepository
+import ru.practicum.android.diploma.favorites.data.repositoryImpl.FavoritesRepositoryImpl
+import ru.practicum.android.diploma.favorites.domain.repository.FavoritesRepository
 import ru.practicum.android.diploma.favorites.domain.useCase.GetFavoritesUseCase
 import ru.practicum.android.diploma.favorites.domain.useCase.GetFavoritesUseCaseImpl
 import ru.practicum.android.diploma.favorites.ui.viewModel.FavoritesViewModel
@@ -25,8 +25,8 @@ val favoritesModule = module {
 
     factory { VacancyDbConverter() }
 
-    single<FavoritesDBRepository> { FavoritesDBRepositoryImpl(get()) }
-    single<FavoritesStorage> { FavoritesStorageImpl(get(), get()) }
+    single<FavoritesRepository> { FavoritesRepositoryImpl(get()) }
+    single<FavoritesLocalDataSource> { FavoritesLocalDataSourceImpl(get(), get()) }
 
     viewModel{
         FavoritesViewModel(get())
