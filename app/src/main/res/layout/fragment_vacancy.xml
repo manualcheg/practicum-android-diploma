@@ -26,24 +26,13 @@
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/vacancyToolbar"
-            android:layout_width="@dimen/_0dp"
-            android:layout_height="wrap_content"
-            android:paddingStart="@dimen/padding_vertical_small"
-            android:paddingTop="@dimen/padding_vertical"
-            android:paddingEnd="@dimen/padding_horizontal_very_small"
-            android:paddingBottom="@dimen/padding_vertical"
-            app:buttonGravity="center_vertical"
-            app:contentInsetStartWithNavigation="0dp"
-            app:layout_constrainedWidth="true"
+            style="@style/Toolbar"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:menu="@menu/menu_vacancy_toolbar"
             app:navigationIcon="@drawable/ic_arrow_left"
-            app:navigationIconTint="@color/black"
             app:title="@string/vacancy"
-            app:titleMarginStart="@dimen/margin_icon"
+            app:menu="@menu/menu_vacancy_toolbar"
             app:titleTextAppearance="@style/Toolbar.TitleText" />
 
         <ProgressBar

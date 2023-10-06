@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,18 +8,13 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/choosingWorkplaceToolbar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/search_screen_header_height"
-        android:minHeight="@dimen/search_screen_header_height"
-        app:contentInsetStartWithNavigation="0dp"
+        style="@style/Toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_arrow_left"
-        app:navigationIconTint="@color/black"
-        app:title="@string/choosing_a_place_of_work"
-        app:titleMarginStart="0dp"
-        app:titleTextAppearance="@style/Toolbar.TitleText"
-        app:titleTextColor="@color/black" />
+        app:title="@string/workplace"
+        app:titleTextAppearance="@style/Toolbar.TitleText" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/countyTextInputLayout"
@@ -48,7 +43,7 @@
         android:hint="@string/region"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/choosingWorkplaceToolbar">
+        app:layout_constraintTop_toBottomOf="@id/countyTextInputLayout">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/selectedRegionTextInputEditText"
@@ -59,4 +54,4 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
