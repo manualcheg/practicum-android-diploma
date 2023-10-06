@@ -33,12 +33,14 @@
         app:layout_constraintTop_toBottomOf="@id/favouritesHeaderTextView">
 
         <ImageView
+            android:id="@+id/favoritesPlaceholderImageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:contentDescription="@string/favourites_placeholder_image_description"
             android:src="@drawable/placeholder_empty_favorites_list" />
 
         <TextView
+            android:id="@+id/favoritesPlaceholderTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -59,7 +61,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/favouritesHeaderTextView"
-        tools:listitem="@layout/item_vacancy"
-        tools:visibility="visible" />
+        tools:listitem="@layout/item_vacancy" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
