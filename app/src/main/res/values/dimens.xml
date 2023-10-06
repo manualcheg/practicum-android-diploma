@@ -23,13 +23,10 @@
     <dimen name="margin_icon">4dp</dimen>
     <dimen name="_0dp">0dp</dimen>
     <dimen name="toolbar_height">64dp</dimen>
-    <dimen name="search_screen_filter_button">48dp</dimen>
     <dimen name="search_screen_edit_text_height">56dp</dimen>
     <dimen name="search_screen_counter_vacancies_margin">11dp</dimen>
     <dimen name="progress_bar">48dp</dimen>
-    <dimen name="team_screen_header_height">64dp</dimen>
     <dimen name="margin_vertical_16dp">16dp</dimen>
-    <dimen name="favourites_header_height">64dp</dimen>
     <dimen name="back_button">48dp</dimen>
     <dimen name="layout_height">48dp</dimen>
     <dimen name="logo_dim">48dp</dimen>
