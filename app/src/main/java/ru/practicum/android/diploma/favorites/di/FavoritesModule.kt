@@ -29,7 +29,7 @@ val favoritesModule = module {
     single<FavoritesLocalDataSource> { FavoritesLocalDataSourceImpl(get(), get()) }
 
     viewModel{
-        FavoritesViewModel(get())
+        FavoritesViewModel(get(), get())
     }
 
     single<GetFavoritesUseCase>{ GetFavoritesUseCaseImpl(get())}
