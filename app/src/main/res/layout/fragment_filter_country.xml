@@ -1,29 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/filterCountryToolbar"
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:minHeight="@dimen/search_screen_header_height"
-        app:buttonGravity="center_vertical"
-        app:contentInsetStartWithNavigation="0dp"
+        style="@style/Toolbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/filterCountryRecyclerView"
         app:navigationIcon="@drawable/ic_arrow_left"
-        app:navigationIconTint="@color/black"
         app:title="@string/choosing_a_country"
-        app:titleMarginStart="0dp"
-        app:titleTextAppearance="@style/Toolbar.TitleText" />
+        app:titleTextAppearance="@style/TitleText" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/filterCountryRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_marginTop="@dimen/margin_vertical_small"
+        android:layout_width="@dimen/_0dp"
+        android:layout_height="@dimen/_0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/filterCountryToolbar" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

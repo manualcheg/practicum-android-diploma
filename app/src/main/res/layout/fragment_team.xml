@@ -6,13 +6,11 @@
     android:paddingHorizontal="@dimen/padding_horizontal">
 
     <TextView
+        style="@style/TitleText"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/team_screen_header_height"
-        android:fontFamily="@font/ys_display_medium"
+        android:layout_height="@dimen/toolbar_height"
         android:gravity="center_vertical"
-        android:text="@string/team"
-        android:textColor="@color/black"
-        android:textSize="@dimen/text_size_header" />
+        android:text="@string/team" />
 
     <TextView
         android:layout_width="match_parent"

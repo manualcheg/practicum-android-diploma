@@ -8,18 +8,11 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/filteringSettingsToolbar"
+        style="@style/Toolbar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/search_screen_header_height"
-        android:minHeight="@dimen/search_screen_header_height"
-        app:contentInsetStartWithNavigation="0dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_arrow_left"
-        app:navigationIconTint="@color/black"
         app:title="@string/filtering_settings"
-        app:titleMarginStart="0dp"
-        app:titleTextAppearance="@style/Toolbar.TitleText"
-        app:titleTextColor="@color/black" />
+        app:titleTextAppearance="@style/TitleText" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/workplaceTextInputLayout"

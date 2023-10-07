@@ -7,16 +7,13 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/searchVacanciesToolbar"
-        android:layout_width="@dimen/_0dp"
-        android:layout_height="@dimen/search_screen_header_height"
-        android:minHeight="@dimen/search_screen_header_height"
-        android:paddingEnd="@dimen/padding_horizontal_very_small"
+        style="@style/Toolbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:menu="@menu/menu_search_toolbar"
         app:title="@string/vacancy_search"
-        app:titleTextAppearance="@style/Toolbar.TitleText" />
+        app:menu="@menu/menu_search_toolbar"
+        app:titleTextAppearance="@style/TitleText" />
 
     <EditText
         android:id="@+id/searchScreenEditText"

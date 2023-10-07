@@ -7,17 +7,14 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/similarVacanciesToolbar"
-        android:layout_width="@dimen/_0dp"
-        android:layout_height="@dimen/search_screen_header_height"
-        android:minHeight="@dimen/search_screen_header_height"
-        app:contentInsetStartWithNavigation="0dp"
+        style="@style/Toolbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/similarVacanciesRecyclerView"
         app:navigationIcon="@drawable/ic_arrow_left"
-        app:navigationIconTint="@color/black"
         app:title="@string/similar_vacancies"
-        app:titleMarginStart="0dp" />
+        app:titleTextAppearance="@style/TitleText" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/similarVacanciesRecyclerView"
