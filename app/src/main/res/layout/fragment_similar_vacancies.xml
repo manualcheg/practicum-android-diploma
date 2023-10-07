@@ -14,7 +14,7 @@
         app:layout_constraintBottom_toTopOf="@+id/similarVacanciesRecyclerView"
         app:navigationIcon="@drawable/ic_arrow_left"
         app:title="@string/similar_vacancies"
-        app:titleTextAppearance="@style/Toolbar.TitleText" />
+        app:titleTextAppearance="@style/TitleText" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/similarVacanciesRecyclerView"

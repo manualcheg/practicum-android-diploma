@@ -33,7 +33,7 @@
             app:navigationIcon="@drawable/ic_arrow_left"
             app:title="@string/vacancy"
             app:menu="@menu/menu_vacancy_toolbar"
-            app:titleTextAppearance="@style/Toolbar.TitleText" />
+            app:titleTextAppearance="@style/TitleText" />
 
         <ProgressBar
             android:id="@+id/vacancyProgressBar"

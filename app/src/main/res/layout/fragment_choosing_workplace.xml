@@ -14,7 +14,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_arrow_left"
         app:title="@string/workplace"
-        app:titleTextAppearance="@style/Toolbar.TitleText" />
+        app:titleTextAppearance="@style/TitleText" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/countyTextInputLayout"

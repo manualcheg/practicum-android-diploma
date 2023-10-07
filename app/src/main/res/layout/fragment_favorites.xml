@@ -6,13 +6,13 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/favouritesHeaderToolbar"
+        android:id="@+id/favouritesToolbar"
         style="@style/Toolbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:title="@string/favorites"
-        app:titleTextAppearance="@style/Toolbar.TitleText" />
+        app:titleTextAppearance="@style/TitleText" />
 
     <LinearLayout
         android:id="@+id/favouritesPlaceholderLinearLayout"
@@ -24,7 +24,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/favouritesHeaderToolbar">
+        app:layout_constraintTop_toBottomOf="@id/favouritesToolbar">
 
         <ImageView
             android:layout_width="match_parent"

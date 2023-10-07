@@ -13,7 +13,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:title="@string/vacancy_search"
         app:menu="@menu/menu_search_toolbar"
-        app:titleTextAppearance="@style/Toolbar.TitleText" />
+        app:titleTextAppearance="@style/TitleText" />
 
     <EditText
         android:id="@+id/searchScreenEditText"

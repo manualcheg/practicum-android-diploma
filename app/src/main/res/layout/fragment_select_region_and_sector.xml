@@ -12,10 +12,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/selectRegionAndSectorEditText"
         app:navigationIcon="@drawable/ic_arrow_left"
         app:title="@string/choosing_a_region"
-        app:titleTextAppearance="@style/Toolbar.TitleText" />
+        app:titleTextAppearance="@style/TitleText" />
 
     <EditText
         android:id="@+id/selectRegionAndSectorEditText"
