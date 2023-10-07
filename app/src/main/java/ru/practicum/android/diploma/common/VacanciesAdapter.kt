@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.common.domain.model.vacancy_models.Vacancy
+import ru.practicum.android.diploma.common.ui.model.VacancyUi
 
 /*
 * Использование VacanciesAdapter
@@ -39,7 +39,7 @@ class VacanciesAdapter(
     private val clickListener: VacancyClickListener
 ) : RecyclerView.Adapter<VacancyViewHolder>() {
 
-    var vacancies = listOf<Vacancy>()
+    var vacancies = listOf<VacancyUi>()
         set(newList) {
             val diffResult = DiffUtil.calculateDiff(
                 VacancyDiffCallback(field, newList)
@@ -63,7 +63,7 @@ class VacanciesAdapter(
     }
 
     fun interface VacancyClickListener {
-        fun onTrackClick(vacancy: Vacancy)
+        fun onTrackClick(vacancy: VacancyUi)
     }
 }
 
@@ -75,56 +75,31 @@ class VacancyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         itemView.findViewById(R.id.vacancyDescriptionTextView)
     private val vacancySalary: TextView = itemView.findViewById(R.id.vacancySalaryTextView)
 
-    fun bind(vacancy: Vacancy) {
-
-        // название вакансии
-        vacancyHeader.text = vacancy.name
-
-        // если указан работодатель
-        if (vacancy.employer != null) {
-
-            val employer = vacancy.employer
-
-            // название работодателя
-            vacancyDescription.text = employer.name
-
-            if (employer.logoUrls != null) {
-                // если у работодателя указаны лого
-                Glide
-                    .with(itemView)
-                    .load(employer.logoUrls.logo90)
-                    .placeholder(R.drawable.ic_placeholder)
-                    .centerCrop()
-                    .transform(
-                        RoundedCorners(
-                            itemView.resources.getDimensionPixelSize(
-                                R.dimen.corner_radius
-                            )
-                        )
-                    )
-                    .into(vacancyLogo)
-            } else {
-                // если лого не указаны, то ставим стандартный плейсхолдер
-                vacancyLogo.setImageResource(R.drawable.ic_placeholder)
+    fun bind(vacancy: VacancyUi) {
+        if (vacancy.areaName.isNotBlank()){
+            val header = buildString {
+                append(vacancy.name)
+                append(", ")
+                append(vacancy.areaName)
             }
+            vacancyHeader.text = header
+        } else vacancyHeader.text = vacancy.name
 
-        } else {
-            // если работодательнее указан, то обнуляем название и ставим стандартный плейсхолдер
-            vacancyDescription.text = ""
-            vacancyLogo.setImageResource(R.drawable.ic_placeholder)
-        }
-
-        vacancy.salary?.let {
-            // У класса Vacancy надо сделать метод возвращающий ЗП или надпись 'ЗП не указана'
-            // типа такого
-            // vacancySalary.text = vacancy.getSalary()
-        }
+        vacancyDescription.text = vacancy.employerName
+        Glide.with(itemView).load(vacancy.employerLogoUrl90).placeholder(R.drawable.ic_placeholder)
+            .centerCrop().transform(
+                RoundedCorners(
+                    itemView.resources.getDimensionPixelSize(
+                        R.dimen.corner_radius
+                    )
+                )
+            ).into(vacancyLogo)
+        vacancySalary.text = vacancy.salaryAmount
     }
 }
 
 class VacancyDiffCallback(
-    private val oldList: List<Vacancy>,
-    private val newList: List<Vacancy>
+    private val oldList: List<VacancyUi>, private val newList: List<VacancyUi>
 ) : DiffUtil.Callback() {
     override fun getOldListSize(): Int {
         return oldList.size

@@ -8,7 +8,10 @@ import ru.practicum.android.diploma.search.data.model.ErrorRemoteDataSource
 import ru.practicum.android.diploma.search.domain.model.ErrorStatusDomain
 import ru.practicum.android.diploma.search.domain.repository.SearchRepository
 
-class SearchUseCaseImpl(private val repository: SearchRepository) : SearchUseCase {
+class SearchUseCaseImpl(
+    private val repository: SearchRepository,
+
+    ) : SearchUseCase {
     override fun search(expression: String): Flow<Pair<List<Vacancy>?, ErrorStatusDomain?>> {
         return repository.search(expression).map { result ->
             when (result) {
