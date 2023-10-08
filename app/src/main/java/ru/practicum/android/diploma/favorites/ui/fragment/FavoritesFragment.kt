@@ -7,9 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.common.VacanciesAdapter
 import ru.practicum.android.diploma.common.domain.model.vacancy_models.Vacancy
 import ru.practicum.android.diploma.common.ui.model.VacancyUi
+import ru.practicum.android.diploma.common.util.recycleView.ItemUiBase
+import ru.practicum.android.diploma.common.util.recycleView.RVAdapter
 import ru.practicum.android.diploma.databinding.FragmentFavoritesBinding
 import ru.practicum.android.diploma.favorites.domain.FavoritesState
 import ru.practicum.android.diploma.favorites.ui.viewModel.FavoritesViewModel
@@ -21,11 +22,12 @@ class FavoritesFragment : Fragment() {
 
     private val favouritesViewModel: FavoritesViewModel by viewModel()
     private var favoritesVacancies: List<Vacancy> = listOf()
-    private var vacanciesAdapter: VacanciesAdapter? = VacanciesAdapter {
+
+    private var vacanciesAdapter: RVAdapter? = RVAdapter {
         clickOnVacancy(it)
     }
 
-    private fun clickOnVacancy(it: VacancyUi) {
+    private fun clickOnVacancy(it: ItemUiBase) {
         /*val action =
         findNavController().navigate(R.id.to_vacancyFragment)*/
     }
@@ -77,7 +79,7 @@ class FavoritesFragment : Fragment() {
     private fun showContent(vacancies: List<VacancyUi>) {
         binding.favouritesRecyclerView.visibility = View.VISIBLE
         binding.favouritesPlaceholderLinearLayout.visibility = View.GONE
-        vacanciesAdapter?.vacancies = vacancies
+        vacanciesAdapter?.items = vacancies
     }
 
     private fun showError() {
