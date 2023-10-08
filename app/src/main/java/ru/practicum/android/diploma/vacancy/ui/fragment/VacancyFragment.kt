@@ -26,7 +26,7 @@ class VacancyFragment : Fragment() {
     private var vacancyProgressBar: ProgressBar? = null
     private var vacancyServerErrorPlaceholder: LinearLayout? = null
 
-    private val vacancyId: Int? = null
+    private var vacancyId: Int? = null
 
 
     override fun onCreateView(
@@ -40,6 +40,8 @@ class VacancyFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        vacancyId = 87620177
 
         viewModel.state.observe(viewLifecycleOwner) {
             render(it)

@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.vacancy.ui.viewModel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,11 +19,17 @@ class VacancyViewModel(
 
     init {
         setState(VacancyState.Load())
+        loadVacancyFromDatabase()
     }
 
     fun loadVacancyFromDatabase() {
         viewModelScope.launch {
-            findVacancyByIdUseCase.findVacancyById(vacancyId)
+            val vacancy = findVacancyByIdUseCase.findVacancyById(vacancyId)
+            Log.e("MyTag", vacancy.first.toString())
+            if (vacancy.first != null)
+                setState(VacancyState.Content(vacancy.first!!))
+            else
+                setState(VacancyState.Error())
         }
     }
 
