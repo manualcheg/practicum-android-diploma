@@ -30,7 +30,6 @@
             android:id="@+id/favoritesPlaceholderImageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:contentDescription="@string/favourites_placeholder_image_description"
             android:src="@drawable/placeholder_empty_favorites_list" />
 
         <TextView

@@ -85,7 +85,6 @@
         android:layout_width="@dimen/_0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/padding_horizontal"
-        android:contentDescription="@string/nothing_found_image"
         android:src="@drawable/placeholder_search_screen"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -148,7 +147,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/nothing_found_image"
+            android:contentDescription="@string/vacancy_search"
             android:src="@drawable/placeholder_not_found" />
 
         <TextView
