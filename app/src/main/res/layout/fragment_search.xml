@@ -89,7 +89,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchScreenEditText" />
+        app:layout_constraintTop_toBottomOf="@id/searchScreenEditText"
+        android:contentDescription="@string/vacancy_search" />
 
     <ProgressBar
         android:id="@+id/searchScreenFirstLoadingProgressBar"
@@ -147,7 +148,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/vacancy_search"
+            android:contentDescription="@string/failed_to_get_a_list_of_vacancies"
             android:src="@drawable/placeholder_not_found" />
 
         <TextView
