@@ -47,32 +47,16 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:visibility="visible" />
 
-        <LinearLayout
+        <TextView
             android:id="@+id/vacancyServerErrorPlaceholder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone"
+            style="@style/PlaceholderStyle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:visibility="visible">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/server_error"
-                android:src="@drawable/placeholder_server_error_2" />
-
-            <TextView
-                style="@style/TitleText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="@string/server_error" />
-
-        </LinearLayout>
+            android:text="@string/server_error"
+            app:drawableTopCompat="@drawable/placeholder_server_error_2"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/vacancyHeaderTextView"
