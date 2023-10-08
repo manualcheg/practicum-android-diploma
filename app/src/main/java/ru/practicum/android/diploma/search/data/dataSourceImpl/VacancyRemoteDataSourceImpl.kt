@@ -33,7 +33,6 @@ class VacancyRemoteDataSourceImpl(
             return withContext(Dispatchers.IO) {
                 try {
                     val response = headHunterApiService.searchVacancyById(dto.vacancyId)
-                    // вот здесь response это VacancySearchResponse с item = null
                     response.apply { resultCode = RESPONSE_SUCCESS }
                 } catch (e: Throwable) {
                     Response().apply { resultCode = RESPONSE_ERROR }

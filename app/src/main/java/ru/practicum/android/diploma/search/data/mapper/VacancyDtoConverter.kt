@@ -22,10 +22,29 @@ import ru.practicum.android.diploma.search.data.model.dto.PhoneDto
 import ru.practicum.android.diploma.search.data.model.dto.SalaryDto
 import ru.practicum.android.diploma.search.data.model.dto.ScheduleDto
 import ru.practicum.android.diploma.search.data.model.dto.VacancyDto
+import ru.practicum.android.diploma.vacancy.data.model.VacancySearchResponse
 
 class VacancyDtoConverter {
 
     fun map(vacancyDto: VacancyDto): Vacancy {
+        vacancyDto.apply {
+            return Vacancy(
+                id,
+                name,
+                area?.let { map(it) },
+                employer?.let { map(it) },
+                salary?.let { map(it) },
+                experience?.let { map(it) },
+                employment?.let { map(it) },
+                description,
+                keySkills?.let { convertKeySkills(it) },
+                schedule?.let { map(it) },
+                contacts?.let { map(it) }
+            )
+        }
+    }
+
+    fun map(vacancyDto: VacancySearchResponse): Vacancy {
         vacancyDto.apply {
             return Vacancy(
                 id,

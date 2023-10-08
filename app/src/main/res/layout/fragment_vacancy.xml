@@ -1,63 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".vacancy.ui.fragment.VacancyFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/vacancyToolbar"
+        style="@style/Toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        app:menu="@menu/menu_vacancy_toolbar"
+        app:navigationIcon="@drawable/ic_arrow_left"
+        app:title="@string/vacancy"
+        app:titleTextAppearance="@style/TitleText" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guidLineStart"
-            android:layout_width="@dimen/_0dp"
-            android:layout_height="@dimen/_0dp"
-            android:orientation="vertical"
-            app:layout_constraintGuide_begin="@dimen/padding_horizontal" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guidLineEnd"
-            android:layout_width="@dimen/_0dp"
-            android:layout_height="@dimen/_0dp"
-            android:orientation="vertical"
-            app:layout_constraintGuide_end="@dimen/padding_horizontal" />
-
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/vacancyToolbar"
-            style="@style/Toolbar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:navigationIcon="@drawable/ic_arrow_left"
-            app:title="@string/vacancy"
-            app:menu="@menu/menu_vacancy_toolbar"
-            app:titleTextAppearance="@style/TitleText" />
+    <FrameLayout
+        android:id="@+id/placeholderContainerFrameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
         <ProgressBar
             android:id="@+id/vacancyProgressBar"
             android:layout_width="@dimen/progress_bar"
             android:layout_height="@dimen/progress_bar"
+            android:layout_gravity="center"
             android:indeterminateTint="@color/blue"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:visibility="visible" />
+            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/vacancyServerErrorPlaceholder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:orientation="vertical"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:visibility="visible">
+            android:visibility="gone">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -74,234 +54,264 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/vacancyHeaderTextView"
-            style="@style/BigHeaderText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_vertical"
-            app:layout_constrainedWidth="true"
-            app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@id/guidLineStart"
-            app:layout_constraintTop_toBottomOf="@id/vacancyToolbar"
-            tools:text="Android-разработчик" />
+    </FrameLayout>
 
-        <TextView
-            android:id="@+id/vacancySalaryTextView"
-            style="@style/TitleText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/padding_horizontal_very_small"
-            app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@id/guidLineStart"
-            app:layout_constraintTop_toBottomOf="@id/vacancyHeaderTextView"
-            tools:text="от 100 000 ₽" />
 
-        <LinearLayout
-            android:id="@+id/vacancyLogoCardLinearLayout"
-            android:layout_width="@dimen/_0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_vertical"
-            android:background="@drawable/rectangle_with_corners"
-            android:backgroundTint="@color/light_gray"
-            android:orientation="horizontal"
-            android:padding="@dimen/padding_horizontal"
-            app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
-            app:layout_constraintStart_toStartOf="@id/guidLineStart"
-            app:layout_constraintTop_toBottomOf="@id/vacancySalaryTextView">
+    <ScrollView
+        android:id="@+id/vacancyContentScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
 
-            <ImageView
-                android:id="@+id/vacancyLogoImageView"
-                android:layout_width="@dimen/logo_dim"
-                android:layout_height="@dimen/logo_dim"
-                android:backgroundTint="@color/gray"
-                android:contentDescription="@string/vacancy_icon"
-                tools:src="@drawable/ic_placeholder" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidLineStart"
+                android:layout_width="@dimen/_0dp"
+                android:layout_height="@dimen/_0dp"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="@dimen/padding_horizontal" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidLineEnd"
+                android:layout_width="@dimen/_0dp"
+                android:layout_height="@dimen/_0dp"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="@dimen/padding_horizontal" />
+
+
+            <TextView
+                android:id="@+id/vacancyHeaderTextView"
+                style="@style/BigHeaderText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_vertical"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@id/guidLineStart"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Android-разработчик" />
+
+            <TextView
+                android:id="@+id/vacancySalaryTextView"
+                style="@style/TitleText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_horizontal_very_small"
+                app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@id/guidLineStart"
+                app:layout_constraintTop_toBottomOf="@id/vacancyHeaderTextView"
+                tools:text="от 100 000 ₽" />
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:id="@+id/vacancyLogoCardLinearLayout"
+                android:layout_width="@dimen/_0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/padding_vertical"
-                android:orientation="vertical">
+                android:layout_marginTop="@dimen/margin_vertical"
+                android:background="@drawable/rectangle_with_corners"
+                android:backgroundTint="@color/light_gray"
+                android:orientation="horizontal"
+                android:padding="@dimen/padding_horizontal"
+                app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
+                app:layout_constraintStart_toStartOf="@id/guidLineStart"
+                app:layout_constraintTop_toBottomOf="@id/vacancySalaryTextView">
 
-                <TextView
-                    android:id="@+id/vacancyEmployerNameTextView"
-                    style="@style/TitleTextBlack"
+                <ImageView
+                    android:id="@+id/vacancyLogoImageView"
+                    android:layout_width="@dimen/logo_dim"
+                    android:layout_height="@dimen/logo_dim"
+                    android:backgroundTint="@color/gray"
+                    android:contentDescription="@string/vacancy_icon"
+                    tools:src="@drawable/ic_placeholder" />
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:text="Еда" />
+                    android:layout_marginStart="@dimen/padding_vertical"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/vacancyAreaTextView"
-                    style="@style/RegularTextBlack"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:text="Москва" />
+                    <TextView
+                        android:id="@+id/vacancyEmployerNameTextView"
+                        style="@style/TitleTextBlack"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="Еда" />
+
+                    <TextView
+                        android:id="@+id/vacancyAreaTextView"
+                        style="@style/RegularTextBlack"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="Москва" />
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/vacancyExperienceLinearLayout"
-            android:layout_width="@dimen/_0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_vertical"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@id/guidLineStart"
-            app:layout_constraintTop_toBottomOf="@id/vacancyLogoCardLinearLayout">
+            <LinearLayout
+                android:id="@+id/vacancyExperienceLinearLayout"
+                android:layout_width="@dimen/_0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_vertical"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@id/guidLineStart"
+                app:layout_constraintTop_toBottomOf="@id/vacancyLogoCardLinearLayout">
+
+                <TextView
+                    android:id="@+id/vacancyExperienceHeaderTextView"
+                    style="@style/TitleText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/required_experience" />
+
+                <TextView
+                    android:id="@+id/vacancyExperienceTextView"
+                    style="@style/RegularText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding_vertical_small"
+                    tools:text="От 1 года до 3 лет" />
+
+                <TextView
+                    android:id="@+id/vacancyScheduleAndEmploymentTextView"
+                    style="@style/RegularText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding_vertical"
+                    tools:text="Полная занятость, Удаленная работа" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/vacancyDescriptionLinearLayout"
+                android:layout_width="@dimen/_0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_vertical_big"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@id/guidLineStart"
+                app:layout_constraintTop_toBottomOf="@id/vacancyExperienceLinearLayout">
+
+                <TextView
+                    style="@style/TitleText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/vacancy_description" />
+
+                <TextView
+                    android:id="@+id/vacancyDescriptionTextView"
+                    style="@style/RegularText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding_vertical_big"
+                    tools:text="HTML описание" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/vacancyKeySkillsLinearLayout"
+                android:layout_width="@dimen/_0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_vertical"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@id/guidLineStart"
+                app:layout_constraintTop_toBottomOf="@id/vacancyDescriptionLinearLayout">
+
+                <TextView
+                    style="@style/TitleText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/key_skills" />
+
+                <TextView
+                    android:id="@+id/vacancyKeySkillsTextView"
+                    style="@style/RegularText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding_vertical_big"
+                    tools:text="    ·   Kotlin\n    ·   Java\n    ·   Retrofit\n    ·   Koin" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/vacancyContactsLinearLayout"
+                android:layout_width="@dimen/_0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_vertical"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@id/guidLineStart"
+                app:layout_constraintTop_toBottomOf="@id/vacancyKeySkillsLinearLayout">
+
+                <TextView
+                    style="@style/TitleText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/contacts" />
+
+                <TextView
+                    android:id="@+id/vacancyContactsNameTitleTextView"
+                    style="@style/MediumText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding_vertical_big"
+                    android:text="@string/contact_person" />
+
+                <TextView
+                    android:id="@+id/vacancyContactsNameTextView"
+                    style="@style/RegularText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding_vertical_small"
+                    tools:text="Ирина" />
+
+                <TextView
+                    android:id="@+id/vacancyContactsEmailTitleTextView"
+                    style="@style/MediumText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding_vertical_big"
+                    android:text="@string/email" />
+
+                <TextView
+                    android:id="@+id/vacancyContactsEmailTextView"
+                    style="@style/RegularTextBlue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding_vertical_small"
+                    tools:text="i.lozgkina@yandex.ru" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/vacancyContactsPhoneRecycleView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:itemCount="2"
+                    tools:listitem="@layout/item_phones" />
+            </LinearLayout>
 
             <TextView
-                style="@style/TitleText"
-                android:layout_width="wrap_content"
+                android:id="@+id/vacancySimilarVacanciesButtonTextView"
+                style="@style/MediumTextWhite"
+                android:layout_width="@dimen/_0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/required_experience" />
+                android:layout_marginTop="@dimen/margin_vertical"
+                android:layout_marginBottom="@dimen/margin_vertical"
+                android:background="@drawable/rectangle_with_corners"
+                android:gravity="center"
+                android:paddingTop="@dimen/button_vertical_padding"
+                android:paddingBottom="@dimen/button_vertical_padding"
+                android:text="@string/similar_vacancies"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
+                app:layout_constraintStart_toStartOf="@id/guidLineStart"
+                app:layout_constraintTop_toBottomOf="@id/vacancyContactsLinearLayout" />
 
-            <TextView
-                android:id="@+id/vacancyExperienceTextView"
-                style="@style/RegularText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/padding_vertical_small"
-                tools:text="От 1 года до 3 лет" />
-
-            <TextView
-                android:id="@+id/vacancyScheduleAndEmploymentTextView"
-                style="@style/RegularText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/padding_vertical"
-                tools:text="Полная занятость, Удаленная работа" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/vacancyDescriptionLinearLayout"
-            android:layout_width="@dimen/_0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_vertical_big"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@id/guidLineStart"
-            app:layout_constraintTop_toBottomOf="@id/vacancyExperienceLinearLayout">
-
-            <TextView
-                style="@style/TitleText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/vacancy_description" />
-
-            <TextView
-                android:id="@+id/vacancyDescriptionTextView"
-                style="@style/RegularText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/padding_vertical_big"
-                tools:text="HTML описание" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/vacancyKeySkillsLinearLayout"
-            android:layout_width="@dimen/_0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_vertical"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@id/guidLineStart"
-            app:layout_constraintTop_toBottomOf="@id/vacancyDescriptionLinearLayout">
-
-            <TextView
-                style="@style/TitleText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/key_skills" />
-
-            <TextView
-                android:id="@+id/vacancyKeySkillsTextView"
-                style="@style/RegularText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/padding_vertical_big"
-                tools:text="    ·   Kotlin\n    ·   Java\n    ·   Retrofit\n    ·   Koin" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/vacancyContactsLinearLayout"
-            android:layout_width="@dimen/_0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_vertical"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@id/guidLineStart"
-            app:layout_constraintTop_toBottomOf="@id/vacancyKeySkillsLinearLayout">
-
-            <TextView
-                style="@style/TitleText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/contacts" />
-
-            <TextView
-                android:id="@+id/vacancyContactsNameTitleTextView"
-                style="@style/MediumText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/padding_vertical_big"
-                android:text="@string/contact_person" />
-
-            <TextView
-                android:id="@+id/vacancyContactsNameTextView"
-                style="@style/RegularText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/padding_vertical_small"
-                tools:text="Ирина" />
-
-            <TextView
-                android:id="@+id/vacancyContactsEmailTitleTextView"
-                style="@style/MediumText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/padding_vertical_big"
-                android:text="@string/email" />
-
-            <TextView
-                android:id="@+id/vacancyContactsEmailTextView"
-                style="@style/RegularTextBlue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/padding_vertical_small"
-                tools:text="i.lozgkina@yandex.ru" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/vacancyContactsPhoneRecycleView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:itemCount="2"
-                tools:listitem="@layout/item_phones" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/vacancySimilarVacanciesButtonTextView"
-            style="@style/MediumTextWhite"
-            android:layout_width="@dimen/_0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_vertical"
-            android:layout_marginBottom="@dimen/margin_vertical"
-            android:background="@drawable/rectangle_with_corners"
-            android:gravity="center"
-            android:paddingTop="@dimen/button_vertical_padding"
-            android:paddingBottom="@dimen/button_vertical_padding"
-            android:text="@string/similar_vacancies"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/guidLineEnd"
-            app:layout_constraintStart_toStartOf="@id/guidLineStart"
-            app:layout_constraintTop_toBottomOf="@id/vacancyContactsLinearLayout" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</LinearLayout>
