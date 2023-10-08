@@ -16,6 +16,28 @@
         app:title="@string/similar_vacancies"
         app:titleTextAppearance="@style/TitleText" />
 
+    <TextView
+        android:id="@+id/similarVacanciesServerErrorPlaceholder"
+        style="@style/PlaceholderStyle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/server_error"
+        app:drawableTopCompat="@drawable/placeholder_server_error_1"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/similarVacanciesNoInternetPlaceholder"
+        style="@style/PlaceholderStyle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/no_internet"
+        app:drawableTopCompat="@drawable/placeholder_no_internet"
+        android:visibility="gone"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/similarVacanciesRecyclerView"
         android:layout_width="@dimen/_0dp"

@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.VacanciesAdapter
 import ru.practicum.android.diploma.common.domain.model.vacancy_models.Vacancy
 import ru.practicum.android.diploma.common.ui.model.VacancyUi
@@ -68,22 +67,21 @@ class FavoritesFragment : Fragment() {
     }
 
     private fun showEmpty() {
-        binding.favoritesPlaceholderImageView.setImageResource(R.drawable.placeholder_empty_favorites_list)
-        binding.favoritesPlaceholderTextView.setText(R.string.the_list_is_empty)
+        binding.favouritesPlaceholderNotFound.visibility = View.GONE
         binding.favouritesRecyclerView.visibility = View.GONE
-        binding.favouritesPlaceholderLinearLayout.visibility = View.VISIBLE
+        binding.favouritesPlaceholderEmptyList.visibility = View.VISIBLE
     }
 
     private fun showContent(vacancies: List<VacancyUi>) {
-        binding.favouritesRecyclerView.visibility = View.VISIBLE
-        binding.favouritesPlaceholderLinearLayout.visibility = View.GONE
+        binding.favouritesPlaceholderEmptyList.visibility = View.GONE
+        binding.favouritesPlaceholderNotFound.visibility = View.GONE
         vacanciesAdapter?.vacancies = vacancies
+        binding.favouritesRecyclerView.visibility = View.VISIBLE
     }
 
     private fun showError() {
-        binding.favoritesPlaceholderImageView.setImageResource(R.drawable.placeholder_not_found)
-        binding.favoritesPlaceholderTextView.setText(R.string.failed_to_get_a_list_of_vacancies)
+        binding.favouritesPlaceholderEmptyList.visibility = View.GONE
         binding.favouritesRecyclerView.visibility = View.GONE
-        binding.favouritesPlaceholderLinearLayout.visibility = View.VISIBLE
+        binding.favouritesPlaceholderNotFound.visibility = View.VISIBLE
     }
 }
