@@ -5,9 +5,7 @@ import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import android.widget.FrameLayout
-import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.ScrollView
 import androidx.fragment.app.Fragment
@@ -20,7 +18,6 @@ import org.koin.core.parameter.parametersOf
 import ru.practicum.android.diploma.R
 import android.widget.TextView
 import ru.practicum.android.diploma.vacancy.ui.VacancyState
-import ru.practicum.android.diploma.vacancy.ui.viewModel.VacancyViewModel
 
 class VacancyFragment : Fragment() {
 
@@ -33,7 +30,6 @@ class VacancyFragment : Fragment() {
     private val binding get() = _binding!!
 
     private var vacancyProgressBar: ProgressBar? = null
-    private var vacancyServerErrorPlaceholder: LinearLayout? = null
     private var vacancyContentScrollView: ScrollView? = null
     private var placeholderContainerFrameLayout: FrameLayout? = null
     private var vacancyServerErrorPlaceholder: TextView? = null

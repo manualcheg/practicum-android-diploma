@@ -115,7 +115,7 @@
                     android:layout_width="@dimen/logo_dim"
                     android:layout_height="@dimen/logo_dim"
                     android:backgroundTint="@color/gray"
-                    android:contentDescription="@string/vacancy_icon"
+                    android:contentDescription="@string/company_logo"
                     tools:src="@drawable/ic_placeholder" />
 
                 <LinearLayout
