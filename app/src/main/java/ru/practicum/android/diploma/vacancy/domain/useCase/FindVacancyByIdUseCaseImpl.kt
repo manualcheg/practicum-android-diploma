@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.vacancy.domain.useCase
 
-import ru.practicum.android.diploma.common.ui.mapper.VacancyDomainToVacancyUiConverter
 import ru.practicum.android.diploma.common.util.Resource
 import ru.practicum.android.diploma.search.data.model.ErrorRemoteDataSource
 import ru.practicum.android.diploma.search.domain.model.ErrorStatusDomain
@@ -9,14 +8,13 @@ import ru.practicum.android.diploma.vacancy.domain.repository.VacancyRepository
 
 class FindVacancyByIdUseCaseImpl(
     private val repository: VacancyRepository,
-    private val vacancyDomainToVacancyUiConverter: VacancyDomainToVacancyUiConverter
 ) :
     FindVacancyByIdUseCase {
     override suspend fun findVacancyById(vacancyId: Int): VacancyOrError {
         when (val result = repository.findVacancyById(vacancyId)) {
             is Resource.Success -> {
                 return VacancyOrError(
-                    result.data?.let { vacancyDomainToVacancyUiConverter.map(it) },
+                    result.data,
                     null
                 )
             }
