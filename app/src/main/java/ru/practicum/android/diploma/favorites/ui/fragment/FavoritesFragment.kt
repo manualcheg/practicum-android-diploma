@@ -6,8 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.common.VacanciesAdapter
 import ru.practicum.android.diploma.common.domain.model.vacancy_models.Vacancy
 import ru.practicum.android.diploma.common.ui.model.VacancyUi
 import ru.practicum.android.diploma.common.util.recycleView.ItemUiBase
@@ -78,11 +76,9 @@ class FavoritesFragment : Fragment() {
 
     private fun showContent(vacancies: List<VacancyUi>) {
         binding.favouritesRecyclerView.visibility = View.VISIBLE
-        binding.favouritesPlaceholderLinearLayout.visibility = View.GONE
         vacanciesAdapter?.items = vacancies
         binding.favouritesPlaceholderEmptyList.visibility = View.GONE
         binding.favouritesPlaceholderNotFound.visibility = View.GONE
-        vacanciesAdapter?.vacancies = vacancies
         binding.favouritesRecyclerView.visibility = View.VISIBLE
     }
 
