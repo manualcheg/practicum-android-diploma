@@ -59,7 +59,6 @@ class VacancyFragment : Fragment() {
             findNavController().navigate(direction)
         }
 
-
     }
 
     override fun onDestroyView() {
@@ -99,7 +98,7 @@ class VacancyFragment : Fragment() {
             viewModel.openMail(binding.vacancyContactsEmailTextView.text.toString())
         }
 
-        binding.vacancyToolbar.setNavigationOnClickListener { findNavController().navigateUp() }
+        binding.vacancyToolbar.setNavigationOnClickListener { findNavController().popBackStack() }
         binding.vacancyToolbar.inflateMenu(R.menu.menu_vacancy_toolbar)
         binding.vacancyToolbar.setOnMenuItemClickListener {
             when (it.itemId) {
