@@ -37,10 +37,22 @@
         <argument
             android:name="vacansyId"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_vacancyFragment_to_similarVacancyFragment"
+            app:destination="@id/similarVacancyFragment" />
     </fragment>
     <fragment
         android:id="@+id/filteringSettingsFragment"
         android:name="ru.practicum.android.diploma.filter.ui.fragment.FilteringSettingsFragment"
         android:label="FilteringSettingsFragment" />
+    <fragment
+        android:id="@+id/similarVacancyFragment"
+        android:name="ru.practicum.android.diploma.similar_vacancy.ui.fragment.SimilarVacancyFragment"
+        android:label="fragment_similar_vacancies"
+        tools:layout="@layout/fragment_similar_vacancies" >
+        <argument
+            android:name="vacancyId"
+            app:argType="integer" />
+    </fragment>
 
 </navigation>
