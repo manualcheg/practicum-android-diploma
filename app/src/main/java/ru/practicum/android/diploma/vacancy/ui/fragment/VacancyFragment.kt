@@ -8,16 +8,17 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ProgressBar
 import android.widget.ScrollView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
-import ru.practicum.android.diploma.vacancy.ui.viewModel.VacancyViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.practicum.android.diploma.R
-import android.widget.TextView
+import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
 import ru.practicum.android.diploma.vacancy.ui.VacancyState
+import ru.practicum.android.diploma.vacancy.ui.viewModel.VacancyViewModel
 
 class VacancyFragment : Fragment() {
 
@@ -58,6 +59,10 @@ class VacancyFragment : Fragment() {
         vacancyServerErrorPlaceholder = binding.vacancyServerErrorPlaceholder
         vacancyContentScrollView = binding.vacancyContentScrollView
         placeholderContainerFrameLayout = binding.placeholderContainerFrameLayout
+
+        binding.vacancyToolbar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     override fun onDestroyView() {
