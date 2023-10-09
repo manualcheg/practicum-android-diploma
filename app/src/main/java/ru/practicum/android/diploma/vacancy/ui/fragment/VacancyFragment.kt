@@ -4,14 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.fragment.app.Fragment
-import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
-import ru.practicum.android.diploma.vacancy.ui.viewModel.VacancyViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
 import ru.practicum.android.diploma.vacancy.ui.VacancyState
+import ru.practicum.android.diploma.vacancy.ui.viewModel.VacancyViewModel
 
 class VacancyFragment : Fragment() {
 
@@ -24,7 +24,7 @@ class VacancyFragment : Fragment() {
     private val binding get() = _binding!!
 
     private var vacancyProgressBar: ProgressBar? = null
-    private var vacancyServerErrorPlaceholder: LinearLayout? = null
+    private var vacancyServerErrorPlaceholder: TextView? = null
 
     private val vacancyId: Int? = null
 
