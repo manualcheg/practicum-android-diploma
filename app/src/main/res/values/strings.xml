@@ -83,4 +83,7 @@
     <string name="share">Поделиться</string>
     <string name="add_to_favorites">Добавить в избранное</string>
 
+    <string name="there_is_no_app_on_the_device_to_make_this_request">На устройстве нет приложения для выполнения данного запроса</string>
+    <string name="link_to_hh_ru">https://hh.ru/vacancy/</string>
+
 </resources>

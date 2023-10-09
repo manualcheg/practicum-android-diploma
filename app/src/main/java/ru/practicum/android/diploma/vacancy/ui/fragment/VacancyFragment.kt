@@ -1,5 +1,7 @@
 package ru.practicum.android.diploma.vacancy.ui.fragment
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.Html
 import android.view.LayoutInflater
@@ -17,6 +19,10 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.practicum.android.diploma.R
 import android.widget.TextView
+import android.widget.Toast
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import ru.practicum.android.diploma.common.util.recycleView.RVAdapter
 import ru.practicum.android.diploma.vacancy.ui.VacancyState
 
 class VacancyFragment : Fragment() {
@@ -33,6 +39,9 @@ class VacancyFragment : Fragment() {
     private var vacancyContentScrollView: ScrollView? = null
     private var placeholderContainerFrameLayout: FrameLayout? = null
     private var vacancyServerErrorPlaceholder: TextView? = null
+
+    private var phonesAdapter: RVAdapter? = null
+
 
     private var vacancyId: Int? = null
 
@@ -58,11 +67,16 @@ class VacancyFragment : Fragment() {
         vacancyServerErrorPlaceholder = binding.vacancyServerErrorPlaceholder
         vacancyContentScrollView = binding.vacancyContentScrollView
         placeholderContainerFrameLayout = binding.placeholderContainerFrameLayout
+
+        setOnClickListeners()
+        initializePhonesAdapter()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        phonesAdapter = null
+        binding.vacancyContactsPhoneRecycleView.adapter = null
     }
 
     private fun render(state: VacancyState) {
@@ -93,6 +107,61 @@ class VacancyFragment : Fragment() {
             }
         }
     }
+
+
+    private fun setOnClickListeners() {
+        binding.vacancyContactsEmailTextView.setOnClickListener {
+            val intent = Intent(Intent.ACTION_SENDTO).apply {
+                data = Uri.parse("mailto:")
+                putExtra(
+                    Intent.EXTRA_EMAIL,
+                    arrayOf(binding.vacancyContactsEmailTextView.text.toString())
+                )
+            }
+            startActivityOrShowError(intent)
+        }
+
+        binding.vacancyToolbar.setNavigationOnClickListener { findNavController().navigateUp() }
+        binding.vacancyToolbar.inflateMenu(R.menu.menu_vacancy_toolbar)
+        binding.vacancyToolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.share -> {
+                    val intent = Intent(Intent.ACTION_SEND).apply {
+                        type = "text/plain"
+                        putExtra(
+                            Intent.EXTRA_TEXT,
+                            "${getString(R.string.link_to_hh_ru)}$vacancyId"
+                        )
+                    }
+                    startActivityOrShowError(intent)
+                }
+
+                R.id.like -> {}
+            }
+            true
+        }
+    }
+
+    private fun initializePhonesAdapter(){
+        phonesAdapter = RVAdapter()
+        binding.vacancyContactsPhoneRecycleView.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.vacancyContactsPhoneRecycleView.adapter = phonesAdapter
+    }
+
+
+    private fun startActivityOrShowError(intent: Intent) {
+        try {
+            startActivity(intent)
+        } catch (e: Throwable) {
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.there_is_no_app_on_the_device_to_make_this_request),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
 
     private fun setupContent(state: VacancyState.Content) {
         if (state.vacancy.name.isNotBlank()) {
@@ -175,6 +244,11 @@ class VacancyFragment : Fragment() {
         } else {
             binding.vacancyContactsEmailTextView.visibility = View.GONE
             binding.vacancyContactsEmailTitleTextView.visibility = View.GONE
+        }
+
+        if (state.vacancy.contactsPhones.isNotEmpty()) {
+            phonesAdapter?.items = state.vacancy.contactsPhones
+            phonesAdapter?.notifyDataSetChanged()
         }
 
 
