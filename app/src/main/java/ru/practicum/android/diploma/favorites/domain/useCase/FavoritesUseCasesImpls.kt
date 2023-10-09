@@ -37,7 +37,7 @@ class AddOrDelVacancyUseCaseImpl(private val favoritesRepository: FavoritesRepos
     AddOrDelVacancyUseCase {
     override suspend fun execute(id: Int) {
         favoritesRepository.apply {
-            if (isVacancyContains(id)) {
+            if (isVacancyContainsOnce(id)) {
                 deleteFromFavorites(id)
             } else {
 //                addToFavorites(vacancy = favoritesRepository.getVacancy(id))
@@ -49,7 +49,7 @@ class AddOrDelVacancyUseCaseImpl(private val favoritesRepository: FavoritesRepos
 
 class CheckInFavoritesUseCaseImpl(private val favoritesRepository: FavoritesRepository) :
     CheckInFavoritesUseCase {
-    override suspend fun execute(id: Int):Boolean {
-        return favoritesRepository.isVacancyContains(id)
+    override suspend fun execute(id: Int):Flow<Boolean> {
+        return favoritesRepository.isVacancyContainsFlow(id)
     }
 }

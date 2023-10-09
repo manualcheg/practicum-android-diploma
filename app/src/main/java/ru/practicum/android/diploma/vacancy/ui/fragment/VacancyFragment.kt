@@ -3,13 +3,14 @@ package ru.practicum.android.diploma.vacancy.ui.fragment
 import android.os.Bundle
 import android.text.Html
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ProgressBar
 import android.widget.ScrollView
 import android.widget.TextView
-import androidx.core.graphics.drawable.toDrawable
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
@@ -59,12 +60,13 @@ class VacancyFragment : Fragment() {
                 R.id.share -> {
                     TODO()
                 }
+
                 R.id.like -> {
                     viewModel.addOrDelFavorites(vacancyId!!)
-                    //тут падает
                     viewModel.checkFavorites(vacancyId!!)
                     true
                 }
+
                 else -> {
                     true
                 }
@@ -72,12 +74,13 @@ class VacancyFragment : Fragment() {
         }
 
         viewModel.inFavorites.observe(viewLifecycleOwner) { inFavorites ->
+            val menu: Menu = binding.vacancyToolbar.getMenu()
             if (inFavorites) {
-                binding.vacancyToolbar.menu.getItem(R.id.like).icon =
-                    (R.drawable.ic_favorites_on).toDrawable()
+                menu.getItem(1).icon =
+                    AppCompatResources.getDrawable(requireContext(), R.drawable.ic_favorites_on)
             } else {
-                binding.vacancyToolbar.menu.getItem(R.id.like).icon =
-                    (R.drawable.ic_favorites_off).toDrawable()
+                menu.getItem(1).icon =
+                    AppCompatResources.getDrawable(requireContext(), R.drawable.ic_favorites_off)
             }
         }
 
@@ -118,7 +121,6 @@ class VacancyFragment : Fragment() {
                 vacancyContentScrollView?.visibility = View.VISIBLE
                 placeholderContainerFrameLayout?.visibility = View.GONE
                 setupContent(state)
-                //тут падает
                 viewModel.checkFavorites(vacancyId!!)
             }
         }

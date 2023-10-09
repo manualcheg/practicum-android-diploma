@@ -24,5 +24,5 @@ interface AddOrDelVacancyUseCase {
 }
 
 interface CheckInFavoritesUseCase {
-    suspend fun execute(id: Int): Boolean
+    suspend fun execute(id: Int): Flow<Boolean>
 }
