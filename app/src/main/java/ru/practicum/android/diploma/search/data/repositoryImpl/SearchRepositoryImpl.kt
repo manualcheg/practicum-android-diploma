@@ -16,9 +16,9 @@ class SearchRepositoryImpl(
     private val vacancyDbConverter: VacancyDtoConverter
 ) : SearchRepository {
 
-    override fun search(expression: String): Flow<Resource<List<Vacancy>>> = flow {
+    override fun search(options: HashMap<String, String>): Flow<Resource<List<Vacancy>>> = flow {
 
-        val response = vacancyRemoteDataSource.doRequest(SearchRequest(expression))
+        val response = vacancyRemoteDataSource.doRequest(SearchRequest(options = options))
 
         when (response.resultCode) {
             NO_CONNECTION -> {

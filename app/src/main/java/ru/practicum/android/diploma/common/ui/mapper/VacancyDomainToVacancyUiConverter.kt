@@ -149,9 +149,18 @@ class VacancyDomainToVacancyUiConverter(private val context: Context) {
     }
 
     private fun mapPhoneNumber(number: String?): String {
-        return if (number == null) ""
-        else String.format(
-            "%s-%s-%s", number.subSequence(0, 3), number.subSequence(3, 5), number.subSequence(5, 7)
-        )
+        return when (number?.length) {
+            0 -> { "" }
+            3, 4 -> { String.format("%s-%s", number.dropLast(2), number.takeLast(2)) }
+            5, 6, 7, 8 -> {
+                String.format(
+                    "%s-%s-%s",
+                    number.dropLast(4),
+                    number.takeLast(4).dropLast(2),
+                    number.takeLast(2)
+                )
+            }
+            else -> { "$number" }
+        }
     }
 }

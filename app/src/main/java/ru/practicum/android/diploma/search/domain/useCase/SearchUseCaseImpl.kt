@@ -12,8 +12,8 @@ class SearchUseCaseImpl(
     private val repository: SearchRepository,
 
     ) : SearchUseCase {
-    override fun search(expression: String): Flow<Pair<List<Vacancy>?, ErrorStatusDomain?>> {
-        return repository.search(expression).map { result ->
+    override fun search(options: HashMap<String, String>): Flow<Pair<List<Vacancy>?, ErrorStatusDomain?>> {
+        return repository.search(options).map { result ->
             when (result) {
                 is Resource.Success -> {
                     Pair(result.data, null)

@@ -18,11 +18,16 @@ class VacancyViewModel(
 
     init {
         setState(VacancyState.Load())
+        findVacancyById(vacancyId)
     }
 
-    fun loadVacancyFromDatabase() {
+    private fun findVacancyById(id: Int) {
         viewModelScope.launch {
-            findVacancyByIdUseCase.findVacancyById(vacancyId)
+            val vacancyUI = findVacancyByIdUseCase.findVacancyById(id)
+            if (vacancyUI.vacancy != null)
+                setState(VacancyState.Content(vacancyUI.vacancy))
+            else
+                setState(VacancyState.Error())
         }
     }
 
