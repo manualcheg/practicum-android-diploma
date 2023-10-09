@@ -25,7 +25,15 @@ class FavoritesLocalDataSourceImpl(
     }
 
     override suspend fun getVacancy(id: Int): Vacancy {
-        return vacancyDbConverter.map(appDataBase.FavoritesVacanciesDao().getVacancy(id))
+//        val vacancy:Vacancy
+//        if (isVacancyContains(id)){
+             /*vacancy =*/ return vacancyDbConverter.map(appDataBase.FavoritesVacanciesDao().getVacancy(id))
+//        }
+//        return vacancy
+    }
+
+    override suspend fun isVacancyContains(id: Int): Boolean {
+        return appDataBase.FavoritesVacanciesDao().isVacancyContains(id)
     }
 
     private fun mapList(favouritesList: Flow<List<FavoritesVacancyEntity>>): Flow<List<Vacancy>> {

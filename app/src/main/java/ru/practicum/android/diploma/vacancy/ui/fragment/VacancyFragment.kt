@@ -8,24 +8,22 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ProgressBar
 import android.widget.ScrollView
+import android.widget.TextView
+import androidx.core.graphics.drawable.toDrawable
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
-import ru.practicum.android.diploma.vacancy.ui.viewModel.VacancyViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 import ru.practicum.android.diploma.R
-import android.widget.TextView
+import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
 import ru.practicum.android.diploma.vacancy.ui.VacancyState
+import ru.practicum.android.diploma.vacancy.ui.viewModel.VacancyViewModel
+
 
 class VacancyFragment : Fragment() {
 
-    private val viewModel: VacancyViewModel by viewModel {
-        parametersOf(
-            vacancyId
-        )
-    }
+    private val viewModel: VacancyViewModel by viewModel()
     private var _binding: FragmentVacancyBinding? = null
     private val binding get() = _binding!!
 
@@ -48,11 +46,42 @@ class VacancyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        vacancyId = 87620177
+        val args: VacancyFragmentArgs by navArgs()
+        vacancyId = args.vacansyId
 
         viewModel.state.observe(viewLifecycleOwner) {
             render(it)
         }
+
+        binding.vacancyToolbar.inflateMenu(R.menu.menu_vacancy_toolbar)
+        binding.vacancyToolbar.setOnMenuItemClickListener { it ->
+            when (it.itemId) {
+                R.id.share -> {
+                    TODO()
+                }
+                R.id.like -> {
+                    viewModel.addOrDelFavorites(vacancyId!!)
+                    //тут падает
+                    viewModel.checkFavorites(vacancyId!!)
+                    true
+                }
+                else -> {
+                    true
+                }
+            }
+        }
+
+        viewModel.inFavorites.observe(viewLifecycleOwner) { inFavorites ->
+            if (inFavorites) {
+                binding.vacancyToolbar.menu.getItem(R.id.like).icon =
+                    (R.drawable.ic_favorites_on).toDrawable()
+            } else {
+                binding.vacancyToolbar.menu.getItem(R.id.like).icon =
+                    (R.drawable.ic_favorites_off).toDrawable()
+            }
+        }
+
+        viewModel.findVacancyById(vacancyId!!)
 
         vacancyProgressBar = binding.vacancyProgressBar
         vacancyServerErrorPlaceholder = binding.vacancyServerErrorPlaceholder
@@ -89,7 +118,8 @@ class VacancyFragment : Fragment() {
                 vacancyContentScrollView?.visibility = View.VISIBLE
                 placeholderContainerFrameLayout?.visibility = View.GONE
                 setupContent(state)
-
+                //тут падает
+                viewModel.checkFavorites(vacancyId!!)
             }
         }
     }
@@ -176,7 +206,5 @@ class VacancyFragment : Fragment() {
             binding.vacancyContactsEmailTextView.visibility = View.GONE
             binding.vacancyContactsEmailTitleTextView.visibility = View.GONE
         }
-
-
     }
 }
