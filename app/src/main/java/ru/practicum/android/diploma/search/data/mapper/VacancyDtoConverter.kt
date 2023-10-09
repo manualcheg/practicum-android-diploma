@@ -10,7 +10,9 @@ import ru.practicum.android.diploma.common.domain.model.vacancy_models.LogoUrls
 import ru.practicum.android.diploma.common.domain.model.vacancy_models.Phone
 import ru.practicum.android.diploma.common.domain.model.vacancy_models.Salary
 import ru.practicum.android.diploma.common.domain.model.vacancy_models.Schedule
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.Vacancies
 import ru.practicum.android.diploma.common.domain.model.vacancy_models.Vacancy
+import ru.practicum.android.diploma.search.data.model.VacanciesSearchResponse
 import ru.practicum.android.diploma.search.data.model.dto.AreaDto
 import ru.practicum.android.diploma.search.data.model.dto.ContactsDto
 import ru.practicum.android.diploma.search.data.model.dto.EmployerDto
@@ -25,6 +27,17 @@ import ru.practicum.android.diploma.search.data.model.dto.VacancyDto
 import ru.practicum.android.diploma.vacancy.data.model.VacancySearchResponse
 
 class VacancyDtoConverter {
+
+    fun map(vacanciesSearchResponse: VacanciesSearchResponse): Vacancies {
+        vacanciesSearchResponse.apply {
+            return Vacancies(
+                vacancyList = items.map { map(it) },
+                page = page,
+                pages = pages,
+                found = found
+            )
+        }
+    }
 
     fun map(vacancyDto: VacancyDto): Vacancy {
         vacancyDto.apply {

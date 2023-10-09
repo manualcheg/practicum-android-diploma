@@ -20,6 +20,7 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.ui.model.PhoneUi
 import ru.practicum.android.diploma.common.util.recycleView.RVAdapter
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
+import androidx.navigation.fragment.navArgs
 import ru.practicum.android.diploma.vacancy.ui.VacancyState
 import ru.practicum.android.diploma.vacancy.ui.viewModel.VacancyViewModel
 
@@ -41,6 +42,7 @@ class VacancyFragment : Fragment() {
     private var phonesAdapter: RVAdapter? = null
 
     private var vacancyId: Int? = null
+    private val args: VacancyFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -53,7 +55,7 @@ class VacancyFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         vacancyId = 87393863
-
+        vacancyId = args.vacansyId
         viewModel.state.observe(viewLifecycleOwner) {
             render(it)
         }
@@ -65,6 +67,14 @@ class VacancyFragment : Fragment() {
 
         setOnClickListeners()
         initializePhonesAdapter()
+
+        binding.vacancySimilarVacanciesButtonTextView.setOnClickListener {
+            val direction =
+                VacancyFragmentDirections.actionVacancyFragmentToSimilarVacancyFragment(vacancyId!!)
+            findNavController().navigate(direction)
+        }
+
+
     }
 
     override fun onDestroyView() {
@@ -76,28 +86,25 @@ class VacancyFragment : Fragment() {
     private fun render(state: VacancyState) {
         when (state) {
             is VacancyState.Load -> {
-                vacancyProgressBar?.visibility = View.VISIBLE
-                vacancyServerErrorPlaceholder?.visibility = View.GONE
-                vacancyContentScrollView?.visibility = View.GONE
-                placeholderContainerFrameLayout?.visibility = View.VISIBLE
-
+                binding.vacancyProgressBar.visibility = View.VISIBLE
+                binding.vacancyServerErrorPlaceholder.visibility = View.GONE
+                binding.vacancyContentScrollView.visibility = View.GONE
+                binding.placeholderContainerFrameLayout.visibility = View.VISIBLE
             }
 
             is VacancyState.Error -> {
-                vacancyProgressBar?.visibility = View.GONE
-                vacancyServerErrorPlaceholder?.visibility = View.VISIBLE
-                vacancyContentScrollView?.visibility = View.GONE
-                placeholderContainerFrameLayout?.visibility = View.VISIBLE
-
+                binding.vacancyProgressBar.visibility = View.GONE
+                binding.vacancyServerErrorPlaceholder.visibility = View.VISIBLE
+                binding.vacancyContentScrollView.visibility = View.GONE
+                binding.placeholderContainerFrameLayout.visibility = View.VISIBLE
             }
 
             is VacancyState.Content -> {
-                vacancyProgressBar?.visibility = View.GONE
-                vacancyServerErrorPlaceholder?.visibility = View.GONE
-                vacancyContentScrollView?.visibility = View.VISIBLE
-                placeholderContainerFrameLayout?.visibility = View.GONE
+                binding.vacancyProgressBar.visibility = View.GONE
+                binding.vacancyServerErrorPlaceholder.visibility = View.GONE
+                binding.vacancyContentScrollView.visibility = View.VISIBLE
+                binding.placeholderContainerFrameLayout.visibility = View.GONE
                 setupContent(state)
-
             }
         }
     }
