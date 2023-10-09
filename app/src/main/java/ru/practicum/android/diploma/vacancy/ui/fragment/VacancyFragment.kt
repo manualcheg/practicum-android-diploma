@@ -5,12 +5,9 @@ import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.ProgressBar
-import android.widget.ScrollView
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -20,7 +17,6 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.ui.model.PhoneUi
 import ru.practicum.android.diploma.common.util.recycleView.RVAdapter
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
-import androidx.navigation.fragment.navArgs
 import ru.practicum.android.diploma.vacancy.ui.VacancyState
 import ru.practicum.android.diploma.vacancy.ui.viewModel.VacancyViewModel
 
@@ -33,11 +29,6 @@ class VacancyFragment : Fragment() {
     }
     private var _binding: FragmentVacancyBinding? = null
     private val binding get() = _binding!!
-
-    private var vacancyProgressBar: ProgressBar? = null
-    private var vacancyContentScrollView: ScrollView? = null
-    private var placeholderContainerFrameLayout: FrameLayout? = null
-    private var vacancyServerErrorPlaceholder: TextView? = null
 
     private var phonesAdapter: RVAdapter? = null
 
@@ -54,16 +45,10 @@ class VacancyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        vacancyId = 87393863
         vacancyId = args.vacansyId
         viewModel.state.observe(viewLifecycleOwner) {
             render(it)
         }
-
-        vacancyProgressBar = binding.vacancyProgressBar
-        vacancyServerErrorPlaceholder = binding.vacancyServerErrorPlaceholder
-        vacancyContentScrollView = binding.vacancyContentScrollView
-        placeholderContainerFrameLayout = binding.placeholderContainerFrameLayout
 
         setOnClickListeners()
         initializePhonesAdapter()

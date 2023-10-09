@@ -21,7 +21,7 @@ val vacancyModule = module {
 
     single<ExternalNavigator> { ExternalNavigatorImpl(androidContext()) }
     single<VacancyRepository> { VacancyRepositoryImpl(get(), get(), get(), get()) }
-    single<FindVacancyByIdUseCase> { FindVacancyByIdUseCaseImpl(get(), get()) }
+    single<FindVacancyByIdUseCase> { FindVacancyByIdUseCaseImpl(get()) }
     single<OpenMailUseCase> { OpenMailUseCaseImpl(get()) }
     single<ShareVacancyByIdUseCase> { ShareVacancyByIdUseCaseImpl(get()) }
     single<CallPhoneUseCase> { CallPhoneUseCaseImpl(get()) }

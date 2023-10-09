@@ -16,7 +16,7 @@ import ru.practicum.android.diploma.vacancy.ui.VacancyState
 class VacancyViewModel(
     private val vacancyId: Int,
     private val findVacancyByIdUseCase: FindVacancyByIdUseCase,
-    private val vacancyDomainToVacancyUiConverter: VacancyDomainToVacancyUiConverter
+    private val vacancyDomainToVacancyUiConverter: VacancyDomainToVacancyUiConverter,
     private val openMailUseCase: OpenMailUseCase,
     private val shareVacancyByIdUseCase: ShareVacancyByIdUseCase,
     private val callPhoneUseCase: CallPhoneUseCase
