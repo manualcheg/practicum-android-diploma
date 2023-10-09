@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -86,18 +87,19 @@ class SearchFragment : Fragment() {
     private fun render(state: SearchState) {
         when (state) {
             is SearchState.Error -> showError(state.errorStatus)
-            SearchState.Loading -> showLoading()
+            is SearchState.Loading.LoadingSearch -> showLoadingSearch()
+            is SearchState.Loading.LoadingPages -> showLoadingPages()
             SearchState.Success.Empty -> showEmpty()
-            is SearchState.Success.SearchContent -> showContent(state.vacancies)
+            is SearchState.Success.SearchContent -> showContent(state.vacancies, state.foundVacancy)
         }
     }
 
-    private fun showContent(vacancies: List<VacancyUi>) {
+    private fun showContent(vacancies: List<VacancyUi>, foundVacancies: Int) {
         emptyScreen()
         vacanciesAdapter?.items = vacancies
         binding.searchScreenRecyclerView.isVisible = true
         binding.counterVacanciesTextView.text = resources.getQuantityString(
-            R.plurals.vacancy_plural, vacancies.size, vacancies.size
+            R.plurals.vacancy_plural, foundVacancies, foundVacancies
         )
         binding.counterVacanciesTextView.isVisible = true
     }
@@ -108,9 +110,13 @@ class SearchFragment : Fragment() {
         binding.placeholderSearchVacanciesImageView.isVisible = true
     }
 
-    private fun showLoading() {
+    private fun showLoadingSearch() {
         emptyScreen()
         binding.searchScreenFirstLoadingProgressBar.isVisible = true
+    }
+
+    private fun showLoadingPages() {
+        binding.searchScreenPaginationProgressBar.isVisible = true
     }
 
     private fun showError(errorStatus: ErrorStatusUi) {
@@ -163,6 +169,24 @@ class SearchFragment : Fragment() {
 //        binding.searchScreenHeaderFilterImageView.setOnClickListener {
 //            findNavController().navigate(R.id.action_searchFragment_to_filteringSettingsFragment)
 //        }
+
+        binding.searchScreenRecyclerView.addOnScrollListener(object :
+            RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                if (dy > 0) {
+                    val pos =
+                        (binding.searchScreenRecyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                    val itemsCount = vacanciesAdapter?.itemCount
+                    if (itemsCount != null) {
+                        if (pos >= itemsCount - 1) {
+                            viewModel.onLastItemReached()
+                        }
+                    }
+                }
+            }
+        })
     }
 
     private fun setOnTextWatchersTextChangeListeners() {

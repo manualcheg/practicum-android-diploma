@@ -2,21 +2,29 @@ package ru.practicum.android.diploma.search.data.repositoryImpl
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import ru.practicum.android.diploma.common.domain.model.vacancy_models.Vacancy
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.Vacancies
 import ru.practicum.android.diploma.common.util.Resource
+import ru.practicum.android.diploma.filter.data.dataSource.FilterOptionsDataSource
 import ru.practicum.android.diploma.search.data.dataSource.VacancyRemoteDataSource
 import ru.practicum.android.diploma.search.data.mapper.VacancyDtoConverter
 import ru.practicum.android.diploma.search.data.model.ErrorRemoteDataSource
 import ru.practicum.android.diploma.search.data.model.SearchRequest
-import ru.practicum.android.diploma.search.data.model.SearchResponse
+import ru.practicum.android.diploma.search.data.model.VacanciesSearchResponse
 import ru.practicum.android.diploma.search.domain.repository.SearchRepository
 
 class SearchRepositoryImpl(
+    private val filterOptionsDataSource: FilterOptionsDataSource,
     private val vacancyRemoteDataSource: VacancyRemoteDataSource,
-    private val vacancyDbConverter: VacancyDtoConverter
+    private val vacancyDbConverter: VacancyDtoConverter,
 ) : SearchRepository {
 
-    override fun search(options: HashMap<String, String>): Flow<Resource<List<Vacancy>>> = flow {
+    override fun search(text: String, page: Int): Flow<Resource<Vacancies>> = flow {
+
+        val options = filterOptionsDataSource.getFilterOptions()
+
+        options[SEARCH_TEXT] = text
+        options[PAGE] = page.toString()
+        options[PER_PAGE] = DEFAULT_PER_PAGE
 
         val response = vacancyRemoteDataSource.doRequest(SearchRequest(options = options))
 
@@ -26,9 +34,8 @@ class SearchRepositoryImpl(
             }
 
             RESPONSE_SUCCESS -> {
-                val vacancies: List<Vacancy> = (response as SearchResponse).items.map {
-                    vacancyDbConverter.map(it)
-                }
+                val vacancies: Vacancies =
+                    vacancyDbConverter.map(response as VacanciesSearchResponse)
                 emit(Resource.Success(vacancies))
             }
 
@@ -41,5 +48,9 @@ class SearchRepositoryImpl(
     companion object {
         const val NO_CONNECTION = -1
         const val RESPONSE_SUCCESS = 200
+        const val SEARCH_TEXT = "text"
+        const val PAGE = "page"
+        const val PER_PAGE = "per_page"
+        const val DEFAULT_PER_PAGE = "20"
     }
 }

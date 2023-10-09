@@ -4,26 +4,33 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import ru.practicum.android.diploma.common.domain.model.vacancy_models.Vacancy
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.Vacancies
 import ru.practicum.android.diploma.common.ui.mapper.VacancyDomainToVacancyUiConverter
 import ru.practicum.android.diploma.common.ui.model.VacancyUi
 import ru.practicum.android.diploma.common.util.debounce
 import ru.practicum.android.diploma.search.domain.model.ErrorStatusDomain
-import ru.practicum.android.diploma.search.domain.useCase.GetFilteringOptionsUseCase
 import ru.practicum.android.diploma.search.domain.useCase.SearchUseCase
 import ru.practicum.android.diploma.search.ui.model.ErrorStatusUi
 import ru.practicum.android.diploma.search.ui.model.SearchState
 
 class SearchViewModel(
     private val searchUseCase: SearchUseCase,
-    private val getFilteringOptionsUseCase: GetFilteringOptionsUseCase,
     private val vacancyDomainToVacancyUiConverter: VacancyDomainToVacancyUiConverter
 ) : ViewModel() {
 
     private var latestSearchText: String? = null
 
     private val stateLiveData = MutableLiveData<SearchState>()
+
+    private var foundVacancies = 0
+    private var currentPages = 0
+    private var nextPage = 0
+    private var maxPages = 1
+
+    private var isNextPageLoading = false
+    private val vacanciesList = mutableListOf<VacancyUi>()
 
     fun observeState(): LiveData<SearchState> = stateLiveData
 
@@ -37,7 +44,13 @@ class SearchViewModel(
             return
         }
         latestSearchText = changedText
+        vacanciesList.clear()
+        nextPage = 0
         tracksSearchDebounce(changedText)
+    }
+
+    fun onLastItemReached() {
+        latestSearchText?.let { searchRequest(it) }
     }
 
     private fun setState(state: SearchState) {
@@ -45,24 +58,39 @@ class SearchViewModel(
     }
 
     private fun searchRequest(inputSearchText: String) {
+        if (currentPages == maxPages) {
+            return
+        }
         if (inputSearchText.isNotEmpty()) {
-            setState(SearchState.Loading)
-
+            if (vacanciesList.isEmpty()) {
+                setState(SearchState.Loading.LoadingSearch)
+            } else if (currentPages != maxPages) {
+                setState(SearchState.Loading.LoadingPages)
+            }
+        }
+        if (!isNextPageLoading) {
+            isNextPageLoading = true
             viewModelScope.launch {
-                val options = getFilteringOptionsUseCase.execute()
-                options[SEARCH_TEXT] = inputSearchText
-                searchUseCase.search(options).collect {
-                    processResult(it.first, it.second)
+                val resultDeferred = async {
+                    searchUseCase.search(inputSearchText, nextPage).collect {
+                        processResult(it.first, it.second)
+                        nextPage++
+                    }
                 }
+                resultDeferred.await()
+                isNextPageLoading = false
             }
         }
     }
 
-    private fun processResult(foundVacancies: List<Vacancy>?, errorStatus: ErrorStatusDomain?) {
-        val vacanciesUi = mutableListOf<VacancyUi>()
-        if (foundVacancies != null) {
-            val foundVacancyUi = foundVacancies.map { vacancyDomainToVacancyUiConverter.map(it) }
-            vacanciesUi.addAll(foundVacancyUi)
+    private fun processResult(vacancies: Vacancies?, errorStatus: ErrorStatusDomain?) {
+        if (vacancies != null) {
+            val foundVacancyUi =
+                vacancies.vacancyList.map { vacancyDomainToVacancyUiConverter.map(it) }
+            vacanciesList.addAll(foundVacancyUi)
+            foundVacancies = vacancies.found
+            currentPages = vacancies.page
+            maxPages = vacancies.pages
         }
         when {
             errorStatus != null -> {
@@ -79,10 +107,10 @@ class SearchViewModel(
                 }
             }
 
-            vacanciesUi.isEmpty() -> setState(SearchState.Error(ErrorStatusUi.NOTHING_FOUND))
+            vacanciesList.isEmpty() -> setState(SearchState.Error(ErrorStatusUi.NOTHING_FOUND))
 
             else -> {
-                setState(SearchState.Success.SearchContent(vacanciesUi))
+                setState(SearchState.Success.SearchContent(vacanciesList, foundVacancies))
             }
         }
     }
@@ -94,6 +122,5 @@ class SearchViewModel(
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2000L
         private const val DEFAULT_TEXT = ""
-        private const val SEARCH_TEXT = "text"
     }
 }
