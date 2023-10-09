@@ -221,6 +221,8 @@ class SearchFragment : Fragment() {
                 if (binding.searchScreenEditText.hasFocus() && (s?.isEmpty() == true || s?.isBlank() == true)) {
                     viewModel.clearSearchInput()
                 }
+                vacanciesAdapter?.items = listOf()
+                binding.counterVacanciesTextView.visibility = View.GONE
                 viewModel.searchDebounced(
                     changedText = s?.toString() ?: ""
                 )
