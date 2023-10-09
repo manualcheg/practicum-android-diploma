@@ -1,14 +1,14 @@
 package ru.practicum.android.diploma.vacancy.ui
 
-import android.content.Intent
-import android.net.Uri
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.common.ui.model.PhoneUi
 import ru.practicum.android.diploma.databinding.ItemPhonesBinding
+import ru.practicum.android.diploma.vacancy.domain.useCase.CallPhoneUseCase
 
 class ContactsPhoneViewHolder(
     private val binding: ItemPhonesBinding,
+    private val callPhoneUseCase: CallPhoneUseCase
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(phone: PhoneUi) {
         if (phone.comment.isNotBlank()) {
@@ -17,10 +17,7 @@ class ContactsPhoneViewHolder(
 
         binding.contactsPhoneTextView.text = phone.formattedNumber
         binding.contactsPhoneTextView.setOnClickListener {
-            val number = phone.formattedNumber
-            val call = Uri.parse("tel:$number")
-            val surf = Intent(Intent.ACTION_DIAL, call)
-            itemView.context.startActivity(surf)
+            callPhoneUseCase.execute(phone.formattedNumber)
         }
     }
 }

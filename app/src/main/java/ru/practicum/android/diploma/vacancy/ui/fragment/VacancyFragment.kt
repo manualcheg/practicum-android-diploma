@@ -1,7 +1,5 @@
 package ru.practicum.android.diploma.vacancy.ui.fragment
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.text.Html
 import android.view.LayoutInflater
@@ -19,7 +17,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.practicum.android.diploma.R
 import android.widget.TextView
-import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.practicum.android.diploma.common.util.recycleView.RVAdapter
@@ -41,7 +38,6 @@ class VacancyFragment : Fragment() {
     private var vacancyServerErrorPlaceholder: TextView? = null
 
     private var phonesAdapter: RVAdapter? = null
-
 
     private var vacancyId: Int? = null
 
@@ -76,7 +72,6 @@ class VacancyFragment : Fragment() {
         super.onDestroyView()
         _binding = null
         phonesAdapter = null
-        binding.vacancyContactsPhoneRecycleView.adapter = null
     }
 
     private fun render(state: VacancyState) {
@@ -108,17 +103,9 @@ class VacancyFragment : Fragment() {
         }
     }
 
-
     private fun setOnClickListeners() {
         binding.vacancyContactsEmailTextView.setOnClickListener {
-            val intent = Intent(Intent.ACTION_SENDTO).apply {
-                data = Uri.parse("mailto:")
-                putExtra(
-                    Intent.EXTRA_EMAIL,
-                    arrayOf(binding.vacancyContactsEmailTextView.text.toString())
-                )
-            }
-            startActivityOrShowError(intent)
+            viewModel.openMail(binding.vacancyContactsEmailTextView.text.toString())
         }
 
         binding.vacancyToolbar.setNavigationOnClickListener { findNavController().navigateUp() }
@@ -126,14 +113,7 @@ class VacancyFragment : Fragment() {
         binding.vacancyToolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.share -> {
-                    val intent = Intent(Intent.ACTION_SEND).apply {
-                        type = "text/plain"
-                        putExtra(
-                            Intent.EXTRA_TEXT,
-                            "${getString(R.string.link_to_hh_ru)}$vacancyId"
-                        )
-                    }
-                    startActivityOrShowError(intent)
+                    vacancyId?.let { it1 -> viewModel.shareVacancyById(it1) }
                 }
 
                 R.id.like -> {}
@@ -142,24 +122,11 @@ class VacancyFragment : Fragment() {
         }
     }
 
-    private fun initializePhonesAdapter(){
+    private fun initializePhonesAdapter() {
         phonesAdapter = RVAdapter()
         binding.vacancyContactsPhoneRecycleView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.vacancyContactsPhoneRecycleView.adapter = phonesAdapter
-    }
-
-
-    private fun startActivityOrShowError(intent: Intent) {
-        try {
-            startActivity(intent)
-        } catch (e: Throwable) {
-            Toast.makeText(
-                requireContext(),
-                getString(R.string.there_is_no_app_on_the_device_to_make_this_request),
-                Toast.LENGTH_SHORT
-            ).show()
-        }
     }
 
 
@@ -250,7 +217,6 @@ class VacancyFragment : Fragment() {
             phonesAdapter?.items = state.vacancy.contactsPhones
             phonesAdapter?.notifyDataSetChanged()
         }
-
 
     }
 }
