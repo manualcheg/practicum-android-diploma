@@ -10,12 +10,14 @@ import ru.practicum.android.diploma.common.ui.mapper.VacancyDomainToVacancyUiCon
 import ru.practicum.android.diploma.common.ui.model.VacancyUi
 import ru.practicum.android.diploma.common.util.debounce
 import ru.practicum.android.diploma.search.domain.model.ErrorStatusDomain
+import ru.practicum.android.diploma.search.domain.useCase.GetFilteringOptionsUseCase
 import ru.practicum.android.diploma.search.domain.useCase.SearchUseCase
 import ru.practicum.android.diploma.search.ui.model.ErrorStatusUi
 import ru.practicum.android.diploma.search.ui.model.SearchState
 
 class SearchViewModel(
     private val searchUseCase: SearchUseCase,
+    private val getFilteringOptionsUseCase: GetFilteringOptionsUseCase,
     private val vacancyDomainToVacancyUiConverter: VacancyDomainToVacancyUiConverter
 ) : ViewModel() {
 
@@ -47,7 +49,9 @@ class SearchViewModel(
             setState(SearchState.Loading)
 
             viewModelScope.launch {
-                searchUseCase.search(inputSearchText).collect {
+                val options = getFilteringOptionsUseCase.execute()
+                options[SEARCH_TEXT] = inputSearchText
+                searchUseCase.search(options).collect {
                     processResult(it.first, it.second)
                 }
             }
@@ -90,5 +94,6 @@ class SearchViewModel(
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2000L
         private const val DEFAULT_TEXT = ""
+        private const val SEARCH_TEXT = "text"
     }
 }

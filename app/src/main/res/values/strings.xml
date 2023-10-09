@@ -5,7 +5,7 @@
     <string name="favorites">Избранное</string>
     <string name="team">Команда</string>
 
-    <string name="vacancy_search">Поиск ваканский</string>
+    <string name="vacancy_search">Поиск вакансий</string>
     <string name="filtering_settings">Настройки фильтрации</string>
     <string name="choosing_a_place_of_work">Выбор места работы</string>
     <string name="choosing_a_country">Выбор страны</string>
@@ -59,16 +59,13 @@
     <string name="to">до</string>
     <string name="no_salary">ЗП не указана</string>
 
-
-
     <string name="the_list_is_empty">Список пуст</string>
     <string name="worked_on_the_application">Над приложением работали</string>
 
-    <string name="shurygin_evgenii">Шурыгин Евгений</string>
-    <string name="valiev_ilnur">Валиев Ильнур</string>
-    <string name="vladislav_gorodilov">Владислав Городилов</string>
-    <string name="kochubeev_andrei">Кочубеев Андрей</string>
-
+    <string name="shurygin_evgenii">Евгений Шурыгин</string>
+    <string name="valiev_ilnur">Ильнур Валиев</string>
+    <string name="vladislav_gorodilov">Городилов Владислав</string>
+    <string name="kochubeev_andrei">Андрей Кочубеев</string>
 
     <string name="RUB">₽</string>
     <string name="BYR">Br</string>
@@ -81,13 +78,7 @@
     <string name="GEL">₾</string>
     <string name="KGT">с</string>
 
-    <string name="vacancy_icon">иконка вакансии</string>
-    <string name="filter_description">фильтр</string>
-    <string name="nothing_found_image">картинка поиск вакансий</string>
-    <string name="favourites_placeholder_image_description">Картинка список пуст</string>
-    <string name="back_button">кнопка назад</string>
-    <string name="share_button">кнопка поделиться</string>
-    <string name="like_button">кнопка добавить в избранные</string>
+    <string name="company_logo">Логотип компании</string>
 
     <string name="share">Поделиться</string>
     <string name="add_to_favorites">Добавить в избранное</string>

@@ -18,7 +18,6 @@ class VacancyRemoteDataSourceImpl(
         if (!networkConnectionProvider.isConnected()) {
             return Response().apply { resultCode = NO_CONNECTION }
         }
-
         if (dto is SearchRequest) {
             return withContext(Dispatchers.IO) {
                 try {
@@ -27,6 +26,7 @@ class VacancyRemoteDataSourceImpl(
                 } catch (e: Throwable) {
                     Response().apply { resultCode = RESPONSE_ERROR }
                 }
+
             }
         }
         if (dto is VacancySearchRequest) {

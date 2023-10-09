@@ -7,5 +7,5 @@ import ru.practicum.android.diploma.common.util.Resource
 // интерфейс для связи слоя Domain со слоем Data
 // интерфейс SearchRepository реализует SearchRepositoryImpl в data
 interface SearchRepository {
-    fun search(expression: String): Flow<Resource<List<Vacancy>>>
+    fun search(options: HashMap<String, String>): Flow<Resource<List<Vacancy>>>
 }
