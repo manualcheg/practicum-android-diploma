@@ -10,8 +10,8 @@ import ru.practicum.android.diploma.vacancy.ui.viewModel.VacancyViewModel
 
 val vacancyModule = module {
 
-    single<VacancyRepository> { VacancyRepositoryImpl(get(), get()) }
-    single<FindVacancyByIdUseCase> { FindVacancyByIdUseCaseImpl(get()) }
+    single<VacancyRepository> { VacancyRepositoryImpl(get(), get(), get(), get()) }
+    single<FindVacancyByIdUseCase> { FindVacancyByIdUseCaseImpl(get(), get()) }
 
     viewModel { (vacancyId: Int) -> VacancyViewModel(vacancyId, get()) }
 
