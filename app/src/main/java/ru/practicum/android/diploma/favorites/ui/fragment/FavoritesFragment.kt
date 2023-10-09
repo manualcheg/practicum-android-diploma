@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import ru.practicum.android.diploma.common.domain.model.vacancy_models.Vacancy
 import ru.practicum.android.diploma.common.ui.model.VacancyUi
 import ru.practicum.android.diploma.common.util.recycleView.ItemUiBase
 import ru.practicum.android.diploma.common.util.recycleView.RVAdapter
@@ -20,15 +20,13 @@ class FavoritesFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val favouritesViewModel: FavoritesViewModel by viewModel()
-    private var favoritesVacancies: List<Vacancy> = listOf()
-
     private var vacanciesAdapter: RVAdapter? = RVAdapter {
         clickOnVacancy(it)
     }
 
     private fun clickOnVacancy(it: ItemUiBase) {
-        /*val action =
-        findNavController().navigate(R.id.to_vacancyFragment)*/
+        val action = FavoritesFragmentDirections.actionFavoritesFragmentToVacancyFragment(it.id)
+        findNavController().navigate(action)
     }
 
     override fun onCreateView(
@@ -64,7 +62,7 @@ class FavoritesFragment : Fragment() {
         when (state) {
             is FavoritesState.Empty -> showEmpty()
             is FavoritesState.Content -> showContent(state.vacancies)
-            is FavoritesState.Error -> showError()
+            else -> showError()
         }
     }
 

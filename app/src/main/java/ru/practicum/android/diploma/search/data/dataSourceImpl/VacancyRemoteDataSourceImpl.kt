@@ -26,7 +26,6 @@ class VacancyRemoteDataSourceImpl(
                 } catch (e: Throwable) {
                     Response().apply { resultCode = RESPONSE_ERROR }
                 }
-
             }
         }
         if (dto is VacancySearchRequest) {
