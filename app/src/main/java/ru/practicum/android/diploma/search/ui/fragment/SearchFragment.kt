@@ -220,12 +220,13 @@ class SearchFragment : Fragment() {
 
                 if (binding.searchScreenEditText.hasFocus() && (s?.isEmpty() == true || s?.isBlank() == true)) {
                     viewModel.clearSearchInput()
+                } else {
+                    vacanciesAdapter?.items = listOf()
+                    binding.counterVacanciesTextView.visibility = View.GONE
+                    viewModel.searchDebounced(
+                        changedText = s?.toString() ?: ""
+                    )
                 }
-                vacanciesAdapter?.items = listOf()
-                binding.counterVacanciesTextView.visibility = View.GONE
-                viewModel.searchDebounced(
-                    changedText = s?.toString() ?: ""
-                )
             }
         }
 
