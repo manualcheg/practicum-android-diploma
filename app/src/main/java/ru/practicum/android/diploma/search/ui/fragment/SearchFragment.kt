@@ -17,8 +17,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.common.VacanciesAdapter
 import ru.practicum.android.diploma.common.ui.model.VacancyUi
+import ru.practicum.android.diploma.common.util.recycleView.RVAdapter
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.search.ui.model.ErrorStatusUi
 import ru.practicum.android.diploma.search.ui.model.SearchState
@@ -33,7 +33,7 @@ class SearchFragment : Fragment() {
     private val viewModel: SearchViewModel by viewModel()
 
     private var textWatcher: TextWatcher? = null
-    private var vacanciesAdapter: VacanciesAdapter? = null
+    private var vacanciesAdapter: RVAdapter? = null
 
     private var inputSearchText: String = DEFAULT_TEXT
     private var isClickAllowed = true
@@ -70,7 +70,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun recycleViewInit() {
-        vacanciesAdapter = VacanciesAdapter { vacancy ->
+        vacanciesAdapter = RVAdapter { vacancy ->
             if (isClickDebounce()) {
                 val direction =
                     SearchFragmentDirections.actionSearchFragmentToVacancyFragment(vacancy.id)
@@ -94,7 +94,7 @@ class SearchFragment : Fragment() {
 
     private fun showContent(vacancies: List<VacancyUi>) {
         emptyScreen()
-        vacanciesAdapter?.vacancies = vacancies
+        vacanciesAdapter?.items = vacancies
         binding.searchScreenRecyclerView.isVisible = true
         binding.counterVacanciesTextView.text = resources.getQuantityString(
             R.plurals.vacancy_plural, vacancies.size, vacancies.size
@@ -142,9 +142,7 @@ class SearchFragment : Fragment() {
             override fun onTouch(v: View?, event: MotionEvent?): Boolean {
                 if (event != null) {
                     if (event.action == MotionEvent.ACTION_UP) {
-                        if (event.rawX >= (binding.searchScreenEditText.right - binding.searchScreenEditText.compoundDrawables[2].bounds
-                                .width())
-                        ) {
+                        if (event.rawX >= (binding.searchScreenEditText.right - binding.searchScreenEditText.compoundDrawables[2].bounds.width())) {
                             viewModel.clearSearchInput()
                             binding.searchScreenEditText.setText(DEFAULT_TEXT)
                             return true

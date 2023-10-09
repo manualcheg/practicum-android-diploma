@@ -1,7 +1,9 @@
 package ru.practicum.android.diploma.common.ui.model
 
+import ru.practicum.android.diploma.common.util.recycleView.ItemUiBase
+
 data class VacancyUi(
-    val id: Int,
+    override var id: Int,
     val name: String, // "name": "Секретарь",
     val areaName: String = "",
     val employerLogoUrl240: String = "", // cсылки на логотипы работодателя разных размеров
@@ -17,4 +19,4 @@ data class VacancyUi(
     val contactsEmail: String = "", // Электронная почта. Значение поля должно соответствовать формату email.
     val contactsName: String = "", // Имя контакта
     val contactsPhones: List<PhoneUi> = emptyList()// Список телефонов для связи
-)
+) : ItemUiBase()
