@@ -12,8 +12,12 @@ class SearchUseCaseImpl(
     private val repository: SearchRepository,
 
     ) : SearchUseCase {
-    override fun search(text: String, page: Int): Flow<Pair<Vacancies?, ErrorStatusDomain?>> {
-        return repository.search(text, page).map { result ->
+    override fun search(
+        text: String,
+        page: Int,
+        perPage: Int
+    ): Flow<Pair<Vacancies?, ErrorStatusDomain?>> {
+        return repository.search(text, page, perPage).map { result ->
             when (result) {
                 is Resource.Success -> {
                     Pair(result.data, null)

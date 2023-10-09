@@ -5,5 +5,5 @@ import ru.practicum.android.diploma.common.domain.model.vacancy_models.Vacancies
 import ru.practicum.android.diploma.search.domain.model.ErrorStatusDomain
 
 interface SearchUseCase {
-    fun search(text: String, page: Int): Flow<Pair<Vacancies?, ErrorStatusDomain?>>
+    fun search(text: String, page: Int, perPage: Int): Flow<Pair<Vacancies?, ErrorStatusDomain?>>
 }

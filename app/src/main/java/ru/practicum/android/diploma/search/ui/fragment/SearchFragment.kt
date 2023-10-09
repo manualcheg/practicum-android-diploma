@@ -8,6 +8,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -22,6 +23,7 @@ import ru.practicum.android.diploma.common.ui.model.VacancyUi
 import ru.practicum.android.diploma.common.util.recycleView.RVAdapter
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.search.ui.model.ErrorStatusUi
+import ru.practicum.android.diploma.search.ui.model.SearchError
 import ru.practicum.android.diploma.search.ui.model.SearchState
 import ru.practicum.android.diploma.search.ui.model.TextWatcherJustOnTextChanged
 import ru.practicum.android.diploma.search.ui.viewModel.SearchViewModel
@@ -56,7 +58,11 @@ class SearchFragment : Fragment() {
         setOnTextWatchersTextChangeListeners()
 
         viewModel.observeState().observe(viewLifecycleOwner) {
-            render(it)
+            renderSearchState(it)
+        }
+
+        viewModel.observeErrorToastState().observe(viewLifecycleOwner) {
+            renderErrorState(it)
         }
 
         isClickAllowed = true
@@ -84,7 +90,7 @@ class SearchFragment : Fragment() {
         binding.searchScreenRecyclerView.adapter = vacanciesAdapter
     }
 
-    private fun render(state: SearchState) {
+    private fun renderSearchState(state: SearchState) {
         when (state) {
             is SearchState.Error -> showError(state.errorStatus)
             is SearchState.Loading.LoadingSearch -> showLoadingSearch()
@@ -93,6 +99,21 @@ class SearchFragment : Fragment() {
             is SearchState.Success.SearchContent -> showContent(state.vacancies, state.foundVacancy)
         }
     }
+
+    private fun renderErrorState(state: SearchError) {
+        when (state) {
+            SearchError.ERROR_OCCURRED -> {
+                showToast(resources.getString(R.string.failed_to_get_a_list_of_vacancies))
+                binding.searchScreenPaginationProgressBar.isVisible = false
+            }
+
+            SearchError.NO_CONNECTION -> {
+                showToast(resources.getString(R.string.no_internet))
+                binding.searchScreenPaginationProgressBar.isVisible = false
+            }
+        }
+    }
+
 
     private fun showContent(vacancies: List<VacancyUi>, foundVacancies: Int) {
         emptyScreen()
@@ -243,6 +264,10 @@ class SearchFragment : Fragment() {
         binding.searchScreenNoInternetPlaceholder.isVisible = false
         binding.searchScreenNothingFoundPlaceholder.isVisible = false
         binding.searchScreenServerErrorPlaceholder.isVisible = false
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
     companion object {

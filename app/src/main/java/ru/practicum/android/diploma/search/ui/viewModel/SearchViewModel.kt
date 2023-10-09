@@ -13,7 +13,9 @@ import ru.practicum.android.diploma.common.util.debounce
 import ru.practicum.android.diploma.search.domain.model.ErrorStatusDomain
 import ru.practicum.android.diploma.search.domain.useCase.SearchUseCase
 import ru.practicum.android.diploma.search.ui.model.ErrorStatusUi
+import ru.practicum.android.diploma.search.ui.model.SearchError
 import ru.practicum.android.diploma.search.ui.model.SearchState
+import ru.practicum.android.diploma.search.ui.model.SingleLiveEvent
 
 class SearchViewModel(
     private val searchUseCase: SearchUseCase,
@@ -23,16 +25,19 @@ class SearchViewModel(
     private var latestSearchText: String? = null
 
     private val stateLiveData = MutableLiveData<SearchState>()
+    private val toastErrorStateLiveData = SingleLiveEvent<SearchError>()
 
     private var foundVacancies = 0
     private var currentPages = 0
     private var nextPage = 0
     private var maxPages = 1
+    private var perPage = DEFAULT_PER_PAGE
 
     private var isNextPageLoading = false
     private val vacanciesList = mutableListOf<VacancyUi>()
 
     fun observeState(): LiveData<SearchState> = stateLiveData
+    fun observeErrorToastState(): LiveData<SearchError> = toastErrorStateLiveData
 
     private val tracksSearchDebounce =
         debounce<String>(SEARCH_DEBOUNCE_DELAY_MILLIS, viewModelScope, true) {
@@ -57,8 +62,13 @@ class SearchViewModel(
         stateLiveData.value = state
     }
 
+    private fun setToastErrorState(state: SearchError) {
+        toastErrorStateLiveData.value = state
+    }
+
+
     private fun searchRequest(inputSearchText: String) {
-        if (currentPages == maxPages) {
+        if (currentPages == maxPages && currentPages == PAGE_LIMIT) {
             return
         }
         if (inputSearchText.isNotEmpty()) {
@@ -68,11 +78,15 @@ class SearchViewModel(
                 setState(SearchState.Loading.LoadingPages)
             }
         }
+        if (PAGE_LIMIT - currentPages <= DEFAULT_PER_PAGE) {
+            perPage = PAGE_LIMIT - currentPages
+        }
+
         if (!isNextPageLoading) {
             isNextPageLoading = true
             viewModelScope.launch {
                 val resultDeferred = async {
-                    searchUseCase.search(inputSearchText, nextPage).collect {
+                    searchUseCase.search(inputSearchText, nextPage, perPage = perPage).collect {
                         processResult(it.first, it.second)
                         nextPage++
                     }
@@ -96,13 +110,21 @@ class SearchViewModel(
             errorStatus != null -> {
                 when (errorStatus) {
                     ErrorStatusDomain.NO_CONNECTION -> {
-                        setState(SearchState.Error(ErrorStatusUi.NO_CONNECTION))
-                        latestSearchText = DEFAULT_TEXT
+                        if (vacanciesList.isEmpty()) {
+                            setState(SearchState.Error(ErrorStatusUi.NO_CONNECTION))
+                            latestSearchText = DEFAULT_TEXT
+                        } else {
+                            setToastErrorState(SearchError.NO_CONNECTION)
+                        }
                     }
 
                     ErrorStatusDomain.ERROR_OCCURRED -> {
-                        setState(SearchState.Error(ErrorStatusUi.ERROR_OCCURRED))
-                        latestSearchText = DEFAULT_TEXT
+                        if (vacanciesList.isEmpty()) {
+                            setState(SearchState.Error(ErrorStatusUi.ERROR_OCCURRED))
+                            latestSearchText = DEFAULT_TEXT
+                        } else {
+                            setToastErrorState(SearchError.ERROR_OCCURRED)
+                        }
                     }
                 }
             }
@@ -122,5 +144,7 @@ class SearchViewModel(
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2000L
         private const val DEFAULT_TEXT = ""
+        private const val PAGE_LIMIT = 2000
+        const val DEFAULT_PER_PAGE = 20
     }
 }

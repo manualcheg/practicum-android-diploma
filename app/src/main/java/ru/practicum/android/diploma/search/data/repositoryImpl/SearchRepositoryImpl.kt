@@ -18,13 +18,13 @@ class SearchRepositoryImpl(
     private val vacancyDbConverter: VacancyDtoConverter,
 ) : SearchRepository {
 
-    override fun search(text: String, page: Int): Flow<Resource<Vacancies>> = flow {
+    override fun search(text: String, page: Int, perPage: Int): Flow<Resource<Vacancies>> = flow {
 
         val options = filterOptionsDataSource.getFilterOptions()
 
         options[SEARCH_TEXT] = text
         options[PAGE] = page.toString()
-        options[PER_PAGE] = DEFAULT_PER_PAGE
+        options[PER_PAGE] = perPage.toString()
 
         val response = vacancyRemoteDataSource.doRequest(SearchRequest(options = options))
 
@@ -51,6 +51,5 @@ class SearchRepositoryImpl(
         const val SEARCH_TEXT = "text"
         const val PAGE = "page"
         const val PER_PAGE = "per_page"
-        const val DEFAULT_PER_PAGE = "20"
     }
 }
