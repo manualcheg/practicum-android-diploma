@@ -2,7 +2,7 @@ package ru.practicum.android.diploma.search.domain.useCase
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import ru.practicum.android.diploma.common.domain.model.vacancy_models.Vacancy
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.Vacancies
 import ru.practicum.android.diploma.common.util.Resource
 import ru.practicum.android.diploma.search.data.model.ErrorRemoteDataSource
 import ru.practicum.android.diploma.search.domain.model.ErrorStatusDomain
@@ -12,8 +12,12 @@ class SearchUseCaseImpl(
     private val repository: SearchRepository,
 
     ) : SearchUseCase {
-    override fun search(options: HashMap<String, String>): Flow<Pair<List<Vacancy>?, ErrorStatusDomain?>> {
-        return repository.search(options).map { result ->
+    override fun search(
+        text: String,
+        page: Int,
+        perPage: Int
+    ): Flow<Pair<Vacancies?, ErrorStatusDomain?>> {
+        return repository.search(text, page, perPage).map { result ->
             when (result) {
                 is Resource.Success -> {
                     Pair(result.data, null)

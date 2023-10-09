@@ -7,6 +7,7 @@ import ru.practicum.android.diploma.databinding.ItemPhonesBinding
 
 class ContactsPhoneViewHolder(
     private val binding: ItemPhonesBinding,
+    private val clickListener: (PhoneUi) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(phone: PhoneUi) {
         if (phone.comment.isNotBlank()) {
@@ -14,5 +15,8 @@ class ContactsPhoneViewHolder(
         } else binding.commentPhoneLinearLayout.isVisible = false
 
         binding.contactsPhoneTextView.text = phone.formattedNumber
+        binding.contactsPhoneTextView.setOnClickListener {
+            clickListener.invoke(phone)
+        }
     }
 }

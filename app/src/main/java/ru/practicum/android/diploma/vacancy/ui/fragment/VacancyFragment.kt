@@ -5,17 +5,17 @@ import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.ProgressBar
-import android.widget.ScrollView
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.common.ui.model.PhoneUi
+import ru.practicum.android.diploma.common.util.recycleView.RVAdapter
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
 import ru.practicum.android.diploma.vacancy.ui.VacancyState
 import ru.practicum.android.diploma.vacancy.ui.viewModel.VacancyViewModel
@@ -30,17 +30,13 @@ class VacancyFragment : Fragment() {
     private var _binding: FragmentVacancyBinding? = null
     private val binding get() = _binding!!
 
-    private var vacancyProgressBar: ProgressBar? = null
-    private var vacancyContentScrollView: ScrollView? = null
-    private var placeholderContainerFrameLayout: FrameLayout? = null
-    private var vacancyServerErrorPlaceholder: TextView? = null
+    private var phonesAdapter: RVAdapter? = null
 
     private var vacancyId: Int? = null
+    private val args: VacancyFragmentArgs by navArgs()
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentVacancyBinding.inflate(inflater, container, false)
         return binding.root
@@ -49,55 +45,82 @@ class VacancyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        vacancyId = 87620177
-
+        vacancyId = args.vacansyId
         viewModel.state.observe(viewLifecycleOwner) {
             render(it)
         }
 
-        vacancyProgressBar = binding.vacancyProgressBar
-        vacancyServerErrorPlaceholder = binding.vacancyServerErrorPlaceholder
-        vacancyContentScrollView = binding.vacancyContentScrollView
-        placeholderContainerFrameLayout = binding.placeholderContainerFrameLayout
+        setOnClickListeners()
+        initializePhonesAdapter()
 
-        binding.vacancyToolbar.setNavigationOnClickListener {
-            findNavController().popBackStack()
+        binding.vacancySimilarVacanciesButtonTextView.setOnClickListener {
+            val direction =
+                VacancyFragmentDirections.actionVacancyFragmentToSimilarVacancyFragment(vacancyId!!)
+            findNavController().navigate(direction)
         }
+
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        phonesAdapter = null
     }
 
     private fun render(state: VacancyState) {
         when (state) {
             is VacancyState.Load -> {
-                vacancyProgressBar?.visibility = View.VISIBLE
-                vacancyServerErrorPlaceholder?.visibility = View.GONE
-                vacancyContentScrollView?.visibility = View.GONE
-                placeholderContainerFrameLayout?.visibility = View.VISIBLE
-
+                binding.vacancyProgressBar.visibility = View.VISIBLE
+                binding.vacancyServerErrorPlaceholder.visibility = View.GONE
+                binding.vacancyContentScrollView.visibility = View.GONE
+                binding.placeholderContainerFrameLayout.visibility = View.VISIBLE
             }
 
             is VacancyState.Error -> {
-                vacancyProgressBar?.visibility = View.GONE
-                vacancyServerErrorPlaceholder?.visibility = View.VISIBLE
-                vacancyContentScrollView?.visibility = View.GONE
-                placeholderContainerFrameLayout?.visibility = View.VISIBLE
-
+                binding.vacancyProgressBar.visibility = View.GONE
+                binding.vacancyServerErrorPlaceholder.visibility = View.VISIBLE
+                binding.vacancyContentScrollView.visibility = View.GONE
+                binding.placeholderContainerFrameLayout.visibility = View.VISIBLE
             }
 
             is VacancyState.Content -> {
-                vacancyProgressBar?.visibility = View.GONE
-                vacancyServerErrorPlaceholder?.visibility = View.GONE
-                vacancyContentScrollView?.visibility = View.VISIBLE
-                placeholderContainerFrameLayout?.visibility = View.GONE
+                binding.vacancyProgressBar.visibility = View.GONE
+                binding.vacancyServerErrorPlaceholder.visibility = View.GONE
+                binding.vacancyContentScrollView.visibility = View.VISIBLE
+                binding.placeholderContainerFrameLayout.visibility = View.GONE
                 setupContent(state)
-
             }
         }
     }
+
+    private fun setOnClickListeners() {
+        binding.vacancyContactsEmailTextView.setOnClickListener {
+            viewModel.openMail(binding.vacancyContactsEmailTextView.text.toString())
+        }
+
+        binding.vacancyToolbar.setNavigationOnClickListener { findNavController().popBackStack() }
+        binding.vacancyToolbar.inflateMenu(R.menu.menu_vacancy_toolbar)
+        binding.vacancyToolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.share -> {
+                    vacancyId?.let { it1 -> viewModel.shareVacancyById(it1) }
+                }
+
+                R.id.like -> {}
+            }
+            true
+        }
+    }
+
+    private fun initializePhonesAdapter() {
+        phonesAdapter = RVAdapter { item ->
+            viewModel.dialPhone((item as PhoneUi).formattedNumber)
+        }
+        binding.vacancyContactsPhoneRecycleView.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.vacancyContactsPhoneRecycleView.adapter = phonesAdapter
+    }
+
 
     private fun setupContent(state: VacancyState.Content) {
         if (state.vacancy.name.isNotBlank()) {
@@ -113,8 +136,7 @@ class VacancyFragment : Fragment() {
         }
 
         Glide.with(binding.vacancyLogoImageView).load(state.vacancy.employerLogoUrl90)
-            .placeholder(R.drawable.ic_placeholder)
-            .centerCrop().transform(
+            .placeholder(R.drawable.ic_placeholder).centerCrop().transform(
                 RoundedCorners(
                     resources.getDimensionPixelSize(
                         R.dimen.corner_radius
@@ -165,7 +187,7 @@ class VacancyFragment : Fragment() {
             binding.vacancyKeySkillsTextView.text =
                 textForSkills.substring(0, textForSkills.length - 1)
         } else {
-            binding.vacancyKeySkillsTextView.visibility = View.GONE
+            binding.vacancyKeySkillsLinearLayout.visibility = View.GONE
         }
 
         if (state.vacancy.contactsName.isNotBlank()) {
@@ -182,6 +204,16 @@ class VacancyFragment : Fragment() {
             binding.vacancyContactsEmailTitleTextView.visibility = View.GONE
         }
 
+        if (state.vacancy.contactsPhones.isNotEmpty()) {
+            phonesAdapter?.items = state.vacancy.contactsPhones
+        }
+
+        if (state.vacancy.contactsName.isBlank() &&
+            state.vacancy.contactsEmail.isBlank() &&
+            state.vacancy.contactsPhones.isEmpty()
+        ) {
+            binding.vacancyContactsLinearLayout.visibility = View.GONE
+        }
 
     }
 }

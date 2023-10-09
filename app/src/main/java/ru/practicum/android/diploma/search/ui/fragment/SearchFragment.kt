@@ -8,11 +8,13 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -21,6 +23,7 @@ import ru.practicum.android.diploma.common.ui.model.VacancyUi
 import ru.practicum.android.diploma.common.util.recycleView.RVAdapter
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.search.ui.model.ErrorStatusUi
+import ru.practicum.android.diploma.search.ui.model.SearchError
 import ru.practicum.android.diploma.search.ui.model.SearchState
 import ru.practicum.android.diploma.search.ui.model.TextWatcherJustOnTextChanged
 import ru.practicum.android.diploma.search.ui.viewModel.SearchViewModel
@@ -55,7 +58,11 @@ class SearchFragment : Fragment() {
         setOnTextWatchersTextChangeListeners()
 
         viewModel.observeState().observe(viewLifecycleOwner) {
-            render(it)
+            renderSearchState(it)
+        }
+
+        viewModel.observeErrorToastState().observe(viewLifecycleOwner) {
+            renderErrorState(it)
         }
 
         isClickAllowed = true
@@ -83,21 +90,37 @@ class SearchFragment : Fragment() {
         binding.searchScreenRecyclerView.adapter = vacanciesAdapter
     }
 
-    private fun render(state: SearchState) {
+    private fun renderSearchState(state: SearchState) {
         when (state) {
             is SearchState.Error -> showError(state.errorStatus)
-            SearchState.Loading -> showLoading()
+            is SearchState.Loading.LoadingSearch -> showLoadingSearch()
+            is SearchState.Loading.LoadingPages -> showLoadingPages()
             SearchState.Success.Empty -> showEmpty()
-            is SearchState.Success.SearchContent -> showContent(state.vacancies)
+            is SearchState.Success.SearchContent -> showContent(state.vacancies, state.foundVacancy)
         }
     }
 
-    private fun showContent(vacancies: List<VacancyUi>) {
+    private fun renderErrorState(state: SearchError) {
+        when (state) {
+            SearchError.ERROR_OCCURRED -> {
+                showToast(resources.getString(R.string.failed_to_get_a_list_of_vacancies))
+                binding.searchScreenPaginationProgressBar.isVisible = false
+            }
+
+            SearchError.NO_CONNECTION -> {
+                showToast(resources.getString(R.string.no_internet))
+                binding.searchScreenPaginationProgressBar.isVisible = false
+            }
+        }
+    }
+
+
+    private fun showContent(vacancies: List<VacancyUi>, foundVacancies: Int) {
         emptyScreen()
         vacanciesAdapter?.items = vacancies
         binding.searchScreenRecyclerView.isVisible = true
         binding.counterVacanciesTextView.text = resources.getQuantityString(
-            R.plurals.vacancy_plural, vacancies.size, vacancies.size
+            R.plurals.vacancy_plural, foundVacancies, foundVacancies
         )
         binding.counterVacanciesTextView.isVisible = true
     }
@@ -108,9 +131,13 @@ class SearchFragment : Fragment() {
         binding.placeholderSearchVacanciesImageView.isVisible = true
     }
 
-    private fun showLoading() {
+    private fun showLoadingSearch() {
         emptyScreen()
         binding.searchScreenFirstLoadingProgressBar.isVisible = true
+    }
+
+    private fun showLoadingPages() {
+        binding.searchScreenPaginationProgressBar.isVisible = true
     }
 
     private fun showError(errorStatus: ErrorStatusUi) {
@@ -163,6 +190,24 @@ class SearchFragment : Fragment() {
 //        binding.searchScreenHeaderFilterImageView.setOnClickListener {
 //            findNavController().navigate(R.id.action_searchFragment_to_filteringSettingsFragment)
 //        }
+
+        binding.searchScreenRecyclerView.addOnScrollListener(object :
+            RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                if (dy > 0) {
+                    val pos =
+                        (binding.searchScreenRecyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                    val itemsCount = vacanciesAdapter?.itemCount
+                    if (itemsCount != null) {
+                        if (pos >= itemsCount - 1) {
+                            viewModel.onLastItemReached()
+                        }
+                    }
+                }
+            }
+        })
     }
 
     private fun setOnTextWatchersTextChangeListeners() {
@@ -175,10 +220,13 @@ class SearchFragment : Fragment() {
 
                 if (binding.searchScreenEditText.hasFocus() && (s?.isEmpty() == true || s?.isBlank() == true)) {
                     viewModel.clearSearchInput()
+                } else {
+                    vacanciesAdapter?.items = listOf()
+                    binding.counterVacanciesTextView.visibility = View.GONE
+                    viewModel.searchDebounced(
+                        changedText = s?.toString() ?: ""
+                    )
                 }
-                viewModel.searchDebounced(
-                    changedText = s?.toString() ?: ""
-                )
             }
         }
 
@@ -219,6 +267,10 @@ class SearchFragment : Fragment() {
         binding.searchScreenNoInternetPlaceholder.isVisible = false
         binding.searchScreenNothingFoundPlaceholder.isVisible = false
         binding.searchScreenServerErrorPlaceholder.isVisible = false
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
     companion object {
