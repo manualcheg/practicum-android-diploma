@@ -14,9 +14,7 @@ import ru.practicum.android.diploma.region_and_sector.ui.CountryViewHolder
 import ru.practicum.android.diploma.region_and_sector.ui.RegionIndustryViewHolder
 import ru.practicum.android.diploma.region_and_sector.ui.model.CountryUi
 import ru.practicum.android.diploma.region_and_sector.ui.model.RegionIndustryUi
-import ru.practicum.android.diploma.vacancy.domain.useCase.CallPhoneUseCaseImpl
 import ru.practicum.android.diploma.vacancy.ui.ContactsPhoneViewHolder
-import ru.practicum.android.diploma.vacancy.ui.navigator.ExternalNavigatorImpl
 
 class RVAdapter(
     private var clickListener: ((ItemUiBase)) -> Unit = {}
@@ -44,7 +42,7 @@ class RVAdapter(
             CONTACTS_PHONE_VIEWTYPE -> ContactsPhoneViewHolder(
                 ItemPhonesBinding.inflate(
                     layoutInflater, parent, false
-                ), CallPhoneUseCaseImpl(ExternalNavigatorImpl(parent.context))
+                ), clickListener
             )
 
             COUNTRY_VIEWTYPE -> CountryViewHolder(

@@ -36,6 +36,7 @@ class ExternalNavigatorImpl(private val context: Context) : ExternalNavigator {
     }
 
     private fun startActivityOrShowError(intent: Intent) {
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         try {
             context.startActivity(intent)
         } catch (e: Throwable) {

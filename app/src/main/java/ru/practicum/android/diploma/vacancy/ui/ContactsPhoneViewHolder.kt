@@ -4,11 +4,10 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.common.ui.model.PhoneUi
 import ru.practicum.android.diploma.databinding.ItemPhonesBinding
-import ru.practicum.android.diploma.vacancy.domain.useCase.CallPhoneUseCase
 
 class ContactsPhoneViewHolder(
     private val binding: ItemPhonesBinding,
-    private val callPhoneUseCase: CallPhoneUseCase
+    private val clickListener: (PhoneUi) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(phone: PhoneUi) {
         if (phone.comment.isNotBlank()) {
@@ -17,7 +16,7 @@ class ContactsPhoneViewHolder(
 
         binding.contactsPhoneTextView.text = phone.formattedNumber
         binding.contactsPhoneTextView.setOnClickListener {
-            callPhoneUseCase.execute(phone.formattedNumber)
+            clickListener.invoke(phone)
         }
     }
 }

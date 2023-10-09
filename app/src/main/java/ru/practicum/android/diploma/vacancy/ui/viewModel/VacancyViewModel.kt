@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.vacancy.domain.useCase.CallPhoneUseCase
 import ru.practicum.android.diploma.vacancy.domain.useCase.FindVacancyByIdUseCase
 import ru.practicum.android.diploma.vacancy.domain.useCase.OpenMailUseCase
 import ru.practicum.android.diploma.vacancy.domain.useCase.ShareVacancyByIdUseCase
@@ -15,6 +16,7 @@ class VacancyViewModel(
     private val findVacancyByIdUseCase: FindVacancyByIdUseCase,
     private val openMailUseCase: OpenMailUseCase,
     private val shareVacancyByIdUseCase: ShareVacancyByIdUseCase,
+    private val callPhoneUseCase: CallPhoneUseCase
 ) : ViewModel() {
 
     private val _state = MutableLiveData<VacancyState>()
@@ -31,6 +33,10 @@ class VacancyViewModel(
 
     fun shareVacancyById(id: Int) {
         shareVacancyByIdUseCase.execute(id)
+    }
+
+    fun dialPhone(phoneNumber: String) {
+        callPhoneUseCase.execute(phoneNumber)
     }
 
 

@@ -8,19 +8,20 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ProgressBar
 import android.widget.ScrollView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
-import ru.practicum.android.diploma.vacancy.ui.viewModel.VacancyViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.practicum.android.diploma.R
-import android.widget.TextView
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
+import ru.practicum.android.diploma.common.ui.model.PhoneUi
 import ru.practicum.android.diploma.common.util.recycleView.RVAdapter
+import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
 import ru.practicum.android.diploma.vacancy.ui.VacancyState
+import ru.practicum.android.diploma.vacancy.ui.viewModel.VacancyViewModel
 
 class VacancyFragment : Fragment() {
 
@@ -42,9 +43,7 @@ class VacancyFragment : Fragment() {
     private var vacancyId: Int? = null
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentVacancyBinding.inflate(inflater, container, false)
         return binding.root
@@ -53,7 +52,7 @@ class VacancyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        vacancyId = 87620177
+        vacancyId = 87393863
 
         viewModel.state.observe(viewLifecycleOwner) {
             render(it)
@@ -123,7 +122,9 @@ class VacancyFragment : Fragment() {
     }
 
     private fun initializePhonesAdapter() {
-        phonesAdapter = RVAdapter()
+        phonesAdapter = RVAdapter { item ->
+            viewModel.dialPhone((item as PhoneUi).formattedNumber)
+        }
         binding.vacancyContactsPhoneRecycleView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.vacancyContactsPhoneRecycleView.adapter = phonesAdapter
@@ -144,8 +145,7 @@ class VacancyFragment : Fragment() {
         }
 
         Glide.with(binding.vacancyLogoImageView).load(state.vacancy.employerLogoUrl90)
-            .placeholder(R.drawable.ic_placeholder)
-            .centerCrop().transform(
+            .placeholder(R.drawable.ic_placeholder).centerCrop().transform(
                 RoundedCorners(
                     resources.getDimensionPixelSize(
                         R.dimen.corner_radius
@@ -196,7 +196,7 @@ class VacancyFragment : Fragment() {
             binding.vacancyKeySkillsTextView.text =
                 textForSkills.substring(0, textForSkills.length - 1)
         } else {
-            binding.vacancyKeySkillsTextView.visibility = View.GONE
+            binding.vacancyKeySkillsLinearLayout.visibility = View.GONE
         }
 
         if (state.vacancy.contactsName.isNotBlank()) {
@@ -215,7 +215,13 @@ class VacancyFragment : Fragment() {
 
         if (state.vacancy.contactsPhones.isNotEmpty()) {
             phonesAdapter?.items = state.vacancy.contactsPhones
-            phonesAdapter?.notifyDataSetChanged()
+        }
+
+        if (state.vacancy.contactsName.isBlank() &&
+            state.vacancy.contactsEmail.isBlank() &&
+            state.vacancy.contactsPhones.isEmpty()
+        ) {
+            binding.vacancyContactsLinearLayout.visibility = View.GONE
         }
 
     }
