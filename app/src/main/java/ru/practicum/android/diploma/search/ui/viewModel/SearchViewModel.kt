@@ -62,9 +62,6 @@ class SearchViewModel(
 
     fun clearSearchInput() {
         setState(SearchState.Success.Empty)
-
-//        не получается обнулить, вылетает ошибка
-//        vacanciesList.clear()
         tracksSearchDebounce(DEFAULT_TEXT)
         job?.cancel()
     }

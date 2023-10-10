@@ -135,6 +135,7 @@ class SearchFragment : Fragment() {
 
     private fun showLoadingSearch() {
         emptyScreen()
+        vacanciesAdapter?.items = listOf()
         binding.searchScreenFirstLoadingProgressBar.isVisible = true
         inputMethodManager?.hideSoftInputFromWindow(
             binding.searchScreenEditText.windowToken, 0
@@ -222,8 +223,8 @@ class SearchFragment : Fragment() {
                 inputSearchText = binding.searchScreenEditText.text.toString()
 
                 if (binding.searchScreenEditText.hasFocus() && (s?.isEmpty() == true || s?.isBlank() == true)) {
-                    viewModel.clearSearchInput()
                     vacanciesAdapter?.items = listOf()
+                    viewModel.clearSearchInput()
                 }
                 viewModel.searchDebounced(
                     changedText = s?.toString() ?: ""
