@@ -4,6 +4,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.common.domain.model.vacancy_models.Vacancies
 import ru.practicum.android.diploma.common.util.Resource
+import ru.practicum.android.diploma.common.util.constants.RepositoryConst.NO_CONNECTION
+import ru.practicum.android.diploma.common.util.constants.RepositoryConst.PAGE
+import ru.practicum.android.diploma.common.util.constants.RepositoryConst.PER_PAGE
+import ru.practicum.android.diploma.common.util.constants.RepositoryConst.RESPONSE_SUCCESS
+import ru.practicum.android.diploma.common.util.constants.RepositoryConst.SEARCH_TEXT
 import ru.practicum.android.diploma.filter.data.dataSource.FilterOptionsDataSource
 import ru.practicum.android.diploma.search.data.dataSource.VacancyRemoteDataSource
 import ru.practicum.android.diploma.search.data.mapper.VacancyDtoConverter
@@ -43,13 +48,5 @@ class SearchRepositoryImpl(
                 emit(Resource.Error(ErrorRemoteDataSource.ERROR_OCCURRED))
             }
         }
-    }
-
-    companion object {
-        const val NO_CONNECTION = -1
-        const val RESPONSE_SUCCESS = 200
-        const val SEARCH_TEXT = "text"
-        const val PAGE = "page"
-        const val PER_PAGE = "per_page"
     }
 }
