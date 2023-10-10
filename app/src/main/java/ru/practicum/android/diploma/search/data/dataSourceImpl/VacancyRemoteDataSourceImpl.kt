@@ -7,6 +7,7 @@ import ru.practicum.android.diploma.search.data.model.SearchRequest
 import ru.practicum.android.diploma.search.data.network.HeadHunterApiService
 import ru.practicum.android.diploma.search.data.network.Response
 import ru.practicum.android.diploma.search.domain.repository.NetworkConnectionProvider
+import ru.practicum.android.diploma.similar_vacancy.data.model.SearchSimilarVacancyRequest
 import ru.practicum.android.diploma.vacancy.data.model.VacancySearchRequest
 
 class VacancyRemoteDataSourceImpl(
@@ -32,6 +33,19 @@ class VacancyRemoteDataSourceImpl(
             return withContext(Dispatchers.IO) {
                 try {
                     val response = headHunterApiService.searchVacancyById(dto.vacancyId)
+                    response.apply { resultCode = RESPONSE_SUCCESS }
+                } catch (e: Throwable) {
+                    Response().apply { resultCode = RESPONSE_ERROR }
+                }
+            }
+        }
+
+        if (dto is SearchSimilarVacancyRequest) {
+            return withContext(Dispatchers.IO) {
+                try {
+                    val response = headHunterApiService.searchSimilarVacancies(
+                        vacancyId = dto.vacancyId, options = dto.options
+                    )
                     response.apply { resultCode = RESPONSE_SUCCESS }
                 } catch (e: Throwable) {
                     Response().apply { resultCode = RESPONSE_ERROR }
