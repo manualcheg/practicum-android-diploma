@@ -9,6 +9,10 @@ import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.domain.model.vacancy_models.Vacancies
 import ru.practicum.android.diploma.common.ui.mapper.VacancyDomainToVacancyUiConverter
 import ru.practicum.android.diploma.common.ui.model.VacancyUi
+import ru.practicum.android.diploma.common.util.constants.VacanciesViewModelConst.DEFAULT_MAX_PAGES
+import ru.practicum.android.diploma.common.util.constants.VacanciesViewModelConst.DEFAULT_PAGE
+import ru.practicum.android.diploma.common.util.constants.VacanciesViewModelConst.DEFAULT_PER_PAGE
+import ru.practicum.android.diploma.common.util.constants.VacanciesViewModelConst.PAGE_LIMIT
 import ru.practicum.android.diploma.search.domain.model.ErrorStatusDomain
 import ru.practicum.android.diploma.search.ui.model.ErrorStatusUi
 import ru.practicum.android.diploma.search.ui.model.SearchError
@@ -47,7 +51,6 @@ class SimilarVacancyViewModel(
     fun onLastItemReached() {
         searchSameRequest(vacancyId)
     }
-
 
     private fun setState(state: SearchState) {
         stateLiveData.value = state
@@ -139,12 +142,5 @@ class SimilarVacancyViewModel(
         searchSimilarVacanciesByIdUseCase.execute(vacancyId, nextPage, perPage = perPage).collect {
             processResult(it.first, it.second, isNewSearch)
         }
-    }
-
-    companion object {
-        private const val PAGE_LIMIT = 2000
-        const val DEFAULT_PER_PAGE = 20
-        const val DEFAULT_PAGE = 0
-        const val DEFAULT_MAX_PAGES = 1
     }
 }
