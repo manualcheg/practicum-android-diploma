@@ -41,6 +41,8 @@ class SearchFragment : Fragment() {
     private var inputSearchText: String = DEFAULT_TEXT
     private var isClickAllowed = true
 
+    private var inputMethodManager: InputMethodManager? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -134,6 +136,9 @@ class SearchFragment : Fragment() {
     private fun showLoadingSearch() {
         emptyScreen()
         binding.searchScreenFirstLoadingProgressBar.isVisible = true
+        inputMethodManager?.hideSoftInputFromWindow(
+            binding.searchScreenEditText.windowToken, 0
+        )
     }
 
     private fun showLoadingPages() {
@@ -180,7 +185,7 @@ class SearchFragment : Fragment() {
             }
         })
 
-        val inputMethodManager =
+        inputMethodManager =
             activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
         inputMethodManager?.hideSoftInputFromWindow(
             binding.searchScreenEditText.windowToken, 0
