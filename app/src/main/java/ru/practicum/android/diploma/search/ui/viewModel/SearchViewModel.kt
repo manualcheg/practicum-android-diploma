@@ -35,6 +35,7 @@ class SearchViewModel(
     private var perPage = DEFAULT_PER_PAGE
 
     private var isNextPageLoading = false
+    private val vacanciesList = mutableListOf<VacancyUi>()
 
     private var job: Job? = null
 
@@ -113,7 +114,6 @@ class SearchViewModel(
     private fun processResult(
         vacancies: Vacancies?, errorStatus: ErrorStatusDomain?, isNewSearch: Boolean
     ) {
-        val vacanciesList = mutableListOf<VacancyUi>()
         if (vacancies != null) {
             val foundVacancyUi =
                 vacancies.vacancyList.map { vacancyDomainToVacancyUiConverter.map(it) }
