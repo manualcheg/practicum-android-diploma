@@ -1,6 +1,8 @@
 package ru.practicum.android.diploma.app
 
 import android.os.Bundle
+import android.view.View
+import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -24,6 +26,28 @@ class RootActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         navigationView.setupWithNavController(navController)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.vacancyFragment, R.id.filteringSettingsFragment -> {
+                    if (binding.navigationView.visibility == View.VISIBLE) {
+                        binding.navigationView.animation = AnimationUtils.loadAnimation(this, R.anim.slide_out_down)
+                        binding.navigationView.animate()
+                        binding.navigationView.visibility = View.GONE
+                        binding.divider.visibility = View.GONE
+                    }
+                }
+
+                else -> {
+                    if (binding.navigationView.visibility == View.GONE) {
+                        binding.navigationView.visibility = View.VISIBLE
+                        binding.divider.visibility = View.VISIBLE
+                        binding.navigationView.animation = AnimationUtils.loadAnimation(this, R.anim.slide_in_up)
+                        binding.navigationView.animate()
+                    }
+                }
+            }
+        }
 
         // Пример использования access token для HeadHunter API
         networkRequestExample(accessToken = BuildConfig.HH_ACCESS_TOKEN)
