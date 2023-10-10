@@ -6,10 +6,6 @@ import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.ProgressBar
-import android.widget.ScrollView
-import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -18,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
 import ru.practicum.android.diploma.vacancy.ui.VacancyState
@@ -28,7 +25,11 @@ import ru.practicum.android.diploma.common.util.recycleView.RVAdapter
 
 class VacancyFragment : Fragment() {
 
-    private val viewModel: VacancyViewModel by viewModel()
+    private val viewModel: VacancyViewModel by viewModel {
+        parametersOf(
+            vacancyId
+        )
+    }
     private var _binding: FragmentVacancyBinding? = null
     private val binding get() = _binding!!
 

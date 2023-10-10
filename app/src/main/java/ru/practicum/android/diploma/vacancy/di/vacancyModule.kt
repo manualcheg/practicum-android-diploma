@@ -26,7 +26,7 @@ val vacancyModule = module {
     single<ExternalNavigator> { ExternalNavigatorImpl(androidContext()) }
     single<VacancyRepository> { VacancyRepositoryImpl(get(), get(), get(), get()) }
 
-    single<FindVacancyByIdUseCase> { FindVacancyByIdUseCaseImpl(get(), get()) }
+    single<FindVacancyByIdUseCase> { FindVacancyByIdUseCaseImpl(get()) }
     single<AddOrDelVacancyUseCase> { AddOrDelVacancyUseCaseImpl(get(), get()) }
     single<CheckInFavoritesUseCase> { CheckInFavoritesUseCaseImpl(get()) }
 
@@ -34,5 +34,16 @@ val vacancyModule = module {
     single<ShareVacancyByIdUseCase> { ShareVacancyByIdUseCaseImpl(get()) }
     single<CallPhoneUseCase> { CallPhoneUseCaseImpl(get()) }
 
-    viewModel { (vacancyId: Int) -> VacancyViewModel(vacancyId, get(), get(), get(), get(), get(), get(), get(), get()) }
+    viewModel { (vacancyId: Int) ->
+        VacancyViewModel(
+            vacancyId = vacancyId,
+            findVacancyByIdUseCase = get(),
+            addOrDelVacancyUseCase = get(),
+            checkInFavoritesUseCase = get(),
+            vacancyDomainToVacancyUiConverter = get(),
+            openMailUseCase = get(),
+            shareVacancyByIdUseCase = get(),
+            callPhoneUseCase = get()
+        )
+    }
 }
