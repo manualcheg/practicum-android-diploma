@@ -30,7 +30,6 @@ class FavoritesLocalDataSourceImpl(
     }
 
     override suspend fun isVacancyContainsFlow(id: Int): Flow<Boolean> = flow {
-//        return appDataBase.FavoritesVacanciesDao().isVacancyContains(id)
         emit(appDataBase.FavoritesVacanciesDao().isVacancyContains(id))
     }
 

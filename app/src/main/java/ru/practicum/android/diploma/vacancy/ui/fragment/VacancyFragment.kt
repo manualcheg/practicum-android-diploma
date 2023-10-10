@@ -63,7 +63,6 @@ class VacancyFragment : Fragment() {
 
                 R.id.like -> {
                     viewModel.addOrDelFavorites(vacancyId!!)
-                    viewModel.checkFavorites(vacancyId!!)
                     true
                 }
 
@@ -74,7 +73,7 @@ class VacancyFragment : Fragment() {
         }
 
         viewModel.inFavorites.observe(viewLifecycleOwner) { inFavorites ->
-            val menu: Menu = binding.vacancyToolbar.getMenu()
+            val menu: Menu = binding.vacancyToolbar.menu
             if (inFavorites) {
                 menu.getItem(1).icon =
                     AppCompatResources.getDrawable(requireContext(), R.drawable.ic_favorites_on)

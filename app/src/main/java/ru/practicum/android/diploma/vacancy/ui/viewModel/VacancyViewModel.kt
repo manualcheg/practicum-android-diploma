@@ -42,7 +42,6 @@ class VacancyViewModel(
 
     fun checkFavorites(id: Int) {
         viewModelScope.launch {
-//            _inFavorites.value = checkInFavoritesUseCase.execute(id)
             checkInFavoritesUseCase.execute(id).collect{
                 _inFavorites.postValue(it)
             }
@@ -51,7 +50,7 @@ class VacancyViewModel(
 
     fun addOrDelFavorites(id: Int) {
         viewModelScope.launch {
-            addOrDelVacancyUseCase.execute(id)
+            _inFavorites.postValue(addOrDelVacancyUseCase.execute(id))
         }
     }
 }
