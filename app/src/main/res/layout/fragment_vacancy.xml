@@ -12,7 +12,6 @@
         android:id="@+id/vacancyToolbar"
         style="@style/Toolbar"
         android:layout_width="match_parent"
-        app:menu="@menu/menu_vacancy_toolbar"
         app:navigationIcon="@drawable/ic_arrow_left"
         app:title="@string/vacancy"
         app:titleTextAppearance="@style/TitleText" />
