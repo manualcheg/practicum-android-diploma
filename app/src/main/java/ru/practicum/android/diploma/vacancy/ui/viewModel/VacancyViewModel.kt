@@ -5,14 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.common.ui.mapper.VacancyDomainToVacancyUiConverter
 import ru.practicum.android.diploma.favorites.domain.useCase.AddOrDelVacancyUseCase
 import ru.practicum.android.diploma.favorites.domain.useCase.CheckInFavoritesUseCase
-import ru.practicum.android.diploma.common.ui.mapper.VacancyDomainToVacancyUiConverter
 import ru.practicum.android.diploma.vacancy.domain.useCase.CallPhoneUseCase
 import ru.practicum.android.diploma.vacancy.domain.useCase.FindVacancyByIdUseCase
 import ru.practicum.android.diploma.vacancy.domain.useCase.OpenMailUseCase
 import ru.practicum.android.diploma.vacancy.domain.useCase.ShareVacancyByIdUseCase
-import ru.practicum.android.diploma.vacancy.ui.VacancyState
+import ru.practicum.android.diploma.vacancy.ui.model.VacancyState
 
 class VacancyViewModel(
     private val findVacancyByIdUseCase: FindVacancyByIdUseCase,
@@ -31,7 +31,7 @@ class VacancyViewModel(
     val inFavorites: LiveData<Boolean> = _inFavorites
 
     init {
-        setState(VacancyState.Load())
+        setState(VacancyState.Load)
     }
     
     fun openMail(mailTo: String) {
@@ -52,7 +52,7 @@ class VacancyViewModel(
             if (vacancyUI.vacancy != null)
                 setState(VacancyState.Content(vacancyDomainToVacancyUiConverter.map(vacancyUI.vacancy)))
             else
-                setState(VacancyState.Error())
+                setState(VacancyState.Error)
         }
     }
 

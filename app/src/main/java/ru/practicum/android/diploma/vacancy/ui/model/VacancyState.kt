@@ -1,11 +1,11 @@
-package ru.practicum.android.diploma.vacancy.ui
+package ru.practicum.android.diploma.vacancy.ui.model
 
 import ru.practicum.android.diploma.common.ui.model.VacancyUi
 
 sealed interface VacancyState {
-    class Load() : VacancyState
+    object Load : VacancyState
 
-    class Error() : VacancyState
+    object Error : VacancyState
 
     class Content(val vacancy: VacancyUi) : VacancyState
 }

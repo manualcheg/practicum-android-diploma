@@ -15,4 +15,10 @@ interface HeadHunterApiService {
 
     @GET("/vacancies/{vacancy_id}")
     suspend fun searchVacancyById(@Path("vacancy_id") vacancyId: Int): VacancySearchResponse
+
+    @GET("/vacancies/{vacancy_id}/similar_vacancies")
+    suspend fun searchSimilarVacancies(
+        @Path("vacancy_id") vacancyId: Int,
+        @QueryMap options: Map<String, String>
+    ): VacanciesSearchResponse
 }
