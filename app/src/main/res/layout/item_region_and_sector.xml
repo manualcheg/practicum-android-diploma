@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/regionAndSectorFrameLayout"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/layout_height"
+    android:layout_height="@dimen/item_height"
     android:layout_marginVertical="@dimen/margin_vertical_for_layout">
 
     <CheckBox

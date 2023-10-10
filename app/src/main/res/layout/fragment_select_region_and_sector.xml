@@ -19,7 +19,7 @@
     <EditText
         android:id="@+id/selectRegionAndSectorEditText"
         android:layout_width="@dimen/_0dp"
-        android:layout_height="@dimen/search_screen_edit_text_height"
+        android:layout_height="@dimen/edit_text_height"
         android:layout_gravity="center"
         android:layout_marginHorizontal="@dimen/padding_horizontal"
         android:layout_marginTop="@dimen/padding_vertical"
@@ -46,7 +46,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="@dimen/_0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/padding_vertical_big"
+        android:layout_marginTop="@dimen/margin_vertical_small"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/selectRegionAndSectorEditText"

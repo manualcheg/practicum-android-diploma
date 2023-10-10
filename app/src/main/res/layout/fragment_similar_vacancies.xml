@@ -43,7 +43,7 @@
         android:id="@+id/similarVacanciesRecyclerView"
         android:layout_width="@dimen/_0dp"
         android:layout_height="@dimen/_0dp"
-        android:layout_marginTop="@dimen/padding_vertical_big"
+        android:layout_marginTop="@dimen/margin_vertical_small"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
