@@ -30,7 +30,7 @@
         android:hint="@string/type_a_request"
         android:imeOptions="actionDone"
         android:inputType="text"
-        android:maxLength="22"
+        android:maxLength="255"
         android:maxLines="1"
         android:paddingStart="@dimen/padding_horizontal"
         android:singleLine="true"
