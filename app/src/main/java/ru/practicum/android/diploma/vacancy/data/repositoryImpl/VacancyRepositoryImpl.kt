@@ -47,9 +47,4 @@ class VacancyRepositoryImpl(
         }
     }
 
-    companion object {
-        const val NO_CONNECTION = -1
-        const val RESPONSE_SUCCESS = 200
-    }
-
 }
