@@ -1,10 +1,10 @@
 package ru.practicum.android.diploma.search.ui.fragment
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.text.TextWatcher
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
@@ -117,8 +117,10 @@ class SearchFragment : Fragment() {
     }
 
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun showContent(vacancies: List<VacancyUi>, foundVacancies: Int) {
         emptyScreen()
+        vacanciesAdapter?.notifyDataSetChanged()
         vacanciesAdapter?.items = vacancies
         binding.searchScreenRecyclerView.isVisible = true
         binding.counterVacanciesTextView.text = resources.getQuantityString(
@@ -135,6 +137,7 @@ class SearchFragment : Fragment() {
 
     private fun showLoadingSearch() {
         emptyScreen()
+        vacanciesAdapter?.items = listOf()
         binding.searchScreenFirstLoadingProgressBar.isVisible = true
         inputMethodManager?.hideSoftInputFromWindow(
             binding.searchScreenEditText.windowToken, 0
@@ -169,28 +172,17 @@ class SearchFragment : Fragment() {
 
 
     private fun setOnClicksAndActions() {
-
-        binding.searchScreenEditText.setOnTouchListener(object : View.OnTouchListener {
-            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-                if (event != null) {
-                    if (event.action == MotionEvent.ACTION_UP) {
-                        if (event.rawX >= (binding.searchScreenEditText.right - binding.searchScreenEditText.compoundDrawables[2].bounds.width())) {
-                            viewModel.clearSearchInput()
-                            binding.searchScreenEditText.setText(DEFAULT_TEXT)
-                            return true
-                        }
-                    }
-                }
-                return false
-            }
-        })
-
+        binding.searchScreenEditText.setText(DEFAULT_TEXT)
         inputMethodManager =
             activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
         inputMethodManager?.hideSoftInputFromWindow(
             binding.searchScreenEditText.windowToken, 0
         )
-        binding.searchScreenEditText.setText(DEFAULT_TEXT)
+
+        binding.searchFormButton.setOnClickListener {
+            binding.searchScreenEditText.setText(DEFAULT_TEXT)
+        }
+
 
 //        binding.searchScreenHeaderFilterImageView.setOnClickListener {
 //            findNavController().navigate(R.id.action_searchFragment_to_filteringSettingsFragment)
@@ -224,14 +216,13 @@ class SearchFragment : Fragment() {
                 inputSearchText = binding.searchScreenEditText.text.toString()
 
                 if (binding.searchScreenEditText.hasFocus() && (s?.isEmpty() == true || s?.isBlank() == true)) {
-                    viewModel.clearSearchInput()
-                } else {
                     vacanciesAdapter?.items = listOf()
-                    binding.counterVacanciesTextView.visibility = View.GONE
-                    viewModel.searchDebounced(
-                        changedText = s?.toString() ?: ""
-                    )
+                    viewModel.clearSearchInput()
                 }
+                viewModel.searchDebounced(
+                    changedText = s?.toString() ?: ""
+                )
+
             }
         }
 
@@ -253,13 +244,9 @@ class SearchFragment : Fragment() {
 
     private fun setSearchEditTextEndDrawable(charSequence: CharSequence?) {
         if (charSequence.isNullOrEmpty()) {
-            binding.searchScreenEditText.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                0, 0, R.drawable.ic_search, 0
-            )
+            binding.searchFormButton.setImageResource(R.drawable.ic_search)
         } else {
-            binding.searchScreenEditText.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                0, 0, R.drawable.ic_cross, 0
-            )
+            binding.searchFormButton.setImageResource(R.drawable.ic_cross)
         }
     }
 
