@@ -12,7 +12,6 @@
         android:id="@+id/vacancyToolbar"
         style="@style/Toolbar"
         android:layout_width="match_parent"
-        app:menu="@menu/menu_vacancy_toolbar"
         app:navigationIcon="@drawable/ic_arrow_left"
         app:title="@string/vacancy"
         app:titleTextAppearance="@style/TitleText" />
@@ -196,7 +195,7 @@
                     style="@style/RegularText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/padding_vertical_big"
+                    android:layout_marginTop="@dimen/margin_vertical_small"
                     tools:text="HTML описание" />
 
             </LinearLayout>
@@ -223,7 +222,7 @@
                     style="@style/RegularText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/padding_vertical_big"
+                    android:layout_marginTop="@dimen/margin_vertical_small"
                     tools:text="    ·   Kotlin\n    ·   Java\n    ·   Retrofit\n    ·   Koin" />
             </LinearLayout>
 
@@ -249,7 +248,7 @@
                     style="@style/MediumText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/padding_vertical_big"
+                    android:layout_marginTop="@dimen/margin_vertical_small"
                     android:text="@string/contact_person" />
 
                 <TextView
@@ -265,7 +264,7 @@
                     style="@style/MediumText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/padding_vertical_big"
+                    android:layout_marginTop="@dimen/margin_vertical_small"
                     android:text="@string/email" />
 
                 <TextView
@@ -289,12 +288,10 @@
                 style="@style/MediumTextWhite"
                 android:layout_width="@dimen/_0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_vertical"
-                android:layout_marginBottom="@dimen/margin_vertical"
+                android:layout_marginVertical="@dimen/margin_vertical"
                 android:background="@drawable/rectangle_with_corners"
                 android:gravity="center"
-                android:paddingTop="@dimen/button_vertical_padding"
-                android:paddingBottom="@dimen/button_vertical_padding"
+                android:paddingVertical="@dimen/button_vertical_padding"
                 android:text="@string/similar_vacancies"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/guidLineEnd"

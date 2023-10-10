@@ -42,7 +42,7 @@ class RVAdapter(
             CONTACTS_PHONE_VIEWTYPE -> ContactsPhoneViewHolder(
                 ItemPhonesBinding.inflate(
                     layoutInflater, parent, false
-                )
+                ), clickListener
             )
 
             COUNTRY_VIEWTYPE -> CountryViewHolder(

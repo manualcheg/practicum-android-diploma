@@ -18,7 +18,7 @@
     <EditText
         android:id="@+id/searchScreenEditText"
         android:layout_width="@dimen/_0dp"
-        android:layout_height="@dimen/search_screen_edit_text_height"
+        android:layout_height="@dimen/edit_text_height"
         android:layout_gravity="center"
         android:layout_marginHorizontal="@dimen/padding_horizontal"
         android:layout_marginTop="@dimen/padding_vertical"
@@ -30,17 +30,18 @@
         android:hint="@string/type_a_request"
         android:imeOptions="actionDone"
         android:inputType="text"
-        android:maxLength="22"
+        android:maxLength="255"
         android:maxLines="1"
         android:paddingStart="@dimen/padding_horizontal"
         android:singleLine="true"
-        android:textColor="@color/black"
+        android:textColor="@color/black_universal"
         android:textColorHint="@color/gray_white"
         android:textStyle="normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/searchVacanciesToolbar"
-        tools:ignore="Autofill,RtlSymmetry" />
+        tools:ignore="Autofill,RtlSymmetry"
+        android:textCursorDrawable="@drawable/cursor"/>
 
     <TextView
         android:id="@+id/counterVacanciesTextView"
@@ -60,12 +61,13 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/searchScreenRecyclerView"
         android:layout_width="@dimen/_0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/_0dp"
         android:layout_marginTop="@dimen/padding_vertical"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/counterVacanciesTextView"
+        app:layout_constraintBottom_toTopOf="@+id/searchScreenPaginationProgressBar"
         tools:listitem="@layout/item_vacancy" />
 
     <ProgressBar
@@ -78,7 +80,8 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchScreenRecyclerView"/>
 
     <ImageView
         android:id="@+id/placeholderSearchVacanciesImageView"
