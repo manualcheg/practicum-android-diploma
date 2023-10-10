@@ -77,22 +77,22 @@ class SearchViewModel(
             } else if (currentPages != maxPages) {
                 setState(SearchState.Loading.LoadingPages)
             }
-        }
-        if (PAGE_LIMIT - currentPages <= DEFAULT_PER_PAGE) {
-            perPage = PAGE_LIMIT - currentPages
-        }
+            if (PAGE_LIMIT - currentPages <= DEFAULT_PER_PAGE) {
+                perPage = PAGE_LIMIT - currentPages
+            }
 
-        if (!isNextPageLoading) {
-            isNextPageLoading = true
-            viewModelScope.launch {
-                val resultDeferred = async {
-                    searchUseCase.search(inputSearchText, nextPage, perPage = perPage).collect {
-                        processResult(it.first, it.second)
-                        nextPage++
+            if (!isNextPageLoading) {
+                isNextPageLoading = true
+                viewModelScope.launch {
+                    val resultDeferred = async {
+                        searchUseCase.search(inputSearchText, nextPage, perPage = perPage).collect {
+                            processResult(it.first, it.second)
+                            nextPage++
+                        }
                     }
+                    resultDeferred.await()
+                    isNextPageLoading = false
                 }
-                resultDeferred.await()
-                isNextPageLoading = false
             }
         }
     }
