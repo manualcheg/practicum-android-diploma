@@ -35,6 +35,8 @@ class SimilarVacancyViewModel(
 
     private var isNextPageLoading = false
 
+    private val vacanciesList = mutableListOf<VacancyUi>()
+
     init {
         searchNewRequest(vacancyId)
     }
@@ -91,7 +93,6 @@ class SimilarVacancyViewModel(
     private fun processResult(
         vacancies: Vacancies?, errorStatus: ErrorStatusDomain?, isNewSearch: Boolean
     ) {
-        val vacanciesList = mutableListOf<VacancyUi>()
         if (vacancies != null) {
             val foundVacancyUi =
                 vacancies.vacancyList.map { vacancyDomainToVacancyUiConverter.map(it) }

@@ -16,11 +16,11 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
-import ru.practicum.android.diploma.vacancy.ui.VacancyState
-import ru.practicum.android.diploma.vacancy.ui.viewModel.VacancyViewModel
 import ru.practicum.android.diploma.common.ui.model.PhoneUi
 import ru.practicum.android.diploma.common.util.recycleView.RVAdapter
+import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
+import ru.practicum.android.diploma.vacancy.ui.model.VacancyState
+import ru.practicum.android.diploma.vacancy.ui.viewModel.VacancyViewModel
 
 
 class VacancyFragment : Fragment() {

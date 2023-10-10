@@ -8,7 +8,7 @@ import ru.practicum.android.diploma.search.data.model.ErrorRemoteDataSource
 import ru.practicum.android.diploma.search.domain.model.ErrorStatusDomain
 import ru.practicum.android.diploma.similar_vacancy.domain.repository.SimilarVacancyRepository
 
-class SearchSimilarVacanciesByIdUseCaseUseCaseImpl(private val repository: SimilarVacancyRepository) :
+class SearchSimilarVacanciesByIdUseCaseImpl(private val repository: SimilarVacancyRepository) :
     SearchSimilarVacanciesByIdUseCase {
     override fun execute(
         vacancyId: Int, page: Int, perPage: Int
