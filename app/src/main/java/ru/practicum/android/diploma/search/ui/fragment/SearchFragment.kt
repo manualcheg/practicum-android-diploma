@@ -169,13 +169,18 @@ class SearchFragment : Fragment() {
 
 
     private fun setOnClicksAndActions() {
+        binding.searchScreenEditText.setText(DEFAULT_TEXT)
+        inputMethodManager =
+            activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+        inputMethodManager?.hideSoftInputFromWindow(
+            binding.searchScreenEditText.windowToken, 0
+        )
 
         binding.searchScreenEditText.setOnTouchListener(object : View.OnTouchListener {
             override fun onTouch(v: View?, event: MotionEvent?): Boolean {
                 if (event != null) {
                     if (event.action == MotionEvent.ACTION_UP) {
                         if (event.rawX >= (binding.searchScreenEditText.right - binding.searchScreenEditText.compoundDrawables[2].bounds.width())) {
-                            viewModel.clearSearchInput()
                             binding.searchScreenEditText.setText(DEFAULT_TEXT)
                             return true
                         }
@@ -184,13 +189,6 @@ class SearchFragment : Fragment() {
                 return false
             }
         })
-
-        inputMethodManager =
-            activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-        inputMethodManager?.hideSoftInputFromWindow(
-            binding.searchScreenEditText.windowToken, 0
-        )
-        binding.searchScreenEditText.setText(DEFAULT_TEXT)
 
 //        binding.searchScreenHeaderFilterImageView.setOnClickListener {
 //            findNavController().navigate(R.id.action_searchFragment_to_filteringSettingsFragment)
@@ -225,13 +223,12 @@ class SearchFragment : Fragment() {
 
                 if (binding.searchScreenEditText.hasFocus() && (s?.isEmpty() == true || s?.isBlank() == true)) {
                     viewModel.clearSearchInput()
-                } else {
                     vacanciesAdapter?.items = listOf()
-                    binding.counterVacanciesTextView.visibility = View.GONE
-                    viewModel.searchDebounced(
-                        changedText = s?.toString() ?: ""
-                    )
                 }
+                viewModel.searchDebounced(
+                    changedText = s?.toString() ?: ""
+                )
+
             }
         }
 

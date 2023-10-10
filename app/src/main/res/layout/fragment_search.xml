@@ -41,7 +41,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/searchVacanciesToolbar"
         tools:ignore="Autofill,RtlSymmetry"
-        android:textCursorDrawable="@drawable/cursor"/>
+        android:textCursorDrawable="@drawable/cursor"
+        android:hapticFeedbackEnabled="false" />
 
     <TextView
         android:id="@+id/counterVacanciesTextView"

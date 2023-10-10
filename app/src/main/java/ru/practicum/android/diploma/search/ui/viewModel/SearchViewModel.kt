@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.domain.model.vacancy_models.Vacancies
@@ -27,35 +28,45 @@ class SearchViewModel(
     private val stateLiveData = MutableLiveData<SearchState>()
     private val toastErrorStateLiveData = SingleLiveEvent<SearchError>()
 
-    private var foundVacancies = 0
-    private var currentPages = 0
-    private var nextPage = 0
-    private var maxPages = 1
+    private var foundVacancies = DEFAULT_FOUND_VACANCIES
+    private var currentPages = DEFAULT_PAGE
+    private var nextPage = DEFAULT_PAGE
+    private var maxPages = DEFAULT_MAX_PAGES
     private var perPage = DEFAULT_PER_PAGE
 
     private var isNextPageLoading = false
     private val vacanciesList = mutableListOf<VacancyUi>()
 
-    fun observeState(): LiveData<SearchState> = stateLiveData
-    fun observeErrorToastState(): LiveData<SearchError> = toastErrorStateLiveData
+    private var job: Job? = null
 
     private val tracksSearchDebounce =
         debounce<String>(SEARCH_DEBOUNCE_DELAY_MILLIS, viewModelScope, true) {
-            searchRequest(it)
+            searchNewRequest(it)
         }
+
+    fun observeState(): LiveData<SearchState> = stateLiveData
+    fun observeErrorToastState(): LiveData<SearchError> = toastErrorStateLiveData
 
     fun searchDebounced(changedText: String) {
         if (changedText == latestSearchText) {
             return
         }
         latestSearchText = changedText
-        vacanciesList.clear()
         nextPage = 0
         tracksSearchDebounce(changedText)
     }
 
     fun onLastItemReached() {
-        latestSearchText?.let { searchRequest(it) }
+        latestSearchText?.let { searchSameRequest(it) }
+    }
+
+    fun clearSearchInput() {
+        setState(SearchState.Success.Empty)
+
+//        не получается обнулить, вылетает ошибка
+//        vacanciesList.clear()
+        tracksSearchDebounce(DEFAULT_TEXT)
+        job?.cancel()
     }
 
     private fun setState(state: SearchState) {
@@ -66,41 +77,52 @@ class SearchViewModel(
         toastErrorStateLiveData.value = state
     }
 
-
-    private fun searchRequest(inputSearchText: String) {
-        if (currentPages == maxPages && currentPages == PAGE_LIMIT) {
+    private fun searchNewRequest(inputSearchText: String) {
+        if (inputSearchText.isEmpty()) {
             return
         }
-        if (inputSearchText.isNotEmpty()) {
-            if (vacanciesList.isEmpty()) {
-                setState(SearchState.Loading.LoadingSearch)
-            } else if (currentPages != maxPages) {
-                setState(SearchState.Loading.LoadingPages)
-            }
-            if (PAGE_LIMIT - currentPages <= DEFAULT_PER_PAGE) {
-                perPage = PAGE_LIMIT - currentPages
-            }
+        setState(SearchState.Loading.LoadingSearch)
+        foundVacancies = DEFAULT_FOUND_VACANCIES
 
-            if (!isNextPageLoading) {
-                isNextPageLoading = true
-                viewModelScope.launch {
-                    val resultDeferred = async {
-                        searchUseCase.search(inputSearchText, nextPage, perPage = perPage).collect {
-                            processResult(it.first, it.second)
-                            nextPage++
-                        }
-                    }
-                    resultDeferred.await()
-                    isNextPageLoading = false
-                }
+        nextPage = DEFAULT_PAGE
+        job = viewModelScope.launch {
+            getVacancies(inputSearchText, nextPage, perPage, isNewSearch = true)
+        }
+        nextPage++
+    }
+
+
+    private fun searchSameRequest(inputSearchText: String) {
+        if (currentPages == maxPages && currentPages == PAGE_LIMIT || isNextPageLoading) {
+            return
+        }
+        isNextPageLoading = true
+        setState(SearchState.Loading.LoadingPages)
+
+        if (PAGE_LIMIT - currentPages <= DEFAULT_PER_PAGE) {
+            perPage = PAGE_LIMIT - currentPages
+        }
+
+        job = viewModelScope.launch {
+            val resultDeferred = async {
+                getVacancies(inputSearchText, nextPage, perPage, isNewSearch = false)
             }
+            nextPage++
+            resultDeferred.await()
+            isNextPageLoading = false
         }
     }
 
-    private fun processResult(vacancies: Vacancies?, errorStatus: ErrorStatusDomain?) {
+
+    private fun processResult(
+        vacancies: Vacancies?, errorStatus: ErrorStatusDomain?, isNewSearch: Boolean
+    ) {
         if (vacancies != null) {
             val foundVacancyUi =
                 vacancies.vacancyList.map { vacancyDomainToVacancyUiConverter.map(it) }
+            if (isNewSearch) {
+                vacanciesList.clear()
+            }
             vacanciesList.addAll(foundVacancyUi)
             foundVacancies = vacancies.found
             currentPages = vacancies.page
@@ -110,7 +132,7 @@ class SearchViewModel(
             errorStatus != null -> {
                 when (errorStatus) {
                     ErrorStatusDomain.NO_CONNECTION -> {
-                        if (vacanciesList.isEmpty()) {
+                        if (isNewSearch) {
                             setState(SearchState.Error(ErrorStatusUi.NO_CONNECTION))
                             latestSearchText = DEFAULT_TEXT
                         } else {
@@ -119,7 +141,7 @@ class SearchViewModel(
                     }
 
                     ErrorStatusDomain.ERROR_OCCURRED -> {
-                        if (vacanciesList.isEmpty()) {
+                        if (isNewSearch) {
                             setState(SearchState.Error(ErrorStatusUi.ERROR_OCCURRED))
                             latestSearchText = DEFAULT_TEXT
                         } else {
@@ -137,8 +159,12 @@ class SearchViewModel(
         }
     }
 
-    fun clearSearchInput() {
-        setState(SearchState.Success.Empty)
+    private suspend fun getVacancies(
+        inputSearchText: String, nextPage: Int, perPage: Int, isNewSearch: Boolean
+    ) {
+        searchUseCase.search(inputSearchText, nextPage, perPage = perPage).collect {
+            processResult(it.first, it.second, isNewSearch)
+        }
     }
 
     companion object {
@@ -146,5 +172,8 @@ class SearchViewModel(
         private const val DEFAULT_TEXT = ""
         private const val PAGE_LIMIT = 2000
         const val DEFAULT_PER_PAGE = 20
+        const val DEFAULT_PAGE = 0
+        const val DEFAULT_MAX_PAGES = 1
+        const val DEFAULT_FOUND_VACANCIES = 0
     }
 }
