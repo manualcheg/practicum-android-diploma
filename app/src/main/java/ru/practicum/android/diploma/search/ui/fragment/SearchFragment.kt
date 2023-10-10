@@ -119,6 +119,7 @@ class SearchFragment : Fragment() {
 
     private fun showContent(vacancies: List<VacancyUi>, foundVacancies: Int) {
         emptyScreen()
+        vacanciesAdapter?.notifyDataSetChanged()
         vacanciesAdapter?.items = vacancies
         binding.searchScreenRecyclerView.isVisible = true
         binding.counterVacanciesTextView.text = resources.getQuantityString(
