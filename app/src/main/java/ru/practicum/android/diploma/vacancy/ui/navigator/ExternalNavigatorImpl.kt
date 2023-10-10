@@ -20,8 +20,9 @@ class ExternalNavigatorImpl(private val context: Context) : ExternalNavigator {
 
     override fun callPhone(phoneNumber: String) {
         val uri = Uri.parse("tel:$phoneNumber")
-        val intent = Intent(Intent.ACTION_DIAL, uri)
-        startActivityOrShowError(intent)
+        val intent = Intent(Intent.ACTION_VIEW, uri)
+        val chooser = Intent.createChooser(intent,null)
+        startActivityOrShowError(chooser)
     }
 
     override fun shareVacancyById(id: Int) {
