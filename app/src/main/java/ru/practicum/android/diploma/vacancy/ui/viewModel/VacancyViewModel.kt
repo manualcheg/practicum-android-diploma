@@ -15,7 +15,6 @@ import ru.practicum.android.diploma.vacancy.domain.useCase.ShareVacancyByIdUseCa
 import ru.practicum.android.diploma.vacancy.ui.VacancyState
 
 class VacancyViewModel(
-    private val vacancyId: Int,
     private val findVacancyByIdUseCase: FindVacancyByIdUseCase,
     private val addOrDelVacancyUseCase: AddOrDelVacancyUseCase,
     private val checkInFavoritesUseCase: CheckInFavoritesUseCase,

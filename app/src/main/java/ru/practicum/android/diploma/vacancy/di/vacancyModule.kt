@@ -34,9 +34,8 @@ val vacancyModule = module {
     single<ShareVacancyByIdUseCase> { ShareVacancyByIdUseCaseImpl(get()) }
     single<CallPhoneUseCase> { CallPhoneUseCaseImpl(get()) }
 
-    viewModel { (vacancyId: Int) ->
+    viewModel {
         VacancyViewModel(
-            vacancyId = vacancyId,
             findVacancyByIdUseCase = get(),
             addOrDelVacancyUseCase = get(),
             checkInFavoritesUseCase = get(),
