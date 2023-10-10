@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.favorites.data.dataSourceImpl
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import ru.practicum.android.diploma.common.domain.model.vacancy_models.Vacancy
 import ru.practicum.android.diploma.favorites.data.dataSource.FavoritesLocalDataSource
@@ -26,6 +27,14 @@ class FavoritesLocalDataSourceImpl(
 
     override suspend fun getVacancy(id: Int): Vacancy {
         return vacancyDbConverter.map(appDataBase.FavoritesVacanciesDao().getVacancy(id))
+    }
+
+    override suspend fun isVacancyContainsFlow(id: Int): Flow<Boolean> = flow {
+        emit(appDataBase.FavoritesVacanciesDao().isVacancyContains(id))
+    }
+
+    override suspend fun isVacancyContainsOnce(id: Int): Boolean {
+        return appDataBase.FavoritesVacanciesDao().isVacancyContains(id)
     }
 
     private fun mapList(favouritesList: Flow<List<FavoritesVacancyEntity>>): Flow<List<Vacancy>> {

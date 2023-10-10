@@ -5,6 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.common.ui.model.VacancyUi
@@ -23,10 +27,14 @@ class FavoritesFragment : Fragment() {
     private var vacanciesAdapter: RVAdapter? = RVAdapter {
         clickOnVacancy(it)
     }
+    private var isClickAllowed = true
 
-    private fun clickOnVacancy(it: ItemUiBase) {
-        val action = FavoritesFragmentDirections.actionFavoritesFragmentToVacancyFragment(it.id)
-        findNavController().navigate(action)
+    private fun clickOnVacancy(vacancy: ItemUiBase) {
+        if (isClickDebounce()){
+            val direction =
+                FavoritesFragmentDirections.actionFavoritesFragmentToVacancyFragment(vacancy.id)
+            findNavController().navigate(direction)
+        }
     }
 
     override fun onCreateView(
@@ -47,7 +55,7 @@ class FavoritesFragment : Fragment() {
         favouritesViewModel.getFavorites()
 
         binding.favouritesRecyclerView.adapter = vacanciesAdapter
-
+        isClickAllowed = true
     }
 
     override fun onDestroy() {
@@ -84,5 +92,22 @@ class FavoritesFragment : Fragment() {
         binding.favouritesPlaceholderEmptyList.visibility = View.GONE
         binding.favouritesRecyclerView.visibility = View.GONE
         binding.favouritesPlaceholderNotFound.visibility = View.VISIBLE
+    }
+
+    private fun isClickDebounce(): Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+
+            viewLifecycleOwner.lifecycleScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY_MILLIS)
+                isClickAllowed = true
+            }
+        }
+        return current
+    }
+
+    companion object {
+        private const val CLICK_DEBOUNCE_DELAY_MILLIS = 1000L
     }
 }

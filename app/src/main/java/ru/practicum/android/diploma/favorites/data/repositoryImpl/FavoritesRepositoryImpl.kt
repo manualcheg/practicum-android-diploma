@@ -23,4 +23,12 @@ class FavoritesRepositoryImpl(
     override suspend fun getVacancy(id: Int): Vacancy {
         return favoritesLocalDataSource.getVacancy(id)
     }
+
+    override suspend fun isVacancyContainsFlow(id: Int): Flow<Boolean> {
+        return favoritesLocalDataSource.isVacancyContainsFlow(id)
+    }
+
+    override suspend fun isVacancyContainsOnce(id: Int): Boolean {
+        return favoritesLocalDataSource.isVacancyContainsOnce(id)
+    }
 }

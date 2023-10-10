@@ -3,8 +3,14 @@ package ru.practicum.android.diploma.vacancy.ui.fragment
 import android.os.Bundle
 import android.text.Html
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.ProgressBar
+import android.widget.ScrollView
+import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -12,21 +18,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.common.ui.model.PhoneUi
-import ru.practicum.android.diploma.common.util.recycleView.RVAdapter
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
 import ru.practicum.android.diploma.vacancy.ui.VacancyState
 import ru.practicum.android.diploma.vacancy.ui.viewModel.VacancyViewModel
+import ru.practicum.android.diploma.common.ui.model.PhoneUi
+import ru.practicum.android.diploma.common.util.recycleView.RVAdapter
+
 
 class VacancyFragment : Fragment() {
 
-    private val viewModel: VacancyViewModel by viewModel {
-        parametersOf(
-            vacancyId
-        )
-    }
+    private val viewModel: VacancyViewModel by viewModel()
     private var _binding: FragmentVacancyBinding? = null
     private val binding get() = _binding!!
 
@@ -44,12 +46,24 @@ class VacancyFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        
         vacancyId = args.vacansyId
         viewModel.state.observe(viewLifecycleOwner) {
             render(it)
         }
-
+        
+        viewModel.inFavorites.observe(viewLifecycleOwner) { inFavorites ->
+            val menu: Menu = binding.vacancyToolbar.menu
+            if (inFavorites) {
+                menu.getItem(1).icon =
+                    AppCompatResources.getDrawable(requireContext(), R.drawable.ic_favorites_on)
+            } else {
+                menu.getItem(1).icon =
+                    AppCompatResources.getDrawable(requireContext(), R.drawable.ic_favorites_off)
+            }
+        }
+        viewModel.findVacancyById(vacancyId!!)
+        
         setOnClickListeners()
         initializePhonesAdapter()
 
@@ -58,7 +72,6 @@ class VacancyFragment : Fragment() {
                 VacancyFragmentDirections.actionVacancyFragmentToSimilarVacancyFragment(vacancyId!!)
             findNavController().navigate(direction)
         }
-
     }
 
     override fun onDestroyView() {
@@ -89,6 +102,7 @@ class VacancyFragment : Fragment() {
                 binding.vacancyContentScrollView.visibility = View.VISIBLE
                 binding.placeholderContainerFrameLayout.visibility = View.GONE
                 setupContent(state)
+                viewModel.checkFavorites(vacancyId!!)
             }
         }
     }
@@ -106,7 +120,7 @@ class VacancyFragment : Fragment() {
                     vacancyId?.let { it1 -> viewModel.shareVacancyById(it1) }
                 }
 
-                R.id.like -> {}
+                R.id.like -> { viewModel.addOrDelFavorites(vacancyId!!) }
             }
             true
         }
@@ -203,7 +217,7 @@ class VacancyFragment : Fragment() {
             binding.vacancyContactsEmailTextView.visibility = View.GONE
             binding.vacancyContactsEmailTitleTextView.visibility = View.GONE
         }
-
+        
         if (state.vacancy.contactsPhones.isNotEmpty()) {
             phonesAdapter?.items = state.vacancy.contactsPhones
         }
@@ -214,6 +228,5 @@ class VacancyFragment : Fragment() {
         ) {
             binding.vacancyContactsLinearLayout.visibility = View.GONE
         }
-
     }
 }

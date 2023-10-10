@@ -11,4 +11,8 @@ interface FavoritesLocalDataSource {
     fun getFavorites(): Flow<List<Vacancy>>
 
     suspend fun getVacancy(id: Int): Vacancy
+
+    suspend fun isVacancyContainsFlow(id: Int): Flow<Boolean>
+
+    suspend fun isVacancyContainsOnce(id: Int): Boolean
 }
