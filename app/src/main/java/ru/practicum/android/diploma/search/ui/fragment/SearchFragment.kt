@@ -221,7 +221,6 @@ class SearchFragment : Fragment() {
                 viewModel.searchDebounced(
                     changedText = s?.toString() ?: ""
                 )
-                emptyList<String>()
             }
         }
 
