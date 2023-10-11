@@ -7,10 +7,10 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.domain.model.vacancy_models.Vacancy
 import ru.practicum.android.diploma.common.ui.mapper.VacancyDomainToVacancyUiConverter
-import ru.practicum.android.diploma.favorites.domain.useCase.AddUseCase
-import ru.practicum.android.diploma.favorites.domain.useCase.CheckInFavoritesUseCase
-import ru.practicum.android.diploma.favorites.domain.useCase.DelUseCase
+import ru.practicum.android.diploma.vacancy.domain.useCase.AddVacancyToFavoritesUseCase
 import ru.practicum.android.diploma.vacancy.domain.useCase.CallPhoneUseCase
+import ru.practicum.android.diploma.vacancy.domain.useCase.CheckInFavoritesUseCase
+import ru.practicum.android.diploma.vacancy.domain.useCase.DeleteVacancyFromFavoritesUseCase
 import ru.practicum.android.diploma.vacancy.domain.useCase.FindVacancyByIdUseCase
 import ru.practicum.android.diploma.vacancy.domain.useCase.OpenMailUseCase
 import ru.practicum.android.diploma.vacancy.domain.useCase.ShareVacancyByIdUseCase
@@ -19,8 +19,8 @@ import ru.practicum.android.diploma.vacancy.ui.model.VacancyState
 class VacancyViewModel(
     private val vacancyId: Int,
     private val findVacancyByIdUseCase: FindVacancyByIdUseCase,
-    private val addUseCase: AddUseCase,
-    private val delUseCase: DelUseCase,
+    private val addVacancyToFavoritesUseCase: AddVacancyToFavoritesUseCase,
+    private val deleteVacancyFromFavoritesUseCase: DeleteVacancyFromFavoritesUseCase,
     private val checkInFavoritesUseCase: CheckInFavoritesUseCase,
     private val vacancyDomainToVacancyUiConverter: VacancyDomainToVacancyUiConverter,
     private val openMailUseCase: OpenMailUseCase,
@@ -58,8 +58,9 @@ class VacancyViewModel(
             if (vacancyUI.vacancy != null) {
                 setState(VacancyState.Content(vacancyDomainToVacancyUiConverter.map(vacancyUI.vacancy)))
                 vacancy = vacancyUI.vacancy
-            } else
+            } else {
                 setState(VacancyState.Error)
+            }
         }
     }
 
@@ -78,9 +79,9 @@ class VacancyViewModel(
     fun toggleFavorites() {
         viewModelScope.launch {
             if (inFavorites.value == true) {
-                vacancy?.let { delUseCase.execute(it) }
+                vacancy?.let { deleteVacancyFromFavoritesUseCase.execute(it) }
             } else {
-                vacancy?.let { addUseCase.execute(it) }
+                vacancy?.let { addVacancyToFavoritesUseCase.execute(it) }
             }
         }
     }
