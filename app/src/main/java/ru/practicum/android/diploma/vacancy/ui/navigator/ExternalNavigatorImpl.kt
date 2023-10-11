@@ -5,14 +5,14 @@ import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.vacancy.domain.repository.ExternalNavigator
 
 class ExternalNavigatorImpl(private val context: Context) : ExternalNavigator {
     override fun openMail(mailTo: String) {
         val intent = Intent(Intent.ACTION_SENDTO).apply {
             data = Uri.parse("mailto:")
             putExtra(
-                Intent.EXTRA_EMAIL,
-                arrayOf(mailTo)
+                Intent.EXTRA_EMAIL, arrayOf(mailTo)
             )
         }
         startActivityOrShowError(intent)
@@ -21,7 +21,7 @@ class ExternalNavigatorImpl(private val context: Context) : ExternalNavigator {
     override fun callPhone(phoneNumber: String) {
         val uri = Uri.parse("tel:$phoneNumber")
         val intent = Intent(Intent.ACTION_VIEW, uri)
-        val chooser = Intent.createChooser(intent,null)
+        val chooser = Intent.createChooser(intent, null)
         startActivityOrShowError(chooser)
     }
 
@@ -29,8 +29,7 @@ class ExternalNavigatorImpl(private val context: Context) : ExternalNavigator {
         val intent = Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"
             putExtra(
-                Intent.EXTRA_TEXT,
-                "${context.getString(R.string.link_to_hh_ru)}$id"
+                Intent.EXTRA_TEXT, "${context.getString(R.string.link_to_hh_ru)}$id"
             )
         }
         startActivityOrShowError(intent)
