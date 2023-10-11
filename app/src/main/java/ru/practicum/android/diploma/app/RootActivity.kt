@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.ActivityRootBinding
 
@@ -29,7 +28,7 @@ class RootActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.vacancyFragment, R.id.filteringSettingsFragment -> {
+                R.id.vacancyFragment, R.id.filteringSettingsFragment, R.id.similarVacancyFragment -> {
                     if (binding.navigationView.visibility == View.VISIBLE) {
                         binding.navigationView.animation = AnimationUtils.loadAnimation(this, R.anim.slide_out_down)
                         binding.navigationView.animate()
@@ -48,13 +47,5 @@ class RootActivity : AppCompatActivity() {
                 }
             }
         }
-
-        // Пример использования access token для HeadHunter API
-        networkRequestExample(accessToken = BuildConfig.HH_ACCESS_TOKEN)
     }
-
-    private fun networkRequestExample(accessToken: String) {
-        // ...
-    }
-
 }
