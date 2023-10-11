@@ -6,7 +6,7 @@ import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
-import ru.practicum.android.diploma.common.util.constants.DataBaseConst.VACANCIES_FAVORITE
+import ru.practicum.android.diploma.common.util.constants.DataBaseConst.VACANCIES_FAVORITES
 import ru.practicum.android.diploma.favorites.data.dataSource.FavoritesLocalDataSource
 import ru.practicum.android.diploma.favorites.data.dataSourceImpl.FavoritesLocalDataSourceImpl
 import ru.practicum.android.diploma.favorites.data.db.AppDataBase
@@ -19,7 +19,7 @@ val favoritesDataModule = module {
         Room.databaseBuilder(
             context = androidContext(),
             klass = AppDataBase::class.java,
-            name = VACANCIES_FAVORITE
+            name = VACANCIES_FAVORITES
         ).build()
     }
     factoryOf(::VacancyDbConverter)
