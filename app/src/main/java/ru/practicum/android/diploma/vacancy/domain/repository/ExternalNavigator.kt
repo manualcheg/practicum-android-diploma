@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.vacancy.ui.navigator
+package ru.practicum.android.diploma.vacancy.domain.repository
 
 interface ExternalNavigator {
     fun openMail(mailTo: String)
