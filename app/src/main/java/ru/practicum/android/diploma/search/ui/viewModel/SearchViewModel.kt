@@ -79,7 +79,7 @@ class SearchViewModel(
     }
 
     private fun searchNewRequest(inputSearchText: String) {
-        if (inputSearchText.isEmpty()) {
+        if (inputSearchText.isBlank()) {
             return
         }
         setState(SearchState.Loading.LoadingSearch)
