@@ -87,21 +87,18 @@ class VacancyFragment : Fragment() {
                 binding.vacancyProgressBar.visibility = View.VISIBLE
                 binding.vacancyServerErrorPlaceholder.visibility = View.GONE
                 binding.vacancyContentScrollView.visibility = View.GONE
-                binding.placeholderContainerFrameLayout.visibility = View.VISIBLE
             }
 
             is VacancyState.Error -> {
                 binding.vacancyProgressBar.visibility = View.GONE
                 binding.vacancyServerErrorPlaceholder.visibility = View.VISIBLE
                 binding.vacancyContentScrollView.visibility = View.GONE
-                binding.placeholderContainerFrameLayout.visibility = View.VISIBLE
             }
 
             is VacancyState.Content -> {
                 binding.vacancyProgressBar.visibility = View.GONE
                 binding.vacancyServerErrorPlaceholder.visibility = View.GONE
                 binding.vacancyContentScrollView.visibility = View.VISIBLE
-                binding.placeholderContainerFrameLayout.visibility = View.GONE
                 setupContent(state)
                 viewModel.checkFavorites(vacancyId!!)
             }
