@@ -1,3 +1,4 @@
+/*
 package ru.practicum.android.diploma.favorites.domain.useCase
 
 import ru.practicum.android.diploma.favorites.domain.repository.FavoritesRepository
@@ -16,4 +17,4 @@ class AddOrDelVacancyUseCaseImpl(private val favoritesRepository: FavoritesRepos
             }
         }
     }
-}
+}*/

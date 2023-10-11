@@ -6,7 +6,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
-import kotlin.jvm.Throws
 
 @Dao
 interface FavoritesVacanciesDao {
@@ -27,4 +26,7 @@ interface FavoritesVacanciesDao {
 
     @Query("SELECT EXISTS(SELECT * FROM favorites_vacancies_table WHERE id = :id)")
     suspend fun isVacancyContains(id: Int): Boolean
+
+    @Query("SELECT EXISTS(SELECT * FROM favorites_vacancies_table WHERE id = :id)")
+    fun isVacancyContainsFlow(id: Int): Flow<Boolean>
 }

@@ -5,9 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.Vacancy
 import ru.practicum.android.diploma.common.ui.mapper.VacancyDomainToVacancyUiConverter
-import ru.practicum.android.diploma.favorites.domain.useCase.AddOrDelVacancyUseCase
+import ru.practicum.android.diploma.favorites.domain.useCase.AddUseCase
 import ru.practicum.android.diploma.favorites.domain.useCase.CheckInFavoritesUseCase
+import ru.practicum.android.diploma.favorites.domain.useCase.DelUseCase
 import ru.practicum.android.diploma.vacancy.domain.useCase.CallPhoneUseCase
 import ru.practicum.android.diploma.vacancy.domain.useCase.FindVacancyByIdUseCase
 import ru.practicum.android.diploma.vacancy.domain.useCase.OpenMailUseCase
@@ -16,7 +18,8 @@ import ru.practicum.android.diploma.vacancy.ui.model.VacancyState
 
 class VacancyViewModel(
     private val findVacancyByIdUseCase: FindVacancyByIdUseCase,
-    private val addOrDelVacancyUseCase: AddOrDelVacancyUseCase,
+    private val addUseCase: AddUseCase,
+    private val delUseCase: DelUseCase,
     private val checkInFavoritesUseCase: CheckInFavoritesUseCase,
     private val vacancyDomainToVacancyUiConverter: VacancyDomainToVacancyUiConverter,
     private val openMailUseCase: OpenMailUseCase,
@@ -30,10 +33,12 @@ class VacancyViewModel(
     private var _inFavorites = MutableLiveData<Boolean>()
     val inFavorites: LiveData<Boolean> = _inFavorites
 
+    private var vacancy: Vacancy? = null
+
     init {
         setState(VacancyState.Load)
     }
-    
+
     fun openMail(mailTo: String) {
         openMailUseCase.execute(mailTo)
     }
@@ -49,9 +54,10 @@ class VacancyViewModel(
     fun findVacancyById(id: Int) {
         viewModelScope.launch {
             val vacancyUI = findVacancyByIdUseCase.findVacancyById(id)
-            if (vacancyUI.vacancy != null)
+            if (vacancyUI.vacancy != null) {
                 setState(VacancyState.Content(vacancyDomainToVacancyUiConverter.map(vacancyUI.vacancy)))
-            else
+                vacancy = vacancyUI.vacancy
+            } else
                 setState(VacancyState.Error)
         }
     }
@@ -62,7 +68,7 @@ class VacancyViewModel(
 
     fun checkFavorites(id: Int) {
         viewModelScope.launch {
-            checkInFavoritesUseCase.execute(id).collect{
+            checkInFavoritesUseCase.execute(id).collect {
                 _inFavorites.postValue(it)
             }
         }
@@ -70,7 +76,13 @@ class VacancyViewModel(
 
     fun addOrDelFavorites(id: Int) {
         viewModelScope.launch {
-            _inFavorites.postValue(addOrDelVacancyUseCase.execute(id))
+            _inFavorites.postValue(
+                if (inFavorites.value == true) {
+                    delUseCase.execute(id)
+                } else {
+                    addUseCase.execute(vacancy!!)
+                }
+            )
         }
     }
 }

@@ -92,7 +92,7 @@ class SimilarVacancyFragment : Fragment() {
             is SearchState.Loading.LoadingSearch -> showLoadingSearch()
             is SearchState.Loading.LoadingPages -> showLoadingPages()
             SearchState.Success.Empty -> showEmpty()
-            is SearchState.Success.SearchContent -> showContent(state.vacancies, state.foundVacancy)
+            is SearchState.Success.SearchContent -> showContent(state.vacancies)
         }
     }
 
@@ -111,7 +111,7 @@ class SimilarVacancyFragment : Fragment() {
     }
 
 
-    private fun showContent(vacancies: List<VacancyUi>, foundVacancies: Int) {
+    private fun showContent(vacancies: List<VacancyUi>) {
         emptyScreen()
         vacanciesAdapter?.items = vacancies
         binding.similarVacanciesRecyclerView.isVisible = true
