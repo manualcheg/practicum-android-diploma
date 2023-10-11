@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.search.ui.fragment
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.text.TextWatcher
@@ -70,8 +69,8 @@ class SearchFragment : Fragment() {
         isClickAllowed = true
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         textWatcher?.let { binding.searchScreenEditText.removeTextChangedListener(it) }
         binding.searchScreenRecyclerView.adapter = null
         vacanciesAdapter = null
@@ -90,6 +89,8 @@ class SearchFragment : Fragment() {
         binding.searchScreenRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.searchScreenRecyclerView.adapter = vacanciesAdapter
+
+        binding.searchScreenRecyclerView.itemAnimator = null
     }
 
     private fun renderSearchState(state: SearchState) {
@@ -116,23 +117,18 @@ class SearchFragment : Fragment() {
         }
     }
 
-
-    @SuppressLint("NotifyDataSetChanged")
     private fun showContent(vacancies: List<VacancyUi>, foundVacancies: Int) {
         emptyScreen()
-        vacanciesAdapter?.notifyDataSetChanged()
         vacanciesAdapter?.items = vacancies
-        binding.searchScreenRecyclerView.isVisible = true
-        binding.searchScreenRecyclerView.scrollToPosition(0)
         binding.counterVacanciesTextView.text = resources.getQuantityString(
             R.plurals.vacancy_plural, foundVacancies, foundVacancies
         )
         binding.counterVacanciesTextView.isVisible = true
     }
 
-
     private fun showEmpty() {
         emptyScreen()
+        vacanciesAdapter?.items = listOf()
         binding.placeholderSearchVacanciesImageView.isVisible = true
     }
 
@@ -152,16 +148,19 @@ class SearchFragment : Fragment() {
     private fun showError(errorStatus: ErrorStatusUi) {
         when (errorStatus) {
             ErrorStatusUi.NO_CONNECTION -> {
+                vacanciesAdapter?.items = listOf()
                 emptyScreen()
                 binding.searchScreenNoInternetPlaceholder.isVisible = true
             }
 
             ErrorStatusUi.ERROR_OCCURRED -> {
+                vacanciesAdapter?.items = listOf()
                 emptyScreen()
                 binding.searchScreenServerErrorPlaceholder.isVisible = true
             }
 
             ErrorStatusUi.NOTHING_FOUND -> {
+                vacanciesAdapter?.items = listOf()
                 emptyScreen()
                 binding.searchScreenNothingFoundPlaceholder.isVisible = true
                 binding.counterVacanciesTextView.text =
@@ -222,7 +221,7 @@ class SearchFragment : Fragment() {
                 viewModel.searchDebounced(
                     changedText = s?.toString() ?: ""
                 )
-
+                emptyList<String>()
             }
         }
 
@@ -252,7 +251,6 @@ class SearchFragment : Fragment() {
 
     private fun emptyScreen() {
         binding.counterVacanciesTextView.isVisible = false
-        binding.searchScreenRecyclerView.isVisible = false
         binding.searchScreenFirstLoadingProgressBar.isVisible = false
         binding.searchScreenPaginationProgressBar.isVisible = false
         binding.placeholderSearchVacanciesImageView.isVisible = false
