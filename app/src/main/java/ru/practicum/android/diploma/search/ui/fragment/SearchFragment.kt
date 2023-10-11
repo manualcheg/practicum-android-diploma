@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.search.ui.fragment
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.text.TextWatcher
@@ -90,6 +89,8 @@ class SearchFragment : Fragment() {
         binding.searchScreenRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.searchScreenRecyclerView.adapter = vacanciesAdapter
+
+        binding.searchScreenRecyclerView.itemAnimator = null
     }
 
     private fun renderSearchState(state: SearchState) {
@@ -116,20 +117,15 @@ class SearchFragment : Fragment() {
         }
     }
 
-
-    @SuppressLint("NotifyDataSetChanged")
     private fun showContent(vacancies: List<VacancyUi>, foundVacancies: Int) {
         emptyScreen()
-        vacanciesAdapter?.notifyDataSetChanged()
         vacanciesAdapter?.items = vacancies
-        binding.searchScreenRecyclerView.isVisible = true
         binding.searchScreenRecyclerView.scrollToPosition(0)
         binding.counterVacanciesTextView.text = resources.getQuantityString(
             R.plurals.vacancy_plural, foundVacancies, foundVacancies
         )
         binding.counterVacanciesTextView.isVisible = true
     }
-
 
     private fun showEmpty() {
         emptyScreen()
@@ -222,7 +218,7 @@ class SearchFragment : Fragment() {
                 viewModel.searchDebounced(
                     changedText = s?.toString() ?: ""
                 )
-
+                emptyList<String>()
             }
         }
 
@@ -251,8 +247,8 @@ class SearchFragment : Fragment() {
     }
 
     private fun emptyScreen() {
+        vacanciesAdapter?.items = listOf()
         binding.counterVacanciesTextView.isVisible = false
-        binding.searchScreenRecyclerView.isVisible = false
         binding.searchScreenFirstLoadingProgressBar.isVisible = false
         binding.searchScreenPaginationProgressBar.isVisible = false
         binding.placeholderSearchVacanciesImageView.isVisible = false

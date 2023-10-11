@@ -114,7 +114,6 @@ class SimilarVacancyFragment : Fragment() {
     private fun showContent(vacancies: List<VacancyUi>, foundVacancies: Int) {
         emptyScreen()
         vacanciesAdapter?.items = vacancies
-        binding.similarVacanciesRecyclerView.isVisible = true
     }
 
 
@@ -188,10 +187,10 @@ class SimilarVacancyFragment : Fragment() {
     }
 
     private fun emptyScreen() {
+        vacanciesAdapter?.items = listOf()
         binding.similarVacanciesServerErrorPlaceholder.isVisible = false
         binding.similarVacanciesNoInternetPlaceholder.isVisible = false
         binding.similarVacanciesScreenFirstLoadingProgressBar.isVisible = false
-        binding.similarVacanciesRecyclerView.isVisible = false
         binding.similarVacancyScreenPaginationProgressBar.isVisible = false
     }
 
