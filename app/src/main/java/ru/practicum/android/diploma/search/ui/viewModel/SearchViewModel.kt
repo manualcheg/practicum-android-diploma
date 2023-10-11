@@ -10,6 +10,10 @@ import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.domain.model.vacancy_models.Vacancies
 import ru.practicum.android.diploma.common.ui.mapper.VacancyDomainToVacancyUiConverter
 import ru.practicum.android.diploma.common.ui.model.VacancyUi
+import ru.practicum.android.diploma.common.util.constants.VacanciesViewModelConst.DEFAULT_MAX_PAGES
+import ru.practicum.android.diploma.common.util.constants.VacanciesViewModelConst.DEFAULT_PAGE
+import ru.practicum.android.diploma.common.util.constants.VacanciesViewModelConst.DEFAULT_PER_PAGE
+import ru.practicum.android.diploma.common.util.constants.VacanciesViewModelConst.PAGE_LIMIT
 import ru.practicum.android.diploma.common.util.debounce
 import ru.practicum.android.diploma.search.domain.model.ErrorStatusDomain
 import ru.practicum.android.diploma.search.domain.useCase.SearchUseCase
@@ -75,7 +79,7 @@ class SearchViewModel(
     }
 
     private fun searchNewRequest(inputSearchText: String) {
-        if (inputSearchText.isEmpty()) {
+        if (inputSearchText.isBlank()) {
             return
         }
         setState(SearchState.Loading.LoadingSearch)
@@ -167,10 +171,6 @@ class SearchViewModel(
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2000L
         private const val DEFAULT_TEXT = ""
-        private const val PAGE_LIMIT = 2000
-        const val DEFAULT_PER_PAGE = 20
-        const val DEFAULT_PAGE = 0
-        const val DEFAULT_MAX_PAGES = 1
         const val DEFAULT_FOUND_VACANCIES = 0
     }
 }

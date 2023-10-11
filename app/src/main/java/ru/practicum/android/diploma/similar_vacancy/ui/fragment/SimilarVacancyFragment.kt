@@ -63,8 +63,8 @@ class SimilarVacancyFragment : Fragment() {
         isClickAllowed = true
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         binding.similarVacanciesRecyclerView.adapter = null
         vacanciesAdapter = null
         _binding = null
@@ -92,7 +92,7 @@ class SimilarVacancyFragment : Fragment() {
             is SearchState.Loading.LoadingSearch -> showLoadingSearch()
             is SearchState.Loading.LoadingPages -> showLoadingPages()
             SearchState.Success.Empty -> showEmpty()
-            is SearchState.Success.SearchContent -> showContent(state.vacancies, state.foundVacancy)
+            is SearchState.Success.SearchContent -> showContent(state.vacancies)
         }
     }
 
@@ -111,15 +111,15 @@ class SimilarVacancyFragment : Fragment() {
     }
 
 
-    private fun showContent(vacancies: List<VacancyUi>, foundVacancies: Int) {
+    private fun showContent(vacancies: List<VacancyUi>) {
         emptyScreen()
         vacanciesAdapter?.items = vacancies
-        binding.similarVacanciesRecyclerView.isVisible = true
     }
 
 
     private fun showEmpty() {
         emptyScreen()
+        vacanciesAdapter?.items = listOf()
     }
 
     private fun showLoadingSearch() {
@@ -136,16 +136,20 @@ class SimilarVacancyFragment : Fragment() {
         when (errorStatus) {
             ErrorStatusUi.NO_CONNECTION -> {
                 emptyScreen()
+                vacanciesAdapter?.items = listOf()
                 binding.similarVacanciesNoInternetPlaceholder.isVisible = true
             }
 
             ErrorStatusUi.ERROR_OCCURRED -> {
                 emptyScreen()
+                vacanciesAdapter?.items = listOf()
                 binding.similarVacanciesServerErrorPlaceholder.isVisible = true
             }
 
             ErrorStatusUi.NOTHING_FOUND -> {
                 emptyScreen()
+                vacanciesAdapter?.items = listOf()
+                binding.similarVacanciesNothingFoundPlaceholder.isVisible = true
             }
         }
     }
@@ -191,8 +195,8 @@ class SimilarVacancyFragment : Fragment() {
         binding.similarVacanciesServerErrorPlaceholder.isVisible = false
         binding.similarVacanciesNoInternetPlaceholder.isVisible = false
         binding.similarVacanciesScreenFirstLoadingProgressBar.isVisible = false
-        binding.similarVacanciesRecyclerView.isVisible = false
         binding.similarVacancyScreenPaginationProgressBar.isVisible = false
+        binding.similarVacanciesNothingFoundPlaceholder.isVisible = false
     }
 
     private fun showToast(message: String) {
