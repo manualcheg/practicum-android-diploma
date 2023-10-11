@@ -44,7 +44,7 @@ class VacancyViewModel(
         openMailUseCase.execute(mailTo)
     }
 
-    fun shareVacancyById() {
+    fun shareVacancy() {
         shareVacancyByIdUseCase.execute(vacancyId)
     }
 
@@ -52,7 +52,7 @@ class VacancyViewModel(
         callPhoneUseCase.execute(phoneNumber)
     }
 
-    fun findVacancyById() {
+    fun findVacancy() {
         viewModelScope.launch {
             val vacancyUI = findVacancyByIdUseCase.findVacancyById(vacancyId)
             if (vacancyUI.vacancy != null) {
@@ -75,7 +75,7 @@ class VacancyViewModel(
         }
     }
 
-    fun addOrDelFavorites() {
+    fun toggleFavorites() {
         viewModelScope.launch {
             if (inFavorites.value == true) {
                 vacancy?.let { delUseCase.execute(it) }

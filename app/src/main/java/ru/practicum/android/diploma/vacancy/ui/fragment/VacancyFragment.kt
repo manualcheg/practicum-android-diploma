@@ -2,6 +2,7 @@ package ru.practicum.android.diploma.vacancy.ui.fragment
 
 import android.os.Bundle
 import android.text.Html
+import android.text.Html.FROM_HTML_MODE_COMPACT
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
@@ -64,7 +65,7 @@ class VacancyFragment : Fragment() {
                     AppCompatResources.getDrawable(requireContext(), R.drawable.ic_favorites_off)
             }
         }
-        viewModel.findVacancyById()
+        viewModel.findVacancy()
         
         setOnClickListeners()
         initializePhonesAdapter()
@@ -115,11 +116,11 @@ class VacancyFragment : Fragment() {
         binding.vacancyToolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.share -> {
-                     viewModel.shareVacancyById()
+                     viewModel.shareVacancy()
                 }
 
                 R.id.like -> {
-                    viewModel.addOrDelFavorites()
+                    viewModel.toggleFavorites()
                 }
             }
             true
@@ -187,7 +188,7 @@ class VacancyFragment : Fragment() {
             binding.vacancyExperienceLinearLayout.visibility = View.GONE
 
         if (state.vacancy.description.isNotBlank()) {
-            binding.vacancyDescriptionTextView.text = Html.fromHtml(state.vacancy.description)
+            binding.vacancyDescriptionTextView.text = Html.fromHtml(state.vacancy.description, FROM_HTML_MODE_COMPACT)
 
         } else {
             binding.vacancyDescriptionLinearLayout.visibility = View.GONE
