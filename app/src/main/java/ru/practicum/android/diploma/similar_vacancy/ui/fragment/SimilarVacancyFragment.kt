@@ -153,6 +153,8 @@ class SimilarVacancyFragment : Fragment() {
 
     private fun setOnClicksAndActions() {
 
+        binding.similarVacanciesToolbar.setNavigationOnClickListener { findNavController().popBackStack() }
+
         binding.similarVacanciesRecyclerView.addOnScrollListener(object :
             RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
