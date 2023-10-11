@@ -172,7 +172,6 @@ class SearchFragment : Fragment() {
 
 
     private fun setOnClicksAndActions() {
-        binding.searchScreenEditText.setText(DEFAULT_TEXT)
         inputMethodManager =
             activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
         inputMethodManager?.hideSoftInputFromWindow(
@@ -215,7 +214,7 @@ class SearchFragment : Fragment() {
                 setSearchEditTextEndDrawable(s)
                 inputSearchText = binding.searchScreenEditText.text.toString()
 
-                if (binding.searchScreenEditText.hasFocus() && (s?.isEmpty() == true || s?.isBlank() == true)) {
+                if (s?.isEmpty() == true) {
                     vacanciesAdapter?.items = listOf()
                     viewModel.clearSearchInput()
                 }
