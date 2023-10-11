@@ -63,8 +63,8 @@ class SimilarVacancyFragment : Fragment() {
         isClickAllowed = true
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         binding.similarVacanciesRecyclerView.adapter = null
         vacanciesAdapter = null
         _binding = null
@@ -119,6 +119,7 @@ class SimilarVacancyFragment : Fragment() {
 
     private fun showEmpty() {
         emptyScreen()
+        vacanciesAdapter?.items = listOf()
     }
 
     private fun showLoadingSearch() {
@@ -135,16 +136,19 @@ class SimilarVacancyFragment : Fragment() {
         when (errorStatus) {
             ErrorStatusUi.NO_CONNECTION -> {
                 emptyScreen()
+                vacanciesAdapter?.items = listOf()
                 binding.similarVacanciesNoInternetPlaceholder.isVisible = true
             }
 
             ErrorStatusUi.ERROR_OCCURRED -> {
                 emptyScreen()
+                vacanciesAdapter?.items = listOf()
                 binding.similarVacanciesServerErrorPlaceholder.isVisible = true
             }
 
             ErrorStatusUi.NOTHING_FOUND -> {
                 emptyScreen()
+                vacanciesAdapter?.items = listOf()
                 binding.similarVacanciesNothingFoundPlaceholder.isVisible = true
             }
         }
@@ -188,7 +192,6 @@ class SimilarVacancyFragment : Fragment() {
     }
 
     private fun emptyScreen() {
-        vacanciesAdapter?.items = listOf()
         binding.similarVacanciesServerErrorPlaceholder.isVisible = false
         binding.similarVacanciesNoInternetPlaceholder.isVisible = false
         binding.similarVacanciesScreenFirstLoadingProgressBar.isVisible = false

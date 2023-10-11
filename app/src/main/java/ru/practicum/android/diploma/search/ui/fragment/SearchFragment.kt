@@ -69,8 +69,8 @@ class SearchFragment : Fragment() {
         isClickAllowed = true
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         textWatcher?.let { binding.searchScreenEditText.removeTextChangedListener(it) }
         binding.searchScreenRecyclerView.adapter = null
         vacanciesAdapter = null
@@ -128,6 +128,7 @@ class SearchFragment : Fragment() {
 
     private fun showEmpty() {
         emptyScreen()
+        vacanciesAdapter?.items = listOf()
         binding.placeholderSearchVacanciesImageView.isVisible = true
     }
 
@@ -147,16 +148,19 @@ class SearchFragment : Fragment() {
     private fun showError(errorStatus: ErrorStatusUi) {
         when (errorStatus) {
             ErrorStatusUi.NO_CONNECTION -> {
+                vacanciesAdapter?.items = listOf()
                 emptyScreen()
                 binding.searchScreenNoInternetPlaceholder.isVisible = true
             }
 
             ErrorStatusUi.ERROR_OCCURRED -> {
+                vacanciesAdapter?.items = listOf()
                 emptyScreen()
                 binding.searchScreenServerErrorPlaceholder.isVisible = true
             }
 
             ErrorStatusUi.NOTHING_FOUND -> {
+                vacanciesAdapter?.items = listOf()
                 emptyScreen()
                 binding.searchScreenNothingFoundPlaceholder.isVisible = true
                 binding.counterVacanciesTextView.text =
@@ -246,7 +250,6 @@ class SearchFragment : Fragment() {
     }
 
     private fun emptyScreen() {
-        vacanciesAdapter?.items = listOf()
         binding.counterVacanciesTextView.isVisible = false
         binding.searchScreenFirstLoadingProgressBar.isVisible = false
         binding.searchScreenPaginationProgressBar.isVisible = false
