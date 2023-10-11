@@ -120,7 +120,6 @@ class SearchFragment : Fragment() {
     private fun showContent(vacancies: List<VacancyUi>, foundVacancies: Int) {
         emptyScreen()
         vacanciesAdapter?.items = vacancies
-        binding.searchScreenRecyclerView.scrollToPosition(0)
         binding.counterVacanciesTextView.text = resources.getQuantityString(
             R.plurals.vacancy_plural, foundVacancies, foundVacancies
         )
