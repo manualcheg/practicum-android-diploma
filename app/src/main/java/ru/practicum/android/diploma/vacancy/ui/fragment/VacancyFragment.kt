@@ -2,6 +2,7 @@ package ru.practicum.android.diploma.vacancy.ui.fragment
 
 import android.os.Bundle
 import android.text.Html
+import android.text.Html.FROM_HTML_MODE_COMPACT
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
@@ -48,7 +49,8 @@ class VacancyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         
-        vacancyId = args.vacansyId
+        vacancyId = args.vacancyId
+        viewModel.checkFavorites()
         viewModel.state.observe(viewLifecycleOwner) {
             render(it)
         }
@@ -63,7 +65,7 @@ class VacancyFragment : Fragment() {
                     AppCompatResources.getDrawable(requireContext(), R.drawable.ic_favorites_off)
             }
         }
-        viewModel.findVacancyById(vacancyId!!)
+        viewModel.findVacancy()
         
         setOnClickListeners()
         initializePhonesAdapter()
@@ -100,7 +102,6 @@ class VacancyFragment : Fragment() {
                 binding.vacancyServerErrorPlaceholder.visibility = View.GONE
                 binding.vacancyContentScrollView.visibility = View.VISIBLE
                 setupContent(state)
-                viewModel.checkFavorites(vacancyId!!)
             }
         }
     }
@@ -115,10 +116,12 @@ class VacancyFragment : Fragment() {
         binding.vacancyToolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.share -> {
-                    vacancyId?.let { it1 -> viewModel.shareVacancyById(it1) }
+                     viewModel.shareVacancy()
                 }
 
-                R.id.like -> { viewModel.addOrDelFavorites(vacancyId!!) }
+                R.id.like -> {
+                    viewModel.toggleFavorites()
+                }
             }
             true
         }
@@ -185,7 +188,7 @@ class VacancyFragment : Fragment() {
             binding.vacancyExperienceLinearLayout.visibility = View.GONE
 
         if (state.vacancy.description.isNotBlank()) {
-            binding.vacancyDescriptionTextView.text = Html.fromHtml(state.vacancy.description)
+            binding.vacancyDescriptionTextView.text = Html.fromHtml(state.vacancy.description, FROM_HTML_MODE_COMPACT)
 
         } else {
             binding.vacancyDescriptionLinearLayout.visibility = View.GONE
