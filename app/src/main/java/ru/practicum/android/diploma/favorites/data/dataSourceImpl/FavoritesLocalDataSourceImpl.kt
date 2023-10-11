@@ -16,8 +16,8 @@ class FavoritesLocalDataSourceImpl(
         appDataBase.FavoritesVacanciesDao().addToFavorites(vacancyDbConverter.map(vacancy))
     }
 
-    override suspend fun deleteFromFavorites(id: Int) {
-        appDataBase.FavoritesVacanciesDao().deleteFromFavorites(id)
+    override suspend fun deleteFromFavorites(vacancy: Vacancy) {
+        appDataBase.FavoritesVacanciesDao().deleteFromFavorites(vacancyDbConverter.map(vacancy))
     }
 
     override fun getFavorites(): Flow<List<Vacancy>> {

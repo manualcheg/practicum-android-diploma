@@ -6,7 +6,7 @@ import ru.practicum.android.diploma.common.domain.model.vacancy_models.Vacancy
 interface FavoritesLocalDataSource {
     suspend fun addToFavorites(vacancy: Vacancy)
 
-    suspend fun deleteFromFavorites(id: Int)
+    suspend fun deleteFromFavorites(vacancy: Vacancy)
 
     fun getFavorites(): Flow<List<Vacancy>>
 

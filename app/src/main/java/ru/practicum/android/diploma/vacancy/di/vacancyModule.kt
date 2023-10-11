@@ -39,6 +39,7 @@ val vacancyModule = module {
 
     viewModel {
         VacancyViewModel(
+            vacancyId = get(),
             findVacancyByIdUseCase = get(),
             addUseCase = get(),
             delUseCase = get(),

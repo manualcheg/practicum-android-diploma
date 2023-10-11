@@ -17,6 +17,7 @@ import ru.practicum.android.diploma.vacancy.domain.useCase.ShareVacancyByIdUseCa
 import ru.practicum.android.diploma.vacancy.ui.model.VacancyState
 
 class VacancyViewModel(
+    private val vacancyId: Int,
     private val findVacancyByIdUseCase: FindVacancyByIdUseCase,
     private val addUseCase: AddUseCase,
     private val delUseCase: DelUseCase,
@@ -43,17 +44,17 @@ class VacancyViewModel(
         openMailUseCase.execute(mailTo)
     }
 
-    fun shareVacancyById(id: Int) {
-        shareVacancyByIdUseCase.execute(id)
+    fun shareVacancyById() {
+        shareVacancyByIdUseCase.execute(vacancyId)
     }
 
     fun dialPhone(phoneNumber: String) {
         callPhoneUseCase.execute(phoneNumber)
     }
 
-    fun findVacancyById(id: Int) {
+    fun findVacancyById() {
         viewModelScope.launch {
-            val vacancyUI = findVacancyByIdUseCase.findVacancyById(id)
+            val vacancyUI = findVacancyByIdUseCase.findVacancyById(vacancyId)
             if (vacancyUI.vacancy != null) {
                 setState(VacancyState.Content(vacancyDomainToVacancyUiConverter.map(vacancyUI.vacancy)))
                 vacancy = vacancyUI.vacancy
@@ -66,23 +67,21 @@ class VacancyViewModel(
         _state.value = state
     }
 
-    fun checkFavorites(id: Int) {
+    fun checkFavorites() {
         viewModelScope.launch {
-            checkInFavoritesUseCase.execute(id).collect {
-                _inFavorites.postValue(it)
+            checkInFavoritesUseCase.execute(vacancyId).collect { isInFavorites ->
+                _inFavorites.postValue(isInFavorites)
             }
         }
     }
 
-    fun addOrDelFavorites(id: Int) {
+    fun addOrDelFavorites() {
         viewModelScope.launch {
-            _inFavorites.postValue(
-                if (inFavorites.value == true) {
-                    delUseCase.execute(id)
-                } else {
-                    addUseCase.execute(vacancy!!)
-                }
-            )
+            if (inFavorites.value == true) {
+                vacancy?.let { delUseCase.execute(it) }
+            } else {
+                vacancy?.let { addUseCase.execute(it) }
+            }
         }
     }
 }

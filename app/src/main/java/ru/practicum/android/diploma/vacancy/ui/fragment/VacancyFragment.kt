@@ -48,7 +48,8 @@ class VacancyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         
-        vacancyId = args.vacansyId
+        vacancyId = args.vacancyId
+        viewModel.checkFavorites()
         viewModel.state.observe(viewLifecycleOwner) {
             render(it)
         }
@@ -63,7 +64,7 @@ class VacancyFragment : Fragment() {
                     AppCompatResources.getDrawable(requireContext(), R.drawable.ic_favorites_off)
             }
         }
-        viewModel.findVacancyById(vacancyId!!)
+        viewModel.findVacancyById()
         
         setOnClickListeners()
         initializePhonesAdapter()
@@ -100,7 +101,6 @@ class VacancyFragment : Fragment() {
                 binding.vacancyServerErrorPlaceholder.visibility = View.GONE
                 binding.vacancyContentScrollView.visibility = View.VISIBLE
                 setupContent(state)
-                viewModel.checkFavorites(vacancyId!!)
             }
         }
     }
@@ -115,10 +115,12 @@ class VacancyFragment : Fragment() {
         binding.vacancyToolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.share -> {
-                    vacancyId?.let { it1 -> viewModel.shareVacancyById(it1) }
+                     viewModel.shareVacancyById()
                 }
 
-                R.id.like -> { viewModel.addOrDelFavorites(vacancyId!!) }
+                R.id.like -> {
+                    viewModel.addOrDelFavorites()
+                }
             }
             true
         }
