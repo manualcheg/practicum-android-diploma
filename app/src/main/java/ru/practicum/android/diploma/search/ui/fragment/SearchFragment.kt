@@ -42,6 +42,23 @@ class SearchFragment : Fragment() {
 
     private var inputMethodManager: InputMethodManager? = null
 
+    private val scrollListener = object :
+        RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+
+            if (dy > 0) {
+                val pos =
+                    (binding.searchScreenRecyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                val itemsCount = vacanciesAdapter?.itemCount
+                if (itemsCount != null) {
+                    if (pos >= itemsCount - 1) {
+                        viewModel.onLastItemReached()
+                    }
+                }
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -108,11 +125,13 @@ class SearchFragment : Fragment() {
             SearchError.ERROR_OCCURRED -> {
                 showToast(resources.getString(R.string.failed_to_get_a_list_of_vacancies))
                 binding.searchScreenPaginationProgressBar.isVisible = false
+                binding.searchScreenRecyclerView.removeOnScrollListener(scrollListener)
             }
 
             SearchError.NO_CONNECTION -> {
                 showToast(resources.getString(R.string.no_internet))
                 binding.searchScreenPaginationProgressBar.isVisible = false
+                binding.searchScreenRecyclerView.removeOnScrollListener(scrollListener)
             }
         }
     }
@@ -124,6 +143,8 @@ class SearchFragment : Fragment() {
             R.plurals.vacancy_plural, foundVacancies, foundVacancies
         )
         binding.counterVacanciesTextView.isVisible = true
+        binding.searchScreenRecyclerView.clearOnScrollListeners()
+        binding.searchScreenRecyclerView.addOnScrollListener(scrollListener)
     }
 
     private fun showEmpty() {
@@ -186,24 +207,6 @@ class SearchFragment : Fragment() {
 //        binding.searchScreenHeaderFilterImageView.setOnClickListener {
 //            findNavController().navigate(R.id.action_searchFragment_to_filteringSettingsFragment)
 //        }
-
-        binding.searchScreenRecyclerView.addOnScrollListener(object :
-            RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-
-                if (dy > 0) {
-                    val pos =
-                        (binding.searchScreenRecyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
-                    val itemsCount = vacanciesAdapter?.itemCount
-                    if (itemsCount != null) {
-                        if (pos >= itemsCount - 1) {
-                            viewModel.onLastItemReached()
-                        }
-                    }
-                }
-            }
-        })
     }
 
     private fun setOnTextWatchersTextChangeListeners() {

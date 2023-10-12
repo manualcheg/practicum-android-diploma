@@ -138,6 +138,7 @@ class SearchViewModel(
                             latestSearchText = DEFAULT_TEXT
                         } else {
                             setToastErrorState(SearchError.NO_CONNECTION)
+                            setState(SearchState.Success.SearchContent(vacanciesList, foundVacancies))
                         }
                     }
 
@@ -147,6 +148,7 @@ class SearchViewModel(
                             latestSearchText = DEFAULT_TEXT
                         } else {
                             setToastErrorState(SearchError.ERROR_OCCURRED)
+                            setState(SearchState.Success.SearchContent(vacanciesList, foundVacancies))
                         }
                     }
                 }
