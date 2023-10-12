@@ -6,8 +6,6 @@ import ru.practicum.android.diploma.common.ui.model.VacancyUi
 sealed interface SearchState {
     sealed class Loading : SearchState {
         object LoadingSearch : Loading()
-        object LoadingPages: Loading()
-
     }
 
     sealed class Success(open val vacancies: List<VacancyUi>, open val foundVacancy: Int = 0) :
