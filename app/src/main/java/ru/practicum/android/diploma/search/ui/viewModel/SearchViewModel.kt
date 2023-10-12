@@ -22,7 +22,7 @@ import ru.practicum.android.diploma.search.ui.model.SearchError
 import ru.practicum.android.diploma.search.ui.model.SearchState
 import ru.practicum.android.diploma.search.ui.model.SingleLiveEvent
 
-class SearchViewModel(
+open class SearchViewModel(
     private val searchUseCase: SearchUseCase,
     private val vacancyDomainToVacancyUiConverter: VacancyDomainToVacancyUiConverter
 ) : ViewModel() {
@@ -30,15 +30,16 @@ class SearchViewModel(
     private var latestSearchText: String? = null
 
     private val stateLiveData = MutableLiveData<SearchState>()
+    private val paginationLoadingState = SingleLiveEvent<Boolean>()
     private val toastErrorStateLiveData = SingleLiveEvent<SearchError>()
 
     private var foundVacancies = DEFAULT_FOUND_VACANCIES
-    private var currentPages = DEFAULT_PAGE
-    private var nextPage = DEFAULT_PAGE
-    private var maxPages = DEFAULT_MAX_PAGES
-    private var perPage = DEFAULT_PER_PAGE
+    protected var currentPages = DEFAULT_PAGE
+    protected var nextPage = DEFAULT_PAGE
+    protected var maxPages = DEFAULT_MAX_PAGES
+    protected var perPage = DEFAULT_PER_PAGE
 
-    private var isNextPageLoading = false
+    protected var isNextPageLoading = false
     private val vacanciesList = mutableListOf<VacancyUi>()
 
     private var job: Job? = null
@@ -50,6 +51,8 @@ class SearchViewModel(
 
     fun observeState(): LiveData<SearchState> = stateLiveData
     fun observeErrorToastState(): LiveData<SearchError> = toastErrorStateLiveData
+    fun observePaginationLoadingState(): LiveData<Boolean> = paginationLoadingState
+
 
     fun searchDebounced(changedText: String) {
         if (changedText == latestSearchText) {
@@ -60,7 +63,7 @@ class SearchViewModel(
         tracksSearchDebounce(changedText)
     }
 
-    fun onLastItemReached() {
+    open fun onLastItemReached() {
         latestSearchText?.let { searchSameRequest(it) }
     }
 
@@ -70,12 +73,16 @@ class SearchViewModel(
         job?.cancel()
     }
 
-    private fun setState(state: SearchState) {
+    fun setState(state: SearchState) {
         stateLiveData.value = state
     }
 
     private fun setToastErrorState(state: SearchError) {
         toastErrorStateLiveData.value = state
+    }
+
+    protected fun setPaginationLoadingState(isLoading: Boolean) {
+        paginationLoadingState.value = isLoading
     }
 
     private fun searchNewRequest(inputSearchText: String) {
@@ -94,11 +101,11 @@ class SearchViewModel(
 
 
     private fun searchSameRequest(inputSearchText: String) {
-        if (currentPages == maxPages && currentPages == PAGE_LIMIT || isNextPageLoading) {
+        if (currentPages == maxPages || currentPages == PAGE_LIMIT || isNextPageLoading) {
             return
         }
         isNextPageLoading = true
-        setState(SearchState.Loading.LoadingPages)
+        setPaginationLoadingState(true)
 
         if (PAGE_LIMIT - currentPages <= DEFAULT_PER_PAGE) {
             perPage = PAGE_LIMIT - currentPages
@@ -114,8 +121,7 @@ class SearchViewModel(
         }
     }
 
-
-    private fun processResult(
+    protected fun processResult(
         vacancies: Vacancies?, errorStatus: ErrorStatusDomain?, isNewSearch: Boolean
     ) {
         if (vacancies != null) {
@@ -133,6 +139,7 @@ class SearchViewModel(
             errorStatus != null -> {
                 when (errorStatus) {
                     ErrorStatusDomain.NO_CONNECTION -> {
+                        setPaginationLoadingState(false)
                         if (isNewSearch) {
                             setState(SearchState.Error(ErrorStatusUi.NO_CONNECTION))
                             latestSearchText = DEFAULT_TEXT
@@ -142,6 +149,7 @@ class SearchViewModel(
                     }
 
                     ErrorStatusDomain.ERROR_OCCURRED -> {
+                        setPaginationLoadingState(false)
                         if (isNewSearch) {
                             setState(SearchState.Error(ErrorStatusUi.ERROR_OCCURRED))
                             latestSearchText = DEFAULT_TEXT
@@ -152,9 +160,13 @@ class SearchViewModel(
                 }
             }
 
-            vacanciesList.isEmpty() -> setState(SearchState.Error(ErrorStatusUi.NOTHING_FOUND))
+            vacanciesList.isEmpty() -> {
+                setPaginationLoadingState(false)
+                setState(SearchState.Error(ErrorStatusUi.NOTHING_FOUND))
+            }
 
             else -> {
+                setPaginationLoadingState(false)
                 setState(SearchState.Success.SearchContent(vacanciesList, foundVacancies))
             }
         }
