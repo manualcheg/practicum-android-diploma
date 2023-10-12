@@ -70,6 +70,10 @@ class SearchViewModel(
         job?.cancel()
     }
 
+    fun restoreState() {
+        setState(SearchState.Success.SearchContent(vacanciesList, foundVacancies))
+    }
+
     private fun setState(state: SearchState) {
         stateLiveData.value = state
     }

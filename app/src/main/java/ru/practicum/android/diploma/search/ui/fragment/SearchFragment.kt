@@ -42,17 +42,25 @@ class SearchFragment : Fragment() {
 
     private var inputMethodManager: InputMethodManager? = null
 
+    private var isFragmentJustCreated = true
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
+
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (!isFragmentJustCreated) {
+            viewModel.restoreState()
+        }
+
+        isFragmentJustCreated = false
 
         recycleViewInit()
         setOnClicksAndActions()
