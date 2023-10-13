@@ -21,6 +21,13 @@ class TeamFragment: Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.crash.setOnClickListener {
+            throw RuntimeException("Test Crash")
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
