@@ -5,24 +5,63 @@ import ru.practicum.android.diploma.filter.data.model.dto.Country
 import ru.practicum.android.diploma.filter.data.model.dto.Filter
 import ru.practicum.android.diploma.filter.data.model.dto.Industry
 
-class LocalCacheImpl(override val filterCache: Filter) : LocalCache {
+class LocalCacheImpl : LocalCache {
+    private var filterCache: Filter? = null
+    override fun getFilterCache(): Filter? {
+        return filterCache
+    }
+
     override fun addCountry(country: Country) {
-        TODO("Not yet implemented")
+        filterCache = Filter(
+            country,
+            filterCache?.area,
+            filterCache?.industry,
+            filterCache?.salary,
+            filterCache?.onlyWithSalary
+        )
     }
 
     override fun addArea(area: Area) {
-        TODO("Not yet implemented")
+        filterCache = Filter(
+            filterCache?.country,
+            area,
+            filterCache?.industry,
+            filterCache?.salary,
+            filterCache?.onlyWithSalary
+        )
     }
 
     override fun addIndustry(industry: Industry) {
-        TODO("Not yet implemented")
+        filterCache = Filter(
+            filterCache?.country,
+            filterCache?.area,
+            industry,
+            filterCache?.salary,
+            filterCache?.onlyWithSalary
+        )
     }
 
     override fun addSalary(salary: Int) {
-        TODO("Not yet implemented")
+        filterCache = Filter(
+            filterCache?.country,
+            filterCache?.area,
+            filterCache?.industry,
+            salary,
+            filterCache?.onlyWithSalary
+        )
     }
 
     override fun addOnlyWithSalary(option: Boolean) {
-        TODO("Not yet implemented")
+        filterCache = Filter(
+            filterCache?.country,
+            filterCache?.area,
+            filterCache?.industry,
+            filterCache?.salary,
+            option
+        )
+    }
+
+    override fun clear() {
+        filterCache = null
     }
 }

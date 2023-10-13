@@ -9,16 +9,21 @@ class FilterOptionsDataSourceImpl(
     private val filterDb: FilterDb,
     private val localCache: LocalCache
 ) : FilterOptionsDataSource {
-    override fun getFilterOptions(): Filter {
-        return if (localCache.filterCache.equals(null)){
+    override fun getFilterOptions(): Filter? {
+        return if (localCache.getFilterCache() == null) {
             filterDb.getFilterOptions()
         } else {
-            localCache.filterCache
+            localCache.getFilterCache()
         }
 
     }
 
     override fun putFilterOptions(options: Filter) {
-        TODO("Not yet implemented")
+        filterDb.putFilterOptions(options)
+    }
+
+    override fun clearFilterOptions() {
+        filterDb.clearSavedFilter()
+        localCache.clear()
     }
 }
