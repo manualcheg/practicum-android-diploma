@@ -1,22 +1,24 @@
 package ru.practicum.android.diploma.filter.data.dataSourceImpl
 
-import android.content.SharedPreferences
-import com.google.gson.Gson
 import ru.practicum.android.diploma.filter.data.dataSource.FilterOptionsDataSource
-import ru.practicum.android.diploma.filter.data.mapper.FilterDBConverter
+import ru.practicum.android.diploma.filter.data.db.FilterDb
+import ru.practicum.android.diploma.filter.data.db.LocalCache
 import ru.practicum.android.diploma.filter.data.model.dto.Filter
 
 class FilterOptionsDataSourceImpl(
-    private val sharedPrefs: SharedPreferences,
-    private val filterDBConverter: FilterDBConverter
+    private val filterDb: FilterDb,
+    private val localCache: LocalCache
 ) : FilterOptionsDataSource {
-    override fun getFilterOptions(): HashMap<String, String> {
-        val filterFromSharedPrefs = sharedPrefs.getString("FILTER", "")
+    override fun getFilterOptions(): Filter {
+        return if (localCache.filterCache.equals(null)){
+            filterDb.getFilterOptions()
+        } else {
+            localCache.filterCache
+        }
 
-        return filterDBConverter.map(Gson().fromJson(filterFromSharedPrefs, Filter::class.java))
     }
 
-    override fun addFilterOptions(options: HashMap<String, String>) {
-
+    override fun putFilterOptions(options: Filter) {
+        TODO("Not yet implemented")
     }
 }
