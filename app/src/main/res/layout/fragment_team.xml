@@ -36,7 +36,6 @@
             android:text="@string/shurygin_evgenii" />
 
         <TextView
-            android:id="@+id/crash"
             style="@style/AuthorsTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
