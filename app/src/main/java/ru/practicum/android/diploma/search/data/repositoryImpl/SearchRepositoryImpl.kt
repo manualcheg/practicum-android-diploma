@@ -25,7 +25,7 @@ class SearchRepositoryImpl(
 
     override fun search(text: String, page: Int, perPage: Int): Flow<Resource<Vacancies>> = flow {
 
-        val options = filterOptionsDataSource.getFilterOptions()
+        val options = HashMap<String, String>()
 
         options[SEARCH_TEXT] = text
         options[PAGE] = page.toString()
