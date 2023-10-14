@@ -52,4 +52,8 @@ class SearchRepositoryImpl(
             }
         }
     }
+
+    override fun isFiltersExist(): Boolean {
+        return filterOptionsDataSource.getFilterOptions() != null
+    }
 }

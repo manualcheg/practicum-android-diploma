@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -69,6 +70,8 @@ open class SearchFragment : Fragment() {
             binding.searchScreenRecyclerView, vacanciesAdapter, viewModel
         )
 
+        viewModel.getButtonState()
+
         viewModel.observeState().observe(viewLifecycleOwner) {
             renderSearchState(it)
         }
@@ -81,7 +84,12 @@ open class SearchFragment : Fragment() {
             renderPaginationLoadingState(it)
         }
 
+        viewModel.observeFilterButtonState().observe(viewLifecycleOwner) {
+            renderButtonState(it)
+        }
+
         isClickAllowed = true
+
     }
 
     protected open fun destroyViews() {
@@ -136,6 +144,17 @@ open class SearchFragment : Fragment() {
     protected fun renderPaginationLoadingState(isLoading: Boolean) {
         if (isLoading) showLoadingPages()
         else hideLoadingPages()
+    }
+
+    private fun renderButtonState(isFiltersExist: Boolean) {
+        if (isFiltersExist) {
+            setMenuFilterIcon(R.drawable.ic_filters_selected)
+        } else setMenuFilterIcon(R.drawable.ic_filters_unselected)
+    }
+
+    private fun setMenuFilterIcon(drawableInt: Int) {
+        binding.searchVacanciesToolbar.menu.findItem(R.id.searchScreenToolbarFilterMenu).icon =
+            AppCompatResources.getDrawable(requireContext(), drawableInt)
     }
 
     protected open fun showContent(vacancies: List<VacancyUi>, foundVacancies: Int) {

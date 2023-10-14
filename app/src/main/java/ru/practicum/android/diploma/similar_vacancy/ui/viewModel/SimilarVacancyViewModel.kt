@@ -7,6 +7,7 @@ import ru.practicum.android.diploma.common.ui.mapper.VacancyDomainToVacancyUiCon
 import ru.practicum.android.diploma.common.util.constants.VacanciesViewModelConst.DEFAULT_PAGE
 import ru.practicum.android.diploma.common.util.constants.VacanciesViewModelConst.DEFAULT_PER_PAGE
 import ru.practicum.android.diploma.common.util.constants.VacanciesViewModelConst.PAGE_LIMIT
+import ru.practicum.android.diploma.search.domain.useCase.IsFiltersExistsUseCase
 import ru.practicum.android.diploma.search.domain.useCase.SearchUseCase
 import ru.practicum.android.diploma.search.ui.model.SearchState
 import ru.practicum.android.diploma.search.ui.viewModel.SearchViewModel
@@ -17,8 +18,11 @@ class SimilarVacancyViewModel(
     private val searchSimilarVacanciesByIdUseCase: SearchSimilarVacanciesByIdUseCase,
     vacancyDomainToVacancyUiConverter: VacancyDomainToVacancyUiConverter,
     searchUseCase: SearchUseCase,
+    isFiltersExistsUseCase: IsFiltersExistsUseCase
 ) : SearchViewModel(
-    searchUseCase, vacancyDomainToVacancyUiConverter
+    searchUseCase,
+    vacancyDomainToVacancyUiConverter,
+    isFiltersExistsUseCase
 ) {
     init {
         searchSimilarVacancyById(vacancyId)

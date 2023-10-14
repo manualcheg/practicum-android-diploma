@@ -6,4 +6,5 @@ import ru.practicum.android.diploma.common.util.Resource
 
 interface SearchRepository {
     fun search(text: String, page: Int, perPage: Int): Flow<Resource<Vacancies>>
+    fun isFiltersExist(): Boolean
 }
