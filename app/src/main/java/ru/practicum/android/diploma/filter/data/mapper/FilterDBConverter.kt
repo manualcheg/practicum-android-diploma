@@ -1,6 +1,6 @@
 package ru.practicum.android.diploma.filter.data.mapper
 
-import ru.practicum.android.diploma.filter.data.model.dto.Filter
+import ru.practicum.android.diploma.common.domain.model.filter_models.Filter
 
 class FilterDBConverter {
     fun map(filter: Filter): HashMap<String, String> {

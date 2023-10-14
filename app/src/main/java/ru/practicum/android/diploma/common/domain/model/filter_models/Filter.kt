@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.filter.data.model.dto
+package ru.practicum.android.diploma.common.domain.model.filter_models
 
 data class Filter(
     var country: Country?,
