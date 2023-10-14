@@ -1,51 +1,52 @@
 package ru.practicum.android.diploma.filter.data.dataSourceImpl
 
 import ru.practicum.android.diploma.filter.data.dataSource.FilterOptionsDataSource
-import ru.practicum.android.diploma.filter.data.db.FilterDb
-import ru.practicum.android.diploma.filter.data.db.LocalCache
+import ru.practicum.android.diploma.filter.data.db.FilterDataBase
+import ru.practicum.android.diploma.filter.data.db.FilterLocalCache
 import ru.practicum.android.diploma.filter.data.model.dto.Area
 import ru.practicum.android.diploma.filter.data.model.dto.Country
 import ru.practicum.android.diploma.filter.data.model.dto.Filter
 import ru.practicum.android.diploma.filter.data.model.dto.Industry
 
 class FilterOptionsDataSourceImpl(
-    private val filterDb: FilterDb,
-    private val localCache: LocalCache
+    private val filterDataBase: FilterDataBase,
+    private val filterLocalCache: FilterLocalCache
 ) : FilterOptionsDataSource {
     override fun getFilterOptions(): Filter? {
-        return if (localCache.getFilterCache() == null) {
-            filterDb.getFilterOptions()
+        return if (filterLocalCache.getFilterCache() == null) {
+            filterDataBase.getFilterOptions()
         } else {
-            localCache.getFilterCache()
+            filterLocalCache.getFilterCache()
         }
+    filterLocalCache.clear()
     }
 
     override fun putFilterOptions(options: Filter) {
-        filterDb.putFilterOptions(options)
+        filterDataBase.putFilterOptions(options)
     }
 
     override fun addCountry(country: Country) {
-        localCache.addCountry(country)
+        filterLocalCache.addCountry(country)
     }
 
     override fun addArea(area: Area) {
-        localCache.addArea(area)
+        filterLocalCache.addArea(area)
     }
 
     override fun addIndustry(industry: Industry) {
-        localCache.addIndustry(industry)
+        filterLocalCache.addIndustry(industry)
     }
 
     override fun addSalary(salary: Int) {
-        localCache.addSalary(salary)
+        filterLocalCache.addSalary(salary)
     }
 
     override fun addOnlyWithSalary(option: Boolean) {
-        localCache.addOnlyWithSalary(option)
+        filterLocalCache.addOnlyWithSalary(option)
     }
 
     override fun clearFilterOptions() {
-        filterDb.clearSavedFilter()
-        localCache.clear()
+        filterDataBase.clearSavedFilter()
+        filterLocalCache.clear()
     }
 }

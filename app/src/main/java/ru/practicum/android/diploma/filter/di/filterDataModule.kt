@@ -10,10 +10,10 @@ import org.koin.dsl.module
 import ru.practicum.android.diploma.common.util.constants.FilterConst.JOBSEEKER_SHAREDPREFS
 import ru.practicum.android.diploma.filter.data.dataSource.FilterOptionsDataSource
 import ru.practicum.android.diploma.filter.data.dataSourceImpl.FilterOptionsDataSourceImpl
-import ru.practicum.android.diploma.filter.data.db.FilterDb
-import ru.practicum.android.diploma.filter.data.db.FilterDbImpl
-import ru.practicum.android.diploma.filter.data.db.LocalCache
-import ru.practicum.android.diploma.filter.data.db.LocalCacheImpl
+import ru.practicum.android.diploma.filter.data.db.FilterDataBase
+import ru.practicum.android.diploma.filter.data.db.FilterDataBaseImpl
+import ru.practicum.android.diploma.filter.data.db.FilterLocalCache
+import ru.practicum.android.diploma.filter.data.db.FilterLocalCacheImpl
 import ru.practicum.android.diploma.filter.data.repositoryImpl.FilterRepositoryImpl
 import ru.practicum.android.diploma.filter.domain.repository.FilterRepository
 import ru.practicum.android.diploma.filter.data.mapper.FilterDBConverter
@@ -27,6 +27,6 @@ val filterDataModule = module {
     factoryOf(::FilterDBConverter)
     singleOf(::FilterOptionsDataSourceImpl) bind FilterOptionsDataSource::class
     singleOf(::FilterRepositoryImpl) bind FilterRepository::class
-    singleOf(::FilterDbImpl) bind FilterDb::class
-    singleOf(::LocalCacheImpl) bind LocalCache::class
+    singleOf(::FilterDataBaseImpl) bind FilterDataBase::class
+    singleOf(::FilterLocalCacheImpl) bind FilterLocalCache::class
 }

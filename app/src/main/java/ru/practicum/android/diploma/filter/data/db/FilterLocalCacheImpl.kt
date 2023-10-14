@@ -5,7 +5,7 @@ import ru.practicum.android.diploma.filter.data.model.dto.Country
 import ru.practicum.android.diploma.filter.data.model.dto.Filter
 import ru.practicum.android.diploma.filter.data.model.dto.Industry
 
-class LocalCacheImpl : LocalCache {
+class FilterLocalCacheImpl : FilterLocalCache {
     private var filterCache: Filter? = null
     override fun getFilterCache(): Filter? {
         return filterCache

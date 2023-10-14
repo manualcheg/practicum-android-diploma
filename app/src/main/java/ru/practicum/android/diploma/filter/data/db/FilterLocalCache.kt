@@ -5,7 +5,7 @@ import ru.practicum.android.diploma.filter.data.model.dto.Country
 import ru.practicum.android.diploma.filter.data.model.dto.Filter
 import ru.practicum.android.diploma.filter.data.model.dto.Industry
 
-interface LocalCache {
+interface FilterLocalCache {
     fun getFilterCache(): Filter?
     fun addCountry(country: Country)
     fun addArea(area: Area)
