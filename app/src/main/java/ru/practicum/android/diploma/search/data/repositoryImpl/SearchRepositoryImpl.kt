@@ -15,17 +15,20 @@ import ru.practicum.android.diploma.search.data.mapper.VacancyDtoConverter
 import ru.practicum.android.diploma.search.data.model.ErrorRemoteDataSource
 import ru.practicum.android.diploma.search.data.model.SearchRequest
 import ru.practicum.android.diploma.search.data.model.VacanciesSearchResponse
+import ru.practicum.android.diploma.search.domain.mapper.FilterToOptionsConverter
 import ru.practicum.android.diploma.search.domain.repository.SearchRepository
 
 class SearchRepositoryImpl(
     private val filterOptionsDataSource: FilterOptionsDataSource,
     private val vacancyRemoteDataSource: VacancyRemoteDataSource,
     private val vacancyDbConverter: VacancyDtoConverter,
+    private val filterToOptionsConverter: FilterToOptionsConverter
 ) : SearchRepository {
 
     override fun search(text: String, page: Int, perPage: Int): Flow<Resource<Vacancies>> = flow {
 
-        val options = HashMap<String, String>()
+        val filters = filterOptionsDataSource.getFilterOptions()
+        val options = filterToOptionsConverter.map(filters)
 
         options[SEARCH_TEXT] = text
         options[PAGE] = page.toString()
