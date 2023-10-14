@@ -30,9 +30,9 @@
 
     <string name="workplace">Место работы</string>
     <string name="sector">Отрасль</string>
-    <string name="expected_salary">Ожидаемая ЗП</string>
+    <string name="expected_salary">Ожидаемая зарплата</string>
     <string name="enter_the_amount">Введите сумму</string>
-    <string name="do_not_show_without_salary">Не показывать без ЗП</string>
+    <string name="do_not_show_without_salary">Не показывать без зарплаты</string>
     <string name="country">Страна</string>
     <string name="region">Регион</string>
     <string name="type_a_region">Введите регион</string>
@@ -57,7 +57,7 @@
     <string name="similar_vacancies">Похожие вакансии</string>
     <string name="from">От</string>
     <string name="to">до</string>
-    <string name="no_salary">ЗП не указана</string>
+    <string name="no_salary">Зарплата не указана</string>
 
     <string name="the_list_is_empty">Список пуст</string>
     <string name="worked_on_the_application">Над приложением работали</string>
