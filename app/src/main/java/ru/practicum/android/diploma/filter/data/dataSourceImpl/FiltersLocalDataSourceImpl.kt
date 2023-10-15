@@ -4,14 +4,14 @@ import ru.practicum.android.diploma.common.domain.model.filter_models.Area
 import ru.practicum.android.diploma.common.domain.model.filter_models.Country
 import ru.practicum.android.diploma.common.domain.model.filter_models.Filter
 import ru.practicum.android.diploma.common.domain.model.filter_models.Industry
-import ru.practicum.android.diploma.filter.data.dataSource.FilterOptionsDataSource
+import ru.practicum.android.diploma.filter.data.dataSource.FiltersLocalDataSource
 import ru.practicum.android.diploma.filter.data.db.FilterDataBase
 import ru.practicum.android.diploma.filter.data.db.FilterLocalCache
 
-class FilterOptionsDataSourceImpl(
+class FiltersLocalDataSourceImpl(
     private val filterDataBase: FilterDataBase,
     private val filterLocalCache: FilterLocalCache
-) : FilterOptionsDataSource {
+) : FiltersLocalDataSource {
     override fun getFilterOptions(): Filter? {
         return if (filterLocalCache.getFilterCache() == null) {
             filterDataBase.getFilterOptions()

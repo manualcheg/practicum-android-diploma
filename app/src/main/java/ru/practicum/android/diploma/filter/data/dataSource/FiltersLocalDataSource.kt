@@ -5,7 +5,7 @@ import ru.practicum.android.diploma.common.domain.model.filter_models.Country
 import ru.practicum.android.diploma.common.domain.model.filter_models.Filter
 import ru.practicum.android.diploma.common.domain.model.filter_models.Industry
 
-interface FilterOptionsDataSource {
+interface FiltersLocalDataSource {
     fun getFilterOptions(): Filter?
     fun putFilterOptions(options: Filter)
     fun addCountry(country: Country)
