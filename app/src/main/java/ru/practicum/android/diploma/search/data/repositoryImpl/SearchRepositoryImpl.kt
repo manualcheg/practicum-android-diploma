@@ -21,7 +21,7 @@ import ru.practicum.android.diploma.search.domain.repository.SearchRepository
 class SearchRepositoryImpl(
     private val filtersLocalDataSource: FiltersLocalDataSource,
     private val vacancyRemoteDataSource: VacancyRemoteDataSource,
-    private val vacancyDbConverter: VacancyDtoConverter,
+    private val vacancyDtoToDomainConverter: VacancyDtoConverter,
     private val filterToOptionsConverter: FilterToOptionsConverter
 ) : SearchRepository {
 
@@ -43,7 +43,7 @@ class SearchRepositoryImpl(
 
             RESPONSE_SUCCESS -> {
                 val vacancies: Vacancies =
-                    vacancyDbConverter.map(response as VacanciesSearchResponse)
+                    vacancyDtoToDomainConverter.map(response as VacanciesSearchResponse)
                 emit(Resource.Success(vacancies))
             }
 
