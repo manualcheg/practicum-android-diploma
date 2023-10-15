@@ -225,9 +225,14 @@ open class SearchFragment : Fragment() {
         binding.searchFormButton.setOnClickListener {
             binding.searchScreenEditText.setText(DEFAULT_TEXT)
         }
-//        binding.searchScreenHeaderFilterImageView.setOnClickListener {
-//            findNavController().navigate(R.id.action_searchFragment_to_filteringSettingsFragment)
-//        }
+        binding.searchVacanciesToolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.searchScreenToolbarFilterMenu -> {
+                    findNavController().navigate(R.id.action_searchFragment_to_filteringSettingsFragment)
+                }
+            }
+            true
+        }
 
     }
 
