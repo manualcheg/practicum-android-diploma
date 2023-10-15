@@ -11,6 +11,6 @@ interface FilterLocalCache {
     fun addArea(area: Area)
     fun addIndustry(industry: Industry)
     fun addSalary(salary: Int)
-    fun addOnlyWithSalary(option: Boolean)
+    fun addOnlyWithSalary(isOnlyWithSalary: Boolean)
     fun clear()
 }

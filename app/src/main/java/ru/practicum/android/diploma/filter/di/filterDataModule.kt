@@ -14,9 +14,9 @@ import ru.practicum.android.diploma.filter.data.db.FilterDataBase
 import ru.practicum.android.diploma.filter.data.db.FilterDataBaseImpl
 import ru.practicum.android.diploma.filter.data.db.FilterLocalCache
 import ru.practicum.android.diploma.filter.data.db.FilterLocalCacheImpl
-import ru.practicum.android.diploma.filter.data.mapper.FilterDBConverter
 import ru.practicum.android.diploma.filter.data.repositoryImpl.FilterRepositoryImpl
 import ru.practicum.android.diploma.filter.domain.repository.FilterRepository
+import ru.practicum.android.diploma.search.domain.mapper.FilterToOptionsConverter
 
 val filterDataModule = module {
 
@@ -24,7 +24,7 @@ val filterDataModule = module {
         androidContext().getSharedPreferences(JOBSEEKER_SHARED_PREFS, Context.MODE_PRIVATE)
     }
 
-    factoryOf(::FilterDBConverter)
+    factoryOf(::FilterToOptionsConverter)
     singleOf(::FilterOptionsDataSourceImpl) bind FilterOptionsDataSource::class
     singleOf(::FilterRepositoryImpl) bind FilterRepository::class
     singleOf(::FilterDataBaseImpl) bind FilterDataBase::class

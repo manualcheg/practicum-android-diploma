@@ -16,6 +16,7 @@ import ru.practicum.android.diploma.common.util.constants.VacanciesViewModelCons
 import ru.practicum.android.diploma.common.util.constants.VacanciesViewModelConst.PAGE_LIMIT
 import ru.practicum.android.diploma.common.util.debounce
 import ru.practicum.android.diploma.search.domain.model.ErrorStatusDomain
+import ru.practicum.android.diploma.search.domain.useCase.IsFiltersExistsUseCase
 import ru.practicum.android.diploma.search.domain.useCase.SearchUseCase
 import ru.practicum.android.diploma.search.ui.model.ErrorStatusUi
 import ru.practicum.android.diploma.search.ui.model.SearchError
@@ -24,7 +25,8 @@ import ru.practicum.android.diploma.search.ui.model.SingleLiveEvent
 
 open class SearchViewModel(
     private val searchUseCase: SearchUseCase,
-    private val vacancyDomainToVacancyUiConverter: VacancyDomainToVacancyUiConverter
+    private val vacancyDomainToVacancyUiConverter: VacancyDomainToVacancyUiConverter,
+    private val isFiltersExistsUseCase: IsFiltersExistsUseCase
 ) : ViewModel() {
 
     private var latestSearchText: String? = null
@@ -32,6 +34,7 @@ open class SearchViewModel(
     private val stateLiveData = MutableLiveData<SearchState>()
     private val paginationLoadingState = SingleLiveEvent<Boolean>()
     private val toastErrorStateLiveData = SingleLiveEvent<SearchError>()
+    private val filterButtonStateLiveData = MutableLiveData<Boolean>()
 
     private var foundVacancies = DEFAULT_FOUND_VACANCIES
     protected var currentPages = DEFAULT_PAGE
@@ -52,6 +55,7 @@ open class SearchViewModel(
     fun observeState(): LiveData<SearchState> = stateLiveData
     fun observeErrorToastState(): LiveData<SearchError> = toastErrorStateLiveData
     fun observePaginationLoadingState(): LiveData<Boolean> = paginationLoadingState
+    fun observeFilterButtonState(): LiveData<Boolean> = filterButtonStateLiveData
 
 
     fun searchDebounced(changedText: String) {
@@ -73,6 +77,10 @@ open class SearchViewModel(
         job?.cancel()
     }
 
+    fun getButtonState() {
+        setFilterButtonState(isFiltersExistsUseCase.execute())
+    }
+
     fun setState(state: SearchState) {
         stateLiveData.value = state
     }
@@ -83,6 +91,10 @@ open class SearchViewModel(
 
     protected fun setPaginationLoadingState(isLoading: Boolean) {
         paginationLoadingState.value = isLoading
+    }
+
+    private fun setFilterButtonState(isFiltersExist: Boolean) {
+        filterButtonStateLiveData.value = isFiltersExist
     }
 
     private fun searchNewRequest(inputSearchText: String) {

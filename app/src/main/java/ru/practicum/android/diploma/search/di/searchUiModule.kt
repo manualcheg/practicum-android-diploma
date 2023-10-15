@@ -7,7 +7,6 @@ import ru.practicum.android.diploma.common.ui.mapper.VacancyDomainToVacancyUiCon
 import ru.practicum.android.diploma.search.ui.viewModel.SearchViewModel
 
 val searchUiModule = module {
-
     factoryOf(::VacancyDomainToVacancyUiConverter)
     viewModelOf(::SearchViewModel)
 }

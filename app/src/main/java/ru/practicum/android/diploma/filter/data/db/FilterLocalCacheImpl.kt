@@ -13,51 +13,51 @@ class FilterLocalCacheImpl : FilterLocalCache {
 
     override fun addCountry(country: Country) {
         filterCache = Filter(
-            country,
-            filterCache?.area,
-            filterCache?.industry,
-            filterCache?.salary,
-            filterCache?.onlyWithSalary
+            country = country,
+            area = filterCache?.area,
+            industry = filterCache?.industry,
+            salary = filterCache?.salary,
+            onlyWithSalary = filterCache?.onlyWithSalary ?: false
         )
     }
 
     override fun addArea(area: Area) {
         filterCache = Filter(
-            filterCache?.country,
-            area,
-            filterCache?.industry,
-            filterCache?.salary,
-            filterCache?.onlyWithSalary
+            country = filterCache?.country,
+            area = area,
+            industry = filterCache?.industry,
+            salary = filterCache?.salary,
+            onlyWithSalary = filterCache?.onlyWithSalary ?: false
         )
     }
 
     override fun addIndustry(industry: Industry) {
         filterCache = Filter(
-            filterCache?.country,
-            filterCache?.area,
-            industry,
-            filterCache?.salary,
-            filterCache?.onlyWithSalary
+            country = filterCache?.country,
+            area = filterCache?.area,
+            industry = industry,
+            salary = filterCache?.salary,
+            onlyWithSalary = filterCache?.onlyWithSalary ?: false
         )
     }
 
     override fun addSalary(salary: Int) {
         filterCache = Filter(
-            filterCache?.country,
-            filterCache?.area,
-            filterCache?.industry,
-            salary,
-            filterCache?.onlyWithSalary
+            country = filterCache?.country,
+            area = filterCache?.area,
+            industry = filterCache?.industry,
+            salary = salary,
+            onlyWithSalary = filterCache?.onlyWithSalary ?: false
         )
     }
 
-    override fun addOnlyWithSalary(option: Boolean) {
+    override fun addOnlyWithSalary(isOnlyWithSalary: Boolean) {
         filterCache = Filter(
-            filterCache?.country,
-            filterCache?.area,
-            filterCache?.industry,
-            filterCache?.salary,
-            option
+            country = filterCache?.country,
+            area = filterCache?.area,
+            industry = filterCache?.industry,
+            salary = filterCache?.salary,
+            onlyWithSalary = isOnlyWithSalary
         )
     }
 
