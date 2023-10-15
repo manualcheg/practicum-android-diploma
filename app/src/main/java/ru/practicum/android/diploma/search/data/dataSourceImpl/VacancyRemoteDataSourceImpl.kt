@@ -4,6 +4,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.common.util.constants.RepositoryConst.NO_CONNECTION
 import ru.practicum.android.diploma.common.util.constants.RepositoryConst.RESPONSE_SUCCESS
+import ru.practicum.android.diploma.filter.data.model.AreaRequest
+import ru.practicum.android.diploma.filter.data.model.AreasResponse
+import ru.practicum.android.diploma.filter.data.model.CountriesRequest
+import ru.practicum.android.diploma.filter.data.model.CountriesResponse
+import ru.practicum.android.diploma.filter.data.model.IndustriesRequest
+import ru.practicum.android.diploma.filter.data.model.IndustriesResponse
 import ru.practicum.android.diploma.search.data.dataSource.VacancyRemoteDataSource
 import ru.practicum.android.diploma.search.data.model.SearchRequest
 import ru.practicum.android.diploma.search.data.network.HeadHunterApiService
@@ -48,6 +54,42 @@ class VacancyRemoteDataSourceImpl(
                     val response = headHunterApiService.searchSimilarVacancies(
                         vacancyId = dto.vacancyId, options = dto.options
                     )
+                    response.apply { resultCode = RESPONSE_SUCCESS }
+                } catch (e: Throwable) {
+                    Response().apply { resultCode = RESPONSE_ERROR }
+                }
+            }
+        }
+
+        if (dto is AreaRequest) {
+            return withContext(Dispatchers.IO) {
+                try {
+                    val data = headHunterApiService.getAreas()
+                    val response = AreasResponse(data)
+                    response.apply { resultCode = RESPONSE_SUCCESS }
+                } catch (e: Throwable) {
+                    Response().apply { resultCode = RESPONSE_ERROR }
+                }
+            }
+        }
+
+        if (dto is CountriesRequest) {
+            return withContext(Dispatchers.IO) {
+                try {
+                    val data = headHunterApiService.getCountries()
+                    val response = CountriesResponse(data)
+                    response.apply { resultCode = RESPONSE_SUCCESS }
+                } catch (e: Throwable) {
+                    Response().apply { resultCode = RESPONSE_ERROR }
+                }
+            }
+        }
+
+        if (dto is IndustriesRequest) {
+            return withContext(Dispatchers.IO) {
+                try {
+                    val data = headHunterApiService.getIndustries()
+                    val response = IndustriesResponse(data)
                     response.apply { resultCode = RESPONSE_SUCCESS }
                 } catch (e: Throwable) {
                     Response().apply { resultCode = RESPONSE_ERROR }
