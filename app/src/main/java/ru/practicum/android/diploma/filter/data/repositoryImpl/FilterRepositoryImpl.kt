@@ -1,12 +1,17 @@
 package ru.practicum.android.diploma.filter.data.repositoryImpl
 
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.common.domain.model.filter_models.Area
+import ru.practicum.android.diploma.common.domain.model.filter_models.Areas
+import ru.practicum.android.diploma.common.domain.model.filter_models.Countries
 import ru.practicum.android.diploma.common.domain.model.filter_models.Country
 import ru.practicum.android.diploma.common.domain.model.filter_models.Filter
+import ru.practicum.android.diploma.common.domain.model.filter_models.Industries
 import ru.practicum.android.diploma.common.domain.model.filter_models.Industry
+import ru.practicum.android.diploma.common.util.Resource
 import ru.practicum.android.diploma.filter.data.dataSource.FilterOptionsDataSource
 import ru.practicum.android.diploma.filter.domain.repository.FilterRepository
-
 class FilterRepositoryImpl(private val filterOptionsDataSourceImpl: FilterOptionsDataSource) :
     FilterRepository {
     override fun addCountry(country: Country) {
@@ -40,5 +45,22 @@ class FilterRepositoryImpl(private val filterOptionsDataSourceImpl: FilterOption
     override fun clearFilterOptions() {
         filterOptionsDataSourceImpl.clearFilterOptions()
     }
+
+    override fun getCountryList(): Flow<Resource<Countries>> = flow {
+        TODO("Not yet implemented")
+    }
+
+    override fun getAreaListWithCountry(country: Country?): Flow<Resource<Areas>> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getAreaListWithoutCountry(): Flow<Resource<Areas>> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getIndustryList(): Flow<Resource<Industries>> = flow {
+        TODO("Not yet implemented")
+    }
+
 
 }
