@@ -10,10 +10,10 @@ import ru.practicum.android.diploma.databinding.ItemCountryBinding
 import ru.practicum.android.diploma.databinding.ItemPhonesBinding
 import ru.practicum.android.diploma.databinding.ItemRegionAndSectorBinding
 import ru.practicum.android.diploma.databinding.ItemVacancyBinding
-import ru.practicum.android.diploma.region_and_sector.ui.CountryViewHolder
-import ru.practicum.android.diploma.region_and_sector.ui.RegionIndustryViewHolder
-import ru.practicum.android.diploma.region_and_sector.ui.model.CountryUi
-import ru.practicum.android.diploma.region_and_sector.ui.model.RegionIndustryUi
+import ru.practicum.android.diploma.filter.ui.CountryViewHolder
+import ru.practicum.android.diploma.filter.ui.RegionIndustryViewHolder
+import ru.practicum.android.diploma.filter.ui.model.CountryUi
+import ru.practicum.android.diploma.filter.ui.model.RegionIndustryUi
 import ru.practicum.android.diploma.vacancy.ui.ContactsPhoneViewHolder
 
 class RVAdapter(
