@@ -1,15 +1,15 @@
 package ru.practicum.android.diploma.filter.data.db
 
-import ru.practicum.android.diploma.common.domain.model.filter_models.Area
-import ru.practicum.android.diploma.common.domain.model.filter_models.Country
+import ru.practicum.android.diploma.common.domain.model.filter_models.AreaFilter
+import ru.practicum.android.diploma.common.domain.model.filter_models.CountryFilter
 import ru.practicum.android.diploma.common.domain.model.filter_models.Filter
-import ru.practicum.android.diploma.common.domain.model.filter_models.Industry
+import ru.practicum.android.diploma.common.domain.model.filter_models.IndustryFilter
 
 interface FilterLocalCache {
     fun getFilterCache(): Filter?
-    fun addCountry(country: Country)
-    fun addArea(area: Area)
-    fun addIndustry(industry: Industry)
+    fun addCountry(country: CountryFilter)
+    fun addArea(area: AreaFilter)
+    fun addIndustry(industry: IndustryFilter)
     fun addSalary(salary: Int)
     fun addOnlyWithSalary(isOnlyWithSalary: Boolean)
     fun clear()

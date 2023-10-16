@@ -14,8 +14,9 @@ import ru.practicum.android.diploma.filter.data.db.FilterDataBase
 import ru.practicum.android.diploma.filter.data.db.FilterDataBaseImpl
 import ru.practicum.android.diploma.filter.data.db.FilterLocalCache
 import ru.practicum.android.diploma.filter.data.db.FilterLocalCacheImpl
-import ru.practicum.android.diploma.filter.data.repositoryImpl.FilterRepositoryImpl
-import ru.practicum.android.diploma.filter.domain.repository.FilterRepository
+import ru.practicum.android.diploma.filter.data.mapper.FiltersDtoToDomainConverter
+import ru.practicum.android.diploma.filter.data.repositoryImpl.FiltersRepositoryImpl
+import ru.practicum.android.diploma.filter.domain.repository.FiltersRepository
 import ru.practicum.android.diploma.search.domain.mapper.FilterToOptionsConverter
 
 val filterDataModule = module {
@@ -26,7 +27,8 @@ val filterDataModule = module {
 
     factoryOf(::FilterToOptionsConverter)
     singleOf(::FiltersLocalDataSourceImpl) bind FiltersLocalDataSource::class
-    singleOf(::FilterRepositoryImpl) bind FilterRepository::class
+    singleOf(::FiltersRepositoryImpl) bind FiltersRepository::class
     singleOf(::FilterDataBaseImpl) bind FilterDataBase::class
     singleOf(::FilterLocalCacheImpl) bind FilterLocalCache::class
+    factoryOf(::FiltersDtoToDomainConverter)
 }

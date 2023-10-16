@@ -1,9 +1,9 @@
 package ru.practicum.android.diploma.filter.data.dataSourceImpl
 
-import ru.practicum.android.diploma.common.domain.model.filter_models.Area
-import ru.practicum.android.diploma.common.domain.model.filter_models.Country
+import ru.practicum.android.diploma.common.domain.model.filter_models.AreaFilter
+import ru.practicum.android.diploma.common.domain.model.filter_models.CountryFilter
 import ru.practicum.android.diploma.common.domain.model.filter_models.Filter
-import ru.practicum.android.diploma.common.domain.model.filter_models.Industry
+import ru.practicum.android.diploma.common.domain.model.filter_models.IndustryFilter
 import ru.practicum.android.diploma.filter.data.dataSource.FiltersLocalDataSource
 import ru.practicum.android.diploma.filter.data.db.FilterDataBase
 import ru.practicum.android.diploma.filter.data.db.FilterLocalCache
@@ -25,15 +25,15 @@ class FiltersLocalDataSourceImpl(
         filterLocalCache.clear()
     }
 
-    override fun addCountry(country: Country) {
+    override fun addCountry(country: CountryFilter) {
         filterLocalCache.addCountry(country)
     }
 
-    override fun addArea(area: Area) {
+    override fun addArea(area: AreaFilter) {
         filterLocalCache.addArea(area)
     }
 
-    override fun addIndustry(industry: Industry) {
+    override fun addIndustry(industry: IndustryFilter) {
         filterLocalCache.addIndustry(industry)
     }
 

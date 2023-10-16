@@ -33,4 +33,9 @@ interface HeadHunterApiService {
     @GET("/industries")
     suspend fun getIndustries(): List<IndustriesDto>
 
+    @GET("/areas/{area_id}")
+    suspend fun getAreasById(
+        @Path("area_id") areaId: Int
+    ): AreasDto
+
 }

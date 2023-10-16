@@ -4,8 +4,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.common.util.constants.RepositoryConst.NO_CONNECTION
 import ru.practicum.android.diploma.common.util.constants.RepositoryConst.RESPONSE_SUCCESS
-import ru.practicum.android.diploma.filter.data.model.AreaRequest
+import ru.practicum.android.diploma.filter.data.model.AllAreasRequest
 import ru.practicum.android.diploma.filter.data.model.AreasResponse
+import ru.practicum.android.diploma.filter.data.model.CertainAreasRequest
 import ru.practicum.android.diploma.filter.data.model.CountriesRequest
 import ru.practicum.android.diploma.filter.data.model.CountriesResponse
 import ru.practicum.android.diploma.filter.data.model.IndustriesRequest
@@ -61,7 +62,7 @@ class VacancyRemoteDataSourceImpl(
             }
         }
 
-        if (dto is AreaRequest) {
+        if (dto is AllAreasRequest) {
             return withContext(Dispatchers.IO) {
                 try {
                     val data = headHunterApiService.getAreas()
@@ -90,6 +91,18 @@ class VacancyRemoteDataSourceImpl(
                 try {
                     val data = headHunterApiService.getIndustries()
                     val response = IndustriesResponse(data)
+                    response.apply { resultCode = RESPONSE_SUCCESS }
+                } catch (e: Throwable) {
+                    Response().apply { resultCode = RESPONSE_ERROR }
+                }
+            }
+        }
+
+        if (dto is CertainAreasRequest) {
+            return withContext(Dispatchers.IO) {
+                try {
+                    val data = headHunterApiService.getAreasById(dto.areaId)
+                    val response = AreasResponse(listOf(data))
                     response.apply { resultCode = RESPONSE_SUCCESS }
                 } catch (e: Throwable) {
                     Response().apply { resultCode = RESPONSE_ERROR }

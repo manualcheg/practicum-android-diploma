@@ -12,13 +12,13 @@ class FilterToOptionsConverter {
 
         if (filter != null) {
             if (filter.area != null) {
-                hashMap[AREA] = filter.area.id
+                hashMap[AREA] = filter.area.id.toString()
             } else if (filter.country != null) {
-                hashMap[AREA] = filter.country.id
+                hashMap[AREA] = filter.country.id.toString()
             }
 
             if (filter.industry != null) {
-                hashMap[INDUSTRY] = filter.industry.id
+                hashMap[INDUSTRY] = filter.industry.id.toString()
             }
 
             if (filter.salary != null) {
@@ -29,7 +29,6 @@ class FilterToOptionsConverter {
                 hashMap[ONLY_WITH_SALARY] = true.toString()
             }
         }
-
         return hashMap
     }
 }

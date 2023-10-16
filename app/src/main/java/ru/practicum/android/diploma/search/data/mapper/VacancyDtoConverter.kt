@@ -1,6 +1,6 @@
 package ru.practicum.android.diploma.search.data.mapper
 
-import ru.practicum.android.diploma.common.domain.model.vacancy_models.Area
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.AreaVacancy
 import ru.practicum.android.diploma.common.domain.model.vacancy_models.Contacts
 import ru.practicum.android.diploma.common.domain.model.vacancy_models.Employer
 import ru.practicum.android.diploma.common.domain.model.vacancy_models.Employment
@@ -153,8 +153,8 @@ class VacancyDtoConverter {
         )
     }
 
-    private fun map(areaDto: AreaDto): Area {
-        return Area(
+    private fun map(areaDto: AreaDto): AreaVacancy {
+        return AreaVacancy(
             id = areaDto.id,
             name = areaDto.name
         )
