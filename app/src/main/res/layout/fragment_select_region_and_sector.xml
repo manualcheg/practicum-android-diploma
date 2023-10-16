@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".region_and_sector.ui.fragment.SelectRegionAndSectorFragment">
+    tools:context=".filter.ui.fragment.SelectRegionAndSectorFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/selectRegionAndSectorToolbar"

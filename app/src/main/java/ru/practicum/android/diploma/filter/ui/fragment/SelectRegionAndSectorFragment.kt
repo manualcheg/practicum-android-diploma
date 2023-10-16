@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.region_and_sector.ui.fragment
+package ru.practicum.android.diploma.filter.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
