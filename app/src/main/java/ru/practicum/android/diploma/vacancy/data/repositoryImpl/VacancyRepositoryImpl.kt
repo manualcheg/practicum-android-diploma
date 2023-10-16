@@ -32,7 +32,7 @@ class VacancyRepositoryImpl(
 
                 RESPONSE_SUCCESS -> {
                     val vacancy: Vacancy =
-                        vacancyDtoConverter.map((response as VacancySearchResponse))
+                        vacancyDtoConverter.mapVacancySearchResponseToVacancy((response as VacancySearchResponse))
                     return Resource.Success(vacancy)
                 }
 

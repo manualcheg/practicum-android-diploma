@@ -9,7 +9,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.common.ui.model.VacancyUi
 import ru.practicum.android.diploma.common.util.recycleView.ItemUiBase
@@ -70,7 +69,7 @@ class FavoritesFragment : Fragment() {
         when (state) {
             is FavoritesState.Empty -> showEmpty()
             is FavoritesState.Content -> showContent(state.vacancies)
-            else -> showError()
+            is FavoritesState.Error -> showError()
         }
     }
 

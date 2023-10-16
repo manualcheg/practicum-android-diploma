@@ -138,7 +138,7 @@ open class SearchViewModel(
     ) {
         if (vacancies != null) {
             val foundVacancyUi =
-                vacancies.vacancyList.map { vacancyDomainToVacancyUiConverter.map(it) }
+                vacancies.vacancyList.map { vacancyDomainToVacancyUiConverter.mapVacancyToVacancyUi(it) }
             if (isNewSearch) {
                 vacanciesList.clear()
             }
