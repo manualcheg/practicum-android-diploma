@@ -13,11 +13,11 @@ class FavoritesLocalDataSourceImpl(
     private val vacancyDbConverter: VacancyDbConverter
 ) : FavoritesLocalDataSource {
     override suspend fun addToFavorites(vacancy: Vacancy) {
-        appDataBase.FavoritesVacanciesDao().addToFavorites(vacancyDbConverter.map(vacancy))
+        appDataBase.FavoritesVacanciesDao().addToFavorites(vacancyDbConverter.mapVacancyToFavoriteVacancyEntity(vacancy))
     }
 
     override suspend fun deleteFromFavorites(vacancy: Vacancy) {
-        appDataBase.FavoritesVacanciesDao().deleteFromFavorites(vacancyDbConverter.map(vacancy))
+        appDataBase.FavoritesVacanciesDao().deleteFromFavorites(vacancyDbConverter.mapVacancyToFavoriteVacancyEntity(vacancy))
     }
 
     override fun getFavorites(): Flow<List<Vacancy>> {
@@ -25,7 +25,7 @@ class FavoritesLocalDataSourceImpl(
     }
 
     override suspend fun getVacancy(id: Int): Vacancy {
-        return vacancyDbConverter.map(appDataBase.FavoritesVacanciesDao().getVacancy(id))
+        return vacancyDbConverter.mapFavoriteVacancyEntityToVacancy(appDataBase.FavoritesVacanciesDao().getVacancy(id))
     }
 
     override fun isVacancyContainsFlow(id: Int): Flow<Boolean> {
@@ -39,7 +39,7 @@ class FavoritesLocalDataSourceImpl(
     private fun mapList(favouritesList: Flow<List<FavoritesVacancyEntity>>): Flow<List<Vacancy>> {
         return favouritesList.map { listFavoritesVacancyEntity ->
             listFavoritesVacancyEntity.map { favoritesVacancyEntity ->
-                vacancyDbConverter.map(
+                vacancyDbConverter.mapFavoriteVacancyEntityToVacancy(
                     favoritesVacancyEntity
                 )
             }

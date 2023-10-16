@@ -17,7 +17,7 @@ import ru.practicum.android.diploma.filter.ui.model.RegionIndustryUi
 import ru.practicum.android.diploma.vacancy.ui.ContactsPhoneViewHolder
 
 class RVAdapter(
-    private var clickListener: ((ItemUiBase)) -> Unit = {}
+    private var clickListener: (ItemUiBase) -> Unit = {}
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var items = listOf<ItemUiBase>()

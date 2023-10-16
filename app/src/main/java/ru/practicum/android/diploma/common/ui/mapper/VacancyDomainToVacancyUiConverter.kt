@@ -11,7 +11,7 @@ import ru.practicum.android.diploma.common.ui.model.VacancyUi
 import java.util.Locale
 
 class VacancyDomainToVacancyUiConverter(private val context: Context) {
-    fun map(vacancy: Vacancy): VacancyUi {
+    fun mapVacancyToVacancyUi(vacancy: Vacancy): VacancyUi {
         vacancy.apply {
             return VacancyUi(
                 id = id,
@@ -39,53 +39,20 @@ class VacancyDomainToVacancyUiConverter(private val context: Context) {
     }
 
     private fun mapSalaryCurrency(salary: Salary?): String {
-        if (salary?.currency == null) return ""
-        else {
-            when {
-                salary.currency.contains("AZN") -> {
-                    return context.getString(R.string.AZN)
-                }
-
-                salary.currency.contains("BYR") -> {
-                    return context.getString(R.string.BYR)
-                }
-
-                salary.currency.contains("EUR") -> {
-                    return context.getString(R.string.EUR)
-                }
-
-                salary.currency.contains("GEL") -> {
-                    return context.getString(R.string.GEL)
-                }
-
-                salary.currency.contains("KGS") -> {
-                    return context.getString(R.string.KGT)
-                }
-
-                salary.currency.contains("KZT") -> {
-                    return context.getString(R.string.KZT)
-                }
-
-                salary.currency.contains("RUR") -> {
-                    return context.getString(R.string.RUB)
-                }
-
-                salary.currency.contains("UAH") -> {
-                    return context.getString(R.string.UAH)
-                }
-
-                salary.currency.contains("USD") -> {
-                    return context.getString(R.string.USD)
-                }
-
-                salary.currency.contains("UZS") -> {
-                    return context.getString(R.string.UZS)
-                }
-
-                else -> return ""
+        return if (salary?.currency == null) ""
+        else when {
+            salary.currency.contains("AZN") -> {context.getString(R.string.AZN)}
+            salary.currency.contains("BYR") -> {context.getString(R.string.BYR)}
+            salary.currency.contains("EUR") -> {context.getString(R.string.EUR)}
+            salary.currency.contains("GEL") -> {context.getString(R.string.GEL)}
+            salary.currency.contains("KGS") -> {context.getString(R.string.KGT)}
+            salary.currency.contains("KZT") -> {context.getString(R.string.KZT)}
+            salary.currency.contains("RUR") -> {context.getString(R.string.RUB)}
+            salary.currency.contains("UAH") -> {context.getString(R.string.UAH)}
+            salary.currency.contains("USD") -> {context.getString(R.string.USD)}
+            salary.currency.contains("UZS") -> {context.getString(R.string.UZS)}
+            else -> ""
             }
-
-        }
     }
 
     private fun mapSalaryDigitFrom(salary: Salary?): String {
