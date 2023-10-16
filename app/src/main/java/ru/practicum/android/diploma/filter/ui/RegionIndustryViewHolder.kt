@@ -1,8 +1,8 @@
-package ru.practicum.android.diploma.region_and_sector.ui
+package ru.practicum.android.diploma.filter.ui
 
 import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.databinding.ItemRegionAndSectorBinding
-import ru.practicum.android.diploma.region_and_sector.ui.model.RegionIndustryUi
+import ru.practicum.android.diploma.filter.ui.model.RegionIndustryUi
 
 class RegionIndustryViewHolder(
     private val binding: ItemRegionAndSectorBinding,

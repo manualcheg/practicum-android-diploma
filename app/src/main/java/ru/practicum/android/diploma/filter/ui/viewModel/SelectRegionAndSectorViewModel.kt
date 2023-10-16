@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.region_and_sector.ui.viewModel
+package ru.practicum.android.diploma.filter.ui.viewModel
 
 import androidx.lifecycle.ViewModel
 
