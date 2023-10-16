@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/selectCountryToolbar"
+        android:id="@+id/filteringCountryToolbar"
         style="@style/Toolbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -16,14 +16,14 @@
         app:titleTextAppearance="@style/TitleText" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/selectCountryRecyclerView"
+        android:id="@+id/filteringCountryRecyclerView"
         android:layout_marginTop="@dimen/margin_vertical_small"
         android:layout_width="@dimen/_0dp"
         android:layout_height="@dimen/_0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/selectCountryToolbar"
+        app:layout_constraintTop_toBottomOf="@+id/filteringCountryToolbar"
         tools:listitem="@layout/item_country_and_region"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

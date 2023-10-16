@@ -3,11 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".region_and_sector.ui.fragment.SelectRegionAndSectorFragment">
+    android:layout_height="match_parent">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/selectSectorToolbar"
+        android:id="@+id/filteringSectorToolbar"
         style="@style/Toolbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,9 +23,9 @@
         android:layout_marginTop="@dimen/padding_vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/selectSectorToolbar">
+        app:layout_constraintTop_toBottomOf="@id/filteringSectorToolbar">
         <EditText
-            android:id="@+id/selectSectorEditText"
+            android:id="@+id/filteringSectorEditText"
             style="@style/SearchEditText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -34,7 +33,7 @@
             android:hint="@string/type_a_sector"
             tools:ignore="Autofill,RtlSymmetry"/>
         <ImageView
-            android:id="@+id/selectSectorFormButton"
+            android:id="@+id/filteringSectorFormButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center"
@@ -44,7 +43,7 @@
     </FrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/selectSectorRecyclerView"
+        android:id="@+id/filteringSectorRecyclerView"
         android:layout_width="@dimen/_0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_vertical_small"
@@ -54,7 +53,7 @@
         tools:listitem="@layout/item_sector" />
 
     <Button
-        android:id="@+id/selectRegionAndSectorButton"
+        android:id="@+id/filteringRegionAndSectorButton"
         style="@style/Button"
         android:layout_marginBottom="@dimen/margin_vertical"
         android:text="@string/select"
