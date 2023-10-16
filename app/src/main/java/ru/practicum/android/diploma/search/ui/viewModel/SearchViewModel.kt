@@ -136,17 +136,7 @@ open class SearchViewModel(
     protected fun processResult(
         vacancies: Vacancies?, errorStatus: ErrorStatusDomain?, isNewSearch: Boolean
     ) {
-        if (vacancies != null) {
-            val foundVacancyUi =
-                vacancies.vacancyList.map { vacancyDomainToVacancyUiConverter.mapVacancyToVacancyUi(it) }
-            if (isNewSearch) {
-                vacanciesList.clear()
-            }
-            vacanciesList.addAll(foundVacancyUi)
-            foundVacancies = vacancies.found
-            currentPages = vacancies.page
-            maxPages = vacancies.pages
-        }
+        updateVacanciesListAndFields(vacancies, isNewSearch)
         when {
             errorStatus != null -> {
                 when (errorStatus) {
@@ -181,6 +171,21 @@ open class SearchViewModel(
                 setPaginationLoadingState(false)
                 setState(SearchState.Success.SearchContent(vacanciesList, foundVacancies))
             }
+        }
+    }
+
+    private fun updateVacanciesListAndFields(vacancies: Vacancies?, isNewSearch: Boolean) {
+        if (vacancies != null) {
+            val foundVacancyUi = vacancies.vacancyList.map {
+                vacancyDomainToVacancyUiConverter.mapVacancyToVacancyUi(it)
+            }
+            if (isNewSearch) {
+                vacanciesList.clear()
+            }
+            vacanciesList.addAll(foundVacancyUi)
+            foundVacancies = vacancies.found
+            currentPages = vacancies.page
+            maxPages = vacancies.pages
         }
     }
 
