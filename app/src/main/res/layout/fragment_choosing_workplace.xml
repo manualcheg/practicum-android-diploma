@@ -13,7 +13,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_arrow_left"
-        app:title="@string/workplace"
+        app:title="@string/choosing_a_place_of_work"
         app:titleTextAppearance="@style/TitleText" />
 
     <com.google.android.material.textfield.TextInputLayout
