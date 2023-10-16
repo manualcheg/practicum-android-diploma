@@ -1,3 +1,89 @@
 <resources>
     <string name="app_name">Practicum-Android-Diploma</string>
+
+    <string name="main">Главная</string>
+    <string name="favorites">Избранное</string>
+    <string name="team">Команда</string>
+
+    <string name="vacancy_search">Поиск вакансий</string>
+    <string name="filtering_settings">Настройки фильтрации</string>
+    <string name="choosing_a_place_of_work">Выбор места работы</string>
+    <string name="choosing_a_country">Выбор страны</string>
+    <string name="choosing_a_region">Выбор региона</string>
+    <string name="choosing_a_sector">Выбор отрасли</string>
+    <string name="vacancy">Вакансия</string>
+
+    <string name="type_a_request">Введите запрос</string>
+    <string name="there_are_no_such_vacancies">Таких вакансий нет</string>
+    <string name="no_internet">Нет интернета</string>
+    <string name="failed_to_get_a_list_of_vacancies">Не удалось получить\nсписок вакансий</string>
+    <string name="server_error">Ошибка сервера</string>
+
+    <plurals name="vacancy_plural">
+        <item quantity="zero">Найдено %1$d вакансий</item>
+        <item quantity="one">Найдено %1$d вакансия</item>
+        <item quantity="two">Найдено %1$d вакансии</item>
+        <item quantity="few">Найдено %1$d вакансии</item>
+        <item quantity="many">Найдено %1$d вакансий</item>
+        <item quantity="other">Найдено %1$d вакансий</item>
+    </plurals>
+
+    <string name="workplace">Место работы</string>
+    <string name="sector">Отрасль</string>
+    <string name="expected_salary">Ожидаемая ЗП</string>
+    <string name="enter_the_amount">Введите сумму</string>
+    <string name="do_not_show_without_salary">Не показывать без ЗП</string>
+    <string name="country">Страна</string>
+    <string name="region">Регион</string>
+    <string name="type_a_region">Введите регион</string>
+    <string name="no_such_region">Такого региона нет</string>
+    <string name="failed_to_get_a_list">Не удалось получить список</string>
+    <string name="type_a_sector">Введите отрасль</string>
+    <string name="select">Выбрать</string>
+    <string name="apply">Применить</string>
+    <string name="reset">Сбросить</string>
+
+    <string name="required_experience">Требуемый опыт</string>
+    <string name="vacancy_description">Описание вакансии</string>
+    <string name="duties">Обязанности</string>
+    <string name="requirements">Требования</string>
+    <string name="conditions">Условия</string>
+    <string name="key_skills">Ключевые навыки</string>
+    <string name="contacts">Контакты</string>
+    <string name="contact_person">Контактное лицо</string>
+    <string name="email">E-mail</string>
+    <string name="phone_number">Телефон</string>
+    <string name="comment">Комментарий</string>
+    <string name="similar_vacancies">Похожие вакансии</string>
+    <string name="from">От</string>
+    <string name="to">до</string>
+    <string name="no_salary">ЗП не указана</string>
+
+    <string name="the_list_is_empty">Список пуст</string>
+    <string name="worked_on_the_application">Над приложением работали</string>
+
+    <string name="shurygin_evgenii">Евгений Шурыгин</string>
+    <string name="valiev_ilnur">Ильнур Валиев</string>
+    <string name="vladislav_gorodilov">Городилов Владислав</string>
+    <string name="kochubeev_andrei">Андрей Кочубеев</string>
+
+    <string name="RUB">₽</string>
+    <string name="BYR">Br</string>
+    <string name="USD">$</string>
+    <string name="EUR">€</string>
+    <string name="KZT">₸</string>
+    <string name="UAH">₴</string>
+    <string name="AZN">₼</string>
+    <string name="UZS">лв</string>
+    <string name="GEL">₾</string>
+    <string name="KGT">с</string>
+
+    <string name="company_logo">Логотип компании</string>
+
+    <string name="share">Поделиться</string>
+    <string name="add_to_favorites">Добавить в избранное</string>
+
+    <string name="there_is_no_app_on_the_device_to_make_this_request">На устройстве нет приложения для выполнения данного запроса</string>
+    <string name="link_to_hh_ru">https://hh.ru/vacancy/</string>
+
 </resources>
