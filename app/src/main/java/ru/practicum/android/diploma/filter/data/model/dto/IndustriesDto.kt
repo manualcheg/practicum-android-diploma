@@ -1,7 +1,7 @@
 package ru.practicum.android.diploma.filter.data.model.dto
 
 class IndustriesDto(
-    val id: Int,
+    val id: String,
     val name: String,
-    val industries: List<IndustriesDto>
+    val industries: List<IndustriesDto>?
 )

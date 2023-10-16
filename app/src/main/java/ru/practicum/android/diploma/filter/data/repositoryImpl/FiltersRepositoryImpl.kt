@@ -3,7 +3,11 @@ package ru.practicum.android.diploma.filter.data.repositoryImpl
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.common.domain.model.filter_models.AreaFilter
+import ru.practicum.android.diploma.common.domain.model.filter_models.Areas
+import ru.practicum.android.diploma.common.domain.model.filter_models.Countries
 import ru.practicum.android.diploma.common.domain.model.filter_models.CountryFilter
+import ru.practicum.android.diploma.common.domain.model.filter_models.Filter
+import ru.practicum.android.diploma.common.domain.model.filter_models.Industries
 import ru.practicum.android.diploma.common.domain.model.filter_models.IndustryFilter
 import ru.practicum.android.diploma.common.util.Resource
 import ru.practicum.android.diploma.common.util.constants.RepositoryConst.NO_CONNECTION
@@ -26,7 +30,7 @@ class FiltersRepositoryImpl(
     private val filtersRemoteDataSource: VacancyRemoteDataSource,
     private val filtersDtoToDomainConverter: FiltersDtoToDomainConverter
 ) : FiltersRepository {
-    override fun getAreas(areaId: Int?): Flow<Resource<List<AreaFilter>>> = flow {
+    override fun getAreas(areaId: Int?): Flow<Resource<Areas>> = flow {
 
         val responseAreas = if (areaId == null) {
             filtersRemoteDataSource.doRequest(AllAreasRequest())
@@ -43,12 +47,12 @@ class FiltersRepositoryImpl(
                 filtersDtoToDomainConverter.convertAreaResponseToListOfAreaWithoutCountries(
                     responseAreas as AreasResponse, responseCountries as CountriesResponse
                 )
-            emit(Resource.Success(areas))
+            emit(Resource.Success(Areas(areas)))
 
         } else emit(Resource.Error(ErrorRemoteDataSource.ERROR_OCCURRED))
     }
 
-    override fun getCountries(): Flow<Resource<List<CountryFilter>>> = flow {
+    override fun getCountries(): Flow<Resource<Countries>> = flow {
         val response = filtersRemoteDataSource.doRequest(CountriesRequest())
         when (response.resultCode) {
             NO_CONNECTION -> {
@@ -58,7 +62,7 @@ class FiltersRepositoryImpl(
             RESPONSE_SUCCESS -> {
                 val countries: List<CountryFilter> =
                     filtersDtoToDomainConverter.convertCountriesResponseToListOfCountries(response as CountriesResponse)
-                emit(Resource.Success(countries))
+                emit(Resource.Success(Countries(countries)))
             }
 
             else -> {
@@ -67,7 +71,7 @@ class FiltersRepositoryImpl(
         }
     }
 
-    override fun getIndustries(): Flow<Resource<List<IndustryFilter>>> = flow {
+    override fun getIndustries(): Flow<Resource<Industries>> = flow {
         val response = filtersRemoteDataSource.doRequest(IndustriesRequest())
         when (response.resultCode) {
             NO_CONNECTION -> {
@@ -77,12 +81,44 @@ class FiltersRepositoryImpl(
             RESPONSE_SUCCESS -> {
                 val industries: List<IndustryFilter> =
                     filtersDtoToDomainConverter.convertIndustryResponseToListOfIndustries(response as IndustriesResponse)
-                emit(Resource.Success(industries))
+                emit(Resource.Success(Industries(industries)))
             }
 
             else -> {
                 emit(Resource.Error(ErrorRemoteDataSource.ERROR_OCCURRED))
             }
         }
+    }
+
+    override fun addCountry(country: CountryFilter) {
+        filtersLocalDataSourceImpl.addCountry(country)
+    }
+
+    override fun addArea(area: AreaFilter) {
+        filtersLocalDataSourceImpl.addArea(area)
+    }
+
+    override fun addIndustry(industry: IndustryFilter) {
+        filtersLocalDataSourceImpl.addIndustry(industry)
+    }
+
+    override fun addSalary(salary: Int) {
+        filtersLocalDataSourceImpl.addSalary(salary)
+    }
+
+    override fun addOnlyWithSalary(option: Boolean) {
+        filtersLocalDataSourceImpl.addOnlyWithSalary(option)
+    }
+
+    override fun getFilterOptions(): Filter? {
+        return filtersLocalDataSourceImpl.getFilterOptions()
+    }
+
+    override fun putFilterOptions(options: Filter) {
+        filtersLocalDataSourceImpl.putFilterOptions(options)
+    }
+
+    override fun clearFilterOptions() {
+        filtersLocalDataSourceImpl.clearFilterOptions()
     }
 }

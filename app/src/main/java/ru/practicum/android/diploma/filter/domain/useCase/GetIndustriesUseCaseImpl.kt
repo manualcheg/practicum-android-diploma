@@ -4,14 +4,14 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import ru.practicum.android.diploma.common.domain.model.filter_models.Industries
 import ru.practicum.android.diploma.common.util.Resource
-import ru.practicum.android.diploma.filter.domain.repository.FilterRepository
+import ru.practicum.android.diploma.filter.domain.repository.FiltersRepository
 import ru.practicum.android.diploma.search.data.model.ErrorRemoteDataSource
 import ru.practicum.android.diploma.search.domain.model.ErrorStatusDomain
 
-class GetIndustryListUseCaseImpl(private val filterRepository: FilterRepository) :
-    GetIndustryListUseCase {
+class GetIndustriesUseCaseImpl(private val filtersRepository: FiltersRepository) :
+    GetIndustriesUseCase {
     override fun execute(): Flow<Pair<Industries?, ErrorStatusDomain?>> {
-        return filterRepository.getIndustryList().map { result ->
+        return filtersRepository.getIndustries().map { result ->
             when (result) {
                 is Resource.Success -> {
                     Pair(result.data, null)

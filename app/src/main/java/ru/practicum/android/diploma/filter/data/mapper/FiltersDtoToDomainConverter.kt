@@ -62,7 +62,7 @@ class FiltersDtoToDomainConverter {
                 id = root.id, name = root.name
             )
         )
-        if (root.industries.isEmpty()) {
+        if (root.industries.isNullOrEmpty()) {
             return
         } else for (industry in root.industries) {
             fromTreeToListIndustry(industry, saveList)

@@ -1,10 +1,10 @@
 package ru.practicum.android.diploma.filter.domain.useCase
 
-import ru.practicum.android.diploma.filter.domain.repository.FilterRepository
+import ru.practicum.android.diploma.filter.domain.repository.FiltersRepository
 
-class AddOnlyWithSalaryFilterUseCaseImpl(private val filterRepository: FilterRepository) :
+class AddOnlyWithSalaryFilterUseCaseImpl(private val filtersRepository: FiltersRepository) :
     AddOnlyWithSalaryFilterUseCase {
     override fun execute(option: Boolean) {
-        filterRepository.addOnlyWithSalary(option)
+        filtersRepository.addOnlyWithSalary(option)
     }
 }
