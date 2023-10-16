@@ -15,8 +15,8 @@ class FilteringSettingsViewModel(
 ) : ViewModel() {
     fun init() { // для проверки работы кода
         viewModelScope.launch {
-            getIndustriesUseCase.execute().collect { pair ->
-                pair.first?.industryList?.forEach { Log.d("judjin", it.toString()) }
+            getAreasUseCase.execute(null).collect { pair ->
+                pair.first?.arealList?.forEach { Log.d("judjin", it.toString()) }
             }
         }
     }
