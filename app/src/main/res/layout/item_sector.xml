@@ -17,6 +17,6 @@
         android:drawableTint="@color/blue"
         android:fontFamily="@font/ys_display_regular"
         android:textSize="@dimen/text_size_main"
-        tools:text="Москва" />
+        tools:text="Медицина" />
 
 </FrameLayout>
