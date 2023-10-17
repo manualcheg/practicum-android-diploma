@@ -30,7 +30,7 @@ class FavoritesViewModel(
                         _stateLiveData.postValue(FavoritesState.Empty)
                     } else {
                         val vacanciesUi =
-                            listOfVacancies.map { vacancyDomainToVacancyUiConverter.map(it) }
+                            listOfVacancies.map { vacancyDomainToVacancyUiConverter.mapVacancyToVacancyUi(it) }
                         _stateLiveData.postValue(FavoritesState.Content(vacanciesUi))
                     }
                 } catch (e: SQLiteException) {
