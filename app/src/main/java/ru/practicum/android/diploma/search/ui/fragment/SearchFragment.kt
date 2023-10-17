@@ -225,12 +225,18 @@ open class SearchFragment : Fragment() {
         binding.searchFormButton.setOnClickListener {
             binding.searchScreenEditText.setText(DEFAULT_TEXT)
         }
+
         binding.searchVacanciesToolbar.setOnMenuItemClickListener {
-            if (it.itemId == R.id.searchScreenToolbarFilterMenu) {
-                findNavController().navigate(R.id.action_searchFragment_to_filteringSettingsFragment)
+            when (it.itemId) {
+                R.id.searchScreenToolbarFilterMenu -> {
+                    val direction =
+                        SearchFragmentDirections.actionSearchFragmentToFilteringSettingsFragment()
+                    findNavController().navigate(direction)
+                }
             }
             true
         }
+
     }
 
     protected fun setOnScrollForRecycleView(

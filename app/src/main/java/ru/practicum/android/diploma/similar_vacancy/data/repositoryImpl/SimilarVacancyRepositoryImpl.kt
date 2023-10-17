@@ -40,7 +40,7 @@ class SimilarVacancyRepositoryImpl(
 
             RESPONSE_SUCCESS -> {
                 val vacancies: Vacancies =
-                    vacancyDbConverter.map(response as VacanciesSearchResponse)
+                    vacancyDbConverter.mapVacanciesSearchResponseToVacancies(response as VacanciesSearchResponse)
                 emit(Resource.Success(vacancies))
             }
 

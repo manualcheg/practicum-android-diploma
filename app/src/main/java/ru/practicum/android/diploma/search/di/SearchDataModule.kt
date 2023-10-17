@@ -25,10 +25,15 @@ val searchDataModule = module {
         val loggingInterceptor =
             HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
         loggingInterceptor.redactHeader(AUTHORIZATION)
-        val client = OkHttpClient.Builder().addInterceptor(headerInterceptor)
-            .addInterceptor(loggingInterceptor).build()
-        Retrofit.Builder().baseUrl(HH_API_BASE_URL).client(client)
-            .addConverterFactory(GsonConverterFactory.create()).build()
+        val client = OkHttpClient.Builder()
+            .addInterceptor(headerInterceptor)
+            .addInterceptor(loggingInterceptor)
+            .build()
+        Retrofit.Builder()
+            .baseUrl(HH_API_BASE_URL)
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
             .create(HeadHunterApiService::class.java)
     }
 

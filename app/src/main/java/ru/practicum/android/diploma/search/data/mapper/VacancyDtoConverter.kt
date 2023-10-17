@@ -28,10 +28,10 @@ import ru.practicum.android.diploma.vacancy.data.model.VacancySearchResponse
 
 class VacancyDtoConverter {
 
-    fun map(vacanciesSearchResponse: VacanciesSearchResponse): Vacancies {
+    fun mapVacanciesSearchResponseToVacancies(vacanciesSearchResponse: VacanciesSearchResponse): Vacancies {
         vacanciesSearchResponse.apply {
             return Vacancies(
-                vacancyList = items.map { map(it) },
+                vacancyList = items.map { mapVacncyDtoToVacancy(it) },
                 page = page,
                 pages = pages,
                 found = found
@@ -39,54 +39,54 @@ class VacancyDtoConverter {
         }
     }
 
-    fun map(vacancyDto: VacancyDto): Vacancy {
+    fun mapVacncyDtoToVacancy(vacancyDto: VacancyDto): Vacancy {
         vacancyDto.apply {
             return Vacancy(
                 id,
                 name,
-                area?.let { map(it) },
-                employer?.let { map(it) },
-                salary?.let { map(it) },
-                experience?.let { map(it) },
-                employment?.let { map(it) },
+                area?.let { mapArea(it) },
+                employer?.let { mapEmployer(it) },
+                salary?.let { mapSalary(it) },
+                experience?.let { mapExperience(it) },
+                employment?.let { mapEmployment(it) },
                 description,
                 keySkills?.let { convertKeySkills(it) },
-                schedule?.let { map(it) },
-                contacts?.let { map(it) }
+                schedule?.let { mapSchedule(it) },
+                contacts?.let { mapContacts(it) }
             )
         }
     }
 
-    fun map(vacancyDto: VacancySearchResponse): Vacancy {
+    fun mapVacancySearchResponseToVacancy(vacancyDto: VacancySearchResponse): Vacancy {
         vacancyDto.apply {
             return Vacancy(
                 id,
                 name,
-                area?.let { map(it) },
-                employer?.let { map(it) },
-                salary?.let { map(it) },
-                experience?.let { map(it) },
-                employment?.let { map(it) },
+                area?.let { mapArea(it) },
+                employer?.let { mapEmployer(it) },
+                salary?.let { mapSalary(it) },
+                experience?.let { mapExperience(it) },
+                employment?.let { mapEmployment(it) },
                 description,
                 keySkills?.let { convertKeySkills(it) },
-                schedule?.let { map(it) },
-                contacts?.let { map(it) }
+                schedule?.let { mapSchedule(it) },
+                contacts?.let { mapContacts(it) }
             )
         }
     }
 
 
-    private fun map(employerDto: EmployerDto): Employer {
+    private fun mapEmployer(employerDto: EmployerDto): Employer {
         employerDto.apply {
             return Employer(
                 id,
-                logoUrls?.let { map(it) },
+                logoUrls?.let { mapLogoUrls(it) },
                 name,
             )
         }
     }
 
-    private fun map(logoUrlsDto: LogoUrlsDto): LogoUrls {
+    private fun mapLogoUrls(logoUrlsDto: LogoUrlsDto): LogoUrls {
         return LogoUrls(
             logoUrlsDto.logo240,
             logoUrlsDto.logo90,
@@ -94,7 +94,7 @@ class VacancyDtoConverter {
         )
     }
 
-    private fun map(salaryDto: SalaryDto): Salary {
+    private fun mapSalary(salaryDto: SalaryDto): Salary {
         return Salary(
             salaryDto.currency,
             salaryDto.from,
@@ -103,38 +103,38 @@ class VacancyDtoConverter {
         )
     }
 
-    private fun map(experienceDto: ExperienceDto): Experience {
+    private fun mapExperience(experienceDto: ExperienceDto): Experience {
         return Experience(
             experienceDto.id,
             experienceDto.name
         )
     }
 
-    private fun map(employmentDto: EmploymentDto): Employment {
+    private fun mapEmployment(employmentDto: EmploymentDto): Employment {
         return Employment(
             employmentDto.id,
             employmentDto.name
         )
     }
 
-    private fun map(keySkillDto: KeySkillDto): KeySkill {
+    private fun mapKeySkill(keySkillDto: KeySkillDto): KeySkill {
         return KeySkill(
             keySkillDto.name
         )
     }
 
     private fun convertKeySkills(keySkillsDto: List<KeySkillDto>): List<KeySkill> {
-        return keySkillsDto.map { keySkillDto -> map(keySkillDto) }
+        return keySkillsDto.map { keySkillDto -> mapKeySkill(keySkillDto) }
     }
 
-    private fun map(scheduleDto: ScheduleDto): Schedule {
+    private fun mapSchedule(scheduleDto: ScheduleDto): Schedule {
         return Schedule(
             scheduleDto.id,
             scheduleDto.name
         )
     }
 
-    private fun map(contactsDto: ContactsDto): Contacts {
+    private fun mapContacts(contactsDto: ContactsDto): Contacts {
         return Contacts(
             contactsDto.email,
             contactsDto.name,
@@ -144,7 +144,7 @@ class VacancyDtoConverter {
         )
     }
 
-    private fun map(phoneDto: PhoneDto): Phone {
+    private fun mapPhone(phoneDto: PhoneDto): Phone {
         return Phone(
             phoneDto.city,
             phoneDto.comment,
@@ -153,7 +153,7 @@ class VacancyDtoConverter {
         )
     }
 
-    private fun map(areaDto: AreaDto): AreaVacancy {
+    private fun mapArea(areaDto: AreaDto): AreaVacancy {
         return AreaVacancy(
             id = areaDto.id,
             name = areaDto.name
@@ -161,6 +161,6 @@ class VacancyDtoConverter {
     }
 
     private fun convertPhones(phonesDto: List<PhoneDto>): List<Phone> {
-        return phonesDto.map { phoneDto -> map(phoneDto) }
+        return phonesDto.map { phoneDto -> mapPhone(phoneDto) }
     }
 }

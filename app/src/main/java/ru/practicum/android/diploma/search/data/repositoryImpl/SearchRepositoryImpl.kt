@@ -43,7 +43,7 @@ class SearchRepositoryImpl(
 
             RESPONSE_SUCCESS -> {
                 val vacancies: Vacancies =
-                    vacancyDtoToDomainConverter.map(response as VacanciesSearchResponse)
+                    vacancyDtoToDomainConverter.mapVacanciesSearchResponseToVacancies(response as VacanciesSearchResponse)
                 emit(Resource.Success(vacancies))
             }
 

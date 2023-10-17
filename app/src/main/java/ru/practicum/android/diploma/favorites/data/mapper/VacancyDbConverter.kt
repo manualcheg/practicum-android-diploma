@@ -16,7 +16,7 @@ import java.util.Calendar
 
 class VacancyDbConverter {
 
-    fun map(vacancyEntity: FavoritesVacancyEntity): Vacancy {
+    fun mapFavoriteVacancyEntityToVacancy(vacancyEntity: FavoritesVacancyEntity): Vacancy {
         vacancyEntity.apply {
             return Vacancy(
                 id = id,
@@ -37,7 +37,7 @@ class VacancyDbConverter {
         }
     }
 
-    fun map(vacancy: Vacancy): FavoritesVacancyEntity {
+    fun mapVacancyToFavoriteVacancyEntity(vacancy: Vacancy): FavoritesVacancyEntity {
         vacancy.apply {
             return FavoritesVacancyEntity(
                 id = id,

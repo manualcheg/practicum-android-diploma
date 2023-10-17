@@ -56,7 +56,7 @@ class VacancyViewModel(
         viewModelScope.launch {
             val vacancyUI = findVacancyByIdUseCase.findVacancyById(vacancyId)
             if (vacancyUI.vacancy != null) {
-                setState(VacancyState.Content(vacancyDomainToVacancyUiConverter.map(vacancyUI.vacancy)))
+                setState(VacancyState.Content(vacancyDomainToVacancyUiConverter.mapVacancyToVacancyUi(vacancyUI.vacancy)))
                 vacancy = vacancyUI.vacancy
             } else {
                 setState(VacancyState.Error)
