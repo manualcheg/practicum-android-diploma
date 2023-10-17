@@ -1,6 +1,6 @@
 package ru.practicum.android.diploma.common.domain.model.filter_models
 
-data class Country(
+data class IndustryFilter(
     var id: String,
     var name: String
 )

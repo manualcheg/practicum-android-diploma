@@ -9,7 +9,7 @@ import ru.practicum.android.diploma.common.util.constants.RepositoryConst.PAGE
 import ru.practicum.android.diploma.common.util.constants.RepositoryConst.PER_PAGE
 import ru.practicum.android.diploma.common.util.constants.RepositoryConst.RESPONSE_SUCCESS
 import ru.practicum.android.diploma.common.util.constants.RepositoryConst.SEARCH_TEXT
-import ru.practicum.android.diploma.filter.data.dataSource.FilterOptionsDataSource
+import ru.practicum.android.diploma.filter.data.dataSource.FiltersLocalDataSource
 import ru.practicum.android.diploma.search.data.dataSource.VacancyRemoteDataSource
 import ru.practicum.android.diploma.search.data.mapper.VacancyDtoConverter
 import ru.practicum.android.diploma.search.data.model.ErrorRemoteDataSource
@@ -19,15 +19,15 @@ import ru.practicum.android.diploma.search.domain.mapper.FilterToOptionsConverte
 import ru.practicum.android.diploma.search.domain.repository.SearchRepository
 
 class SearchRepositoryImpl(
-    private val filterOptionsDataSource: FilterOptionsDataSource,
+    private val filtersLocalDataSource: FiltersLocalDataSource,
     private val vacancyRemoteDataSource: VacancyRemoteDataSource,
-    private val vacancyDbConverter: VacancyDtoConverter,
+    private val vacancyDtoToDomainConverter: VacancyDtoConverter,
     private val filterToOptionsConverter: FilterToOptionsConverter
 ) : SearchRepository {
 
     override fun search(text: String, page: Int, perPage: Int): Flow<Resource<Vacancies>> = flow {
 
-        val filters = filterOptionsDataSource.getFilterOptions()
+        val filters = filtersLocalDataSource.getFilterOptions()
         val options = filterToOptionsConverter.map(filters)
 
         options[SEARCH_TEXT] = text
@@ -43,7 +43,7 @@ class SearchRepositoryImpl(
 
             RESPONSE_SUCCESS -> {
                 val vacancies: Vacancies =
-                    vacancyDbConverter.mapVacanciesSearchResponseToVacancies(response as VacanciesSearchResponse)
+                    vacancyDtoToDomainConverter.mapVacanciesSearchResponseToVacancies(response as VacanciesSearchResponse)
                 emit(Resource.Success(vacancies))
             }
 
@@ -54,6 +54,6 @@ class SearchRepositoryImpl(
     }
 
     override fun isFiltersExist(): Boolean {
-        return filterOptionsDataSource.getFilterOptions() != null
+        return filtersLocalDataSource.getFilterOptions() != null
     }
 }

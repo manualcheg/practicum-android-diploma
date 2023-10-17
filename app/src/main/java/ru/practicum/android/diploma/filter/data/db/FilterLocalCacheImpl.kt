@@ -1,9 +1,9 @@
 package ru.practicum.android.diploma.filter.data.db
 
-import ru.practicum.android.diploma.common.domain.model.filter_models.Area
-import ru.practicum.android.diploma.common.domain.model.filter_models.Country
+import ru.practicum.android.diploma.common.domain.model.filter_models.AreaFilter
+import ru.practicum.android.diploma.common.domain.model.filter_models.CountryFilter
 import ru.practicum.android.diploma.common.domain.model.filter_models.Filter
-import ru.practicum.android.diploma.common.domain.model.filter_models.Industry
+import ru.practicum.android.diploma.common.domain.model.filter_models.IndustryFilter
 
 class FilterLocalCacheImpl : FilterLocalCache {
     private var filterCache: Filter? = null
@@ -11,7 +11,7 @@ class FilterLocalCacheImpl : FilterLocalCache {
         return filterCache
     }
 
-    override fun addCountry(country: Country) {
+    override fun addCountry(country: CountryFilter) {
         filterCache = Filter(
             country = country,
             area = filterCache?.area,
@@ -21,7 +21,7 @@ class FilterLocalCacheImpl : FilterLocalCache {
         )
     }
 
-    override fun addArea(area: Area) {
+    override fun addArea(area: AreaFilter) {
         filterCache = Filter(
             country = filterCache?.country,
             area = area,
@@ -31,7 +31,7 @@ class FilterLocalCacheImpl : FilterLocalCache {
         )
     }
 
-    override fun addIndustry(industry: Industry) {
+    override fun addIndustry(industry: IndustryFilter) {
         filterCache = Filter(
             country = filterCache?.country,
             area = filterCache?.area,

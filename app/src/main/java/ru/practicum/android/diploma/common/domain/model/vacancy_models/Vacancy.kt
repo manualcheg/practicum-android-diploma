@@ -2,7 +2,7 @@ package ru.practicum.android.diploma.common.domain.model.vacancy_models
 data class Vacancy(
     val id: Int,
     val name: String, // "name": "Секретарь",
-    val area: Area?,
+    val area: AreaVacancy?,
     val employer: Employer?, // Информация о компании работодателя
     val salary: Salary?, // Зарплата
     val experience: Experience?, // Опыт работы ("От 1 года до 3 лет")

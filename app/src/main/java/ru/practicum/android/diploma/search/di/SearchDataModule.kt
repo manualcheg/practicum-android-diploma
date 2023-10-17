@@ -10,8 +10,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.practicum.android.diploma.common.util.constants.NetworkConst.AUTHORIZATION
 import ru.practicum.android.diploma.common.util.constants.NetworkConst.HH_API_BASE_URL
-import ru.practicum.android.diploma.filter.data.dataSourceImpl.FilterOptionsDataSourceImpl
-import ru.practicum.android.diploma.filter.data.dataSource.FilterOptionsDataSource
 import ru.practicum.android.diploma.search.data.dataSource.VacancyRemoteDataSource
 import ru.practicum.android.diploma.search.data.dataSourceImpl.VacancyRemoteDataSourceImpl
 import ru.practicum.android.diploma.search.data.mapper.VacancyDtoConverter
@@ -42,5 +40,4 @@ val searchDataModule = module {
     singleOf(::VacancyRemoteDataSourceImpl) bind VacancyRemoteDataSource::class
     singleOf(::SearchRepositoryImpl) bind SearchRepository::class
     factoryOf(::VacancyDtoConverter)
-    singleOf(::FilterOptionsDataSourceImpl) bind FilterOptionsDataSource::class
 }
