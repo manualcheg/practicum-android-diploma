@@ -6,9 +6,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.common.ui.model.PhoneUi
 import ru.practicum.android.diploma.common.ui.model.VacancyUi
-import ru.practicum.android.diploma.databinding.ItemCountryBinding
+import ru.practicum.android.diploma.databinding.ItemCountryAndRegionBinding
 import ru.practicum.android.diploma.databinding.ItemPhonesBinding
-import ru.practicum.android.diploma.databinding.ItemRegionAndSectorBinding
+import ru.practicum.android.diploma.databinding.ItemSectorBinding
 import ru.practicum.android.diploma.databinding.ItemVacancyBinding
 import ru.practicum.android.diploma.filter.ui.CountryViewHolder
 import ru.practicum.android.diploma.filter.ui.RegionIndustryViewHolder
@@ -46,11 +46,11 @@ class RVAdapter(
             )
 
             COUNTRY_VIEWTYPE -> CountryViewHolder(
-                ItemCountryBinding.inflate(layoutInflater, parent, false), clickListener
+                ItemCountryAndRegionBinding.inflate(layoutInflater, parent, false), clickListener
             )
 
             REGION_INDUSTRY_VIEWTYPE -> RegionIndustryViewHolder(
-                ItemRegionAndSectorBinding.inflate(layoutInflater, parent, false)
+                ItemSectorBinding.inflate(layoutInflater, parent, false)
             )
 
             else -> throw IllegalAccessException("Illegal type: $viewType")

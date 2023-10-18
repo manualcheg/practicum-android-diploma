@@ -5,11 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import ru.practicum.android.diploma.databinding.FragmentSelectRegionAndSectorBinding
+import ru.practicum.android.diploma.databinding.FragmentFilteringRegionBinding
 
-class SelectRegionAndSectorFragment : Fragment() {
+class FilteringRegionFragment : Fragment() {
 
-    private var _binding: FragmentSelectRegionAndSectorBinding? = null
+    private var _binding: FragmentFilteringRegionBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -17,7 +17,7 @@ class SelectRegionAndSectorFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSelectRegionAndSectorBinding.inflate(inflater, container, false)
+        _binding = FragmentFilteringRegionBinding.inflate(inflater, container, false)
         return binding.root
     }
 

@@ -26,26 +26,12 @@
         app:layout_constraintTop_toBottomOf="@id/searchVacanciesToolbar">
         <EditText
             android:id="@+id/searchScreenEditText"
+            style="@style/SearchEditText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:background="@drawable/rectangle_with_corners"
-            android:backgroundTint="@color/light_gray_gray"
-            android:drawablePadding="@dimen/padding_horizontal"
-            android:drawableTint="@color/black_universal"
             android:hint="@string/type_a_request"
-            android:imeOptions="actionDone"
-            android:inputType="text"
-            android:maxLength="255"
-            android:maxLines="1"
-            android:paddingStart="@dimen/padding_horizontal"
-            android:singleLine="true"
-            android:textColor="@color/black_universal"
-            android:textColorHint="@color/gray_white"
-            android:textStyle="normal"
-            tools:ignore="Autofill,RtlSymmetry"
-            android:textCursorDrawable="@drawable/cursor"
-            android:hapticFeedbackEnabled="false" />
+            tools:ignore="Autofill,RtlSymmetry"/>
         <ImageView
             android:id="@+id/searchFormButton"
             android:layout_width="wrap_content"
