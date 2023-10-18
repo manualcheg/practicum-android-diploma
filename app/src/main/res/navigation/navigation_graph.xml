@@ -5,6 +5,11 @@
     android:id="@+id/navigation_graph"
     app:startDestination="@id/searchFragment">
 
+
+    <action
+        android:id="@+id/action_to_teamFragment"
+        app:destination="@id/teamFragment" />
+
     <fragment
         android:id="@+id/searchFragment"
         android:name="ru.practicum.android.diploma.search.ui.fragment.SearchFragment"
@@ -42,13 +47,12 @@
         android:id="@+id/teamFragment"
         android:name="ru.practicum.android.diploma.team.ui.fragment.TeamFragment"
         android:label="fragment_team"
-        tools:layout="@layout/fragment_team">
-    </fragment>
+        tools:layout="@layout/fragment_team" />
     <fragment
         android:id="@+id/vacancyFragment"
         android:name="ru.practicum.android.diploma.vacancy.ui.fragment.VacancyFragment"
         android:label="fragment_vacancy"
-        tools:layout="@layout/fragment_vacancy" >
+        tools:layout="@layout/fragment_vacancy">
         <argument
             android:name="vacancyId"
             app:argType="integer" />
@@ -68,12 +72,15 @@
         <action
             android:id="@+id/action_filteringSettingsFragment_to_filteringRegionFragment"
             app:destination="@id/filteringRegionFragment" />
+        <action
+            android:id="@+id/action_filteringSettingsFragment_to_teamFragment"
+            app:destination="@id/teamFragment" />
     </fragment>
     <fragment
         android:id="@+id/similarVacancyFragment"
         android:name="ru.practicum.android.diploma.similar_vacancy.ui.fragment.SimilarVacancyFragment"
         android:label="fragment_similar_vacancies"
-        tools:layout="@layout/fragment_similar_vacancies" >
+        tools:layout="@layout/fragment_similar_vacancies">
         <argument
             android:name="vacancyId"
             app:argType="integer" />
