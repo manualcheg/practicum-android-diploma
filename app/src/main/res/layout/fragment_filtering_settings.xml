@@ -29,6 +29,7 @@
             android:id="@+id/selectedWorkplaceTextInputEditText"
             style="@style/textInputEditTextStyle"
             app:hintEnabled="false"
+            android:enabled="false"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:focusable="true" />
@@ -48,6 +49,7 @@
             android:id="@+id/selectedSectorTextInputEditText"
             style="@style/textInputEditTextStyle"
             app:hintEnabled="false"
+            android:enabled="false"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:focusable="true"

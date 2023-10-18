@@ -1,10 +1,14 @@
 package ru.practicum.android.diploma.filter.ui.fragment
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -32,122 +36,141 @@ class FilteringSettingsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.init()
 
-        /*        binding.selectedWorkplaceTextInputEditText.setOnTouchListener { v, event ->
-                    if (event.action == MotionEvent.ACTION_UP){
-                        Toast.makeText(requireContext(), "Нажато \"Место работы\"", Toast.LENGTH_SHORT)
-                            .show()
-                        binding.selectedWorkplaceTextInputEditText.setText("Some text")
-                    }
-                    return@setOnTouchListener true
-                }*/
-
-        /*binding.selectedWorkplaceTextInputEditText.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                findNavController().navigate(R.id.action_to_teamFragment)
-                Toast.makeText(requireContext(), "Нажато \"Место работы\"", Toast.LENGTH_SHORT)
-                    .show()
-            }
-        }*/
-
-        binding.workplaceTextInputLayout.setEndIconOnClickListener {
-            binding.selectedWorkplaceTextInputEditText.apply {
-                if (text.isNullOrBlank()) {
-                    binding.workplaceTextInputLayout.endIconDrawable =
-                        resources.getDrawable(R.drawable.ic_chevron_right)
-                    setText("some text")
-                    findNavController().navigate(R.id.action_to_teamFragment)
-                } else {
-                    binding.workplaceTextInputLayout.endIconDrawable =
-                        resources.getDrawable(R.drawable.ic_cross)
-                    setText("")
-                }
-                binding.selectedEnterTheAmountTextInputEditText.clearFocus()
-            }
-
-
-            /*Toast.makeText(
-                requireContext(),
-                "Нажато на шеврон в \"Место работы\"",
-                Toast.LENGTH_SHORT
-            )
-                .show()*/
-        }
-
-        binding.selectedWorkplaceTextInputEditText.doOnTextChanged { input, _, _, _ ->
-            binding.workplaceTextInputLayout.apply {
-                endIconDrawable = if (!input.isNullOrBlank()) {
-                    resources.getDrawable(R.drawable.ic_cross)
-                } else {
-                    resources.getDrawable(R.drawable.ic_chevron_right)
-                }
-            }
-        }
-
-        /*binding.selectedSectorTextInputEditText.setOnTouchListener { v, event ->
-            if (event.action == MotionEvent.ACTION_UP){
-                Toast.makeText(requireContext(), "Нажато \"Отрасль\"", Toast.LENGTH_SHORT).show()
-                binding.selectedSectorTextInputEditText.setText("Any text")
-            }
-            return@setOnTouchListener true
-        }*/
-
-        /*binding.selectedSectorTextInputEditText.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-//                findNavController().navigate(R.id.action_filteringSettingsFragment_to_teamFragment)
-                findNavController().navigate(R.id.action_to_teamFragment)
-                Toast.makeText(requireContext(), "Нажато \"Отрасль\"", Toast.LENGTH_SHORT).show()
-            }
-        }*/
-
-        binding.sectorTextInputLayout.setEndIconOnClickListener {
-            if (binding.selectedSectorTextInputEditText.text.isNullOrBlank()) {
-                binding.sectorTextInputLayout.endIconDrawable =
-                    resources.getDrawable(R.drawable.ic_chevron_right)
-                binding.selectedSectorTextInputEditText.setText("some text")
-                findNavController().navigate(R.id.action_to_teamFragment)
-            } else {
-                binding.sectorTextInputLayout.endIconDrawable =
-                    resources.getDrawable(R.drawable.ic_cross)
-                binding.selectedSectorTextInputEditText.setText("")
-            }
-            binding.selectedEnterTheAmountTextInputEditText.clearFocus()
-        }
-
-        /*binding.sectorTextInputLayout.setEndIconOnClickListener {
-            Toast.makeText(requireContext(), "Нажато на шеврон в \"Отрасль\"", Toast.LENGTH_SHORT)
-                .show()
-        }*/
-
-        binding.selectedSectorTextInputEditText.doOnTextChanged { input, _, _, _ ->
-            binding.sectorTextInputLayout.apply {
-                endIconDrawable = if (!input.isNullOrBlank()) {
-                    resources.getDrawable(R.drawable.ic_cross)
-                } else {
-                    resources.getDrawable(R.drawable.ic_chevron_right)
-                }
-            }
-        }
-
-
-        /*binding.selectedEnterTheAmountTextInputEditText.setOnFocusChangeListener { _, hasFocus ->
-            binding.selectedEnterTheAmountTextInputEditText.apply {
-                if (text.toString() != "" || text.toString() != resources.getString(R.string.enter_the_amount)) {
-//                    setTextColor(resources.getColor(R.color.black_universal))
-                } else {
-//                    setTextColor(resources.getColor(R.color.gray))
-                }
-            }
-        }*/
-
-        binding.filteringSettingsOnlyWithSalaryCheckbox.setOnCheckedChangeListener { buttonView, isChecked ->
-
-            binding.selectedEnterTheAmountTextInputEditText.clearFocus()
-//          TODO: надо прятать клаву
-        }
+        manageVisibilityOfButtons()
+        setOnClicks()
+        setListeners()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    private fun getCross(): Drawable? {
+        return ResourcesCompat.getDrawable(resources, R.drawable.ic_cross, null)
+    }
+
+    private fun getChevron(): Drawable? {
+        return ResourcesCompat.getDrawable(resources, R.drawable.ic_chevron_right, null)
+    }
+
+    private fun manageVisibilityOfButtons() {
+        binding.apply {
+            if (!selectedWorkplaceTextInputEditText.text.isNullOrBlank() ||
+                !selectedSectorTextInputEditText.text.isNullOrBlank() ||
+                !selectedEnterTheAmountTextInputEditText.text.isNullOrBlank() ||
+                filteringSettingsOnlyWithSalaryCheckbox.isChecked
+            ) {
+                resetButton.visibility = View.VISIBLE
+                applyButton.visibility = View.VISIBLE
+            } else {
+                resetButton.visibility = View.GONE
+                applyButton.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun setOnClicks() {
+        binding.apply {
+            workplaceTextInputLayout.setEndIconOnClickListener {
+                selectedWorkplaceTextInputEditText.apply {
+                    if (text.isNullOrBlank()) {
+                        workplaceTextInputLayout.endIconDrawable = getChevron()
+                        setText("some text")
+                        findNavController().navigate(R.id.action_to_teamFragment)
+                    } else {
+                        workplaceTextInputLayout.endIconDrawable = getCross()
+                        text?.clear()
+                    }
+                    selectedEnterTheAmountTextInputEditText.clearFocus()
+                }
+            }
+        }
+
+        binding.apply {
+            sectorTextInputLayout.setEndIconOnClickListener {
+                if (selectedSectorTextInputEditText.text.isNullOrBlank()) {
+                    sectorTextInputLayout.endIconDrawable = getChevron()
+                    selectedSectorTextInputEditText.setText("some text")
+                    findNavController().navigate(R.id.action_to_teamFragment)
+                } else {
+                    sectorTextInputLayout.endIconDrawable = getCross()
+                    selectedSectorTextInputEditText.text?.clear()
+                }
+                selectedEnterTheAmountTextInputEditText.clearFocus()
+            }
+        }
+
+        binding.apply {
+            resetButton.setOnClickListener {
+                selectedWorkplaceTextInputEditText.text?.clear()
+                selectedSectorTextInputEditText.text?.clear()
+                selectedEnterTheAmountTextInputEditText.text?.clear()
+                filteringSettingsOnlyWithSalaryCheckbox.isChecked = false
+                manageVisibilityOfButtons()
+            }
+        }
+
+        binding.apply{
+            filteringSettingsToolbar.setNavigationOnClickListener{
+                findNavController().popBackStack()
+            }
+        }
+    }
+
+    private fun setListeners() {
+        binding.selectedWorkplaceTextInputEditText.doOnTextChanged { input, _, _, _ ->
+            binding.workplaceTextInputLayout.apply {
+                endIconDrawable = if (!input.isNullOrBlank()) {
+                    getCross()
+                } else {
+                    getChevron()
+                }
+                manageVisibilityOfButtons()
+            }
+        }
+
+        binding.apply {
+            selectedSectorTextInputEditText.doOnTextChanged { input, _, _, _ ->
+                sectorTextInputLayout.apply {
+                    endIconDrawable = if (!input.isNullOrBlank()) {
+                        getCross()
+                    } else {
+                        getChevron()
+                    }
+                    manageVisibilityOfButtons()
+                }
+            }
+        }
+
+        binding.apply {
+            selectedEnterTheAmountTextInputEditText.doOnTextChanged { input, _, _, _ ->
+                enterTheAmountTextInputLayout.apply {
+                    if (!input.isNullOrBlank() && hasFocus()) {
+                        endIconDrawable = getCross()
+                    }
+                    manageVisibilityOfButtons()
+                }
+            }
+        }
+
+        binding.filteringSettingsOnlyWithSalaryCheckbox.setOnCheckedChangeListener { buttonView, isChecked ->
+            binding.selectedEnterTheAmountTextInputEditText.clearFocus()
+            hideKeyboard()
+            manageVisibilityOfButtons()
+        }
+
+        binding.selectedEnterTheAmountTextInputEditText.setOnFocusChangeListener { v, hasFocus ->
+            hideKeyboard()
+        }
+    }
+
+    private fun hideKeyboard() {
+        val view: View? = requireActivity().currentFocus
+        if (view != null) {
+            val imm =
+                requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(requireView().windowToken, 0)
+        }
     }
 }
