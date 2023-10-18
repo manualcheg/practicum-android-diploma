@@ -63,7 +63,12 @@
     <fragment
         android:id="@+id/filteringSettingsFragment"
         android:name="ru.practicum.android.diploma.filter.ui.fragment.FilteringSettingsFragment"
-        android:label="FilteringSettingsFragment" />
+        android:label="FilteringSettingsFragment"
+        tools:layout="@layout/fragment_filtering_settings">
+        <action
+            android:id="@+id/action_filteringSettingsFragment_to_filteringRegionFragment"
+            app:destination="@id/filteringRegionFragment" />
+    </fragment>
     <fragment
         android:id="@+id/similarVacancyFragment"
         android:name="ru.practicum.android.diploma.similar_vacancy.ui.fragment.SimilarVacancyFragment"
@@ -80,5 +85,10 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
     </fragment>
+    <fragment
+        android:id="@+id/filteringRegionFragment"
+        android:name="ru.practicum.android.diploma.filter.ui.fragment.FilteringRegionFragment"
+        android:label="fragment_filtering_region"
+        tools:layout="@layout/fragment_filtering_region" />
 
 </navigation>

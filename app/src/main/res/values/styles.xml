@@ -52,7 +52,6 @@
     </style>
 
     <style name="textInputLayoutStyle">
-        <item name="android:enabled">false</item>
         <item name="materialThemeOverlay">@style/ThemeOverlay.MaterialComponents.TextInputEditText.FilledBox</item>
         <item name="boxBackgroundMode">filled</item>
         <item name="boxCollapsedPaddingTop">10dp</item>

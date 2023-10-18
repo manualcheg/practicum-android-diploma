@@ -29,6 +29,8 @@
             android:id="@+id/selectedWorkplaceTextInputEditText"
             style="@style/textInputEditTextStyle"
             android:layout_width="match_parent"
+
+            android:focusable="true"
             android:layout_height="match_parent" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -43,6 +45,8 @@
         app:layout_constraintTop_toBottomOf="@id/workplaceTextInputLayout">
 
         <com.google.android.material.textfield.TextInputEditText
+
+            android:focusable="true"
             android:id="@+id/selectedSectorTextInputEditText"
             style="@style/textInputEditTextStyle"
             android:layout_width="match_parent"
