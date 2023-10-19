@@ -107,7 +107,6 @@ class FilteringSettingsFragment : Fragment() {
                 viewModel.init()
                 binding.selectedEnterTheAmountTextInputEditText.clearFocus()
             }
-            manageVisibilityOfButtons()
         }
 
         binding.resetButton.setOnClickListener {
@@ -167,7 +166,6 @@ class FilteringSettingsFragment : Fragment() {
             binding.enterTheAmountTextInputLayout.apply {
                 if (!input.isNullOrBlank()) {
                     viewModel.putSalary(input.toString().toInt())
-                    viewModel.init()
                 }
             }
         }
