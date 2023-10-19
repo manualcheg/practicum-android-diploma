@@ -114,8 +114,11 @@ class FilteringSettingsFragment : Fragment() {
             viewModel.clearAll()
             viewModel.init()
             binding.selectedEnterTheAmountTextInputEditText.clearFocus()
-//            binding.selectedEnterTheAmountTextInputEditText.text?.clear()
-//            manageVisibilityOfButtons()
+        }
+
+        binding.applyButton.setOnClickListener {
+            viewModel.putFilterOptions()
+            findNavController().popBackStack()
         }
     }
 

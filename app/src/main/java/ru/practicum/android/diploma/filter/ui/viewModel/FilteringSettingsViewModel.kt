@@ -13,6 +13,7 @@ import ru.practicum.android.diploma.filter.domain.useCase.ClearFilterOptionsUseC
 import ru.practicum.android.diploma.filter.domain.useCase.ClearIndustryFilterUseCase
 import ru.practicum.android.diploma.filter.domain.useCase.ClearSalaryFilterUseCase
 import ru.practicum.android.diploma.filter.domain.useCase.GetFilterOptionsUseCase
+import ru.practicum.android.diploma.filter.domain.useCase.PutFilterOptionsUseCase
 import ru.practicum.android.diploma.filter.ui.mapper.FilterDomainToFilterUiConverter
 import ru.practicum.android.diploma.filter.ui.model.FilterFieldsState
 
@@ -24,7 +25,8 @@ class FilteringSettingsViewModel(
     private val clearFilterOptionsUseCase: ClearFilterOptionsUseCase,
     private val clearAreaFilterUseCase: ClearAreaFilterUseCase,
     private val clearIndustryFilterUseCase: ClearIndustryFilterUseCase,
-    private val clearSalaryFilterUseCase: ClearSalaryFilterUseCase
+    private val clearSalaryFilterUseCase: ClearSalaryFilterUseCase,
+    private val putFilterOptionsUseCase: PutFilterOptionsUseCase
 
 ) : ViewModel() {
 
@@ -140,5 +142,9 @@ class FilteringSettingsViewModel(
 
     fun clearSalary(){
         clearSalaryFilterUseCase.execute()
+    }
+
+    fun putFilterOptions(){
+        getFilterOptionsUseCase.execute()?.let { putFilterOptionsUseCase.execute(it) }
     }
 }
