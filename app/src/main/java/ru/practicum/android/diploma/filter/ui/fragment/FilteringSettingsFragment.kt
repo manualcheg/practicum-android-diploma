@@ -103,7 +103,6 @@ class FilteringSettingsFragment : Fragment() {
         binding.enterTheAmountTextInputLayout.setEndIconOnClickListener {
             if (!binding.selectedEnterTheAmountTextInputEditText.text.isNullOrBlank()) {
                 binding.selectedEnterTheAmountTextInputEditText.text!!.clear()
-                //viewModel.putSalary()
             }
             manageVisibilityOfButtons()
         }
@@ -112,7 +111,7 @@ class FilteringSettingsFragment : Fragment() {
             viewModel.clearAll()
             binding.selectedEnterTheAmountTextInputEditText.clearFocus()
             binding.selectedEnterTheAmountTextInputEditText.text?.clear()
-            manageVisibilityOfButtons()
+//            manageVisibilityOfButtons()
         }
     }
 
@@ -142,9 +141,11 @@ class FilteringSettingsFragment : Fragment() {
         }
 
         viewModel.observeSalaryState().observe(viewLifecycleOwner) {
-            binding.selectedEnterTheAmountTextInputEditText.setText(it)
-            salary = it
-            manageVisibilityOfButtons()
+            if (it != salary) {
+                binding.selectedEnterTheAmountTextInputEditText.setText(it)
+                salary = it
+                manageVisibilityOfButtons()
+            }
         }
 
         viewModel.observeOnlyWithSalaryState().observe(viewLifecycleOwner) {
@@ -158,11 +159,8 @@ class FilteringSettingsFragment : Fragment() {
         binding.selectedEnterTheAmountTextInputEditText.doOnTextChanged { input, _, _, _ ->
             binding.enterTheAmountTextInputLayout.apply {
                 if (!input.isNullOrBlank()) {
-                    //salary = input.toString()
-                    //viewModel.putSalary(salary.toInt())
                     viewModel.putSalary(input.toString().toInt())
-//                    viewModel.init()
-                    manageVisibilityOfButtons()
+                    viewModel.init()
                 }
             }
         }
@@ -170,8 +168,7 @@ class FilteringSettingsFragment : Fragment() {
         binding.filteringSettingsOnlyWithSalaryCheckbox.setOnCheckedChangeListener { buttonView, isChecked ->
             binding.selectedEnterTheAmountTextInputEditText.clearFocus()
             viewModel.putOnlyWithSalary(isChecked)
-//            hideKeyboard()
-            manageVisibilityOfButtons()
+            viewModel.init()
         }
     }
 

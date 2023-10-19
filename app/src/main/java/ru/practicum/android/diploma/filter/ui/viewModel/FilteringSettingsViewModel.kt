@@ -104,7 +104,7 @@ class FilteringSettingsViewModel(
             onlyWithSalaryState.value = filterUi.onlyWithSalary
         }
 
-          /*//МОКОВЫЕ ДАННЫЕ ДЛЯ ПРОВЕРКИ
+          //МОКОВЫЕ ДАННЫЕ ДЛЯ ПРОВЕРКИ
           areaState.value = FilterFieldsState.Content(
               text = "Москва, Россия"
           )
@@ -115,7 +115,7 @@ class FilteringSettingsViewModel(
               )
 
           salaryState.value = "10000"
-          onlyWithSalaryState.value = true*/
+          onlyWithSalaryState.value = true
     }
 
     fun putEmptyArea(){
