@@ -97,13 +97,13 @@
         tools:layout="@layout/fragment_filtering_country" />
     <fragment
         android:id="@+id/filteringRegionFragment"
-        android:name="ru.practicum.android.diploma.filter.ui.fragment.FilteringRegionFragment"
+        android:name="ru.practicum.android.diploma.filter.ui.fragment.FilteringAreaFragment"
         android:label="fragment_filtering_region"
-        tools:layout="@layout/fragment_filtering_region" />
+        tools:layout="@layout/fragment_filtering_area" />
     <fragment
         android:id="@+id/filteringSectorFragment"
-        android:name="ru.practicum.android.diploma.filter.ui.fragment.FilteringSectorFragment"
+        android:name="ru.practicum.android.diploma.filter.ui.fragment.FilteringIndustryFragment"
         android:label="fragment_filtering_sector"
-        tools:layout="@layout/fragment_filtering_sector" />
+        tools:layout="@layout/fragment_filtering_industry" />
 
 </navigation>

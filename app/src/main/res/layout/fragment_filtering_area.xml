@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".filter.ui.fragment.FilteringSectorFragment">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".filter.ui.fragment.FilteringAreaFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/filteringSectorToolbar"
+        android:id="@+id/filteringRegionToolbar"
         style="@style/Toolbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_arrow_left"
-        app:title="@string/choosing_a_sector"
+        app:title="@string/choosing_a_region"
         app:titleTextAppearance="@style/TitleText" />
 
     <FrameLayout
@@ -24,43 +24,34 @@
         android:layout_marginTop="@dimen/padding_vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/filteringSectorToolbar">
+        app:layout_constraintTop_toBottomOf="@id/filteringRegionToolbar">
         <EditText
-            android:id="@+id/filteringSectorEditText"
+            android:id="@+id/filteringRegionEditText"
             style="@style/SearchEditText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:hint="@string/type_a_sector"
+            android:hint="@string/type_a_region"
             tools:ignore="Autofill,RtlSymmetry"/>
         <ImageView
-            android:id="@+id/filteringSectorFormButton"
+            android:id="@+id/filteringRegionFormButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center"
             android:layout_marginStart="@dimen/padding_horizontal"
             android:src="@drawable/ic_search"
-            android:contentDescription="@string/type_a_sector" />
+            android:contentDescription="@string/type_a_region" />
     </FrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/filteringSectorRecyclerView"
-        android:layout_width="@dimen/_0dp"
-        android:layout_height="wrap_content"
+        android:id="@+id/filteringRegionRecyclerView"
         android:layout_marginTop="@dimen/margin_vertical_small"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/container"
-        tools:listitem="@layout/item_sector" />
-
-    <Button
-        android:id="@+id/filteringRegionAndSectorButton"
-        style="@style/Button"
-        android:layout_marginBottom="@dimen/margin_vertical"
-        android:text="@string/select"
-        android:visibility="gone"
+        android:layout_width="@dimen/_0dp"
+        android:layout_height="@dimen/_0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/container"
+        tools:listitem="@layout/item_country_and_region"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
