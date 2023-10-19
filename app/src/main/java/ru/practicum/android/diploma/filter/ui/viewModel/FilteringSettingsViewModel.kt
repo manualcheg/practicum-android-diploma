@@ -5,14 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import ru.practicum.android.diploma.common.domain.model.filter_models.AreaFilter
 import ru.practicum.android.diploma.common.domain.model.filter_models.Filter
-import ru.practicum.android.diploma.common.domain.model.filter_models.IndustryFilter
-import ru.practicum.android.diploma.filter.domain.useCase.AddAreaFilterUseCase
-import ru.practicum.android.diploma.filter.domain.useCase.AddIndustryFilterUseCase
 import ru.practicum.android.diploma.filter.domain.useCase.AddOnlyWithSalaryFilterUseCase
 import ru.practicum.android.diploma.filter.domain.useCase.AddSalaryFilterUseCase
+import ru.practicum.android.diploma.filter.domain.useCase.ClearAreaFilterUseCase
 import ru.practicum.android.diploma.filter.domain.useCase.ClearFilterOptionsUseCase
+import ru.practicum.android.diploma.filter.domain.useCase.ClearIndustryFilterUseCase
+import ru.practicum.android.diploma.filter.domain.useCase.ClearSalaryFilterUseCase
 import ru.practicum.android.diploma.filter.domain.useCase.GetFilterOptionsUseCase
 import ru.practicum.android.diploma.filter.ui.mapper.FilterDomainToFilterUiConverter
 import ru.practicum.android.diploma.filter.ui.model.FilterFieldsState
@@ -20,11 +19,12 @@ import ru.practicum.android.diploma.filter.ui.model.FilterFieldsState
 class FilteringSettingsViewModel(
     private val getFilterOptionsUseCase: GetFilterOptionsUseCase,
     private val filterDomainToFilterUiConverter: FilterDomainToFilterUiConverter,
-    private val addAreaFilterUseCase: AddAreaFilterUseCase,
-    private val addIndustryFilterUseCase: AddIndustryFilterUseCase,
     private val addSalaryFilterUseCase: AddSalaryFilterUseCase,
     private val addOnlyWithSalaryFilterUseCase: AddOnlyWithSalaryFilterUseCase,
-    private val clearFilterOptionsUseCase: ClearFilterOptionsUseCase
+    private val clearFilterOptionsUseCase: ClearFilterOptionsUseCase,
+    private val clearAreaFilterUseCase: ClearAreaFilterUseCase,
+    private val clearIndustryFilterUseCase: ClearIndustryFilterUseCase,
+    private val clearSalaryFilterUseCase: ClearSalaryFilterUseCase
 
 ) : ViewModel() {
 
@@ -104,7 +104,7 @@ class FilteringSettingsViewModel(
             onlyWithSalaryState.value = filterUi.onlyWithSalary
         }
 
-          //МОКОВЫЕ ДАННЫЕ ДЛЯ ПРОВЕРКИ
+          /*//МОКОВЫЕ ДАННЫЕ ДЛЯ ПРОВЕРКИ
           areaState.value = FilterFieldsState.Content(
               text = "Москва, Россия"
           )
@@ -115,15 +115,7 @@ class FilteringSettingsViewModel(
               )
 
           salaryState.value = "10000"
-          onlyWithSalaryState.value = true
-    }
-
-    fun putEmptyArea(){
-        addAreaFilterUseCase.execute(AreaFilter(0,"",""))
-    }
-
-    fun putEmptyIndustry(){
-        addIndustryFilterUseCase.execute(IndustryFilter("", ""))
+          onlyWithSalaryState.value = true*/
     }
 
     fun putSalary(salary:Int){
@@ -136,5 +128,17 @@ class FilteringSettingsViewModel(
 
     fun clearAll(){
         clearFilterOptionsUseCase.execute()
+    }
+
+    fun clearArea(){
+        clearAreaFilterUseCase.execute()
+    }
+
+    fun clearIndustry(){
+        clearIndustryFilterUseCase.execute()
+    }
+
+    fun clearSalary(){
+        clearSalaryFilterUseCase.execute()
     }
 }

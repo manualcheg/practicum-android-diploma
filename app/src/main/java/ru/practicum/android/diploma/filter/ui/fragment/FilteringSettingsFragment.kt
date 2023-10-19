@@ -78,7 +78,7 @@ class FilteringSettingsFragment : Fragment() {
     private fun initOnClicks() {
         binding.areaCustomView.onButtonClick {
             if (viewModel.observeAreaState().value is FilterFieldsState.Content) {
-                viewModel.putEmptyArea()
+                viewModel.clearArea()
                 viewModel.init()
             } else {
                 findNavController().navigate(R.id.action_filteringSettingsFragment_to_filteringChoosingWorkplaceFragment)
@@ -88,7 +88,7 @@ class FilteringSettingsFragment : Fragment() {
 
         binding.industryCustomView.onButtonClick {
             if (viewModel.observeIndustryState().value is FilterFieldsState.Content) {
-                viewModel.putEmptyIndustry()
+                viewModel.clearIndustry()
                 viewModel.init()
             } else {
                 findNavController().navigate(R.id.action_filteringSettingsFragment_to_filteringSectorFragment)
@@ -103,14 +103,18 @@ class FilteringSettingsFragment : Fragment() {
         binding.enterTheAmountTextInputLayout.setEndIconOnClickListener {
             if (!binding.selectedEnterTheAmountTextInputEditText.text.isNullOrBlank()) {
                 binding.selectedEnterTheAmountTextInputEditText.text!!.clear()
+                viewModel.clearSalary()
+                viewModel.init()
+                binding.selectedEnterTheAmountTextInputEditText.clearFocus()
             }
             manageVisibilityOfButtons()
         }
 
         binding.resetButton.setOnClickListener {
             viewModel.clearAll()
+            viewModel.init()
             binding.selectedEnterTheAmountTextInputEditText.clearFocus()
-            binding.selectedEnterTheAmountTextInputEditText.text?.clear()
+//            binding.selectedEnterTheAmountTextInputEditText.text?.clear()
 //            manageVisibilityOfButtons()
         }
     }
