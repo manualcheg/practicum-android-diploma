@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.common.custom_view.model.ButtonWithSelectedValuesState
 import ru.practicum.android.diploma.databinding.FragmentFilteringChoosingWorkplaceBinding
 import ru.practicum.android.diploma.filter.ui.model.FilterFieldsState
 import ru.practicum.android.diploma.filter.ui.viewModel.FilteringChoosingWorkplaceViewModel
@@ -64,11 +66,23 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
     private fun renderCountryState(state: FilterFieldsState) {
         when (state) {
             is FilterFieldsState.Empty -> {
-                binding.selectedCountryTextInputEditText.text?.clear()
+                binding.choosingWorkplaceCountryCustomView.render(
+                    ButtonWithSelectedValuesState.Empty(
+                        getString(
+                            R.string.country
+                        )
+                    )
+                )
             }
 
             is FilterFieldsState.Content -> {
-                binding.selectedCountryTextInputEditText.setText(state.text)
+                binding.choosingWorkplaceCountryCustomView.render(
+                    ButtonWithSelectedValuesState.Content(
+                        state.text, getString(
+                            R.string.country
+                        )
+                    )
+                )
             }
         }
     }
@@ -76,11 +90,23 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
     private fun renderRegionState(state: FilterFieldsState) {
         when (state) {
             is FilterFieldsState.Empty -> {
-                binding.selectedRegionTextInputEditText.text?.clear()
+                binding.choosingWorkplaceAreaCustomView.render(
+                    ButtonWithSelectedValuesState.Empty(
+                        getString(
+                            R.string.region
+                        )
+                    )
+                )
             }
 
             is FilterFieldsState.Content -> {
-                binding.selectedCountryTextInputEditText.setText(state.text)
+                binding.choosingWorkplaceAreaCustomView.render(
+                    ButtonWithSelectedValuesState.Content(
+                        state.text, getString(
+                            R.string.region
+                        )
+                    )
+                )
             }
         }
     }
