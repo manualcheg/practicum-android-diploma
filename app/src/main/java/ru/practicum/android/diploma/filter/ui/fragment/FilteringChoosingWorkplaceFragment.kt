@@ -54,7 +54,21 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
     private fun setOnClickListeners() {
 
         binding.choosingWorkplaceToolbar.setNavigationOnClickListener {
-            findNavController().navigateUp()
+            findNavController().popBackStack()
+        }
+
+        binding.choosingWorkplaceCountryCustomView.setOnClickListener {
+            val direction =
+                FilteringChoosingWorkplaceFragmentDirections
+                    .actionFilteringChoosingWorkplaceFragmentToFilteringCountryFragment()
+            findNavController().navigate(direction)
+        }
+
+        binding.choosingWorkplaceAreaCustomView.setOnClickListener {
+            val direction =
+                FilteringChoosingWorkplaceFragmentDirections
+                    .actionFilteringChoosingWorkplaceFragmentToFilteringRegionFragment()
+            findNavController().navigate(direction)
         }
 
 //        binding.choosingWorkplaceSelectButtonTextView.setOnClickListener {
