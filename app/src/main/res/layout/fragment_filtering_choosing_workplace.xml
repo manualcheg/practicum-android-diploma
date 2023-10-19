@@ -17,39 +17,22 @@
         app:title="@string/choosing_a_place_of_work"
         app:titleTextAppearance="@style/TitleText" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/countyTextInputLayout"
-        style="@style/textInputLayoutStyle"
+    <ru.practicum.android.diploma.common.custom_view.ButtonWithSelectedValues
+        android:id="@+id/choosingWorkplaceCountryCustomView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_vertical_small"
-        android:hint="@string/country"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/choosingWorkplaceToolbar">
+        app:layout_constraintTop_toBottomOf="@id/choosingWorkplaceToolbar" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/selectedCountryTextInputEditText"
-            style="@style/textInputEditTextStyle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/regionTextInputLayout"
-        style="@style/textInputLayoutStyle"
-        android:hint="@string/region"
+    <ru.practicum.android.diploma.common.custom_view.ButtonWithSelectedValues
+        android:id="@+id/choosingWorkplaceAreaCustomView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/countyTextInputLayout">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/selectedRegionTextInputEditText"
-            style="@style/textInputEditTextStyle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:text="Москва" />
-
-    </com.google.android.material.textfield.TextInputLayout>
+        app:layout_constraintTop_toBottomOf="@id/choosingWorkplaceCountryCustomView" />
 
     <TextView
         android:id="@+id/choosingWorkplaceSelectButtonTextView"
