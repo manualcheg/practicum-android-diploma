@@ -16,40 +16,23 @@
         app:title="@string/filtering_settings"
         app:titleTextAppearance="@style/TitleText" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/workplaceTextInputLayout"
-        style="@style/textInputLayoutStyle"
-        android:layout_marginTop="@dimen/margin_vertical_small"
-        android:hint="@string/workplace"
+    <ru.practicum.android.diploma.common.custom_view.ButtonWithSelectedValues
+        android:id="@+id/area_custom_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/filteringSettingsToolbar">
+        app:layout_constraintTop_toBottomOf="@id/filteringSettingsToolbar"
+        app:layout_constraintBottom_toTopOf="@id/industry_custom_view" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/selectedWorkplaceTextInputEditText"
-            style="@style/textInputEditTextStyle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/sectorTextInputLayout"
-        style="@style/textInputLayoutStyle"
-        android:layout_marginTop="@dimen/margin_vertical_small"
-        android:hint="@string/sector"
+    <ru.practicum.android.diploma.common.custom_view.ButtonWithSelectedValues
+        android:id="@+id/industry_custom_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/enterTheAmountTextInputLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/workplaceTextInputLayout">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/selectedSectorTextInputEditText"
-            style="@style/textInputEditTextStyle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:text="IT"/>
-
-    </com.google.android.material.textfield.TextInputLayout>
+        app:layout_constraintTop_toBottomOf="@id/area_custom_view" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/enterTheAmountTextInputLayout"
@@ -60,7 +43,8 @@
         android:hint="@string/expected_salary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sectorTextInputLayout"
+        app:layout_constraintTop_toBottomOf="@id/industry_custom_view"
+        app:layout_constraintBottom_toTopOf="@id/test"
         app:placeholderText="@string/enter_the_amount">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -78,16 +62,16 @@
         style="@style/Widget.App.CheckBox"
         android:layout_width="@dimen/_0dp"
         android:layout_height="wrap_content"
-        android:tint="@color/blue"
-        android:layout_marginTop="@dimen/margin_vertical"
         android:layout_marginStart="@dimen/padding_horizontal_small"
+        android:layout_marginTop="@dimen/margin_vertical"
         android:layout_marginEnd="@dimen/padding_horizontal"
         android:foregroundTint="@color/blue"
         android:layoutDirection="rtl"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:text="@string/do_not_show_without_salary"
-        app:layout_constraintTop_toBottomOf="@+id/enterTheAmountTextInputLayout"/>
+        android:tint="@color/blue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/enterTheAmountTextInputLayout" />
 
     <Button
         android:id="@+id/applyButton"

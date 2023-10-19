@@ -29,7 +29,7 @@
     </plurals>
 
     <string name="workplace">Место работы</string>
-    <string name="sector">Отрасль</string>
+    <string name="industry">Отрасль</string>
     <string name="expected_salary">Ожидаемая зарплата</string>
     <string name="enter_the_amount">Введите сумму</string>
     <string name="do_not_show_without_salary">Не показывать без зарплаты</string>
