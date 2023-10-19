@@ -7,42 +7,42 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.databinding.ViewSideNavigationButtonWithSelectedValuesBinding
-import ru.practicum.android.diploma.filter.ui.model.FilterFieldsState
+import ru.practicum.android.diploma.common.custom_view.model.ButtonWithSelectedValuesState
+import ru.practicum.android.diploma.databinding.ViewButtonWithSelectedValuesBinding
 
-class SideNavigationButtonWithSelectedValues @JvmOverloads constructor(
+class ButtonWithSelectedValues @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
-    private val binding = ViewSideNavigationButtonWithSelectedValuesBinding.inflate(
+    private val binding = ViewButtonWithSelectedValuesBinding.inflate(
         LayoutInflater.from(context), this
     )
 
-    fun render(state: FilterFieldsState) {
+    fun render(state: ButtonWithSelectedValuesState) {
         when (state) {
-            is FilterFieldsState.Content -> {
+            is ButtonWithSelectedValuesState.Content -> {
                 binding.hintBig.text = state.hint
                 binding.hintSmall.text = state.hint
                 binding.text.text = state.text
                 binding.text.isVisible = true
                 binding.hintSmall.isVisible = true
                 binding.hintBig.isVisible = false
-                binding.chevron.setImageDrawable(
+                binding.icon.setImageDrawable(
                     ResourcesCompat.getDrawable(
                         resources, R.drawable.ic_cross, null
                     )
                 )
             }
 
-            is FilterFieldsState.Empty -> {
+            is ButtonWithSelectedValuesState.Empty -> {
                 binding.hintBig.text = state.hint
                 binding.hintSmall.text = state.hint
                 binding.text.isVisible = false
                 binding.hintSmall.isVisible = false
                 binding.hintBig.isVisible = true
-                binding.chevron.setImageDrawable(
+                binding.icon.setImageDrawable(
                     ResourcesCompat.getDrawable(
                         resources, R.drawable.ic_chevron_right, null
                     )
@@ -51,8 +51,8 @@ class SideNavigationButtonWithSelectedValues @JvmOverloads constructor(
         }
     }
 
-    fun onChevronClick(click: () -> Unit) {
-        binding.chevron.setOnClickListener {
+    fun onButtonClick(click: () -> Unit) {
+        binding.icon.setOnClickListener {
             click.invoke()
         }
     }

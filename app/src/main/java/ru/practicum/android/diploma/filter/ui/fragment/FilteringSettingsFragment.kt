@@ -7,7 +7,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.common.custom_view.ButtonWithSelectedValues
+import ru.practicum.android.diploma.common.custom_view.model.ButtonWithSelectedValuesState
 import ru.practicum.android.diploma.databinding.FragmentFilteringSettingsBinding
+import ru.practicum.android.diploma.filter.ui.model.FilterFieldsState
 import ru.practicum.android.diploma.filter.ui.viewModel.FilteringSettingsViewModel
 
 class FilteringSettingsFragment : Fragment() {
@@ -29,18 +33,24 @@ class FilteringSettingsFragment : Fragment() {
 
         initOnClicks()
 
-        viewModel.observeWorkPlaceState().observe(viewLifecycleOwner) {
-            binding.workplaceCustomView.render(it)
+        viewModel.observeAreaState().observe(viewLifecycleOwner) {
+            renderButtonWithSelectedValues(
+                it,
+                binding.areaCustomView,
+                resources.getString(R.string.workplace)
+            )
         }
 
         viewModel.observeIndustryState().observe(viewLifecycleOwner) {
-            binding.industryCustomView.render(it)
+            renderButtonWithSelectedValues(
+                it,
+                binding.industryCustomView,
+                resources.getString(R.string.industry)
+            )
         }
 
         viewModel.observeSalaryState().observe(viewLifecycleOwner) {
-            if (it != null) {
-                binding.selectedEnterTheAmountTextInputEditText.setText(it.toString())
-            } else binding.selectedEnterTheAmountTextInputEditText.setText("")
+            binding.selectedEnterTheAmountTextInputEditText.setText(it)
         }
 
         viewModel.observeOnlyWithSalaryState().observe(viewLifecycleOwner) {
@@ -51,12 +61,34 @@ class FilteringSettingsFragment : Fragment() {
 
     }
 
+
+    private fun renderButtonWithSelectedValues(
+        state: FilterFieldsState,
+        customView: ButtonWithSelectedValues,
+        hint: String
+    ) {
+        when (state) {
+            is FilterFieldsState.Content -> customView.render(
+                ButtonWithSelectedValuesState.Content(
+                    text = state.text,
+                    hint = hint
+                )
+            )
+
+            FilterFieldsState.Empty -> customView.render(
+                ButtonWithSelectedValuesState.Empty(
+                    hint = hint
+                )
+            )
+        }
+    }
+
     private fun initOnClicks() {
-        binding.workplaceCustomView.onChevronClick {
+        binding.areaCustomView.onButtonClick {
             Toast.makeText(requireContext(), "onWorkIconClicked", Toast.LENGTH_SHORT).show()
         }
 
-        binding.industryCustomView.onChevronClick {
+        binding.industryCustomView.onButtonClick {
             Toast.makeText(requireContext(), "onSectorIconClicked", Toast.LENGTH_SHORT).show()
         }
 

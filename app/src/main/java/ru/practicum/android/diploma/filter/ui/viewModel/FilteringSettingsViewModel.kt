@@ -5,67 +5,66 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.common.domain.model.filter_models.Filter
 import ru.practicum.android.diploma.filter.domain.useCase.GetFilterOptionsUseCase
+import ru.practicum.android.diploma.filter.ui.mapper.FilterDomainToFilterUiConverter
 import ru.practicum.android.diploma.filter.ui.model.FilterFieldsState
 
 class FilteringSettingsViewModel(
     private val getFilterOptionsUseCase: GetFilterOptionsUseCase,
+    private val filterDomainToFilterUiConverter: FilterDomainToFilterUiConverter
 
-    ) : ViewModel() {
+) : ViewModel() {
 
-    private val workplaceState =
-        MutableLiveData<FilterFieldsState>(FilterFieldsState.Empty(PLACE_OF_WORK))
+    private val areaState =
+        MutableLiveData<FilterFieldsState>(FilterFieldsState.Empty)
     private val industryState =
-        MutableLiveData<FilterFieldsState>(FilterFieldsState.Empty(INDUSTRY))
-    private val salaryState = MutableLiveData<Int?>(null)
+        MutableLiveData<FilterFieldsState>(FilterFieldsState.Empty)
+    private val salaryState = MutableLiveData<String>(null)
     private val onlyWithSalaryState = MutableLiveData(false)
 
-    fun observeWorkPlaceState(): LiveData<FilterFieldsState> = workplaceState
-    fun observeIndustryState(): LiveData<FilterFieldsState> = industryState
-    fun observeSalaryState(): LiveData<Int?> = salaryState
-    fun observeOnlyWithSalaryState(): LiveData<Boolean> = onlyWithSalaryState
+    var filter: Filter? = null
 
+    fun observeAreaState(): LiveData<FilterFieldsState> = areaState
+    fun observeIndustryState(): LiveData<FilterFieldsState> = industryState
+    fun observeSalaryState(): LiveData<String> = salaryState
+    fun observeOnlyWithSalaryState(): LiveData<Boolean> = onlyWithSalaryState
 
     fun init() {
         viewModelScope.launch {
-            val filters = getFilterOptionsUseCase.execute()
-            if (filters != null) {
-                if (filters.area != null) {
-                    with(filters.area) {
-                        workplaceState.value = FilterFieldsState.Content(
-                            text = "$name, $countryName", hint = PLACE_OF_WORK
-                        )
-                    }
-                }
-                if (filters.industry != null) {
-                    with(filters.industry) {
-                        industryState.value = FilterFieldsState.Content(
-                            text = name, hint = INDUSTRY
-                        )
-                    }
-                }
-                salaryState.value = filters.salary
-                onlyWithSalaryState.value = filters.onlyWithSalary
-            }
+            filter = getFilterOptionsUseCase.execute()
+            val filterUi = filterDomainToFilterUiConverter.mapFilterToFilterUi(filter)
+
+            if (filterUi.areaName.isNotBlank()) {
+                areaState.value = FilterFieldsState.Content(
+                    text = "${filterUi.areaName}, ${filterUi.countryName}"
+                )
+            } else if (filterUi.areaName.isBlank() && filterUi.countryName.isNotBlank()) {
+                areaState.value = FilterFieldsState.Content(
+                    text = filterUi.countryName
+                )
+            } else areaState.value = FilterFieldsState.Empty
+
+            if (filterUi.industryName.isNotBlank())
+                industryState.value = FilterFieldsState.Content(
+                    text = filterUi.industryName
+                ) else areaState.value = FilterFieldsState.Empty
+
+            salaryState.value = filterUi.salary
+            onlyWithSalaryState.value = filterUi.onlyWithSalary
         }
 
         //МОКОВЫЕ ДАННЫЕ ДЛЯ ПРОВЕРКИ
-        workplaceState.value = FilterFieldsState.Content(
-            text = "Москва, Россия", hint = PLACE_OF_WORK
+        areaState.value = FilterFieldsState.Content(
+            text = "Москва, Россия"
         )
 
         industryState.value =
             FilterFieldsState.Content(
-                text = "Программирование", hint = INDUSTRY
+                text = "Программирование"
             )
 
-        salaryState.value = 10000
+        salaryState.value = "10000"
         onlyWithSalaryState.value = true
-    }
-
-
-    companion object {
-        const val PLACE_OF_WORK = "Место работы"
-        const val INDUSTRY = "Отрасль"
     }
 }

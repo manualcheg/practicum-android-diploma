@@ -15,8 +15,8 @@
         app:title="@string/filtering_settings"
         app:titleTextAppearance="@style/TitleText" />
 
-    <ru.practicum.android.diploma.common.custom_view.SideNavigationButtonWithSelectedValues
-        android:id="@+id/workplaceCustomView"
+    <ru.practicum.android.diploma.common.custom_view.ButtonWithSelectedValues
+        android:id="@+id/area_custom_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,14 +24,14 @@
         app:layout_constraintTop_toBottomOf="@id/filteringSettingsToolbar"
         app:layout_constraintBottom_toTopOf="@id/industry_custom_view" />
 
-    <ru.practicum.android.diploma.common.custom_view.SideNavigationButtonWithSelectedValues
+    <ru.practicum.android.diploma.common.custom_view.ButtonWithSelectedValues
         android:id="@+id/industry_custom_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/enterTheAmountTextInputLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/workplaceCustomView" />
+        app:layout_constraintTop_toBottomOf="@id/area_custom_view" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/enterTheAmountTextInputLayout"
