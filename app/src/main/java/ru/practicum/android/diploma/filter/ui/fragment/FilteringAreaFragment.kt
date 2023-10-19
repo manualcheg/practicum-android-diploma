@@ -5,19 +5,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import ru.practicum.android.diploma.databinding.FragmentFilteringRegionBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.practicum.android.diploma.databinding.FragmentFilteringAreaBinding
+import ru.practicum.android.diploma.filter.ui.viewModel.FilteringAreaViewModel
 
-class FilteringRegionFragment : Fragment() {
+class FilteringAreaFragment : Fragment() {
 
-    private var _binding: FragmentFilteringRegionBinding? = null
+    private var _binding: FragmentFilteringAreaBinding? = null
     private val binding get() = _binding!!
+
+    private val viewModel by viewModel<FilteringAreaViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentFilteringRegionBinding.inflate(inflater, container, false)
+        _binding = FragmentFilteringAreaBinding.inflate(inflater, container, false)
         return binding.root
     }
 
