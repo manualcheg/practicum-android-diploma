@@ -136,9 +136,42 @@ open class SearchViewModel(
     protected fun processResult(
         vacancies: Vacancies?, errorStatus: ErrorStatusDomain?, isNewSearch: Boolean
     ) {
+        updateVacanciesListAndFields(vacancies, isNewSearch)
+        setPaginationLoadingState(false)
+        when (errorStatus) {
+            ErrorStatusDomain.NO_CONNECTION -> {
+                if (isNewSearch) {
+                    setState(SearchState.Error(ErrorStatusUi.NO_CONNECTION))
+                    latestSearchText = DEFAULT_TEXT
+                } else {
+                    setToastErrorState(SearchError.NO_CONNECTION)
+                }
+            }
+
+            ErrorStatusDomain.ERROR_OCCURRED -> {
+                if (isNewSearch) {
+                    setState(SearchState.Error(ErrorStatusUi.ERROR_OCCURRED))
+                    latestSearchText = DEFAULT_TEXT
+                } else {
+                    setToastErrorState(SearchError.ERROR_OCCURRED)
+                }
+            }
+
+            null -> {
+                if (vacanciesList.isEmpty()) {
+                    setState(SearchState.Error(ErrorStatusUi.NOTHING_FOUND))
+                } else {
+                    setState(SearchState.Success.SearchContent(vacanciesList, foundVacancies))
+                }
+            }
+        }
+    }
+
+    private fun updateVacanciesListAndFields(vacancies: Vacancies?, isNewSearch: Boolean) {
         if (vacancies != null) {
-            val foundVacancyUi =
-                vacancies.vacancyList.map { vacancyDomainToVacancyUiConverter.mapVacancyToVacancyUi(it) }
+            val foundVacancyUi = vacancies.vacancyList.map {
+                vacancyDomainToVacancyUiConverter.mapVacancyToVacancyUi(it)
+            }
             if (isNewSearch) {
                 vacanciesList.clear()
             }
@@ -146,41 +179,6 @@ open class SearchViewModel(
             foundVacancies = vacancies.found
             currentPages = vacancies.page
             maxPages = vacancies.pages
-        }
-        when {
-            errorStatus != null -> {
-                when (errorStatus) {
-                    ErrorStatusDomain.NO_CONNECTION -> {
-                        setPaginationLoadingState(false)
-                        if (isNewSearch) {
-                            setState(SearchState.Error(ErrorStatusUi.NO_CONNECTION))
-                            latestSearchText = DEFAULT_TEXT
-                        } else {
-                            setToastErrorState(SearchError.NO_CONNECTION)
-                        }
-                    }
-
-                    ErrorStatusDomain.ERROR_OCCURRED -> {
-                        setPaginationLoadingState(false)
-                        if (isNewSearch) {
-                            setState(SearchState.Error(ErrorStatusUi.ERROR_OCCURRED))
-                            latestSearchText = DEFAULT_TEXT
-                        } else {
-                            setToastErrorState(SearchError.ERROR_OCCURRED)
-                        }
-                    }
-                }
-            }
-
-            vacanciesList.isEmpty() -> {
-                setPaginationLoadingState(false)
-                setState(SearchState.Error(ErrorStatusUi.NOTHING_FOUND))
-            }
-
-            else -> {
-                setPaginationLoadingState(false)
-                setState(SearchState.Success.SearchContent(vacanciesList, foundVacancies))
-            }
         }
     }
 
