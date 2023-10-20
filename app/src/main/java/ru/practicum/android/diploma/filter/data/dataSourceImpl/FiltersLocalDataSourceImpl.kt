@@ -61,4 +61,14 @@ class FiltersLocalDataSourceImpl(
     override fun clearSalary() {
         filterLocalCache.clearSalary()
     }
+
+    override fun clearTempFilterOptions() {
+        filterLocalCache.clearAll()
+    }
+
+    override fun isTempFilterOptionsEmpty(): Boolean {
+        return filterLocalCache.getFilterCache() == null
+    }
+
+
 }

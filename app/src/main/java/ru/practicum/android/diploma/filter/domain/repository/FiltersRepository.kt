@@ -26,4 +26,7 @@ interface FiltersRepository {
     fun clearArea()
     fun clearIndustry()
     fun clearSalary()
+    fun clearTempFilterOptions()
+
+    fun isTempFilterOptionsEmpty(): Boolean
 }

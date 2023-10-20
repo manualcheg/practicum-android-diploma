@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -13,6 +15,8 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.custom_view.ButtonWithSelectedValues
 import ru.practicum.android.diploma.common.custom_view.model.ButtonWithSelectedValuesState
 import ru.practicum.android.diploma.databinding.FragmentFilteringSettingsBinding
+import ru.practicum.android.diploma.filter.ui.model.ButtonState
+import ru.practicum.android.diploma.filter.ui.model.ClearFieldButtonNavigationState
 import ru.practicum.android.diploma.filter.ui.model.FilterFieldsState
 import ru.practicum.android.diploma.filter.ui.viewModel.FilteringSettingsViewModel
 
@@ -23,10 +27,7 @@ class FilteringSettingsFragment : Fragment() {
 
     private val viewModel by viewModel<FilteringSettingsViewModel>()
 
-    private var area = ""
-    private var industry = ""
-    private var salary = ""
-    private var isOnlyWithSalary = false
+    private var salary = BLANK_STRING
 
 
     override fun onCreateView(
@@ -41,12 +42,11 @@ class FilteringSettingsFragment : Fragment() {
 
         initOnClicks()
 
-        workWithObserves()
+        initObservers()
 
-        workWithListeners()
+        initListeners()
 
-//        viewModel.init()
-        viewModel.initOnce()
+        viewModel.updateStates()
     }
 
     override fun onDestroy() {
@@ -54,16 +54,138 @@ class FilteringSettingsFragment : Fragment() {
         _binding = null
     }
 
+
+    private fun initOnClicks() {
+        binding.areaCustomView.onButtonClick {
+            viewModel.clearAreaButtonClicked()
+            Toast.makeText(context, "Нажато", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.industryCustomView.onButtonClick {
+            viewModel.clearIndustryButtonClicked()
+            Toast.makeText(context, "Нажато", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.filteringSettingsToolbar.setNavigationOnClickListener {
+            viewModel.clearTempFilterOptions()
+            findNavController().popBackStack()
+        }
+
+        binding.enterTheAmountTextInputLayout.setEndIconOnClickListener {
+            viewModel.clearSalary()
+            viewModel.updateButtonsStates()
+            binding.selectedEnterTheAmountTextInputEditText.clearFocus()
+        }
+
+        binding.resetButton.setOnClickListener {
+            viewModel.clearAll()
+            viewModel.updateStates()
+            binding.selectedEnterTheAmountTextInputEditText.clearFocus()
+        }
+
+        binding.applyButton.setOnClickListener {
+            viewModel.putFilterOptions()
+            findNavController().popBackStack()
+        }
+    }
+
+    private fun initObservers() {
+        viewModel.observeAreaState().observe(viewLifecycleOwner) {
+            renderButtonWithSelectedValues(
+                it, binding.areaCustomView, resources.getString(R.string.workplace)
+            )
+        }
+
+        viewModel.observeIndustryState().observe(viewLifecycleOwner) {
+            renderButtonWithSelectedValues(
+                it, binding.industryCustomView, resources.getString(R.string.industry)
+            )
+        }
+
+        viewModel.observeSalaryState().observe(viewLifecycleOwner) {
+            if (it != salary) {
+                binding.selectedEnterTheAmountTextInputEditText.setText(it)
+            }
+            viewModel.updateButtonsStates()
+        }
+
+        viewModel.observeOnlyWithSalaryState().observe(viewLifecycleOwner) {
+            binding.filteringSettingsOnlyWithSalaryCheckbox.isChecked = it
+            viewModel.updateButtonsStates()
+        }
+        viewModel.observeClearAreaButtonNavigation().observe(viewLifecycleOwner) {
+            renderClearAreaButtonNavigation(it)
+        }
+
+        viewModel.observeClearIndustryButtonNavigation().observe(viewLifecycleOwner) {
+            renderClearIndustryButtonNavigation(it)
+        }
+
+        viewModel.observeApplyButtonState().observe(viewLifecycleOwner) {
+            renderButtonState(it, binding.applyButton)
+        }
+
+        viewModel.observeResetButtonState().observe(viewLifecycleOwner) {
+            renderButtonState(it, binding.resetButton)
+        }
+    }
+
+    private fun renderClearAreaButtonNavigation(state: ClearFieldButtonNavigationState) {
+        viewModel.updateButtonsStates()
+        when (state) {
+            ClearFieldButtonNavigationState.ClearField -> viewModel.clearArea()
+            ClearFieldButtonNavigationState.Navigate -> {
+                findNavController().navigate(R.id.action_filteringSettingsFragment_to_filteringChoosingWorkplaceFragment)
+            }
+        }
+    }
+
+    private fun renderClearIndustryButtonNavigation(state: ClearFieldButtonNavigationState) {
+        viewModel.updateButtonsStates()
+        when (state) {
+            ClearFieldButtonNavigationState.ClearField -> viewModel.clearIndustry()
+            ClearFieldButtonNavigationState.Navigate -> {
+                findNavController().navigate(R.id.action_filteringSettingsFragment_to_filteringSectorFragment)
+            }
+        }
+    }
+
+    private fun initListeners() {
+        binding.selectedEnterTheAmountTextInputEditText.doOnTextChanged { input, _, _, _ ->
+            binding.enterTheAmountTextInputLayout.apply {
+                if (!input.isNullOrBlank()) {
+                    salary = input.toString()
+                    viewModel.setSalary(input.toString().toInt())
+                }
+                if (input != null && input.isBlank()) {
+                    salary = input.toString()
+                    viewModel.clearSalary()
+                }
+            }
+        }
+
+
+        binding.filteringSettingsOnlyWithSalaryCheckbox.setOnCheckedChangeListener { _, isChecked ->
+            binding.selectedEnterTheAmountTextInputEditText.clearFocus()
+            viewModel.setOnlyWithSalary(isChecked)
+            viewModel.updateButtonsStates()
+        }
+    }
+
+    private fun renderButtonState(state: ButtonState, button: Button) {
+        when (state) {
+            ButtonState.Gone -> button.isVisible = false
+            ButtonState.Visible -> button.isVisible = true
+        }
+    }
+
     private fun renderButtonWithSelectedValues(
-        state: FilterFieldsState,
-        customView: ButtonWithSelectedValues,
-        hint: String
+        state: FilterFieldsState, customView: ButtonWithSelectedValues, hint: String
     ) {
         when (state) {
             is FilterFieldsState.Content -> customView.render(
                 ButtonWithSelectedValuesState.Content(
-                    text = state.text,
-                    hint = hint
+                    text = state.text, hint = hint
                 )
             )
 
@@ -75,117 +197,7 @@ class FilteringSettingsFragment : Fragment() {
         }
     }
 
-    private fun initOnClicks() {
-        binding.areaCustomView.onButtonClick {
-            if (viewModel.observeAreaState().value is FilterFieldsState.Content) {
-                viewModel.clearArea()
-                viewModel.init()
-            } else {
-                findNavController().navigate(R.id.action_filteringSettingsFragment_to_filteringChoosingWorkplaceFragment)
-            }
-            Toast.makeText(context, "Нажато", Toast.LENGTH_SHORT).show()
-        }
-
-        binding.industryCustomView.onButtonClick {
-            if (viewModel.observeIndustryState().value is FilterFieldsState.Content) {
-                viewModel.clearIndustry()
-                viewModel.init()
-            } else {
-                findNavController().navigate(R.id.action_filteringSettingsFragment_to_filteringSectorFragment)
-            }
-            Toast.makeText(context, "Нажато", Toast.LENGTH_SHORT).show()
-        }
-
-        binding.filteringSettingsToolbar.setNavigationOnClickListener {
-            findNavController().popBackStack()
-        }
-
-        binding.enterTheAmountTextInputLayout.setEndIconOnClickListener {
-            if (!binding.selectedEnterTheAmountTextInputEditText.text.isNullOrBlank()) {
-                binding.selectedEnterTheAmountTextInputEditText.text!!.clear()
-                viewModel.clearSalary()
-                viewModel.init()
-                binding.selectedEnterTheAmountTextInputEditText.clearFocus()
-            }
-        }
-
-        binding.resetButton.setOnClickListener {
-            viewModel.clearAll()
-            viewModel.init()
-            binding.selectedEnterTheAmountTextInputEditText.clearFocus()
-        }
-
-        binding.applyButton.setOnClickListener {
-            viewModel.putFilterOptions()
-            findNavController().popBackStack()
-        }
-    }
-
-    private fun workWithObserves() {
-        viewModel.observeAreaState().observe(viewLifecycleOwner) {
-            renderButtonWithSelectedValues(
-                it,
-                binding.areaCustomView,
-                resources.getString(R.string.workplace)
-            )
-            if (it is FilterFieldsState.Content) {
-                area = it.text
-            }
-            manageVisibilityOfButtons()
-        }
-
-        viewModel.observeIndustryState().observe(viewLifecycleOwner) {
-            renderButtonWithSelectedValues(
-                it,
-                binding.industryCustomView,
-                resources.getString(R.string.industry)
-            )
-            if (it is FilterFieldsState.Content) {
-                industry = it.text
-            }
-            manageVisibilityOfButtons()
-        }
-
-        viewModel.observeSalaryState().observe(viewLifecycleOwner) {
-            if (it != salary) {
-                binding.selectedEnterTheAmountTextInputEditText.setText(it)
-                salary = it
-                manageVisibilityOfButtons()
-            }
-        }
-
-        viewModel.observeOnlyWithSalaryState().observe(viewLifecycleOwner) {
-            binding.filteringSettingsOnlyWithSalaryCheckbox.isChecked = it
-            isOnlyWithSalary = it
-            manageVisibilityOfButtons()
-        }
-    }
-
-    private fun workWithListeners() {
-        binding.selectedEnterTheAmountTextInputEditText.doOnTextChanged { input, _, _, _ ->
-            binding.enterTheAmountTextInputLayout.apply {
-                if (!input.isNullOrBlank()) {
-                    viewModel.putSalary(input.toString().toInt())
-                }
-            }
-        }
-
-        binding.filteringSettingsOnlyWithSalaryCheckbox.setOnCheckedChangeListener { buttonView, isChecked ->
-            binding.selectedEnterTheAmountTextInputEditText.clearFocus()
-            viewModel.putOnlyWithSalary(isChecked)
-            viewModel.init()
-        }
-    }
-
-    private fun manageVisibilityOfButtons() {
-        binding.apply {
-            if (area != "" || industry != "" || salary != "" || isOnlyWithSalary) {
-                resetButton.visibility = View.VISIBLE
-                applyButton.visibility = View.VISIBLE
-            } else {
-                resetButton.visibility = View.GONE
-                applyButton.visibility = View.GONE
-            }
-        }
+    companion object {
+        const val BLANK_STRING = ""
     }
 }
