@@ -16,7 +16,7 @@ import ru.practicum.android.diploma.filter.ui.viewModel.FilteringChoosingWorkpla
 
 class FilteringChoosingWorkplaceFragment : Fragment() {
 
-    private val viewModel: FilteringChoosingWorkplaceViewModel by viewModel()
+    private val viewModel by viewModel<FilteringChoosingWorkplaceViewModel>()
 
     private var _binding: FragmentFilteringChoosingWorkplaceBinding? = null
     private val binding get() = _binding!!
@@ -33,6 +33,7 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         viewModel.countryState.observe(viewLifecycleOwner) {
             renderCountryState(it)
         }
@@ -40,8 +41,14 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
             renderRegionState(it)
         }
 
-        viewModel.countryFilter = args.country
-        viewModel.areaFilter = args.region
+        try {
+            viewModel.countryFilter = args.country
+        } catch (_: Throwable) { }
+
+        try {
+            viewModel.areaFilter = args.region
+        } catch (_: Throwable) { }
+
         viewModel.loadFilterOptions()
 
         setOnClickListeners()
