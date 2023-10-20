@@ -106,8 +106,8 @@ class FilteringSettingsViewModel(
             onlyWithSalaryState.value = filterUi.onlyWithSalary
         }
 
-          //МОКОВЫЕ ДАННЫЕ ДЛЯ ПРОВЕРКИ
-          /*areaState.value = FilterFieldsState.Content(
+/*          //МОКОВЫЕ ДАННЫЕ ДЛЯ ПРОВЕРКИ
+          areaState.value = FilterFieldsState.Content(
               text = "Москва, Россия"
           )
 

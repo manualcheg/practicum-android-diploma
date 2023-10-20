@@ -80,6 +80,7 @@ class FilteringSettingsFragment : Fragment() {
             if (viewModel.observeAreaState().value is FilterFieldsState.Content) {
                 viewModel.clearArea()
                 viewModel.init()
+                binding.selectedEnterTheAmountTextInputEditText.clearFocus()
             } else {
                 findNavController().navigate(R.id.action_filteringSettingsFragment_to_filteringChoosingWorkplaceFragment)
             }
@@ -90,6 +91,7 @@ class FilteringSettingsFragment : Fragment() {
             if (viewModel.observeIndustryState().value is FilterFieldsState.Content) {
                 viewModel.clearIndustry()
                 viewModel.init()
+                binding.selectedEnterTheAmountTextInputEditText.clearFocus()
             } else {
                 findNavController().navigate(R.id.action_filteringSettingsFragment_to_filteringSectorFragment)
             }
@@ -130,6 +132,8 @@ class FilteringSettingsFragment : Fragment() {
             )
             if (it is FilterFieldsState.Content) {
                 area = it.text
+            } else {
+                area = ""
             }
             manageVisibilityOfButtons()
         }
@@ -142,6 +146,8 @@ class FilteringSettingsFragment : Fragment() {
             )
             if (it is FilterFieldsState.Content) {
                 industry = it.text
+            } else {
+                industry = ""
             }
             manageVisibilityOfButtons()
         }
@@ -166,11 +172,15 @@ class FilteringSettingsFragment : Fragment() {
             binding.enterTheAmountTextInputLayout.apply {
                 if (!input.isNullOrBlank()) {
                     viewModel.putSalary(input.toString().toInt())
+                    salary = input.toString()
+                } else {
+                    salary = ""
                 }
+                manageVisibilityOfButtons()
             }
         }
 
-        binding.filteringSettingsOnlyWithSalaryCheckbox.setOnCheckedChangeListener { buttonView, isChecked ->
+        binding.filteringSettingsOnlyWithSalaryCheckbox.setOnCheckedChangeListener { _, isChecked ->
             binding.selectedEnterTheAmountTextInputEditText.clearFocus()
             viewModel.putOnlyWithSalary(isChecked)
             viewModel.init()
