@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.custom_view.ButtonWithSelectedValues
@@ -86,6 +87,7 @@ class FilteringSettingsFragment : Fragment() {
     private fun initOnClicks() {
         binding.areaCustomView.onButtonClick {
             Toast.makeText(requireContext(), "onWorkIconClicked", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_filteringSettingsFragment_to_filteringChoosingWorkplaceFragment)
         }
 
         binding.industryCustomView.onButtonClick {

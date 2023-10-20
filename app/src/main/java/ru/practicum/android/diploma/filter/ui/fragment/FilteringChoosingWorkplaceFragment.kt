@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.custom_view.model.ButtonWithSelectedValuesState
@@ -19,6 +20,8 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
 
     private var _binding: FragmentFilteringChoosingWorkplaceBinding? = null
     private val binding get() = _binding!!
+
+    private val args: FilteringChoosingWorkplaceFragmentArgs by navArgs()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -37,13 +40,12 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
             renderRegionState(it)
         }
 
+        viewModel.countryFilter = args.country
+        viewModel.areaFilter = args.region
+        viewModel.loadFilterOptions()
+
         setOnClickListeners()
 
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.loadFilterOptions()
     }
 
     override fun onDestroy() {
@@ -67,13 +69,15 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
         binding.choosingWorkplaceAreaCustomView.setOnClickListener {
             val direction =
                 FilteringChoosingWorkplaceFragmentDirections
-                    .actionFilteringChoosingWorkplaceFragmentToFilteringRegionFragment()
+                    .actionFilteringChoosingWorkplaceFragmentToFilteringRegionFragment(viewModel.countryFilter)
             findNavController().navigate(direction)
         }
 
-//        binding.choosingWorkplaceSelectButtonTextView.setOnClickListener {
-//            viewModel.addAreaFilter()
-//        }
+        binding.choosingWorkplaceSelectButtonTextView.setOnClickListener {
+            viewModel.countryFilter?.let { it1 -> viewModel.addCountryFilter(it1) }
+            viewModel.areaFilter?.let { it1 -> viewModel.addAreaFilter(it1) }
+            findNavController().popBackStack()
+        }
     }
 
 

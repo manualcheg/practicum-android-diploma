@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.practicum.android.diploma.common.domain.model.filter_models.AreaFilter
 import ru.practicum.android.diploma.common.domain.model.filter_models.CountryFilter
-import ru.practicum.android.diploma.common.domain.model.filter_models.Filter
 import ru.practicum.android.diploma.filter.domain.useCase.AddAreaFilterUseCase
 import ru.practicum.android.diploma.filter.domain.useCase.AddCountryFilterUseCase
 import ru.practicum.android.diploma.filter.domain.useCase.GetFilterOptionsUseCase
@@ -25,38 +24,36 @@ class FilteringChoosingWorkplaceViewModel(
     private val _regionState = MutableLiveData<FilterFieldsState>()
     val regionState: LiveData<FilterFieldsState> = _regionState
 
+    var countryFilter: CountryFilter? = null
+    var areaFilter: AreaFilter? = null
+
     init {
+        initializeCountryAndArea()
         loadFilterOptions()
     }
 
     fun loadFilterOptions() {
-        val filter: Filter? = getFilterOptionsUseCase.execute()
-        if (filter != null) {
-            if (filter.country != null) {
-                setCountryState(
-                    FilterFieldsState.Content(
-                        filterDomainToFilterUiConverter.mapFilterToFilterUi(
-                            filter
-                        ).countryName
-                    )
-                )
-            } else {
-                setCountryState(
-                    FilterFieldsState.Empty
-                )
-            }
 
-            if (filter.area != null) {
-                setRegionState(
-                    FilterFieldsState.Content(
-                        filterDomainToFilterUiConverter.mapFilterToFilterUi(
-                            filter
-                        ).areaName
-                    )
+        if (countryFilter != null) {
+            setCountryState(
+                FilterFieldsState.Content(
+                    filterDomainToFilterUiConverter.mapCountryFilterToCountryUi(countryFilter!!).name
                 )
-            } else {
-                setRegionState(FilterFieldsState.Empty)
-            }
+            )
+        } else {
+            setCountryState(
+                FilterFieldsState.Empty
+            )
+        }
+
+        if (areaFilter != null) {
+            setRegionState(
+                FilterFieldsState.Content(
+                    filterDomainToFilterUiConverter.mapAreaFilterToRegionIndustryUi(areaFilter!!).name
+                )
+            )
+        } else {
+            setRegionState(FilterFieldsState.Empty)
         }
     }
 
@@ -68,6 +65,11 @@ class FilteringChoosingWorkplaceViewModel(
         addCountryFilterUseCase.execute(country)
     }
 
+    private fun initializeCountryAndArea() {
+        val filter = getFilterOptionsUseCase.execute()
+        countryFilter = filter?.country
+        areaFilter = filter?.area
+    }
 
     private fun setCountryState(state: FilterFieldsState) {
         _countryState.value = state
