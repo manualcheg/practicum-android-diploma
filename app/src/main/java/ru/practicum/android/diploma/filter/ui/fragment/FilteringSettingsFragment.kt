@@ -54,14 +54,25 @@ class FilteringSettingsFragment : Fragment() {
 
     private fun initOnClicks() {
         binding.areaCustomView.onButtonClick {
-            viewModel.clearAreaButtonClicked()
+            if (viewModel.observeAreaState().value is FilterFieldsState.Content) {
+                viewModel.clearAreaButtonClicked()
+                binding.selectedEnterTheAmountTextInputEditText.clearFocus()
+            } else {
+                findNavController().navigate(R.id.action_filteringSettingsFragment_to_filteringChoosingWorkplaceFragment)
+            }
+
         }
         binding.areaCustomView.setOnClickListener {
             findNavController().navigate(R.id.action_filteringSettingsFragment_to_filteringChoosingWorkplaceFragment)
         }
 
         binding.industryCustomView.onButtonClick {
-            viewModel.clearIndustryButtonClicked()
+            if (viewModel.observeIndustryState().value is FilterFieldsState.Content) {
+                viewModel.clearIndustryButtonClicked()
+                binding.selectedEnterTheAmountTextInputEditText.clearFocus()
+            } else {
+                findNavController().navigate(R.id.action_filteringSettingsFragment_to_filteringSectorFragment)
+            }
         }
         binding.industryCustomView.setOnClickListener {
             findNavController().navigate(R.id.action_filteringSettingsFragment_to_filteringChoosingWorkplaceFragment)

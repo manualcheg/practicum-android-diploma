@@ -104,15 +104,21 @@ class FilteringSettingsViewModel(
     }
 
     fun clearAreaButtonClicked() {
-        if (areaState.value is FilterFieldsState.Content) {
-            clearAreaButtonNavigation.value = ClearFieldButtonNavigationState.ClearField
-        } else clearAreaButtonNavigation.value = ClearFieldButtonNavigationState.Navigate
+        clearArea()
+        updateStates()
+
+//        if (areaState.value is FilterFieldsState.Content) {
+//            clearAreaButtonNavigation.value = ClearFieldButtonNavigationState.ClearField
+//        } else clearAreaButtonNavigation.value = ClearFieldButtonNavigationState.Navigate
     }
 
     fun clearIndustryButtonClicked() {
-        if (industryState.value is FilterFieldsState.Content) {
-            clearAreaButtonNavigation.value = ClearFieldButtonNavigationState.ClearField
-        } else clearAreaButtonNavigation.value = ClearFieldButtonNavigationState.Navigate
+        clearIndustry()
+        updateStates()
+
+//        if (industryState.value is FilterFieldsState.Content) {
+//            clearAreaButtonNavigation.value = ClearFieldButtonNavigationState.ClearField
+//        } else clearAreaButtonNavigation.value = ClearFieldButtonNavigationState.Navigate
     }
 
     fun setSalary(salary: Int) {
