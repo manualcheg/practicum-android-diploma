@@ -61,7 +61,37 @@ class FilterLocalCacheImpl : FilterLocalCache {
         )
     }
 
-    override fun clear() {
+    override fun clearAll() {
         filterCache = null
+    }
+
+    override fun clearArea() {
+        filterCache = Filter(
+            country = filterCache?.country,
+            area = null,
+            industry = filterCache?.industry,
+            salary = filterCache?.salary,
+            onlyWithSalary = filterCache?.onlyWithSalary ?: false
+        )
+    }
+
+    override fun clearIndustry() {
+        filterCache = Filter(
+            country = filterCache?.country,
+            area = filterCache?.area,
+            industry = null,
+            salary = filterCache?.salary,
+            onlyWithSalary = filterCache?.onlyWithSalary ?: false
+        )
+    }
+
+    override fun clearSalary() {
+        filterCache = Filter(
+            country = filterCache?.country,
+            area = filterCache?.area,
+            industry = filterCache?.industry,
+            salary = null,
+            onlyWithSalary = filterCache?.onlyWithSalary ?: false
+        )
     }
 }

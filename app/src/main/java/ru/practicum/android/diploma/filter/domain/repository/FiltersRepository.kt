@@ -23,4 +23,7 @@ interface FiltersRepository {
     fun getFilterOptions(): Filter?
     fun putFilterOptions(options: Filter)
     fun clearFilterOptions()
+    fun clearArea()
+    fun clearIndustry()
+    fun clearSalary()
 }
