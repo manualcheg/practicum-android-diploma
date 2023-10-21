@@ -95,6 +95,9 @@
         <action
             android:id="@+id/action_filteringCountryFragment_to_filteringRegionFragment"
             app:destination="@id/filteringRegionFragment" />
+        <action
+            android:id="@+id/action_filteringCountryFragment_to_filteringChoosingWorkplaceFragment"
+            app:destination="@id/filteringChoosingWorkplaceFragment" />
     </fragment>
     <fragment
         android:id="@+id/filteringRegionFragment"

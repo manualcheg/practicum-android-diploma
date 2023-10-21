@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.databinding.FragmentFilteringCountryBinding
 import ru.practicum.android.diploma.filter.ui.viewModel.FilteringCountryViewModel
@@ -23,6 +24,16 @@ class FilteringCountryFragment : Fragment() {
     ): View {
         _binding = FragmentFilteringCountryBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.filteringCountryToolbar.setNavigationOnClickListener {
+            val direction =
+                FilteringCountryFragmentDirections
+                    .actionFilteringCountryFragmentToFilteringChoosingWorkplaceFragment(null, null)
+            findNavController().navigate(direction)
+        }
     }
 
     override fun onDestroy() {

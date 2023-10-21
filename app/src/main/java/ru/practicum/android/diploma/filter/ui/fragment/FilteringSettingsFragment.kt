@@ -11,6 +11,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.custom_view.ButtonWithSelectedValues
 import ru.practicum.android.diploma.common.custom_view.model.ButtonWithSelectedValuesState
+import ru.practicum.android.diploma.common.domain.model.filter_models.CountryFilter
 import ru.practicum.android.diploma.databinding.FragmentFilteringSettingsBinding
 import ru.practicum.android.diploma.filter.ui.model.FilterFieldsState
 import ru.practicum.android.diploma.filter.ui.viewModel.FilteringSettingsViewModel
@@ -88,6 +89,15 @@ class FilteringSettingsFragment : Fragment() {
         binding.areaCustomView.onButtonClick {
             Toast.makeText(requireContext(), "onWorkIconClicked", Toast.LENGTH_SHORT).show()
             findNavController().navigate(R.id.action_filteringSettingsFragment_to_filteringChoosingWorkplaceFragment)
+        }
+
+        binding.areaCustomView.setOnClickListener {
+            val direction =
+                FilteringSettingsFragmentDirections
+                    .actionFilteringSettingsFragmentToFilteringChoosingWorkplaceFragment(
+                        CountryFilter(222, "Россия"), null
+                    )
+            findNavController().navigate(direction)
         }
 
         binding.industryCustomView.onButtonClick {

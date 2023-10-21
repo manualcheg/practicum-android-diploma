@@ -42,14 +42,17 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
         }
 
         try {
-            viewModel.countryFilter = args.country
-        } catch (_: Throwable) { }
+            viewModel.countryFilterFromSafeArgs = args.country
+        } catch (_: Throwable) {
+            viewModel.countryFilterFromSafeArgs = null
+        }
 
         try {
             viewModel.areaFilter = args.region
-        } catch (_: Throwable) { }
-
-        viewModel.loadFilterOptions()
+        } catch (_: Throwable) {
+            viewModel.areaFilter = null
+        }
+        viewModel.updateFromSafeArgs()
 
         setOnClickListeners()
 
@@ -78,6 +81,21 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
                 FilteringChoosingWorkplaceFragmentDirections
                     .actionFilteringChoosingWorkplaceFragmentToFilteringRegionFragment(viewModel.countryFilter)
             findNavController().navigate(direction)
+        }
+
+        binding.choosingWorkplaceCountryCustomView.onButtonClick {
+            viewModel.countryFilter = null
+            //viewModel.loadFilterOptions()
+            binding.choosingWorkplaceCountryCustomView.render(
+                ButtonWithSelectedValuesState.Empty(
+                    getString(R.string.country)
+                )
+            )
+        }
+
+        binding.choosingWorkplaceAreaCustomView.onButtonClick {
+            viewModel.areaFilter = null
+            viewModel.loadFilterOptions()
         }
 
         binding.choosingWorkplaceSelectButtonTextView.setOnClickListener {

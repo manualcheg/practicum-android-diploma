@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.filter.ui.viewModel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -27,17 +28,21 @@ class FilteringChoosingWorkplaceViewModel(
     var countryFilter: CountryFilter? = null
     var areaFilter: AreaFilter? = null
 
+    var countryFilterFromSafeArgs: CountryFilter? = null
+    var areaFilterFromSafeArgs: AreaFilter? = null
+
     init {
         initializeCountryAndArea()
         loadFilterOptions()
     }
 
     fun loadFilterOptions() {
-
         if (countryFilter != null) {
             setCountryState(
                 FilterFieldsState.Content(
-                    filterDomainToFilterUiConverter.mapCountryFilterToCountryUi(countryFilter!!).name
+                    filterDomainToFilterUiConverter.mapCountryFilterToCountryUi(
+                        countryFilter!!
+                    ).name
                 )
             )
         } else {
@@ -55,6 +60,33 @@ class FilteringChoosingWorkplaceViewModel(
         } else {
             setRegionState(FilterFieldsState.Empty)
         }
+    }
+
+    fun updateFromSafeArgs() {
+        Log.e("MyTag", "update 1 $countryFilter\n$countryFilterFromSafeArgs")
+        if (!countryFilter?.name.equals(countryFilterFromSafeArgs?.name)) {
+            Log.e("MyTag", "update  2")
+            countryFilter = countryFilterFromSafeArgs
+            setCountryState(
+                FilterFieldsState.Content(
+                    filterDomainToFilterUiConverter.mapCountryFilterToCountryUi(
+                        countryFilterFromSafeArgs!!
+                    ).name
+                )
+            )
+        }
+
+        if (areaFilter?.name != areaFilterFromSafeArgs?.name) {
+            areaFilter = areaFilterFromSafeArgs
+            setRegionState(
+                FilterFieldsState.Content(
+                    filterDomainToFilterUiConverter.mapAreaFilterToRegionIndustryUi(
+                        areaFilterFromSafeArgs!!
+                    ).name
+                )
+            )
+        }
+
     }
 
     fun addAreaFilter(area: AreaFilter) {
