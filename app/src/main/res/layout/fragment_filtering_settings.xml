@@ -37,6 +37,8 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/enterTheAmountTextInputLayout"
         style="@style/SalaryInputLayout"
+        app:endIconMode="clear_text"
+        app:endIconDrawable="@drawable/ic_cross"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_vertical"
@@ -44,7 +46,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/industry_custom_view"
-        app:layout_constraintBottom_toTopOf="@id/test"
+        app:layout_constraintBottom_toTopOf="@id/filtering_settings_only_with_salary_checkbox"
         app:placeholderText="@string/enter_the_amount">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -58,7 +60,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <CheckBox
-        android:id="@+id/test"
+        android:id="@+id/filtering_settings_only_with_salary_checkbox"
         style="@style/Widget.App.CheckBox"
         android:layout_width="@dimen/_0dp"
         android:layout_height="wrap_content"
