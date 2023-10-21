@@ -21,6 +21,8 @@ import ru.practicum.android.diploma.filter.domain.useCase.ClearIndustryFilterUse
 import ru.practicum.android.diploma.filter.domain.useCase.ClearIndustryFilterUseCaseImpl
 import ru.practicum.android.diploma.filter.domain.useCase.ClearSalaryFilterUseCase
 import ru.practicum.android.diploma.filter.domain.useCase.ClearSalaryFilterUseCaseImpl
+import ru.practicum.android.diploma.filter.domain.useCase.ClearTempFilterOptionsUseCase
+import ru.practicum.android.diploma.filter.domain.useCase.ClearTempFilterOptionsUseCaseImpl
 import ru.practicum.android.diploma.filter.domain.useCase.GetAreasUseCase
 import ru.practicum.android.diploma.filter.domain.useCase.GetAreasUseCaseImpl
 import ru.practicum.android.diploma.filter.domain.useCase.GetCountriesUseCase
@@ -29,6 +31,8 @@ import ru.practicum.android.diploma.filter.domain.useCase.GetFilterOptionsUseCas
 import ru.practicum.android.diploma.filter.domain.useCase.GetFilterOptionsUseCaseImpl
 import ru.practicum.android.diploma.filter.domain.useCase.GetIndustriesUseCase
 import ru.practicum.android.diploma.filter.domain.useCase.GetIndustriesUseCaseImpl
+import ru.practicum.android.diploma.filter.domain.useCase.IsTempFilterOptionsEmptyUseCase
+import ru.practicum.android.diploma.filter.domain.useCase.IsTempFilterOptionsEmptyUseCaseImpl
 import ru.practicum.android.diploma.filter.domain.useCase.PutFilterOptionsUseCase
 import ru.practicum.android.diploma.filter.domain.useCase.PutFilterOptionsUseCaseImpl
 
@@ -47,4 +51,6 @@ val filterDomainModule = module {
     factoryOf(::ClearAreaFilterUseCaseImpl) bind ClearAreaFilterUseCase::class
     factoryOf(::ClearIndustryFilterUseCaseImpl) bind ClearIndustryFilterUseCase::class
     factoryOf(::ClearSalaryFilterUseCaseImpl) bind ClearSalaryFilterUseCase::class
+    factoryOf(::ClearTempFilterOptionsUseCaseImpl) bind ClearTempFilterOptionsUseCase::class
+    factoryOf(::IsTempFilterOptionsEmptyUseCaseImpl) bind IsTempFilterOptionsEmptyUseCase::class
 }

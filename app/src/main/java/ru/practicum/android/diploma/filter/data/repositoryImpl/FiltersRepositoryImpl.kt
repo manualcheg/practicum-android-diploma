@@ -133,4 +133,12 @@ class FiltersRepositoryImpl(
     override fun clearSalary() {
         filtersLocalDataSourceImpl.clearSalary()
     }
+
+    override fun clearTempFilterOptions() {
+        filtersLocalDataSourceImpl.clearTempFilterOptions()
+    }
+
+    override fun isTempFilterOptionsEmpty(): Boolean {
+        return filtersLocalDataSourceImpl.isTempFilterOptionsEmpty()
+    }
 }

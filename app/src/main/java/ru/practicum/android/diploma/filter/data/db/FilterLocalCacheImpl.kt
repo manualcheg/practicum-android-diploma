@@ -59,6 +59,7 @@ class FilterLocalCacheImpl : FilterLocalCache {
             salary = filterCache?.salary,
             onlyWithSalary = isOnlyWithSalary
         )
+        setFilterCacheNullIfFilterCacheIsEmpty()
     }
 
     override fun clearAll() {
@@ -73,6 +74,7 @@ class FilterLocalCacheImpl : FilterLocalCache {
             salary = filterCache?.salary,
             onlyWithSalary = filterCache?.onlyWithSalary ?: false
         )
+        setFilterCacheNullIfFilterCacheIsEmpty()
     }
 
     override fun clearIndustry() {
@@ -83,6 +85,7 @@ class FilterLocalCacheImpl : FilterLocalCache {
             salary = filterCache?.salary,
             onlyWithSalary = filterCache?.onlyWithSalary ?: false
         )
+        setFilterCacheNullIfFilterCacheIsEmpty()
     }
 
     override fun clearSalary() {
@@ -93,5 +96,18 @@ class FilterLocalCacheImpl : FilterLocalCache {
             salary = null,
             onlyWithSalary = filterCache?.onlyWithSalary ?: false
         )
+        setFilterCacheNullIfFilterCacheIsEmpty()
+    }
+
+    private fun setFilterCacheNullIfFilterCacheIsEmpty() {
+        val area = filterCache?.area
+        val country = filterCache?.country
+        val industry = filterCache?.industry
+        val salary = filterCache?.salary
+        val onlyWithSalary = filterCache?.onlyWithSalary ?: false
+
+        if (area == null && country == null && industry == null && salary == null && !onlyWithSalary) {
+            filterCache = null
+        }
     }
 }
