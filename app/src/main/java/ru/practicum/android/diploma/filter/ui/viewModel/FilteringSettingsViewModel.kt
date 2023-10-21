@@ -48,23 +48,23 @@ class FilteringSettingsViewModel(
             if (filterUi.industryName.isNotBlank())
                 industryState.value = FilterFieldsState.Content(
                     text = filterUi.industryName
-                ) else areaState.value = FilterFieldsState.Empty
+                ) else industryState.value = FilterFieldsState.Empty
 
             salaryState.value = filterUi.salary
             onlyWithSalaryState.value = filterUi.onlyWithSalary
         }
 
-        //МОКОВЫЕ ДАННЫЕ ДЛЯ ПРОВЕРКИ
-        areaState.value = FilterFieldsState.Content(
-            text = "Москва, Россия"
-        )
-
-        industryState.value =
-            FilterFieldsState.Content(
-                text = "Программирование"
-            )
-
-        salaryState.value = "10000"
-        onlyWithSalaryState.value = true
+//        //МОКОВЫЕ ДАННЫЕ ДЛЯ ПРОВЕРКИ
+//        areaState.value = FilterFieldsState.Content(
+//            text = "Москва, Россия"
+//        )
+//
+//        industryState.value =
+//            FilterFieldsState.Content(
+//                text = "Программирование"
+//            )
+//
+//        salaryState.value = "10000"
+//        onlyWithSalaryState.value = true
     }
 }

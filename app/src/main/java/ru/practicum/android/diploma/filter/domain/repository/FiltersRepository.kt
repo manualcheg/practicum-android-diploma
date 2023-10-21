@@ -12,7 +12,7 @@ import ru.practicum.android.diploma.common.util.Resource
 
 interface FiltersRepository {
 
-    fun getAreas(areaId: Int?): Flow<Resource<Areas>>
+    fun getAreas(areaId: String?): Flow<Resource<Areas>>
     fun getCountries(): Flow<Resource<Countries>>
     fun getIndustries(): Flow<Resource<Industries>>
     fun addCountry(country: CountryFilter)

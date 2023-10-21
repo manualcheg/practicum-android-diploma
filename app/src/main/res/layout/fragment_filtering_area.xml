@@ -52,6 +52,39 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/container"
-        tools:listitem="@layout/item_country_and_region"/>
+        tools:listitem="@layout/item_country_and_region" />
+
+    <ProgressBar
+        android:id="@+id/areasScreenProgressBar"
+        android:layout_width="@dimen/progress_bar"
+        android:layout_height="@dimen/progress_bar"
+        android:indeterminateTint="@color/blue"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/areasScreenNotFoundPlaceholder"
+        style="@style/PlaceholderStyle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/no_such_region"
+        app:drawableTopCompat="@drawable/placeholder_not_found"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/areasScreenErrorPlaceholder"
+        style="@style/PlaceholderStyle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/failed_to_get_a_list"
+        app:drawableTopCompat="@drawable/placeholder_failed_to_get_a_list"
+        android:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

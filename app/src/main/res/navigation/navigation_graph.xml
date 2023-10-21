@@ -68,8 +68,8 @@
             android:id="@+id/action_filteringSettingsFragment_to_filteringSectorFragment"
             app:destination="@id/filteringSectorFragment" />
         <action
-            android:id="@+id/action_filteringSettingsFragment_to_filteringChoosingWorkplaceFragment"
-            app:destination="@id/filteringChoosingWorkplaceFragment" />
+            android:id="@+id/action_filteringSettingsFragment_to_filteringRegionFragment"
+            app:destination="@id/filteringRegionFragment" />
     </fragment>
     <fragment
         android:id="@+id/similarVacancyFragment"
@@ -96,7 +96,12 @@
         android:id="@+id/filteringRegionFragment"
         android:name="ru.practicum.android.diploma.filter.ui.fragment.FilteringAreaFragment"
         android:label="fragment_filtering_region"
-        tools:layout="@layout/fragment_filtering_area" />
+        tools:layout="@layout/fragment_filtering_area">
+        <argument
+            android:name="parentId"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
     <fragment
         android:id="@+id/filteringSectorFragment"
         android:name="ru.practicum.android.diploma.filter.ui.fragment.FilteringIndustryFragment"
@@ -110,9 +115,6 @@
         <action
             android:id="@+id/action_filteringChoosingWorkplaceFragment_to_filteringCountryFragment"
             app:destination="@id/filteringCountryFragment" />
-        <action
-            android:id="@+id/action_filteringChoosingWorkplaceFragment_to_filteringRegionFragment"
-            app:destination="@id/filteringRegionFragment" />
     </fragment>
 
 </navigation>

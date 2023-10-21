@@ -10,7 +10,7 @@ import ru.practicum.android.diploma.search.domain.model.ErrorStatusDomain
 
 class GetAreasUseCaseImpl(private val filtersRepository: FiltersRepository) :
     GetAreasUseCase {
-    override fun execute(areaId: Int?): Flow<Pair<Areas?, ErrorStatusDomain?>> {
+    override fun execute(areaId: String?): Flow<Pair<Areas?, ErrorStatusDomain?>> {
         return filtersRepository.getAreas(areaId).map { result ->
             when (result) {
                 is Resource.Success -> {
