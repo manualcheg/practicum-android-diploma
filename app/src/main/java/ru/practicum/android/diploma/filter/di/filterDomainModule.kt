@@ -13,8 +13,14 @@ import ru.practicum.android.diploma.filter.domain.useCase.AddOnlyWithSalaryFilte
 import ru.practicum.android.diploma.filter.domain.useCase.AddOnlyWithSalaryFilterUseCaseImpl
 import ru.practicum.android.diploma.filter.domain.useCase.AddSalaryFilterUseCase
 import ru.practicum.android.diploma.filter.domain.useCase.AddSalaryFilterUseCaseImpl
+import ru.practicum.android.diploma.filter.domain.useCase.ClearAreaFilterUseCase
+import ru.practicum.android.diploma.filter.domain.useCase.ClearAreaFilterUseCaseImpl
 import ru.practicum.android.diploma.filter.domain.useCase.ClearFilterOptionsUseCase
 import ru.practicum.android.diploma.filter.domain.useCase.ClearFilterOptionsUseCaseImpl
+import ru.practicum.android.diploma.filter.domain.useCase.ClearIndustryFilterUseCase
+import ru.practicum.android.diploma.filter.domain.useCase.ClearIndustryFilterUseCaseImpl
+import ru.practicum.android.diploma.filter.domain.useCase.ClearSalaryFilterUseCase
+import ru.practicum.android.diploma.filter.domain.useCase.ClearSalaryFilterUseCaseImpl
 import ru.practicum.android.diploma.filter.domain.useCase.GetAreasUseCase
 import ru.practicum.android.diploma.filter.domain.useCase.GetAreasUseCaseImpl
 import ru.practicum.android.diploma.filter.domain.useCase.GetCountriesUseCase
@@ -38,4 +44,7 @@ val filterDomainModule = module {
     factoryOf(::GetFilterOptionsUseCaseImpl) bind GetFilterOptionsUseCase::class
     factoryOf(::GetIndustriesUseCaseImpl) bind GetIndustriesUseCase::class
     factoryOf(::PutFilterOptionsUseCaseImpl) bind PutFilterOptionsUseCase::class
+    factoryOf(::ClearAreaFilterUseCaseImpl) bind ClearAreaFilterUseCase::class
+    factoryOf(::ClearIndustryFilterUseCaseImpl) bind ClearIndustryFilterUseCase::class
+    factoryOf(::ClearSalaryFilterUseCaseImpl) bind ClearSalaryFilterUseCase::class
 }
