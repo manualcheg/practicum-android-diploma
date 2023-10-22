@@ -8,9 +8,9 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.domain.model.filter_models.AreaFilter
 import ru.practicum.android.diploma.common.domain.model.filter_models.Areas
-import ru.practicum.android.diploma.filter.domain.useCase.AddAreaFilterUseCase
 import ru.practicum.android.diploma.filter.domain.useCase.GetAreasUseCase
 import ru.practicum.android.diploma.filter.ui.mapper.AreaFilterDomainToRegionCountryUiConverter
+import ru.practicum.android.diploma.filter.ui.model.AreaNavigationState
 import ru.practicum.android.diploma.filter.ui.model.AreasState
 import ru.practicum.android.diploma.filter.ui.model.RegionCountryUi
 import ru.practicum.android.diploma.search.domain.model.ErrorStatusDomain
@@ -19,11 +19,11 @@ import ru.practicum.android.diploma.search.ui.model.ErrorStatusUi
 class FilteringAreaViewModel(
     private val parentId: String?,
     private val getRegionsUseCase: GetAreasUseCase,
-    private val addAreaFilterUseCase: AddAreaFilterUseCase,
     private val areaFilterDomainToRegionCountryUiConverter: AreaFilterDomainToRegionCountryUiConverter
 ) : ViewModel() {
 
     private val stateLiveData = MutableLiveData<AreasState>()
+    private val navigationStateLiveData = MutableLiveData<AreaNavigationState>()
 
     private val areasListUi = mutableListOf<RegionCountryUi>()
 
@@ -33,6 +33,7 @@ class FilteringAreaViewModel(
 
 
     fun observeStateLiveData(): LiveData<AreasState> = stateLiveData
+    fun observeNavigationStateLiveData(): LiveData<AreaNavigationState> = navigationStateLiveData
     private fun setState(state: AreasState) {
         stateLiveData.value = state
     }
@@ -82,11 +83,12 @@ class FilteringAreaViewModel(
         }
     }
 
-    fun saveArea(areaId: Int) {
+    fun areaClicked(areaId: Int) {
         val area = foundAreasList.find { areaFilter -> areaFilter.id == areaId }
+        navigationStateLiveData.value = area?.let { AreaNavigationState.NavigateWithContent(it) }
+    }
 
-        if (area != null) {
-            addAreaFilterUseCase.execute(area)
-        }
+    fun proceedBack() {
+        navigationStateLiveData.value = AreaNavigationState.NavigateEmpty
     }
 }

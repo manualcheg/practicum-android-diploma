@@ -46,7 +46,7 @@ class RVAdapter(
             )
 
             COUNTRY_AREA_VIEWTYPE -> CountryViewHolder(
-                ItemCountryAndRegionBinding.inflate(layoutInflater, parent, false), clickListener
+                ItemCountryAndRegionBinding.inflate(layoutInflater, parent, false)
             )
 
             INDUSTRY_VIEWTYPE -> RegionIndustryViewHolder(
@@ -73,6 +73,9 @@ class RVAdapter(
             is PhoneUi -> (holder as ContactsPhoneViewHolder).bind(item)
             is RegionCountryUi -> {
                 (holder as CountryViewHolder).bind(item)
+                holder.itemView.setOnClickListener {
+                    clickListener(items[holder.adapterPosition])
+                }
             }
 
             is IndustryUi -> (holder as RegionIndustryViewHolder).bind(item)

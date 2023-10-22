@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -17,6 +18,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.practicum.android.diploma.common.util.recycleView.RVAdapter
 import ru.practicum.android.diploma.databinding.FragmentFilteringAreaBinding
+import ru.practicum.android.diploma.filter.ui.model.AreaNavigationState
 import ru.practicum.android.diploma.filter.ui.model.AreasState
 import ru.practicum.android.diploma.filter.ui.model.RegionCountryUi
 import ru.practicum.android.diploma.filter.ui.viewModel.FilteringAreaViewModel
@@ -37,9 +39,7 @@ class FilteringAreaFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentFilteringAreaBinding.inflate(inflater, container, false)
         return binding.root
@@ -54,13 +54,36 @@ class FilteringAreaFragment : Fragment() {
             renderState(it)
         }
 
+        viewModel.observeNavigationStateLiveData().observe(viewLifecycleOwner) {
+            renderNavigationState(it)
+        }
         binding.filteringRegionEditText.doOnTextChanged { text, _, _, _ ->
             if (text != null) {
                 viewModel.searchAreaInAreasListUi(text.toString())
             }
         }
+        binding.filteringRegionToolbar.setNavigationOnClickListener {
+            viewModel.proceedBack()
+        }
     }
 
+    private fun renderNavigationState(state: AreaNavigationState) {
+        when (state) {
+            AreaNavigationState.NavigateEmpty -> findNavController().popBackStack()
+            is AreaNavigationState.NavigateWithContent -> {
+                val bundle = Bundle()
+                bundle.putParcelable(BUNDLE_KEY_FOR_AREA, state.areaFilter)
+                setFragmentResult(REQUEST_KEY, bundle)
+                findNavController().popBackStack()
+            }
+        }
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 
     private fun renderState(state: AreasState) {
         when (state) {
@@ -107,8 +130,7 @@ class FilteringAreaFragment : Fragment() {
     private fun recycleViewInit() {
         areasAdapter = RVAdapter { item ->
             if (isClickDebounce()) {
-                viewModel.saveArea(item.id)
-                findNavController().popBackStack()
+                viewModel.areaClicked(item.id)
             }
         }
 
@@ -130,13 +152,10 @@ class FilteringAreaFragment : Fragment() {
         return current
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
-
     companion object {
         private const val CLICK_DEBOUNCE_DELAY_MILLIS = 1000L
         private const val TOP_POSITION_TO_SCROLL = 0
+        const val REQUEST_KEY = "request key"
+        const val BUNDLE_KEY_FOR_AREA = "bundle key for area"
     }
 }

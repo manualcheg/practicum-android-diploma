@@ -18,7 +18,6 @@ val filterUiModule = module {
             parentId = parentId,
             getRegionsUseCase = get(),
             areaFilterDomainToRegionCountryUiConverter = get(),
-            addAreaFilterUseCase = get()
         )
     }
 }
