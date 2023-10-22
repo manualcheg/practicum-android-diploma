@@ -14,6 +14,7 @@ import ru.practicum.android.diploma.databinding.FragmentFilteringCountryBinding
 import ru.practicum.android.diploma.filter.ui.model.CountryUi
 import ru.practicum.android.diploma.filter.ui.model.FilteringCountriesState
 import ru.practicum.android.diploma.filter.ui.viewModel.FilteringCountryViewModel
+import ru.practicum.android.diploma.search.ui.model.ErrorStatusUi
 
 class FilteringCountryFragment : Fragment() {
 
@@ -80,6 +81,19 @@ class FilteringCountryFragment : Fragment() {
             is FilteringCountriesState.Error -> {
                 binding.searchScreenPaginationProgressBar.visibility = View.GONE
                 binding.filteringCountryRecyclerView.visibility = View.GONE
+                showError(state.errorStatus)
+            }
+        }
+    }
+
+    private fun showError(errorStatus: ErrorStatusUi) {
+        when (errorStatus) {
+            ErrorStatusUi.NO_CONNECTION, ErrorStatusUi.ERROR_OCCURRED -> {
+                binding.countryScreenErrorPlaceholder.visibility = View.VISIBLE
+            }
+
+            ErrorStatusUi.NOTHING_FOUND -> {
+                binding.countryScreenNotFoundPlaceholder.visibility = View.VISIBLE
             }
         }
     }
