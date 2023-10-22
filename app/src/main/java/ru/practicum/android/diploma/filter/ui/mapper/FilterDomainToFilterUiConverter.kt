@@ -36,4 +36,10 @@ class FilterDomainToFilterUiConverter {
             name = areaFilter.name,
         )
     }
+
+    fun mapCountriesFilterToCountriesUi(countriesFilter: List<CountryFilter>): List<CountryUi> {
+        return countriesFilter.map {
+            CountryUi(it.id, it.name)
+        }
+    }
 }
