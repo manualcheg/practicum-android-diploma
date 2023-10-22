@@ -17,9 +17,10 @@ class FilteringChoosingWorkplaceViewModel(
     private val addCountryFilterUseCase: AddCountryFilterUseCase,
     private val getFilterOptionsUseCase: GetFilterOptionsUseCase,
     private val filterDomainToFilterUiConverter: FilterDomainToFilterUiConverter,
-    private var countryFilter: CountryFilter?,
-    private var areaFilter: AreaFilter?,
 ) : ViewModel() {
+
+    var countryFilter: CountryFilter? = null
+    private var areaFilter: AreaFilter? = null
 
     private val _countryState = MutableLiveData<FilterFieldsState>()
     val countryState: LiveData<FilterFieldsState> = _countryState
@@ -33,12 +34,12 @@ class FilteringChoosingWorkplaceViewModel(
 
     init {
         initializeCountryAndArea()
-        updateCountry(countryFilter)
-        updateArea(areaFilter)
+        updateCountryField(countryFilter)
+        updateAreaField(areaFilter)
         updateSelectButton()
     }
 
-    fun updateCountry(countryFilter: CountryFilter?) {
+    fun updateCountryField(countryFilter: CountryFilter?) {
 
         if (countryFilter != null) {
             setCountryState(
@@ -54,7 +55,7 @@ class FilteringChoosingWorkplaceViewModel(
         this.countryFilter = countryFilter
     }
 
-    fun updateArea(areaFilter: AreaFilter?) {
+    fun updateAreaField(areaFilter: AreaFilter?) {
         if (areaFilter != null) {
             setRegionState(
                 FilterFieldsState.Content(
@@ -67,12 +68,12 @@ class FilteringChoosingWorkplaceViewModel(
         this.areaFilter = areaFilter
     }
 
-    fun addAreaFilter(area: AreaFilter) {
-        addAreaFilterUseCase.execute(area)
+    fun addAreaFilter() {
+        areaFilter?.let { addAreaFilterUseCase.execute(it) }
     }
 
-    fun addCountryFilter(country: CountryFilter) {
-        addCountryFilterUseCase.execute(country)
+    fun addCountryFilter() {
+        countryFilter?.let { addCountryFilterUseCase.execute(it) }
     }
 
     fun updateSelectButton() {
@@ -87,7 +88,6 @@ class FilteringChoosingWorkplaceViewModel(
         val filter = getFilterOptionsUseCase.execute()
         countryFilter = filter?.country
         areaFilter = filter?.area
-        updateSelectButton()
     }
 
     private fun setCountryState(state: FilterFieldsState) {
