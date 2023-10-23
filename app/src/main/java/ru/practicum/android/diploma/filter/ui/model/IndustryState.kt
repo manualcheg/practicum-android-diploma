@@ -5,10 +5,10 @@ import ru.practicum.android.diploma.search.ui.model.ErrorStatusUi
 sealed interface IndustryState {
     object Loading : IndustryState
 
-    sealed class Success : IndustryState {
+    sealed class Success(open val industryList: List<IndustryUi>) : IndustryState {
         data class Content(
-            val industryList: List<IndustryUi>
-        ) : Success()
+            override val industryList: List<IndustryUi>
+        ) : Success(industryList)
     }
 
     data class Error(

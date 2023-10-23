@@ -53,7 +53,6 @@ class FilteringIndustryViewModel(
             industryFilterDomainToIndustryUiConverter.mapIndustryFilterDomainToIndustryUi(it)
         }
         industriesListUi.addAll(industryList)
-        val newList = industryList.toList()
         when (errorStatusDomain) {
             ErrorStatusDomain.NO_CONNECTION -> setState(IndustryState.Error(ErrorStatusUi.NO_CONNECTION))
             ErrorStatusDomain.ERROR_OCCURRED -> setState(IndustryState.Error(ErrorStatusUi.ERROR_OCCURRED))
@@ -61,7 +60,7 @@ class FilteringIndustryViewModel(
                 if (industriesListUi.isEmpty()) {
                     setState(IndustryState.Error(ErrorStatusUi.NOTHING_FOUND))
                 } else {
-                    setState(IndustryState.Success.Content(newList))
+                    setState(IndustryState.Success.Content(industryList))
                 }
             }
         }
@@ -84,12 +83,12 @@ class FilteringIndustryViewModel(
     }
 
     fun industryClicked(industryId: Int) {
-        val newIndustryList = industriesListUi.toMutableList()
-        newIndustryList.forEach { industryUi ->
-            industryUi.isSelected = industryUi.id == industryId
+
+        val newIndustryList = stateLiveData.value as? IndustryState.Success.Content
+        val list = newIndustryList?.industryList?.map { industryUi ->
+            industryUi.copy(isSelected = industryUi.id == industryId)
         }
-        val list = newIndustryList.toList()
-        setState(IndustryState.Success.Content(list))
+        list?.let { IndustryState.Success.Content(it) }?.let { setState(it) }
     }
 
     fun proceedBack() {

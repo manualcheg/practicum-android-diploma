@@ -17,17 +17,18 @@ import ru.practicum.android.diploma.filter.ui.model.IndustryUi
 import ru.practicum.android.diploma.filter.ui.model.RegionCountryUi
 import ru.practicum.android.diploma.vacancy.ui.ContactsPhoneViewHolder
 
-class RVAdapter(
+class RVAdapter2(
     private var clickListener: (ItemUiBase) -> Unit = {}
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    var items = listOf<ItemUiBase>()
-        set(newList) {
-            val diffResult = DiffUtil.calculateDiff(
-                DiffCallback(field, newList)
-            )
-            field = newList
-            diffResult.dispatchUpdatesTo(this)
-        }
+    private val items = mutableListOf<ItemUiBase>()
+    fun set(newList: List<ItemUiBase>) {
+        val diffResult = DiffUtil.calculateDiff(
+            DiffCallback(items, newList)
+        )
+        items.clear()
+        items.addAll(newList)
+        diffResult.dispatchUpdatesTo(this)
+    }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

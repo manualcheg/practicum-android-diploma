@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import ru.practicum.android.diploma.common.util.recycleView.RVAdapter
+import ru.practicum.android.diploma.common.util.recycleView.RVAdapter2
 import ru.practicum.android.diploma.databinding.FragmentFilteringIndustryBinding
 import ru.practicum.android.diploma.filter.ui.model.IndustryNavigationState
 import ru.practicum.android.diploma.filter.ui.model.IndustryState
@@ -26,7 +26,7 @@ class FilteringIndustryFragment : Fragment() {
 
     private var _binding: FragmentFilteringIndustryBinding? = null
     private val binding get() = _binding!!
-    private var industriesAdapter: RVAdapter? = null
+    private var industriesAdapter: RVAdapter2? = null
 
     private var isClickAllowed = true
 
@@ -73,7 +73,6 @@ class FilteringIndustryFragment : Fragment() {
                 findNavController().popBackStack()
             }
         }
-
     }
 
     private fun renderState(state: IndustryState) {
@@ -82,7 +81,7 @@ class FilteringIndustryFragment : Fragment() {
                 showLoading()
             }
 
-            is IndustryState.Success.Content -> {
+            is IndustryState.Success -> {
                 showContent(state.industryList)
             }
 
@@ -95,29 +94,31 @@ class FilteringIndustryFragment : Fragment() {
             ErrorStatusUi.NO_CONNECTION,
             ErrorStatusUi.ERROR_OCCURRED -> {
                 emptyScreen()
-                industriesAdapter?.items = emptyList()
+                industriesAdapter?.set(emptyList())
                 binding.industriesScreenErrorPlaceholder.isVisible = true
             }
 
             ErrorStatusUi.NOTHING_FOUND -> {
                 emptyScreen()
-                industriesAdapter?.items = emptyList()
+                industriesAdapter?.set(emptyList())
                 binding.industriesScreenNotFoundPlaceholder.isVisible = true
             }
         }
     }
 
     private fun showContent(industries: List<IndustryUi>) {
-        industriesAdapter?.printItem()
         emptyScreen()
-        val list = industries.toList()
-        industriesAdapter?.items = list
-        binding.filteringSectorRecyclerView.layoutManager?.scrollToPosition(TOP_POSITION_TO_SCROLL)
+//        industries.forEach { item ->
+//            Log.d("judjin1", item.toString())
+//        }
+//        industriesAdapter?.printItem()
+        industriesAdapter?.set(industries)
+//        industriesAdapter?.printItem()
     }
 
     private fun showLoading() {
         emptyScreen()
-        industriesAdapter?.items = emptyList()
+        industriesAdapter?.set(emptyList())
         binding.industryScreenProgressBar.isVisible = true
     }
 
@@ -129,7 +130,7 @@ class FilteringIndustryFragment : Fragment() {
     }
 
     private fun recycleViewInit() {
-        industriesAdapter = RVAdapter { item ->
+        industriesAdapter = RVAdapter2 { item ->
             if (isClickDebounce()) {
                 viewModel.industryClicked(item.id)
             }
