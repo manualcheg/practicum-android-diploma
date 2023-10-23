@@ -174,21 +174,10 @@ class FilteringSettingsFragment : Fragment() {
                 if (!input.isNullOrBlank()) {
                     salary = input.toString()
                     viewModel.setSalary(input.toString().toInt())
-//                    binding.enterTheAmountTextInputLayout.setHintTextAppearance(R.style.hintTextAppearanceFull)
-//                    setTextInputLayoutHintColor(binding.enterTheAmountTextInputLayout, requireContext(), R.color.salary_edit_text_hint_full)
-
-//                    binding.enterTheAmountTextInputLayout.hintTextColor = ContextCompat.getColorStateList(requireContext(), R.color.salary_edit_text_hint_full)
-//                        resources.getColor(R.color.salary_edit_text_hint_full, null)
                 }
                 if (input != null && input.isBlank()) {
                     salary = input.toString()
                     viewModel.clearSalary()
-//                    binding.enterTheAmountTextInputLayout.setHintTextAppearance(R.style.hintTextAppearanceEmpty)
-//                    setTextInputLayoutHintColor(binding.enterTheAmountTextInputLayout, requireContext(), R.color.salary_edit_text_hint_empty)
-//                    binding.enterTheAmountTextInputLayout.setHintTextAppearance(R.style.hintTextAppearanceEmpty)
-
-//                    binding.enterTheAmountTextInputLayout.hintTextColor = ContextCompat.getColorStateList(requireContext(), R.color.salary_edit_text_hint_empty)
-//                    binding.enterTheAmountTextInputLayout.boxStrokeColor = resources.getColor(R.color.salary_edit_text_hint_empty, null)
                 }
             }
 
