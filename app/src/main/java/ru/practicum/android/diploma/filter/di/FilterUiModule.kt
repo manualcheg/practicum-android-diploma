@@ -7,7 +7,7 @@ import ru.practicum.android.diploma.filter.ui.mapper.FilterDomainToFilterUiConve
 import ru.practicum.android.diploma.filter.ui.viewModel.FilteringChoosingWorkplaceViewModel
 import ru.practicum.android.diploma.filter.ui.viewModel.FilteringSettingsViewModel
 
-val filterUiModule = module{
+val filterUiModule = module {
     factoryOf(::FilterDomainToFilterUiConverter)
     viewModelOf(::FilteringSettingsViewModel)
     viewModelOf(::FilteringChoosingWorkplaceViewModel)
