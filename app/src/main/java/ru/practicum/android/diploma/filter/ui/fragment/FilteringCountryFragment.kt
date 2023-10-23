@@ -4,13 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.common.domain.model.filter_models.CountryFilter
 import ru.practicum.android.diploma.common.util.recycleView.RVAdapter
 import ru.practicum.android.diploma.databinding.FragmentFilteringCountryBinding
+import ru.practicum.android.diploma.filter.ui.fragment.FilteringChoosingWorkplaceFragment.Companion.BUNDLE_KEY_FOR_COUNTRY
+import ru.practicum.android.diploma.filter.ui.fragment.FilteringChoosingWorkplaceFragment.Companion.REQUEST_KEY
 import ru.practicum.android.diploma.filter.ui.model.CountryUi
 import ru.practicum.android.diploma.filter.ui.model.FilteringCountriesState
 import ru.practicum.android.diploma.filter.ui.viewModel.FilteringCountryViewModel
@@ -37,10 +42,37 @@ class FilteringCountryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setOnBackClickListeners()
+
         viewModel.state.observe(viewLifecycleOwner) {
             render(it)
         }
         recyclerViewInit()
+
+
+    }
+
+    private fun setOnBackClickListeners() {
+
+        binding.filteringCountryToolbar.setNavigationOnClickListener {
+            setFragmentResult(
+                REQUEST_KEY,
+                bundleOf(BUNDLE_KEY_FOR_COUNTRY to null)
+            )
+            findNavController().popBackStack()
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    setFragmentResult(
+                        REQUEST_KEY,
+                        bundleOf(BUNDLE_KEY_FOR_COUNTRY to null)
+                    )
+                    findNavController().popBackStack()
+                }
+            })
     }
 
 
