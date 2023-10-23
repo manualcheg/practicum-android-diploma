@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.common.util.recycleView
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -10,8 +11,8 @@ import ru.practicum.android.diploma.databinding.ItemCountryAndRegionBinding
 import ru.practicum.android.diploma.databinding.ItemPhonesBinding
 import ru.practicum.android.diploma.databinding.ItemSectorBinding
 import ru.practicum.android.diploma.databinding.ItemVacancyBinding
-import ru.practicum.android.diploma.filter.ui.CountryViewHolder
-import ru.practicum.android.diploma.filter.ui.RegionIndustryViewHolder
+import ru.practicum.android.diploma.filter.ui.AreaCountryViewHolder
+import ru.practicum.android.diploma.filter.ui.IndustryViewHolder
 import ru.practicum.android.diploma.filter.ui.model.IndustryUi
 import ru.practicum.android.diploma.filter.ui.model.RegionCountryUi
 import ru.practicum.android.diploma.vacancy.ui.ContactsPhoneViewHolder
@@ -19,7 +20,6 @@ import ru.practicum.android.diploma.vacancy.ui.ContactsPhoneViewHolder
 class RVAdapter(
     private var clickListener: (ItemUiBase) -> Unit = {}
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
     var items = listOf<ItemUiBase>()
         set(newList) {
             val diffResult = DiffUtil.calculateDiff(
@@ -45,11 +45,11 @@ class RVAdapter(
                 ), clickListener
             )
 
-            COUNTRY_AREA_VIEWTYPE -> CountryViewHolder(
+            COUNTRY_AREA_VIEWTYPE -> AreaCountryViewHolder(
                 ItemCountryAndRegionBinding.inflate(layoutInflater, parent, false)
             )
 
-            INDUSTRY_VIEWTYPE -> RegionIndustryViewHolder(
+            INDUSTRY_VIEWTYPE -> IndustryViewHolder(
                 ItemSectorBinding.inflate(layoutInflater, parent, false)
             )
 
@@ -72,15 +72,20 @@ class RVAdapter(
 
             is PhoneUi -> (holder as ContactsPhoneViewHolder).bind(item)
             is RegionCountryUi -> {
-                (holder as CountryViewHolder).bind(item)
+                (holder as AreaCountryViewHolder).bind(item)
                 holder.itemView.setOnClickListener {
                     clickListener(items[holder.adapterPosition])
                 }
             }
 
-            is IndustryUi -> (holder as RegionIndustryViewHolder).bind(item)
+            is IndustryUi -> {
+                (holder as IndustryViewHolder)
+                    .bind(item)
+                holder.itemView.setOnClickListener {
+                    clickListener(items[holder.adapterPosition])
+                }
+            }
         }
-
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -92,6 +97,12 @@ class RVAdapter(
             else -> {
                 throw IllegalAccessException("Illegal type: ${items[position]}")
             }
+        }
+    }
+
+    fun printItem() {
+        items.forEach { item ->
+            Log.d("judjin", item.toString())
         }
     }
 

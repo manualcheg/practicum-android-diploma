@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.databinding.ItemCountryAndRegionBinding
 import ru.practicum.android.diploma.filter.ui.model.RegionCountryUi
 
-class CountryViewHolder(
+class AreaCountryViewHolder(
     private val binding: ItemCountryAndRegionBinding,
 ) :
     RecyclerView.ViewHolder(binding.root) {

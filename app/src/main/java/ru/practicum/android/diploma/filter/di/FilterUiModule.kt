@@ -6,12 +6,15 @@ import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 import ru.practicum.android.diploma.filter.ui.mapper.AreaFilterDomainToRegionCountryUiConverter
 import ru.practicum.android.diploma.filter.ui.mapper.FilterDomainToFilterUiConverter
+import ru.practicum.android.diploma.filter.ui.mapper.IndustryFilterDomainToIndustryUiConverter
 import ru.practicum.android.diploma.filter.ui.viewModel.FilteringAreaViewModel
+import ru.practicum.android.diploma.filter.ui.viewModel.FilteringIndustryViewModel
 import ru.practicum.android.diploma.filter.ui.viewModel.FilteringSettingsViewModel
 
 val filterUiModule = module {
     factoryOf(::FilterDomainToFilterUiConverter)
     factoryOf(::AreaFilterDomainToRegionCountryUiConverter)
+    factoryOf(::IndustryFilterDomainToIndustryUiConverter)
     viewModelOf(::FilteringSettingsViewModel)
     viewModel { (parentId: String?) ->
         FilteringAreaViewModel(
@@ -20,4 +23,5 @@ val filterUiModule = module {
             areaFilterDomainToRegionCountryUiConverter = get(),
         )
     }
+    viewModelOf(::FilteringIndustryViewModel)
 }
