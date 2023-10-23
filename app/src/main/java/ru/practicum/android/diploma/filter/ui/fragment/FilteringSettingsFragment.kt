@@ -90,6 +90,14 @@ class FilteringSettingsFragment : Fragment() {
             binding.selectedEnterTheAmountTextInputEditText.clearFocus()
         }
 
+        binding.filteringSettingsOnlyWithSalaryCheckbox.setOnClickListener {
+            viewModel.setOnlyWithSalary(
+                binding.filteringSettingsOnlyWithSalaryCheckbox.isChecked
+            )
+            viewModel.updateButtonsStates()
+            binding.selectedEnterTheAmountTextInputEditText.clearFocus()
+        }
+
         binding.resetButton.setOnClickListener {
             viewModel.clearAll()
             viewModel.updateStates()
