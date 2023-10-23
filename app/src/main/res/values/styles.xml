@@ -81,11 +81,18 @@
         <item name="android:backgroundTint">@color/white</item>
     </style>
 
-    <style name="hintTextAppearance">
+    <style name="hintTextAppearanceEmpty" parent="TextAppearance.Design.Hint">
         <item name="android:textSize">@dimen/text_size_menu</item>
-        <item name="android:textColor">@color/gray_white</item>
+        <item name="android:textColor">@color/salary_edit_text_hint_full</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
     </style>
+
+    <style name="hintTextAppearanceFull" parent="TextAppearance.Design.Hint">
+        <item name="android:textSize">@dimen/text_size_menu</item>
+        <item name="android:textColor">@color/salary_edit_text_hint_full</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+    </style>
+
 
     <style name="PlaceholderStyle">
         <item name="android:layout_width">wrap_content</item>
@@ -103,8 +110,8 @@
         <item name="boxCollapsedPaddingTop">10dp</item>
         <item name="android:paddingHorizontal">@dimen/padding_horizontal</item>
         <item name="android:paddingVertical">@dimen/padding_horizontal_smaller</item>
-        <item name="android:textColorHint">@color/gray_white</item>
-        <item name="hintTextAppearance">@style/hintTextAppearance</item>
+        <item name="android:textColorHint">@color/salary_edit_text_hint_empty</item>
+        <item name="hintTextAppearance">@style/hintTextAppearanceFull</item>
         <item name="placeholderTextAppearance">@style/RegularText</item>
         <item name="placeholderTextColor">@color/gray_white</item>
         <item name="expandedHintEnabled">false</item>
@@ -121,6 +128,10 @@
         <item name="android:inputType">number</item>
         <item name="android:maxLines">1</item>
         <item name="android:textColorHint">@color/gray_white</item>
+    </style>
+
+    <style name="SalaryHintColor" parent="TextAppearance.Design.Hint">
+        <item name="android:textColor">@color/salary_edit_text_hint_empty</item>
     </style>
 
     <style name="Widget.App.CheckBox" parent="Widget.MaterialComponents.CompoundButton.CheckBox">
