@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.filter.domain.useCase.GetCountriesUseCase
 import ru.practicum.android.diploma.filter.ui.mapper.FilterDomainToFilterUiConverter
-import ru.practicum.android.diploma.filter.ui.model.CountryUi
+import ru.practicum.android.diploma.filter.ui.model.AreaCountryUi
 import ru.practicum.android.diploma.filter.ui.model.FilteringCountriesState
 import ru.practicum.android.diploma.search.domain.model.ErrorStatusDomain
 import ru.practicum.android.diploma.search.ui.model.ErrorStatusUi
@@ -37,7 +37,7 @@ class FilteringCountryViewModel(
                         if (pair.first == null) {
                             setState(FilteringCountriesState.Error(ErrorStatusUi.NOTHING_FOUND))
                         } else {
-                            val countriesList: List<CountryUi> =
+                            val countriesList: List<AreaCountryUi> =
                                 filterDomainToFilterUiConverter.mapCountriesFilterToCountriesUi(pair.first!!.countryList)
                             setState(FilteringCountriesState.Content(countriesList))
                         }

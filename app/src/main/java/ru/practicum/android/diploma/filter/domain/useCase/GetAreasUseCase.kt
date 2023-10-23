@@ -5,5 +5,5 @@ import ru.practicum.android.diploma.common.domain.model.filter_models.Areas
 import ru.practicum.android.diploma.search.domain.model.ErrorStatusDomain
 
 interface GetAreasUseCase {
-    fun execute(areaId: Int?): Flow<Pair<Areas?, ErrorStatusDomain?>>
+    fun execute(areaId: String?): Flow<Pair<Areas?, ErrorStatusDomain?>>
 }

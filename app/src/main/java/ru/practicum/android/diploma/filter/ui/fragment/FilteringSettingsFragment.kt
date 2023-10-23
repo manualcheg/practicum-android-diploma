@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.activity.addCallback
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -47,8 +48,8 @@ class FilteringSettingsFragment : Fragment() {
         viewModel.updateStates()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         _binding = null
     }
 
@@ -75,7 +76,7 @@ class FilteringSettingsFragment : Fragment() {
             }
         }
         binding.industryCustomView.setOnClickListener {
-            findNavController().navigate(R.id.action_filteringSettingsFragment_to_filteringChoosingWorkplaceFragment)
+            findNavController().navigate(R.id.action_filteringSettingsFragment_to_filteringSectorFragment)
         }
 
         binding.filteringSettingsToolbar.setNavigationOnClickListener {
@@ -97,6 +98,11 @@ class FilteringSettingsFragment : Fragment() {
 
         binding.applyButton.setOnClickListener {
             viewModel.putFilterOptions()
+            findNavController().popBackStack()
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            viewModel.clearTempFilterOptions()
             findNavController().popBackStack()
         }
     }

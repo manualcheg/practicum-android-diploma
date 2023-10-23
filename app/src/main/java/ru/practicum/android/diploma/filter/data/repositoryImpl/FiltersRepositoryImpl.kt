@@ -30,7 +30,7 @@ class FiltersRepositoryImpl(
     private val filtersRemoteDataSource: VacancyRemoteDataSource,
     private val filtersDtoToDomainConverter: FiltersDtoToDomainConverter
 ) : FiltersRepository {
-    override fun getAreas(areaId: Int?): Flow<Resource<Areas>> = flow {
+    override fun getAreas(areaId: String?): Flow<Resource<Areas>> = flow {
 
         val responseAreas = if (areaId == null) {
             filtersRemoteDataSource.doRequest(AllAreasRequest())
@@ -140,5 +140,13 @@ class FiltersRepositoryImpl(
 
     override fun isTempFilterOptionsEmpty(): Boolean {
         return filtersLocalDataSourceImpl.isTempFilterOptionsEmpty()
+    }
+
+    override fun isTempFilterOptionsExists(): Boolean {
+        return filtersLocalDataSourceImpl.isTempFilterOptionsExists()
+    }
+
+    override fun addFilterToTemp(filter: Filter?) {
+        filtersLocalDataSourceImpl.addFilterToCache(filter)
     }
 }

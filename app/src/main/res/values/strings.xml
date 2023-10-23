@@ -37,6 +37,7 @@
     <string name="region">Регион</string>
     <string name="type_a_region">Введите регион</string>
     <string name="no_such_region">Такого региона нет</string>
+    <string name="no_such_industry">Такой отрасли нет</string>
     <string name="failed_to_get_a_list">Не удалось получить список</string>
     <string name="type_a_sector">Введите отрасль</string>
     <string name="select">Выбрать</string>

@@ -28,6 +28,9 @@ class FiltersDtoToDomainConverter {
         listOfIndustryDto.forEach { industriesDto ->
             fromTreeToListIndustry(industriesDto, listOfIndustry)
         }
+        listOfIndustry.forEachIndexed { index, industryFilter ->
+            industryFilter.id = index
+        }
         return listOfIndustry
     }
 
@@ -61,7 +64,9 @@ class FiltersDtoToDomainConverter {
     ) {
         saveList.add(
             IndustryFilter(
-                id = root.id, name = root.name
+                id = 0,
+                industryId = root.id,
+                name = root.name,
             )
         )
         if (root.industries.isNullOrEmpty()) {

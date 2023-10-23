@@ -53,8 +53,41 @@
         app:layout_constraintTop_toBottomOf="@id/container"
         tools:listitem="@layout/item_sector" />
 
+    <ProgressBar
+        android:id="@+id/industryScreenProgressBar"
+        android:layout_width="@dimen/progress_bar"
+        android:layout_height="@dimen/progress_bar"
+        android:indeterminateTint="@color/blue"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/industriesScreenNotFoundPlaceholder"
+        style="@style/PlaceholderStyle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/no_such_industry"
+        app:drawableTopCompat="@drawable/placeholder_not_found"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/industriesScreenErrorPlaceholder"
+        style="@style/PlaceholderStyle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/failed_to_get_a_list"
+        app:drawableTopCompat="@drawable/placeholder_failed_to_get_a_list"
+        android:visibility="gone" />
+
     <Button
-        android:id="@+id/filteringRegionAndSectorButton"
+        android:id="@+id/filteringIndustriesButton"
         style="@style/Button"
         android:layout_marginBottom="@dimen/margin_vertical"
         android:text="@string/select"
