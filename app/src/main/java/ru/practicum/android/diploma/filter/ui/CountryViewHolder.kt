@@ -11,7 +11,7 @@ class CountryViewHolder(
     RecyclerView.ViewHolder(binding.root) {
     fun bind(item: CountryUi) {
         binding.countryItemTextView.text = item.name
-        binding.selectCountryImageView.setOnClickListener {
+        binding.root.setOnClickListener {
             onSelectCountryButtonClicked.invoke(item)
         }
     }
