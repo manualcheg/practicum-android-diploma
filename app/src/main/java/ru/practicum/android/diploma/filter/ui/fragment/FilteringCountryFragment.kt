@@ -69,18 +69,17 @@ class FilteringCountryFragment : Fragment() {
         when (state) {
             is FilteringCountriesState.Load -> {
                 binding.searchScreenPaginationProgressBar.visibility = View.VISIBLE
-                binding.filteringCountryRecyclerView.visibility = View.GONE
+                countriesAdapter?.items = emptyList()
             }
 
             is FilteringCountriesState.Content -> {
                 binding.searchScreenPaginationProgressBar.visibility = View.GONE
-                binding.filteringCountryRecyclerView.visibility = View.VISIBLE
                 countriesAdapter?.items = state.countriesList
             }
 
             is FilteringCountriesState.Error -> {
                 binding.searchScreenPaginationProgressBar.visibility = View.GONE
-                binding.filteringCountryRecyclerView.visibility = View.GONE
+                countriesAdapter?.items = emptyList()
                 showError(state.errorStatus)
             }
         }
