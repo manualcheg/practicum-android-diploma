@@ -42,13 +42,12 @@
         android:id="@+id/teamFragment"
         android:name="ru.practicum.android.diploma.team.ui.fragment.TeamFragment"
         android:label="fragment_team"
-        tools:layout="@layout/fragment_team">
-    </fragment>
+        tools:layout="@layout/fragment_team" />
     <fragment
         android:id="@+id/vacancyFragment"
         android:name="ru.practicum.android.diploma.vacancy.ui.fragment.VacancyFragment"
         android:label="fragment_vacancy"
-        tools:layout="@layout/fragment_vacancy" >
+        tools:layout="@layout/fragment_vacancy">
         <argument
             android:name="vacancyId"
             app:argType="integer" />
@@ -63,19 +62,27 @@
     <fragment
         android:id="@+id/filteringSettingsFragment"
         android:name="ru.practicum.android.diploma.filter.ui.fragment.FilteringSettingsFragment"
-        android:label="FilteringSettingsFragment" >
+        android:label="FilteringSettingsFragment">
         <action
             android:id="@+id/action_filteringSettingsFragment_to_filteringSectorFragment"
-            app:destination="@id/filteringSectorFragment" />
+            app:destination="@id/filteringSectorFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
         <action
-            android:id="@+id/action_filteringSettingsFragment_to_filteringRegionFragment"
-            app:destination="@id/filteringRegionFragment" />
+            android:id="@+id/action_filteringSettingsFragment_to_filteringChoosingWorkplaceFragment"
+            app:destination="@id/filteringChoosingWorkplaceFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/similarVacancyFragment"
         android:name="ru.practicum.android.diploma.similar_vacancy.ui.fragment.SimilarVacancyFragment"
         android:label="fragment_similar_vacancies"
-        tools:layout="@layout/fragment_similar_vacancies" >
+        tools:layout="@layout/fragment_similar_vacancies">
         <argument
             android:name="vacancyId"
             app:argType="integer" />
@@ -91,15 +98,17 @@
         android:id="@+id/filteringCountryFragment"
         android:name="ru.practicum.android.diploma.filter.ui.fragment.FilteringCountryFragment"
         android:label="fragment_filtering_country"
-        tools:layout="@layout/fragment_filtering_country" />
+        tools:layout="@layout/fragment_filtering_country">
+
+    </fragment>
     <fragment
         android:id="@+id/filteringRegionFragment"
         android:name="ru.practicum.android.diploma.filter.ui.fragment.FilteringAreaFragment"
         android:label="fragment_filtering_region"
         tools:layout="@layout/fragment_filtering_area">
         <argument
-            android:name="parentId"
-            app:argType="string"
+            android:name="country"
+            app:argType="ru.practicum.android.diploma.common.domain.model.filter_models.CountryFilter"
             app:nullable="true" />
     </fragment>
     <fragment
@@ -111,10 +120,21 @@
         android:id="@+id/filteringChoosingWorkplaceFragment"
         android:name="ru.practicum.android.diploma.filter.ui.fragment.FilteringChoosingWorkplaceFragment"
         android:label="fragment_filtering_choosing_workplace"
-        tools:layout="@layout/fragment_filtering_choosing_workplace" >
+        tools:layout="@layout/fragment_filtering_choosing_workplace">
         <action
             android:id="@+id/action_filteringChoosingWorkplaceFragment_to_filteringCountryFragment"
-            app:destination="@id/filteringCountryFragment" />
+            app:destination="@id/filteringCountryFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_filteringChoosingWorkplaceFragment_to_filteringRegionFragment"
+            app:destination="@id/filteringRegionFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
 </navigation>
