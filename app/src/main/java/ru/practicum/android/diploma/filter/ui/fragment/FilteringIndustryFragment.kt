@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,7 +15,7 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.databinding.FragmentFilteringIndustryBinding
 import ru.practicum.android.diploma.filter.RecycleViewIndustryAdapter
-import ru.practicum.android.diploma.filter.data.model.ButtonState
+import ru.practicum.android.diploma.filter.ui.model.ButtonState
 import ru.practicum.android.diploma.filter.ui.model.IndustryNavigationState
 import ru.practicum.android.diploma.filter.ui.model.IndustryState
 import ru.practicum.android.diploma.filter.ui.model.IndustryUi
@@ -112,14 +111,16 @@ class FilteringIndustryFragment : Fragment() {
 
     private fun renderNavigationState(state: IndustryNavigationState) {
         when (state) {
-            IndustryNavigationState.NavigateEmpty -> findNavController().popBackStack()
+            is IndustryNavigationState.NavigateEmpty -> {
+                findNavController().popBackStack()
+            }
+
             is IndustryNavigationState.NavigateWithContent -> {
-                val bundle = Bundle()
-                bundle.putParcelable(BUNDLE_KEY_FOR_INDUSTRY, state.industryFilter)
-                setFragmentResult(REQUEST_KEY, bundle)
+                viewModel.saveIndustry()
                 findNavController().popBackStack()
             }
         }
+
     }
 
     private fun renderButtonState(state: ButtonState) {
@@ -177,7 +178,5 @@ class FilteringIndustryFragment : Fragment() {
 
     companion object {
         private const val CLICK_DEBOUNCE_DELAY_MILLIS = 300L
-        const val REQUEST_KEY = "request key"
-        const val BUNDLE_KEY_FOR_INDUSTRY = "bundle key for industry"
     }
 }

@@ -10,9 +10,9 @@ import ru.practicum.android.diploma.common.domain.model.filter_models.AreaFilter
 import ru.practicum.android.diploma.common.domain.model.filter_models.Areas
 import ru.practicum.android.diploma.filter.domain.useCase.GetAreasUseCase
 import ru.practicum.android.diploma.filter.ui.mapper.AreaFilterDomainToRegionCountryUiConverter
+import ru.practicum.android.diploma.filter.ui.model.AreaCountryUi
 import ru.practicum.android.diploma.filter.ui.model.AreaNavigationState
 import ru.practicum.android.diploma.filter.ui.model.AreasState
-import ru.practicum.android.diploma.filter.ui.model.RegionCountryUi
 import ru.practicum.android.diploma.search.domain.model.ErrorStatusDomain
 import ru.practicum.android.diploma.search.ui.model.ErrorStatusUi
 
@@ -25,7 +25,7 @@ class FilteringAreaViewModel(
     private val stateLiveData = MutableLiveData<AreasState>()
     private val navigationStateLiveData = MutableLiveData<AreaNavigationState>()
 
-    private val areasListUi = mutableListOf<RegionCountryUi>()
+    private val areasListUi = mutableListOf<AreaCountryUi>()
 
     private val foundAreasList = mutableListOf<AreaFilter>()
     private val coroutineExceptionHandler =

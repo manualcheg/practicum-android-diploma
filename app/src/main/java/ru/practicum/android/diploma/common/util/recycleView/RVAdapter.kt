@@ -12,8 +12,8 @@ import ru.practicum.android.diploma.databinding.ItemSectorBinding
 import ru.practicum.android.diploma.databinding.ItemVacancyBinding
 import ru.practicum.android.diploma.filter.ui.AreaCountryViewHolder
 import ru.practicum.android.diploma.filter.ui.IndustryViewHolder
+import ru.practicum.android.diploma.filter.ui.model.AreaCountryUi
 import ru.practicum.android.diploma.filter.ui.model.IndustryUi
-import ru.practicum.android.diploma.filter.ui.model.RegionCountryUi
 import ru.practicum.android.diploma.vacancy.ui.ContactsPhoneViewHolder
 
 class RVAdapter(
@@ -71,7 +71,7 @@ class RVAdapter(
             }
 
             is PhoneUi -> (holder as ContactsPhoneViewHolder).bind(item)
-            is RegionCountryUi -> {
+            is AreaCountryUi -> {
                 (holder as AreaCountryViewHolder).bind(item)
                 holder.itemView.setOnClickListener {
                     clickListener(items[holder.adapterPosition])
@@ -92,7 +92,7 @@ class RVAdapter(
         return when (items[position]) {
             is VacancyUi -> VACANCY_VIEWTYPE
             is PhoneUi -> CONTACTS_PHONE_VIEWTYPE
-            is RegionCountryUi -> COUNTRY_AREA_VIEWTYPE
+            is AreaCountryUi -> COUNTRY_AREA_VIEWTYPE
             is IndustryUi -> INDUSTRY_VIEWTYPE
             else -> {
                 throw IllegalAccessException("Illegal type: ${items[position]}")

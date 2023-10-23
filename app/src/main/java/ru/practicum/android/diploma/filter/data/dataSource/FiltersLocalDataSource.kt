@@ -19,4 +19,6 @@ interface FiltersLocalDataSource {
     fun clearSalary()
     fun clearTempFilterOptions()
     fun isTempFilterOptionsEmpty(): Boolean
+    fun addFilterToCache(filter: Filter?)
+    fun isTempFilterOptionsExists(): Boolean
 }

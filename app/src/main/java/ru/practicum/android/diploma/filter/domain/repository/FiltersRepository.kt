@@ -28,4 +28,7 @@ interface FiltersRepository {
     fun clearSalary()
     fun clearTempFilterOptions()
     fun isTempFilterOptionsEmpty(): Boolean
+    fun isTempFilterOptionsExists(): Boolean
+
+    fun addFilterToTemp(filter: Filter?)
 }

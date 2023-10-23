@@ -141,4 +141,12 @@ class FiltersRepositoryImpl(
     override fun isTempFilterOptionsEmpty(): Boolean {
         return filtersLocalDataSourceImpl.isTempFilterOptionsEmpty()
     }
+
+    override fun isTempFilterOptionsExists(): Boolean {
+        return filtersLocalDataSourceImpl.isTempFilterOptionsExists()
+    }
+
+    override fun addFilterToTemp(filter: Filter?) {
+        filtersLocalDataSourceImpl.addFilterToCache(filter)
+    }
 }

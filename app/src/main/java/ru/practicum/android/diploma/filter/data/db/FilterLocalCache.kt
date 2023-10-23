@@ -7,6 +7,7 @@ import ru.practicum.android.diploma.common.domain.model.filter_models.IndustryFi
 
 interface FilterLocalCache {
     fun getFilterCache(): Filter?
+    fun addFilterToCache(filter: Filter?)
     fun addCountry(country: CountryFilter)
     fun addArea(area: AreaFilter)
     fun addIndustry(industry: IndustryFilter)

@@ -18,9 +18,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.practicum.android.diploma.common.util.recycleView.RVAdapter
 import ru.practicum.android.diploma.databinding.FragmentFilteringAreaBinding
+import ru.practicum.android.diploma.filter.ui.model.AreaCountryUi
 import ru.practicum.android.diploma.filter.ui.model.AreaNavigationState
 import ru.practicum.android.diploma.filter.ui.model.AreasState
-import ru.practicum.android.diploma.filter.ui.model.RegionCountryUi
 import ru.practicum.android.diploma.filter.ui.viewModel.FilteringAreaViewModel
 import ru.practicum.android.diploma.search.ui.model.ErrorStatusUi
 
@@ -93,7 +93,7 @@ class FilteringAreaFragment : Fragment() {
         }
     }
 
-    private fun showContent(arealList: List<RegionCountryUi>) {
+    private fun showContent(arealList: List<AreaCountryUi>) {
         emptyScreen()
         areasAdapter?.items = arealList
         binding.filteringRegionRecyclerView.layoutManager?.scrollToPosition(TOP_POSITION_TO_SCROLL)

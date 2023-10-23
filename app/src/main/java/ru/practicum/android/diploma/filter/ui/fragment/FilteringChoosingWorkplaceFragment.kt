@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
@@ -14,8 +13,8 @@ import ru.practicum.android.diploma.common.custom_view.model.ButtonWithSelectedV
 import ru.practicum.android.diploma.common.domain.model.filter_models.AreaFilter
 import ru.practicum.android.diploma.common.domain.model.filter_models.CountryFilter
 import ru.practicum.android.diploma.databinding.FragmentFilteringChoosingWorkplaceBinding
+import ru.practicum.android.diploma.filter.ui.model.ButtonState
 import ru.practicum.android.diploma.filter.ui.model.FilterFieldsState
-import ru.practicum.android.diploma.filter.ui.model.SelectButtonState
 import ru.practicum.android.diploma.filter.ui.viewModel.FilteringChoosingWorkplaceViewModel
 
 class FilteringChoosingWorkplaceFragment : Fragment() {
@@ -27,9 +26,7 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
 
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentFilteringChoosingWorkplaceBinding.inflate(inflater, container, false)
         return binding.root
@@ -79,15 +76,17 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
 
         binding.choosingWorkplaceCountryCustomView.setOnClickListener {
             val direction =
-                FilteringChoosingWorkplaceFragmentDirections
-                    .actionFilteringChoosingWorkplaceFragmentToFilteringCountryFragment()
+                FilteringChoosingWorkplaceFragmentDirections.actionFilteringChoosingWorkplaceFragmentToFilteringCountryFragment()
             findNavController().navigate(direction)
         }
 
         binding.choosingWorkplaceAreaCustomView.setOnClickListener {
+            val countryFilter = viewModel.countryFilter
+            val countryFilterId = countryFilter?.id?.toString()
             val direction =
-                FilteringChoosingWorkplaceFragmentDirections
-                    .actionFilteringChoosingWorkplaceFragmentToFilteringRegionFragment(viewModel.countryFilter)
+                FilteringChoosingWorkplaceFragmentDirections.actionFilteringChoosingWorkplaceFragmentToFilteringRegionFragment(
+                    countryFilterId
+                )
             findNavController().navigate(direction)
         }
 
@@ -159,13 +158,12 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
         viewModel.updateSelectButton()
     }
 
-    private fun renderSelectButtonState(state: SelectButtonState) {
+    private fun renderSelectButtonState(state: ButtonState) {
         when (state) {
-            is SelectButtonState.Visible -> {
-                binding.choosingWorkplaceSelectButtonTextView.visibility = View.VISIBLE
-            }
+            is ButtonState.Visible -> binding.choosingWorkplaceSelectButtonTextView.visibility =
+                View.VISIBLE
 
-            is SelectButtonState.Invisible -> {
+            is ButtonState.Gone -> {
                 binding.choosingWorkplaceSelectButtonTextView.visibility = View.GONE
             }
         }

@@ -16,7 +16,7 @@ import ru.practicum.android.diploma.common.util.recycleView.RVAdapter
 import ru.practicum.android.diploma.databinding.FragmentFilteringCountryBinding
 import ru.practicum.android.diploma.filter.ui.fragment.FilteringChoosingWorkplaceFragment.Companion.BUNDLE_KEY_FOR_COUNTRY
 import ru.practicum.android.diploma.filter.ui.fragment.FilteringChoosingWorkplaceFragment.Companion.REQUEST_KEY
-import ru.practicum.android.diploma.filter.ui.model.CountryUi
+import ru.practicum.android.diploma.filter.ui.model.AreaCountryUi
 import ru.practicum.android.diploma.filter.ui.model.FilteringCountriesState
 import ru.practicum.android.diploma.filter.ui.viewModel.FilteringCountryViewModel
 import ru.practicum.android.diploma.search.ui.model.ErrorStatusUi
@@ -84,7 +84,7 @@ class FilteringCountryFragment : Fragment() {
 
     private fun recyclerViewInit() {
         countriesAdapter = RVAdapter {
-            val item = it as CountryUi
+            val item = it as AreaCountryUi
             setFragmentResult(
                 REQUEST_KEY,
                 bundleOf(BUNDLE_KEY_FOR_COUNTRY to CountryFilter(item.id, item.name))
