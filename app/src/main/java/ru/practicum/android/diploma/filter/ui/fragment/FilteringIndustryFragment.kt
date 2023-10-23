@@ -14,8 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import ru.practicum.android.diploma.common.util.recycleView.RVAdapter2
 import ru.practicum.android.diploma.databinding.FragmentFilteringIndustryBinding
+import ru.practicum.android.diploma.filter.RecycleViewIndustryAdapter
+import ru.practicum.android.diploma.filter.data.model.ButtonState
 import ru.practicum.android.diploma.filter.ui.model.IndustryNavigationState
 import ru.practicum.android.diploma.filter.ui.model.IndustryState
 import ru.practicum.android.diploma.filter.ui.model.IndustryUi
@@ -26,7 +27,7 @@ class FilteringIndustryFragment : Fragment() {
 
     private var _binding: FragmentFilteringIndustryBinding? = null
     private val binding get() = _binding!!
-    private var industriesAdapter: RVAdapter2? = null
+    private var industriesAdapter: RecycleViewIndustryAdapter? = null
 
     private var isClickAllowed = true
 
@@ -43,6 +44,7 @@ class FilteringIndustryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         recycleViewInit()
+        initClicks()
 
         viewModel.observeStateLiveData().observe(viewLifecycleOwner) {
             renderState(it)
@@ -52,25 +54,44 @@ class FilteringIndustryFragment : Fragment() {
             renderNavigationState(it)
         }
 
+        viewModel.observeButtonStateLiveData().observe(viewLifecycleOwner) {
+            renderButtonState(it)
+        }
+
         binding.filteringSectorEditText.doOnTextChanged { text, _, _, _ ->
             if (text != null) {
                 viewModel.searchIndustry(text.toString())
-
             }
-        }
-        binding.filteringSectorToolbar.setNavigationOnClickListener {
-            viewModel.proceedBack()
         }
     }
 
-    private fun renderNavigationState(state: IndustryNavigationState) {
-        when (state) {
-            IndustryNavigationState.NavigateEmpty -> findNavController().popBackStack()
-            is IndustryNavigationState.NavigateWithContent -> {
-                val bundle = Bundle()
-                bundle.putParcelable(BUNDLE_KEY_FOR_INDUSTRY, state.industryFilter)
-                setFragmentResult(REQUEST_KEY, bundle)
-                findNavController().popBackStack()
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun recycleViewInit() {
+        industriesAdapter = RecycleViewIndustryAdapter { item ->
+            if (isClickDebounce()) {
+                viewModel.industryClicked(item.id)
+            }
+        }
+
+        binding.filteringSectorRecyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.filteringSectorRecyclerView.adapter = industriesAdapter
+    }
+
+    private fun initClicks() {
+        binding.filteringIndustriesButton.setOnClickListener {
+            if (isClickDebounce()) {
+                viewModel.chooseButtonClicked()
+            }
+        }
+
+        binding.filteringSectorToolbar.setNavigationOnClickListener {
+            if (isClickDebounce()) {
+                viewModel.proceedBack()
             }
         }
     }
@@ -89,56 +110,56 @@ class FilteringIndustryFragment : Fragment() {
         }
     }
 
+    private fun renderNavigationState(state: IndustryNavigationState) {
+        when (state) {
+            IndustryNavigationState.NavigateEmpty -> findNavController().popBackStack()
+            is IndustryNavigationState.NavigateWithContent -> {
+                val bundle = Bundle()
+                bundle.putParcelable(BUNDLE_KEY_FOR_INDUSTRY, state.industryFilter)
+                setFragmentResult(REQUEST_KEY, bundle)
+                findNavController().popBackStack()
+            }
+        }
+    }
+
+    private fun renderButtonState(state: ButtonState) {
+        when (state) {
+            ButtonState.Gone -> binding.filteringIndustriesButton.isVisible = false
+            ButtonState.Visible -> binding.filteringIndustriesButton.isVisible = true
+        }
+    }
+
+    private fun showLoading() {
+        emptyScreen()
+        industriesAdapter?.items = emptyList()
+        binding.industryScreenProgressBar.isVisible = true
+    }
+
+    private fun showContent(industries: List<IndustryUi>) {
+        emptyScreen()
+        industriesAdapter?.items = industries
+    }
+
     private fun showError(errorStatus: ErrorStatusUi) {
         when (errorStatus) {
-            ErrorStatusUi.NO_CONNECTION,
-            ErrorStatusUi.ERROR_OCCURRED -> {
+            ErrorStatusUi.NO_CONNECTION, ErrorStatusUi.ERROR_OCCURRED -> {
                 emptyScreen()
-                industriesAdapter?.set(emptyList())
+                industriesAdapter?.items = emptyList()
                 binding.industriesScreenErrorPlaceholder.isVisible = true
             }
 
             ErrorStatusUi.NOTHING_FOUND -> {
                 emptyScreen()
-                industriesAdapter?.set(emptyList())
+                industriesAdapter?.items = emptyList()
                 binding.industriesScreenNotFoundPlaceholder.isVisible = true
             }
         }
-    }
-
-    private fun showContent(industries: List<IndustryUi>) {
-        emptyScreen()
-//        industries.forEach { item ->
-//            Log.d("judjin1", item.toString())
-//        }
-//        industriesAdapter?.printItem()
-        industriesAdapter?.set(industries)
-//        industriesAdapter?.printItem()
-    }
-
-    private fun showLoading() {
-        emptyScreen()
-        industriesAdapter?.set(emptyList())
-        binding.industryScreenProgressBar.isVisible = true
     }
 
     private fun emptyScreen() {
         binding.industryScreenProgressBar.isVisible = false
         binding.industriesScreenNotFoundPlaceholder.isVisible = false
         binding.industriesScreenErrorPlaceholder.isVisible = false
-        binding.filteringIndustriesButton.isVisible = false
-    }
-
-    private fun recycleViewInit() {
-        industriesAdapter = RVAdapter2 { item ->
-            if (isClickDebounce()) {
-                viewModel.industryClicked(item.id)
-            }
-        }
-
-        binding.filteringSectorRecyclerView.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        binding.filteringSectorRecyclerView.adapter = industriesAdapter
     }
 
     private fun isClickDebounce(): Boolean {
@@ -154,14 +175,8 @@ class FilteringIndustryFragment : Fragment() {
         return current
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
-
     companion object {
-        private const val CLICK_DEBOUNCE_DELAY_MILLIS = 1000L
-        private const val TOP_POSITION_TO_SCROLL = 0
+        private const val CLICK_DEBOUNCE_DELAY_MILLIS = 300L
         const val REQUEST_KEY = "request key"
         const val BUNDLE_KEY_FOR_INDUSTRY = "bundle key for industry"
     }

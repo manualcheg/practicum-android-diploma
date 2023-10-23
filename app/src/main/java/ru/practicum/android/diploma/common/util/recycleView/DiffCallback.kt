@@ -22,6 +22,6 @@ class DiffCallback(
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         val old = oldList[oldItemPosition]
         val new = newList[newItemPosition]
-        return old.isSelected == new.isSelected && old == new
+        return old == new
     }
 }

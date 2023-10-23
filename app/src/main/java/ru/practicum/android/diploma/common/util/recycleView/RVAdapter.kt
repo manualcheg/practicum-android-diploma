@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.common.util.recycleView
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -98,12 +97,6 @@ class RVAdapter(
             else -> {
                 throw IllegalAccessException("Illegal type: ${items[position]}")
             }
-        }
-    }
-
-    fun printItem() {
-        items.forEach { item ->
-            Log.d("judjin", item.toString())
         }
     }
 
