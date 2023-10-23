@@ -74,21 +74,8 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
     private fun setOnClickListeners() {
 
         binding.choosingWorkplaceToolbar.setNavigationOnClickListener {
-            findNavController().popBackStack(
-                R.id.filteringSettingsFragment,
-                false
-            )
+            findNavController().popBackStack()
         }
-
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    findNavController().popBackStack(
-                        R.id.filteringSettingsFragment,
-                        false
-                    )
-                }
-            })
 
         binding.choosingWorkplaceCountryCustomView.setOnClickListener {
             val direction =
@@ -107,10 +94,7 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
         binding.choosingWorkplaceSelectButtonTextView.setOnClickListener {
             viewModel.addCountryFilter()
             viewModel.addAreaFilter()
-            findNavController().popBackStack(
-                R.id.filteringSettingsFragment,
-                false
-            )
+            findNavController().popBackStack()
         }
 
         binding.choosingWorkplaceCountryCustomView.onButtonClick {
