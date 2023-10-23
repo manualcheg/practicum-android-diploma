@@ -22,7 +22,7 @@ class FiltersLocalDataSourceImpl(
 
     override fun putFilterOptions(options: Filter) {
         filterDataBase.putFilterOptions(options)
-        filterLocalCache.clear()
+        filterLocalCache.clearAll()
     }
 
     override fun addCountry(country: CountryFilter) {
@@ -47,6 +47,26 @@ class FiltersLocalDataSourceImpl(
 
     override fun clearFilterOptions() {
         filterDataBase.clearSavedFilter()
-        filterLocalCache.clear()
+        filterLocalCache.clearAll()
+    }
+
+    override fun clearArea() {
+        filterLocalCache.clearArea()
+    }
+
+    override fun clearIndustry() {
+        filterLocalCache.clearIndustry()
+    }
+
+    override fun clearSalary() {
+        filterLocalCache.clearSalary()
+    }
+
+    override fun clearTempFilterOptions() {
+        filterLocalCache.clearAll()
+    }
+
+    override fun isTempFilterOptionsEmpty(): Boolean {
+        return filterLocalCache.getFilterCache() == null
     }
 }

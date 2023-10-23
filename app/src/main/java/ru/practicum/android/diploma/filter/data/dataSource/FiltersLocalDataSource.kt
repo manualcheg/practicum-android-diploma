@@ -14,4 +14,9 @@ interface FiltersLocalDataSource {
     fun addSalary(salary: Int)
     fun addOnlyWithSalary(option: Boolean)
     fun clearFilterOptions()
+    fun clearArea()
+    fun clearIndustry()
+    fun clearSalary()
+    fun clearTempFilterOptions()
+    fun isTempFilterOptionsEmpty(): Boolean
 }

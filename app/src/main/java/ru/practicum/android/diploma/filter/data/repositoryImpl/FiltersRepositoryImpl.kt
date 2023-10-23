@@ -121,4 +121,24 @@ class FiltersRepositoryImpl(
     override fun clearFilterOptions() {
         filtersLocalDataSourceImpl.clearFilterOptions()
     }
+
+    override fun clearArea() {
+        filtersLocalDataSourceImpl.clearArea()
+    }
+
+    override fun clearIndustry() {
+        filtersLocalDataSourceImpl.clearIndustry()
+    }
+
+    override fun clearSalary() {
+        filtersLocalDataSourceImpl.clearSalary()
+    }
+
+    override fun clearTempFilterOptions() {
+        filtersLocalDataSourceImpl.clearTempFilterOptions()
+    }
+
+    override fun isTempFilterOptionsEmpty(): Boolean {
+        return filtersLocalDataSourceImpl.isTempFilterOptionsEmpty()
+    }
 }
