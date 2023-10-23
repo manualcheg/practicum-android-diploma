@@ -85,12 +85,13 @@ class FilteringCountryFragment : Fragment() {
     private fun recyclerViewInit() {
         countriesAdapter = RVAdapter {
             val item = it as CountryUi
-            val direction =
-                FilteringCountryFragmentDirections.actionFilteringCountryFragmentToFilteringRegionFragment(
-                    CountryFilter(item.id, item.name)
-                )
-            findNavController().navigate(direction)
+            setFragmentResult(
+                REQUEST_KEY,
+                bundleOf(BUNDLE_KEY_FOR_COUNTRY to CountryFilter(item.id, item.name))
+            )
+            findNavController().popBackStack()
         }
+
         binding.filteringCountryRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.filteringCountryRecyclerView.adapter = countriesAdapter

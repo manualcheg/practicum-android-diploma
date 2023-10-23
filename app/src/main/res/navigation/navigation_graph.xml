@@ -42,8 +42,7 @@
         android:id="@+id/teamFragment"
         android:name="ru.practicum.android.diploma.team.ui.fragment.TeamFragment"
         android:label="fragment_team"
-        tools:layout="@layout/fragment_team">
-    </fragment>
+        tools:layout="@layout/fragment_team" />
     <fragment
         android:id="@+id/vacancyFragment"
         android:name="ru.practicum.android.diploma.vacancy.ui.fragment.VacancyFragment"
@@ -100,13 +99,6 @@
         android:name="ru.practicum.android.diploma.filter.ui.fragment.FilteringCountryFragment"
         android:label="fragment_filtering_country"
         tools:layout="@layout/fragment_filtering_country">
-        <action
-            android:id="@+id/action_filteringCountryFragment_to_filteringRegionFragment"
-            app:destination="@id/filteringRegionFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
 
     </fragment>
     <fragment
