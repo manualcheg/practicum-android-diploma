@@ -156,4 +156,16 @@ class FiltersRepositoryImpl(
     override fun setFilterOptionsToCache(filter: Filter?) {
         filtersLocalDataSourceImpl.setFilterOptions(filter)
     }
+
+    override fun getChosenIndustry(): IndustryFilter? {
+        return filtersLocalDataSourceImpl.getFilterOptions()?.industry
+    }
+
+    override fun getChosenArea(): AreaFilter? {
+        return filtersLocalDataSourceImpl.getFilterOptions()?.area
+    }
+
+    override fun getChosenCountry(): CountryFilter? {
+        return filtersLocalDataSourceImpl.getFilterOptions()?.country
+    }
 }
