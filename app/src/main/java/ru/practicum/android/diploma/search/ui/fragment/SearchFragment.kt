@@ -84,12 +84,13 @@ open class SearchFragment : Fragment() {
             renderPaginationLoadingState(it)
         }
 
-        viewModel.observeFilterButtonState().observe(viewLifecycleOwner) {
-            renderButtonState(it)
+        viewModel.observeFilterButtonState().observe(viewLifecycleOwner) { isFilterSet ->
+            renderButtonState(isFilterSet)
+            if (isFilterSet){
+                viewModel.searchFiltered(inputSearchText)
+            }
         }
-
         isClickAllowed = true
-
     }
 
     protected open fun destroyViews() {

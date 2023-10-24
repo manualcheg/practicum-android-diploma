@@ -67,6 +67,12 @@ open class SearchViewModel(
         tracksSearchDebounce(changedText)
     }
 
+    fun searchFiltered(changedText: String) {
+        latestSearchText = changedText
+        nextPage = 0
+        searchNewRequest(changedText)
+    }
+
     open fun onLastItemReached() {
         latestSearchText?.let { searchSameRequest(it) }
     }
