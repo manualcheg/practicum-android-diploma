@@ -6,11 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.domain.model.filter_models.Filter
-import ru.practicum.android.diploma.filter.domain.useCase.AddAreaFilterUseCase
-import ru.practicum.android.diploma.filter.domain.useCase.AddCountryFilterUseCase
-import ru.practicum.android.diploma.filter.domain.useCase.AddIndustryFilterUseCase
-import ru.practicum.android.diploma.filter.domain.useCase.AddOnlyWithSalaryFilterUseCase
-import ru.practicum.android.diploma.filter.domain.useCase.AddSalaryFilterUseCase
 import ru.practicum.android.diploma.filter.domain.useCase.ClearAreaFilterUseCase
 import ru.practicum.android.diploma.filter.domain.useCase.ClearFilterOptionsUseCase
 import ru.practicum.android.diploma.filter.domain.useCase.ClearIndustryFilterUseCase
@@ -19,7 +14,12 @@ import ru.practicum.android.diploma.filter.domain.useCase.ClearTempFilterOptions
 import ru.practicum.android.diploma.filter.domain.useCase.GetFilterOptionsUseCase
 import ru.practicum.android.diploma.filter.domain.useCase.IsTempFilterOptionsEmptyUseCase
 import ru.practicum.android.diploma.filter.domain.useCase.IsTempFilterOptionsExistsUseCase
-import ru.practicum.android.diploma.filter.domain.useCase.PutFilterOptionsUseCase
+import ru.practicum.android.diploma.filter.domain.useCase.SetAreaFilterUseCase
+import ru.practicum.android.diploma.filter.domain.useCase.SetCountryFilterUseCase
+import ru.practicum.android.diploma.filter.domain.useCase.SetFilterOptionsUseCase
+import ru.practicum.android.diploma.filter.domain.useCase.SetIndustryFilterUseCase
+import ru.practicum.android.diploma.filter.domain.useCase.SetOnlyWithSalaryFilterUseCase
+import ru.practicum.android.diploma.filter.domain.useCase.SetSalaryFilterUseCase
 import ru.practicum.android.diploma.filter.ui.mapper.FilterDomainToFilterUiConverter
 import ru.practicum.android.diploma.filter.ui.model.ButtonState
 import ru.practicum.android.diploma.filter.ui.model.ClearFieldButtonNavigationState
@@ -28,15 +28,15 @@ import ru.practicum.android.diploma.filter.ui.model.FilterFieldsState
 class FilteringSettingsViewModel(
     private val getFilterOptionsUseCase: GetFilterOptionsUseCase,
     private val clearFilterOptionsUseCase: ClearFilterOptionsUseCase,
-    private val putFilterOptionsUseCase: PutFilterOptionsUseCase,
-    private val addCountryFilterUseCase: AddCountryFilterUseCase,
-    private val addAreaFilterUseCase: AddAreaFilterUseCase,
-    private val addIndustryFilterUseCase: AddIndustryFilterUseCase,
+    private val setFilterOptionsUseCase: SetFilterOptionsUseCase,
+    private val setCountryFilterUseCase: SetCountryFilterUseCase,
+    private val setAreaFilterUseCase: SetAreaFilterUseCase,
+    private val setIndustryFilterUseCase: SetIndustryFilterUseCase,
     private val clearAreaFilterUseCase: ClearAreaFilterUseCase,
     private val clearIndustryFilterUseCase: ClearIndustryFilterUseCase,
-    private val addSalaryFilterUseCase: AddSalaryFilterUseCase,
+    private val setSalaryFilterUseCase: SetSalaryFilterUseCase,
     private val clearSalaryFilterUseCase: ClearSalaryFilterUseCase,
-    private val addOnlyWithSalaryFilterUseCase: AddOnlyWithSalaryFilterUseCase,
+    private val setOnlyWithSalaryFilterUseCase: SetOnlyWithSalaryFilterUseCase,
     private val clearTempFilterOptionsUseCase: ClearTempFilterOptionsUseCase,
     private val isTempFilterOptionsEmptyUseCase: IsTempFilterOptionsEmptyUseCase,
     private val isTempFilterOptionsExistsUseCase: IsTempFilterOptionsExistsUseCase,
@@ -73,19 +73,18 @@ class FilteringSettingsViewModel(
 
             filter = getFilterOptionsUseCase.execute()
 
-
             val filterUi = filterDomainToFilterUiConverter.mapFilterToFilterUi(filter)
 
             if (filterUi.areaName.isNotBlank()) {
                 areaState.value = FilterFieldsState.Content(
                     text = "${filterUi.areaName}, ${filterUi.countryName}"
                 )
-                filter?.area?.let { addAreaFilterUseCase.execute(it) }
+                filter?.area?.let { setAreaFilterUseCase.execute(it) }
             } else if (filterUi.areaName.isBlank() && filterUi.countryName.isNotBlank()) {
                 areaState.value = FilterFieldsState.Content(
                     text = filterUi.countryName
                 )
-                filter?.country?.let { addCountryFilterUseCase.execute(it) }
+                filter?.country?.let { setCountryFilterUseCase.execute(it) }
             } else {
                 areaState.value = FilterFieldsState.Empty
             }
@@ -94,17 +93,17 @@ class FilteringSettingsViewModel(
                 industryState.value = FilterFieldsState.Content(
                     text = filterUi.industryName
                 )
-                filter?.industry?.let { addIndustryFilterUseCase.execute(it) }
+                filter?.industry?.let { setIndustryFilterUseCase.execute(it) }
             } else {
                 industryState.value = FilterFieldsState.Empty
             }
 
             salaryState.value = filterUi.salary
-            filter?.salary?.let { addSalaryFilterUseCase.execute(it) }
+            filter?.salary?.let { setSalaryFilterUseCase.execute(it) }
 
             onlyWithSalaryState.value = filterUi.onlyWithSalary
             if (filter?.onlyWithSalary == true) {
-                addOnlyWithSalaryFilterUseCase.execute(true)
+                setOnlyWithSalaryFilterUseCase.execute(true)
             }
         }
         updateButtonsStates()
@@ -138,16 +137,17 @@ class FilteringSettingsViewModel(
     }
 
     fun setSalary(salary: Int) {
-        addSalaryFilterUseCase.execute(salary)
+        setSalaryFilterUseCase.execute(salary)
         salaryState.value = salary.toString()
     }
 
     fun setOnlyWithSalary(isChecked: Boolean) {
-        addOnlyWithSalaryFilterUseCase.execute(isChecked)
+        setOnlyWithSalaryFilterUseCase.execute(isChecked)
     }
 
     fun clearAll() {
         clearFilterOptionsUseCase.execute()
+        clearTempFilterOptionsUseCase.execute()
     }
 
     fun clearArea() {
@@ -171,7 +171,7 @@ class FilteringSettingsViewModel(
             clearFilterOptionsUseCase.execute()
         } else {
             getFilterOptionsUseCase.execute()
-                ?.let { filter -> putFilterOptionsUseCase.execute(filter) }
+                ?.let { filter -> setFilterOptionsUseCase.execute(filter) }
             clearTempFilterOptions()
         }
     }

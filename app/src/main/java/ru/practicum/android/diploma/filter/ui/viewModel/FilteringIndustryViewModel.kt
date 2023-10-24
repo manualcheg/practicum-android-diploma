@@ -8,8 +8,8 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.domain.model.filter_models.Industries
 import ru.practicum.android.diploma.common.domain.model.filter_models.IndustryFilter
-import ru.practicum.android.diploma.filter.domain.useCase.AddIndustryFilterUseCase
 import ru.practicum.android.diploma.filter.domain.useCase.GetIndustriesUseCase
+import ru.practicum.android.diploma.filter.domain.useCase.SetIndustryFilterUseCase
 import ru.practicum.android.diploma.filter.ui.mapper.IndustryFilterDomainToIndustryUiConverter
 import ru.practicum.android.diploma.filter.ui.model.ButtonState
 import ru.practicum.android.diploma.filter.ui.model.IndustryNavigationState
@@ -21,7 +21,7 @@ import ru.practicum.android.diploma.search.ui.model.ErrorStatusUi
 class FilteringIndustryViewModel(
     private val getIndustriesUseCase: GetIndustriesUseCase,
     private val industryFilterDomainToIndustryUiConverter: IndustryFilterDomainToIndustryUiConverter,
-    private val addIndustryFilterUseCase: AddIndustryFilterUseCase
+    private val setIndustryFilterUseCase: SetIndustryFilterUseCase
 ) : ViewModel() {
 
     private val stateLiveData = MutableLiveData<IndustryState>()
@@ -94,7 +94,7 @@ class FilteringIndustryViewModel(
     }
 
     fun saveIndustry() {
-        industry?.let { addIndustryFilterUseCase.execute(it) }
+        industry?.let { setIndustryFilterUseCase.execute(it) }
     }
 
     fun proceedBack() {

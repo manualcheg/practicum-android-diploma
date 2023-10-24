@@ -5,15 +5,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.practicum.android.diploma.common.domain.model.filter_models.AreaFilter
 import ru.practicum.android.diploma.common.domain.model.filter_models.CountryFilter
-import ru.practicum.android.diploma.filter.domain.useCase.AddAreaFilterUseCase
-import ru.practicum.android.diploma.filter.domain.useCase.AddCountryFilterUseCase
+import ru.practicum.android.diploma.filter.domain.useCase.SetAreaFilterUseCase
+import ru.practicum.android.diploma.filter.domain.useCase.SetCountryFilterUseCase
 import ru.practicum.android.diploma.filter.ui.mapper.FilterDomainToFilterUiConverter
 import ru.practicum.android.diploma.filter.ui.model.ButtonState
 import ru.practicum.android.diploma.filter.ui.model.FilterFieldsState
 
 class FilteringChoosingWorkplaceViewModel(
-    private val addAreaFilterUseCase: AddAreaFilterUseCase,
-    private val addCountryFilterUseCase: AddCountryFilterUseCase,
+    private val setAreaFilterUseCase: SetAreaFilterUseCase,
+    private val setCountryFilterUseCase: SetCountryFilterUseCase,
     private val filterDomainToFilterUiConverter: FilterDomainToFilterUiConverter,
 ) : ViewModel() {
 
@@ -60,11 +60,11 @@ class FilteringChoosingWorkplaceViewModel(
     }
 
     fun addAreaFilter() {
-        areaFilter?.let { addAreaFilterUseCase.execute(it) }
+        areaFilter?.let { setAreaFilterUseCase.execute(it) }
     }
 
     fun addCountryFilter() {
-        countryFilter?.let { addCountryFilterUseCase.execute(it) }
+        countryFilter?.let { setCountryFilterUseCase.execute(it) }
     }
 
     fun updateSelectButton() {

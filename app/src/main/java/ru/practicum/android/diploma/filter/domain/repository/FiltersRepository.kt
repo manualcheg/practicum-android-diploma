@@ -15,13 +15,13 @@ interface FiltersRepository {
     fun getAreas(areaId: String?): Flow<Resource<Areas>>
     fun getCountries(): Flow<Resource<Countries>>
     fun getIndustries(): Flow<Resource<Industries>>
-    fun addCountry(country: CountryFilter)
-    fun addArea(area: AreaFilter)
-    fun addIndustry(industry: IndustryFilter)
-    fun addSalary(salary: Int)
-    fun addOnlyWithSalary(option: Boolean)
+    fun setCountry(country: CountryFilter)
+    fun setArea(area: AreaFilter)
+    fun setIndustry(industry: IndustryFilter)
+    fun setSalary(salary: Int)
+    fun setOnlyWithSalary(option: Boolean)
     fun getFilterOptions(): Filter?
-    fun putFilterOptions(options: Filter)
+    fun setFilterOptionsToStorage(options: Filter)
     fun clearFilterOptions()
     fun clearArea()
     fun clearIndustry()
@@ -30,5 +30,5 @@ interface FiltersRepository {
     fun isTempFilterOptionsEmpty(): Boolean
     fun isTempFilterOptionsExists(): Boolean
 
-    fun addFilterToTemp(filter: Filter?)
+    fun setFilterOptionsToCache(filter: Filter?)
 }
