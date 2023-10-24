@@ -186,6 +186,7 @@ class FilteringSettingsFragment : Fragment() {
                 if (input != null && input.isBlank()) {
                     salary = input.toString()
                     viewModel.clearSalary()
+                    viewModel.updateButtonsStates()
                 }
             }
 
