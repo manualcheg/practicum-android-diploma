@@ -119,7 +119,7 @@ open class SearchViewModel(
 
 
     private fun searchSameRequest(inputSearchText: String) {
-        if (currentPages >= maxPages || currentPages == PAGE_LIMIT || isNextPageLoading) {
+        if ((currentPages + 1) >= maxPages || currentPages == PAGE_LIMIT || isNextPageLoading) {
             return
         }
         isNextPageLoading = true
