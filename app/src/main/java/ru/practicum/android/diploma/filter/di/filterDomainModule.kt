@@ -3,18 +3,6 @@ package ru.practicum.android.diploma.filter.di
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
-import ru.practicum.android.diploma.filter.domain.useCase.AddAreaFilterUseCase
-import ru.practicum.android.diploma.filter.domain.useCase.AddAreaFilterUseCaseImpl
-import ru.practicum.android.diploma.filter.domain.useCase.AddCountryFilterUseCase
-import ru.practicum.android.diploma.filter.domain.useCase.AddCountryFilterUseCaseImpl
-import ru.practicum.android.diploma.filter.domain.useCase.AddFilterToTempUseCase
-import ru.practicum.android.diploma.filter.domain.useCase.AddFilterToTempUseCaseImpl
-import ru.practicum.android.diploma.filter.domain.useCase.AddIndustryFilterUseCase
-import ru.practicum.android.diploma.filter.domain.useCase.AddIndustryFilterUseCaseImpl
-import ru.practicum.android.diploma.filter.domain.useCase.AddOnlyWithSalaryFilterUseCase
-import ru.practicum.android.diploma.filter.domain.useCase.AddOnlyWithSalaryFilterUseCaseImpl
-import ru.practicum.android.diploma.filter.domain.useCase.AddSalaryFilterUseCase
-import ru.practicum.android.diploma.filter.domain.useCase.AddSalaryFilterUseCaseImpl
 import ru.practicum.android.diploma.filter.domain.useCase.ClearAreaFilterUseCase
 import ru.practicum.android.diploma.filter.domain.useCase.ClearAreaFilterUseCaseImpl
 import ru.practicum.android.diploma.filter.domain.useCase.ClearFilterOptionsUseCase
@@ -37,26 +25,38 @@ import ru.practicum.android.diploma.filter.domain.useCase.IsTempFilterOptionsEmp
 import ru.practicum.android.diploma.filter.domain.useCase.IsTempFilterOptionsEmptyUseCaseImpl
 import ru.practicum.android.diploma.filter.domain.useCase.IsTempFilterOptionsExistsUseCase
 import ru.practicum.android.diploma.filter.domain.useCase.IsTempFilterOptionsExistsUseCaseImpl
-import ru.practicum.android.diploma.filter.domain.useCase.PutFilterOptionsUseCase
-import ru.practicum.android.diploma.filter.domain.useCase.PutFilterOptionsUseCaseImpl
+import ru.practicum.android.diploma.filter.domain.useCase.SetAreaFilterUseCase
+import ru.practicum.android.diploma.filter.domain.useCase.SetAreaFilterUseCaseImpl
+import ru.practicum.android.diploma.filter.domain.useCase.SetCountryFilterUseCase
+import ru.practicum.android.diploma.filter.domain.useCase.SetCountryFilterUseCaseImpl
+import ru.practicum.android.diploma.filter.domain.useCase.SetFilterOptionsUseCase
+import ru.practicum.android.diploma.filter.domain.useCase.SetFilterOptionsUseCaseImpl
+import ru.practicum.android.diploma.filter.domain.useCase.SetFilterToTempUseCase
+import ru.practicum.android.diploma.filter.domain.useCase.SetFilterToTempUseCaseImpl
+import ru.practicum.android.diploma.filter.domain.useCase.SetIndustryFilterUseCase
+import ru.practicum.android.diploma.filter.domain.useCase.SetIndustryFilterUseCaseImpl
+import ru.practicum.android.diploma.filter.domain.useCase.SetOnlyWithSalaryFilterUseCase
+import ru.practicum.android.diploma.filter.domain.useCase.SetOnlyWithSalaryFilterUseCaseImpl
+import ru.practicum.android.diploma.filter.domain.useCase.SetSalaryFilterUseCase
+import ru.practicum.android.diploma.filter.domain.useCase.SetSalaryFilterUseCaseImpl
 
 val filterDomainModule = module {
-    factoryOf(::AddAreaFilterUseCaseImpl) bind AddAreaFilterUseCase::class
-    factoryOf(::AddCountryFilterUseCaseImpl) bind AddCountryFilterUseCase::class
-    factoryOf(::AddIndustryFilterUseCaseImpl) bind AddIndustryFilterUseCase::class
-    factoryOf(::AddOnlyWithSalaryFilterUseCaseImpl) bind AddOnlyWithSalaryFilterUseCase::class
-    factoryOf(::AddSalaryFilterUseCaseImpl) bind AddSalaryFilterUseCase::class
+    factoryOf(::SetAreaFilterUseCaseImpl) bind SetAreaFilterUseCase::class
+    factoryOf(::SetCountryFilterUseCaseImpl) bind SetCountryFilterUseCase::class
+    factoryOf(::SetIndustryFilterUseCaseImpl) bind SetIndustryFilterUseCase::class
+    factoryOf(::SetOnlyWithSalaryFilterUseCaseImpl) bind SetOnlyWithSalaryFilterUseCase::class
+    factoryOf(::SetSalaryFilterUseCaseImpl) bind SetSalaryFilterUseCase::class
     factoryOf(::ClearFilterOptionsUseCaseImpl) bind ClearFilterOptionsUseCase::class
     factoryOf(::GetAreasUseCaseImpl) bind GetAreasUseCase::class
     factoryOf(::GetCountriesUseCaseImpl) bind GetCountriesUseCase::class
     factoryOf(::GetFilterOptionsUseCaseImpl) bind GetFilterOptionsUseCase::class
     factoryOf(::GetIndustriesUseCaseImpl) bind GetIndustriesUseCase::class
-    factoryOf(::PutFilterOptionsUseCaseImpl) bind PutFilterOptionsUseCase::class
+    factoryOf(::SetFilterOptionsUseCaseImpl) bind SetFilterOptionsUseCase::class
     factoryOf(::ClearAreaFilterUseCaseImpl) bind ClearAreaFilterUseCase::class
     factoryOf(::ClearIndustryFilterUseCaseImpl) bind ClearIndustryFilterUseCase::class
     factoryOf(::ClearSalaryFilterUseCaseImpl) bind ClearSalaryFilterUseCase::class
     factoryOf(::ClearTempFilterOptionsUseCaseImpl) bind ClearTempFilterOptionsUseCase::class
     factoryOf(::IsTempFilterOptionsEmptyUseCaseImpl) bind IsTempFilterOptionsEmptyUseCase::class
     factoryOf(::IsTempFilterOptionsExistsUseCaseImpl) bind IsTempFilterOptionsExistsUseCase::class
-    factoryOf(::AddFilterToTempUseCaseImpl) bind AddFilterToTempUseCase::class
+    factoryOf(::SetFilterToTempUseCaseImpl) bind SetFilterToTempUseCase::class
 }

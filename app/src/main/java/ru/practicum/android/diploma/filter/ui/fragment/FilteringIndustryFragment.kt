@@ -14,7 +14,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.databinding.FragmentFilteringIndustryBinding
-import ru.practicum.android.diploma.filter.RecycleViewIndustryAdapter
+import ru.practicum.android.diploma.filter.ui.RecycleViewIndustryAdapter
 import ru.practicum.android.diploma.filter.ui.model.ButtonState
 import ru.practicum.android.diploma.filter.ui.model.IndustryNavigationState
 import ru.practicum.android.diploma.filter.ui.model.IndustryState
