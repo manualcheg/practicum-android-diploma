@@ -104,6 +104,7 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
                 navigateToCountrySelection()
             } else {
                 viewModel.updateCountryField(null)
+                viewModel.updateAreaField(null)
                 viewModel.updateSelectButton()
             }
         }
