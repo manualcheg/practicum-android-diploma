@@ -68,7 +68,7 @@ class FilteringChoosingWorkplaceViewModel(
     }
 
     fun addAreaFilter() {
-        areaFilter?.let { setAreaFilterUseCase.execute(it) }
+        setAreaFilterUseCase.execute(areaFilter)
     }
 
     fun addCountryFilter() {
