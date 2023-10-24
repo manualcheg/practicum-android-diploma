@@ -28,7 +28,8 @@ class RootActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.vacancyFragment, R.id.filteringSettingsFragment, R.id.similarVacancyFragment -> {
+                R.id.vacancyFragment, R.id.filteringSettingsFragment, R.id.similarVacancyFragment,
+                R.id.filteringChoosingWorkplaceFragment, R.id.filteringCountryFragment, R.id.filteringRegionFragment, R.id.filteringSectorFragment -> {
                     if (binding.navigationView.visibility == View.VISIBLE) {
                         binding.navigationView.animation = AnimationUtils.loadAnimation(this, R.anim.slide_out_down)
                         binding.navigationView.animate()

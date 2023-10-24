@@ -5,12 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.custom_view.model.ButtonWithSelectedValuesState
+import ru.practicum.android.diploma.common.domain.model.filter_models.AreaFilter
+import ru.practicum.android.diploma.common.domain.model.filter_models.CountryFilter
 import ru.practicum.android.diploma.databinding.FragmentFilteringChoosingWorkplaceBinding
+import ru.practicum.android.diploma.filter.ui.model.ButtonState
 import ru.practicum.android.diploma.filter.ui.model.FilterFieldsState
 import ru.practicum.android.diploma.filter.ui.viewModel.FilteringChoosingWorkplaceViewModel
 
@@ -21,11 +24,9 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
     private var _binding: FragmentFilteringChoosingWorkplaceBinding? = null
     private val binding get() = _binding!!
 
-    private val args: FilteringChoosingWorkplaceFragmentArgs by navArgs()
+
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentFilteringChoosingWorkplaceBinding.inflate(inflater, container, false)
         return binding.root
@@ -40,24 +41,31 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
         viewModel.regionState.observe(viewLifecycleOwner) {
             renderRegionState(it)
         }
-
-        try {
-            viewModel.countryFilter = args.country
-        } catch (_: Throwable) { }
-
-        try {
-            viewModel.areaFilter = args.region
-        } catch (_: Throwable) { }
-
-        viewModel.loadFilterOptions()
+        viewModel.selectButtonState.observe(viewLifecycleOwner) {
+            renderSelectButtonState(it)
+        }
 
         setOnClickListeners()
-
+        setOnFragmentResultListener()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    private fun setOnFragmentResultListener() {
+
+        setFragmentResultListener(REQUEST_KEY) { _, bundle ->
+            val country = bundle.get(BUNDLE_KEY_FOR_COUNTRY) as CountryFilter?
+            val area = bundle.get(BUNDLE_KEY_FOR_AREA) as AreaFilter?
+            if (country != null) {
+                viewModel.updateCountryField(country)
+            }
+            if (area != null) {
+                viewModel.updateAreaField(area)
+            }
+        }
     }
 
     private fun setOnClickListeners() {
@@ -68,25 +76,37 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
 
         binding.choosingWorkplaceCountryCustomView.setOnClickListener {
             val direction =
-                FilteringChoosingWorkplaceFragmentDirections
-                    .actionFilteringChoosingWorkplaceFragmentToFilteringCountryFragment()
+                FilteringChoosingWorkplaceFragmentDirections.actionFilteringChoosingWorkplaceFragmentToFilteringCountryFragment()
             findNavController().navigate(direction)
         }
 
         binding.choosingWorkplaceAreaCustomView.setOnClickListener {
+            val countryFilter = viewModel.countryFilter
+            val countryFilterId = countryFilter?.id?.toString()
             val direction =
-                FilteringChoosingWorkplaceFragmentDirections
-                    .actionFilteringChoosingWorkplaceFragmentToFilteringRegionFragment(viewModel.countryFilter)
+                FilteringChoosingWorkplaceFragmentDirections.actionFilteringChoosingWorkplaceFragmentToFilteringRegionFragment(
+                    countryFilterId
+                )
             findNavController().navigate(direction)
         }
 
         binding.choosingWorkplaceSelectButtonTextView.setOnClickListener {
-            viewModel.countryFilter?.let { it1 -> viewModel.addCountryFilter(it1) }
-            viewModel.areaFilter?.let { it1 -> viewModel.addAreaFilter(it1) }
+            viewModel.addCountryFilter()
+            viewModel.addAreaFilter()
             findNavController().popBackStack()
         }
-    }
 
+        binding.choosingWorkplaceCountryCustomView.onButtonClick {
+            viewModel.updateCountryField(null)
+            viewModel.updateSelectButton()
+        }
+
+        binding.choosingWorkplaceAreaCustomView.onButtonClick {
+            viewModel.updateAreaField(null)
+            viewModel.updateSelectButton()
+        }
+
+    }
 
     private fun renderCountryState(state: FilterFieldsState) {
         when (state) {
@@ -110,6 +130,7 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
                 )
             }
         }
+        viewModel.updateSelectButton()
     }
 
     private fun renderRegionState(state: FilterFieldsState) {
@@ -134,5 +155,23 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
                 )
             }
         }
+        viewModel.updateSelectButton()
+    }
+
+    private fun renderSelectButtonState(state: ButtonState) {
+        when (state) {
+            is ButtonState.Visible -> binding.choosingWorkplaceSelectButtonTextView.visibility =
+                View.VISIBLE
+
+            is ButtonState.Gone -> {
+                binding.choosingWorkplaceSelectButtonTextView.visibility = View.GONE
+            }
+        }
+    }
+
+    companion object {
+        const val REQUEST_KEY = "request key"
+        const val BUNDLE_KEY_FOR_COUNTRY = "bundle key for country"
+        const val BUNDLE_KEY_FOR_AREA = "bundle key for area"
     }
 }

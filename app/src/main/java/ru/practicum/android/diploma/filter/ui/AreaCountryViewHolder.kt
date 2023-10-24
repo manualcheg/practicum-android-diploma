@@ -2,17 +2,13 @@ package ru.practicum.android.diploma.filter.ui
 
 import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.databinding.ItemCountryAndRegionBinding
-import ru.practicum.android.diploma.filter.ui.model.CountryUi
+import ru.practicum.android.diploma.filter.ui.model.AreaCountryUi
 
-class CountryViewHolder(
+class AreaCountryViewHolder(
     private val binding: ItemCountryAndRegionBinding,
-    private val onSelectCountryButtonClicked: (CountryUi) -> Unit
 ) :
     RecyclerView.ViewHolder(binding.root) {
-    fun bind(item: CountryUi) {
+    fun bind(item: AreaCountryUi) {
         binding.countryItemTextView.text = item.name
-        binding.selectCountryImageView.setOnClickListener {
-            onSelectCountryButtonClicked.invoke(item)
-        }
     }
 }

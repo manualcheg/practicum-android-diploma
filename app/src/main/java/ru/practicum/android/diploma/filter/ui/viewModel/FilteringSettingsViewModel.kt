@@ -6,6 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.domain.model.filter_models.Filter
+import ru.practicum.android.diploma.filter.domain.useCase.AddAreaFilterUseCase
+import ru.practicum.android.diploma.filter.domain.useCase.AddCountryFilterUseCase
+import ru.practicum.android.diploma.filter.domain.useCase.AddIndustryFilterUseCase
 import ru.practicum.android.diploma.filter.domain.useCase.AddOnlyWithSalaryFilterUseCase
 import ru.practicum.android.diploma.filter.domain.useCase.AddSalaryFilterUseCase
 import ru.practicum.android.diploma.filter.domain.useCase.ClearAreaFilterUseCase
@@ -15,6 +18,7 @@ import ru.practicum.android.diploma.filter.domain.useCase.ClearSalaryFilterUseCa
 import ru.practicum.android.diploma.filter.domain.useCase.ClearTempFilterOptionsUseCase
 import ru.practicum.android.diploma.filter.domain.useCase.GetFilterOptionsUseCase
 import ru.practicum.android.diploma.filter.domain.useCase.IsTempFilterOptionsEmptyUseCase
+import ru.practicum.android.diploma.filter.domain.useCase.IsTempFilterOptionsExistsUseCase
 import ru.practicum.android.diploma.filter.domain.useCase.PutFilterOptionsUseCase
 import ru.practicum.android.diploma.filter.ui.mapper.FilterDomainToFilterUiConverter
 import ru.practicum.android.diploma.filter.ui.model.ButtonState
@@ -23,22 +27,24 @@ import ru.practicum.android.diploma.filter.ui.model.FilterFieldsState
 
 class FilteringSettingsViewModel(
     private val getFilterOptionsUseCase: GetFilterOptionsUseCase,
-    private val filterDomainToFilterUiConverter: FilterDomainToFilterUiConverter,
-    private val addSalaryFilterUseCase: AddSalaryFilterUseCase,
-    private val addOnlyWithSalaryFilterUseCase: AddOnlyWithSalaryFilterUseCase,
     private val clearFilterOptionsUseCase: ClearFilterOptionsUseCase,
+    private val putFilterOptionsUseCase: PutFilterOptionsUseCase,
+    private val addCountryFilterUseCase: AddCountryFilterUseCase,
+    private val addAreaFilterUseCase: AddAreaFilterUseCase,
+    private val addIndustryFilterUseCase: AddIndustryFilterUseCase,
     private val clearAreaFilterUseCase: ClearAreaFilterUseCase,
     private val clearIndustryFilterUseCase: ClearIndustryFilterUseCase,
+    private val addSalaryFilterUseCase: AddSalaryFilterUseCase,
     private val clearSalaryFilterUseCase: ClearSalaryFilterUseCase,
-    private val putFilterOptionsUseCase: PutFilterOptionsUseCase,
+    private val addOnlyWithSalaryFilterUseCase: AddOnlyWithSalaryFilterUseCase,
     private val clearTempFilterOptionsUseCase: ClearTempFilterOptionsUseCase,
-    private val isTempFilterOptionsEmptyUseCase: IsTempFilterOptionsEmptyUseCase
+    private val isTempFilterOptionsEmptyUseCase: IsTempFilterOptionsEmptyUseCase,
+    private val isTempFilterOptionsExistsUseCase: IsTempFilterOptionsExistsUseCase,
+    private val filterDomainToFilterUiConverter: FilterDomainToFilterUiConverter
 ) : ViewModel() {
 
-    private val areaState =
-        MutableLiveData<FilterFieldsState>(FilterFieldsState.Empty)
-    private val industryState =
-        MutableLiveData<FilterFieldsState>(FilterFieldsState.Empty)
+    private val areaState = MutableLiveData<FilterFieldsState>(FilterFieldsState.Empty)
+    private val industryState = MutableLiveData<FilterFieldsState>(FilterFieldsState.Empty)
     private val salaryState = MutableLiveData<String>(null)
     private val onlyWithSalaryState = MutableLiveData(false)
     private val clearAreaButtonNavigation = MutableLiveData<ClearFieldButtonNavigationState>()
@@ -64,37 +70,55 @@ class FilteringSettingsViewModel(
 
     fun updateStates() {
         viewModelScope.launch {
+
             filter = getFilterOptionsUseCase.execute()
+
+
             val filterUi = filterDomainToFilterUiConverter.mapFilterToFilterUi(filter)
 
             if (filterUi.areaName.isNotBlank()) {
                 areaState.value = FilterFieldsState.Content(
                     text = "${filterUi.areaName}, ${filterUi.countryName}"
                 )
+                filter?.area?.let { addAreaFilterUseCase.execute(it) }
             } else if (filterUi.areaName.isBlank() && filterUi.countryName.isNotBlank()) {
                 areaState.value = FilterFieldsState.Content(
                     text = filterUi.countryName
                 )
-            } else areaState.value = FilterFieldsState.Empty
+                filter?.country?.let { addCountryFilterUseCase.execute(it) }
+            } else {
+                areaState.value = FilterFieldsState.Empty
+            }
 
-            if (filterUi.industryName.isNotBlank())
+            if (filterUi.industryName.isNotBlank()) {
                 industryState.value = FilterFieldsState.Content(
                     text = filterUi.industryName
-                ) else areaState.value = FilterFieldsState.Empty
+                )
+                filter?.industry?.let { addIndustryFilterUseCase.execute(it) }
+            } else {
+                industryState.value = FilterFieldsState.Empty
+            }
 
             salaryState.value = filterUi.salary
-            onlyWithSalaryState.value = filterUi.onlyWithSalary
+            filter?.salary?.let { addSalaryFilterUseCase.execute(it) }
 
-            setButtonsStates(filter)
+            onlyWithSalaryState.value = filterUi.onlyWithSalary
+            if (filter?.onlyWithSalary == true) {
+                addOnlyWithSalaryFilterUseCase.execute(true)
+            }
         }
+        updateButtonsStates()
     }
+
 
     fun updateButtonsStates() {
-        setButtonsStates(getFilterOptionsUseCase.execute())
+        setButtonsStates(
+            isTempFiltersNotEmpty = isTempFilterOptionsExistsUseCase.execute()
+        )
     }
 
-    private fun setButtonsStates(filter: Filter?) {
-        if (filter != null) {
+    private fun setButtonsStates(isTempFiltersNotEmpty: Boolean) {
+        if (isTempFiltersNotEmpty) {
             applyButtonState.value = ButtonState.Visible
             resetButtonState.value = ButtonState.Visible
         } else {
@@ -105,20 +129,12 @@ class FilteringSettingsViewModel(
 
     fun clearAreaButtonClicked() {
         clearArea()
-        updateStates()
-
-//        if (areaState.value is FilterFieldsState.Content) {
-//            clearAreaButtonNavigation.value = ClearFieldButtonNavigationState.ClearField
-//        } else clearAreaButtonNavigation.value = ClearFieldButtonNavigationState.Navigate
+        updateButtonsStates()
     }
 
     fun clearIndustryButtonClicked() {
         clearIndustry()
-        updateStates()
-
-//        if (industryState.value is FilterFieldsState.Content) {
-//            clearAreaButtonNavigation.value = ClearFieldButtonNavigationState.ClearField
-//        } else clearAreaButtonNavigation.value = ClearFieldButtonNavigationState.Navigate
+        updateButtonsStates()
     }
 
     fun setSalary(salary: Int) {
@@ -137,6 +153,7 @@ class FilteringSettingsViewModel(
     fun clearArea() {
         areaState.value = FilterFieldsState.Empty
         clearAreaFilterUseCase.execute()
+
     }
 
     fun clearIndustry() {
@@ -153,7 +170,9 @@ class FilteringSettingsViewModel(
         if (isTempFilterOptionsEmptyUseCase.execute()) {
             clearFilterOptionsUseCase.execute()
         } else {
-            getFilterOptionsUseCase.execute()?.let { filter ->  putFilterOptionsUseCase.execute(filter) }
+            getFilterOptionsUseCase.execute()
+                ?.let { filter -> putFilterOptionsUseCase.execute(filter) }
+            clearTempFilterOptions()
         }
     }
 

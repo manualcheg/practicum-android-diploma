@@ -35,7 +35,7 @@ interface HeadHunterApiService {
 
     @GET("/areas/{area_id}")
     suspend fun getAreasById(
-        @Path("area_id") areaId: Int
+        @Path("area_id") areaId: String
     ): AreasDto
 
 }

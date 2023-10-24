@@ -7,37 +7,35 @@ import ru.practicum.android.diploma.common.domain.model.filter_models.AreaFilter
 import ru.practicum.android.diploma.common.domain.model.filter_models.CountryFilter
 import ru.practicum.android.diploma.filter.domain.useCase.AddAreaFilterUseCase
 import ru.practicum.android.diploma.filter.domain.useCase.AddCountryFilterUseCase
-import ru.practicum.android.diploma.filter.domain.useCase.GetFilterOptionsUseCase
 import ru.practicum.android.diploma.filter.ui.mapper.FilterDomainToFilterUiConverter
+import ru.practicum.android.diploma.filter.ui.model.ButtonState
 import ru.practicum.android.diploma.filter.ui.model.FilterFieldsState
 
 class FilteringChoosingWorkplaceViewModel(
     private val addAreaFilterUseCase: AddAreaFilterUseCase,
     private val addCountryFilterUseCase: AddCountryFilterUseCase,
-    private val getFilterOptionsUseCase: GetFilterOptionsUseCase,
     private val filterDomainToFilterUiConverter: FilterDomainToFilterUiConverter,
 ) : ViewModel() {
 
-    private val _countryState = MutableLiveData<FilterFieldsState>()
+    var countryFilter: CountryFilter? = null
+    private var areaFilter: AreaFilter? = null
+
+    private val _countryState = MutableLiveData<FilterFieldsState>(FilterFieldsState.Empty)
     val countryState: LiveData<FilterFieldsState> = _countryState
 
-    private val _regionState = MutableLiveData<FilterFieldsState>()
+    private val _regionState = MutableLiveData<FilterFieldsState>(FilterFieldsState.Empty)
     val regionState: LiveData<FilterFieldsState> = _regionState
 
-    var countryFilter: CountryFilter? = null
-    var areaFilter: AreaFilter? = null
+    private val _selectButtonState = MutableLiveData<ButtonState>(ButtonState.Gone)
+    val selectButtonState: LiveData<ButtonState> = _selectButtonState
 
-    init {
-        initializeCountryAndArea()
-        loadFilterOptions()
-    }
 
-    fun loadFilterOptions() {
+    fun updateCountryField(countryFilter: CountryFilter?) {
 
         if (countryFilter != null) {
             setCountryState(
                 FilterFieldsState.Content(
-                    filterDomainToFilterUiConverter.mapCountryFilterToCountryUi(countryFilter!!).name
+                    filterDomainToFilterUiConverter.mapCountryFilterToCountryUi(countryFilter).name
                 )
             )
         } else {
@@ -45,30 +43,36 @@ class FilteringChoosingWorkplaceViewModel(
                 FilterFieldsState.Empty
             )
         }
+        this.countryFilter = countryFilter
+    }
 
+    fun updateAreaField(areaFilter: AreaFilter?) {
         if (areaFilter != null) {
             setRegionState(
                 FilterFieldsState.Content(
-                    filterDomainToFilterUiConverter.mapAreaFilterToRegionIndustryUi(areaFilter!!).name
+                    filterDomainToFilterUiConverter.mapAreaFilterToRegionIndustryUi(areaFilter).name
                 )
             )
         } else {
             setRegionState(FilterFieldsState.Empty)
         }
+        this.areaFilter = areaFilter
     }
 
-    fun addAreaFilter(area: AreaFilter) {
-        addAreaFilterUseCase.execute(area)
+    fun addAreaFilter() {
+        areaFilter?.let { addAreaFilterUseCase.execute(it) }
     }
 
-    fun addCountryFilter(country: CountryFilter) {
-        addCountryFilterUseCase.execute(country)
+    fun addCountryFilter() {
+        countryFilter?.let { addCountryFilterUseCase.execute(it) }
     }
 
-    private fun initializeCountryAndArea() {
-        val filter = getFilterOptionsUseCase.execute()
-        countryFilter = filter?.country
-        areaFilter = filter?.area
+    fun updateSelectButton() {
+        if (countryFilter != null || areaFilter != null) {
+            setSelectButtonState(ButtonState.Visible)
+        } else {
+            setSelectButtonState(ButtonState.Gone)
+        }
     }
 
     private fun setCountryState(state: FilterFieldsState) {
@@ -77,5 +81,9 @@ class FilteringChoosingWorkplaceViewModel(
 
     private fun setRegionState(state: FilterFieldsState) {
         _regionState.value = state
+    }
+
+    private fun setSelectButtonState(state: ButtonState) {
+        _selectButtonState.value = state
     }
 }

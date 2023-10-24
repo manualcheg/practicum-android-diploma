@@ -9,8 +9,7 @@ import ru.practicum.android.diploma.filter.data.db.FilterDataBase
 import ru.practicum.android.diploma.filter.data.db.FilterLocalCache
 
 class FiltersLocalDataSourceImpl(
-    private val filterDataBase: FilterDataBase,
-    private val filterLocalCache: FilterLocalCache
+    private val filterDataBase: FilterDataBase, private val filterLocalCache: FilterLocalCache
 ) : FiltersLocalDataSource {
     override fun getFilterOptions(): Filter? {
         return if (filterLocalCache.getFilterCache() == null) {
@@ -24,6 +23,7 @@ class FiltersLocalDataSourceImpl(
         filterDataBase.putFilterOptions(options)
         filterLocalCache.clearAll()
     }
+
 
     override fun addCountry(country: CountryFilter) {
         filterLocalCache.addCountry(country)
@@ -67,6 +67,17 @@ class FiltersLocalDataSourceImpl(
     }
 
     override fun isTempFilterOptionsEmpty(): Boolean {
-        return filterLocalCache.getFilterCache() == null
+        val filter = filterLocalCache.getFilterCache()
+        return if (filter != null) {
+            filter.country == null && filter.area == null && filter.industry == null && filter.salary == null && !filter.onlyWithSalary
+        } else true
+    }
+
+    override fun addFilterToCache(filter: Filter?) {
+        filterLocalCache.addFilterToCache(filter)
+    }
+
+    override fun isTempFilterOptionsExists(): Boolean {
+        return filterLocalCache.getFilterCache() != null
     }
 }
