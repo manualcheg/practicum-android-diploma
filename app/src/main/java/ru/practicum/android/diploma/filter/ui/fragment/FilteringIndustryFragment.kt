@@ -59,7 +59,7 @@ class FilteringIndustryFragment : Fragment() {
 
         binding.filteringSectorEditText.doOnTextChanged { text, _, _, _ ->
             if (text != null) {
-                viewModel.searchIndustry(text.toString().trim())
+                viewModel.searchIndustryDebounce(text.toString().trim())
             }
         }
     }
@@ -177,6 +177,6 @@ class FilteringIndustryFragment : Fragment() {
     }
 
     companion object {
-        private const val CLICK_DEBOUNCE_DELAY_MILLIS = 300L
+        private const val CLICK_DEBOUNCE_DELAY_MILLIS = 200L
     }
 }
