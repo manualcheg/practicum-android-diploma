@@ -59,7 +59,7 @@ class FilteringIndustryFragment : Fragment() {
 
         binding.filteringSectorEditText.doOnTextChanged { text, _, _, _ ->
             if (text != null) {
-                viewModel.searchIndustry(text.toString())
+                viewModel.searchIndustry(text.toString().trim())
             }
         }
     }
