@@ -9,7 +9,7 @@ interface FilterLocalCache {
     fun getFilterCache(): Filter?
     fun addFilterToCache(filter: Filter?)
     fun addCountry(country: CountryFilter)
-    fun addArea(area: AreaFilter)
+    fun addArea(area: AreaFilter?)
     fun addIndustry(industry: IndustryFilter)
     fun addSalary(salary: Int)
     fun addOnlyWithSalary(isOnlyWithSalary: Boolean)

@@ -109,7 +109,7 @@ class FiltersRepositoryImpl(
         filtersLocalDataSourceImpl.setCountry(country)
     }
 
-    override fun setArea(area: AreaFilter) {
+    override fun setArea(area: AreaFilter?) {
         filtersLocalDataSourceImpl.setArea(area)
     }
 
@@ -154,7 +154,7 @@ class FiltersRepositoryImpl(
     }
 
     override fun setFilterOptionsToCache(filter: Filter?) {
-        filtersLocalDataSourceImpl.setFilterOptions(filter)
+        filtersLocalDataSourceImpl.addFilterToCache(filter)
     }
 
     override fun getChosenIndustry(): IndustryFilter? {

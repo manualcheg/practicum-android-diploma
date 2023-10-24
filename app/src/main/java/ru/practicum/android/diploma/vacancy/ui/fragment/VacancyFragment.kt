@@ -17,9 +17,8 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.common.ui.model.PhoneUi
-import ru.practicum.android.diploma.common.util.recycleView.RVAdapter
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
+import ru.practicum.android.diploma.vacancy.ui.RecycleViewContactsAdapter
 import ru.practicum.android.diploma.vacancy.ui.model.VacancyState
 import ru.practicum.android.diploma.vacancy.ui.viewModel.VacancyViewModel
 
@@ -34,7 +33,7 @@ class VacancyFragment : Fragment() {
     private var _binding: FragmentVacancyBinding? = null
     private val binding get() = _binding!!
 
-    private var phonesAdapter: RVAdapter? = null
+    private var phonesAdapter: RecycleViewContactsAdapter? = null
 
     private var vacancyId: Int? = null
     private val args: VacancyFragmentArgs by navArgs()
@@ -128,8 +127,8 @@ class VacancyFragment : Fragment() {
     }
 
     private fun initializePhonesAdapter() {
-        phonesAdapter = RVAdapter { item ->
-            viewModel.dialPhone((item as PhoneUi).formattedNumber)
+        phonesAdapter = RecycleViewContactsAdapter { item ->
+            viewModel.dialPhone(item.formattedNumber)
         }
         binding.vacancyContactsPhoneRecycleView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)

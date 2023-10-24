@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,7 +21,7 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.ui.model.VacancyUi
-import ru.practicum.android.diploma.common.util.recycleView.RVAdapter
+import ru.practicum.android.diploma.common.util.recycleView.RecycleViewVacancyAdapter
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.search.ui.model.ErrorStatusUi
 import ru.practicum.android.diploma.search.ui.model.SearchError
@@ -36,7 +37,7 @@ open class SearchFragment : Fragment() {
     private val viewModel: SearchViewModel by viewModel()
 
     private var textWatcher: TextWatcher? = null
-    protected var vacanciesAdapter: RVAdapter? = null
+    protected var vacanciesAdapter: RecycleViewVacancyAdapter? = null
 
     private var inputSearchText: String = DEFAULT_TEXT
     protected var isClickAllowed = true
@@ -64,6 +65,7 @@ open class SearchFragment : Fragment() {
 
     protected open fun initViews() {
         recycleViewInit()
+        fragmentResultListenerInit()
         setOnClicksAndActions()
         setOnTextWatchersTextChangeListeners()
         setOnScrollForRecycleView(
@@ -84,12 +86,20 @@ open class SearchFragment : Fragment() {
             renderPaginationLoadingState(it)
         }
 
-        viewModel.observeFilterButtonState().observe(viewLifecycleOwner) {
-            renderButtonState(it)
+        viewModel.observeFilterButtonState().observe(viewLifecycleOwner) { isFilterSet ->
+            renderButtonState(isFilterSet)
         }
 
         isClickAllowed = true
+    }
 
+    private fun fragmentResultListenerInit() {
+        setFragmentResultListener(IS_SEARCH_WITH_NEW_FILTER_NEED) { _, bundle ->
+            val isNewFilterSet = bundle.getBoolean(IS_SEARCH_WITH_NEW_FILTER_NEED)
+            if (isNewFilterSet){
+                viewModel.searchWithNewFilter(inputSearchText)
+            }
+        }
     }
 
     protected open fun destroyViews() {
@@ -100,7 +110,7 @@ open class SearchFragment : Fragment() {
     }
 
     protected open fun recycleViewInit() {
-        vacanciesAdapter = RVAdapter { vacancy ->
+        vacanciesAdapter = RecycleViewVacancyAdapter { vacancy ->
             if (isClickDebounce()) {
                 val direction =
                     SearchFragmentDirections.actionSearchFragmentToVacancyFragment(vacancy.id)
@@ -240,7 +250,7 @@ open class SearchFragment : Fragment() {
     }
 
     protected fun setOnScrollForRecycleView(
-        recyclerView: RecyclerView, adapter: RVAdapter?, viewModel: SearchViewModel
+        recyclerView: RecyclerView, adapter: RecycleViewVacancyAdapter?, viewModel: SearchViewModel
     ) {
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -333,5 +343,6 @@ open class SearchFragment : Fragment() {
     companion object {
         const val DEFAULT_TEXT = ""
         private const val CLICK_DEBOUNCE_DELAY_MILLIS = 1000L
+        private const val IS_SEARCH_WITH_NEW_FILTER_NEED = "Is search with new filter need"
     }
 }

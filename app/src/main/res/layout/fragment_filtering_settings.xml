@@ -39,6 +39,7 @@
         style="@style/SalaryInputLayout"
         app:endIconMode="clear_text"
         app:endIconDrawable="@drawable/ic_cross"
+        app:endIconTint="@color/black_universal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_vertical"

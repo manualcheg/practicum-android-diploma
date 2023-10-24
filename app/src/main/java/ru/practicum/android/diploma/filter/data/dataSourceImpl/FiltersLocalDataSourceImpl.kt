@@ -14,15 +14,12 @@ class FiltersLocalDataSourceImpl(
         return filterLocalCache.getFilterCache()
     }
 
-    override fun setFilterOptions(filter: Filter?) {
-        filterLocalCache.addFilterToCache(filter)
-    }
 
     override fun setCountry(country: CountryFilter) {
         filterLocalCache.addCountry(country)
     }
 
-    override fun setArea(area: AreaFilter) {
+    override fun setArea(area: AreaFilter?) {
         filterLocalCache.addArea(area)
     }
 
@@ -63,6 +60,10 @@ class FiltersLocalDataSourceImpl(
         return if (filter != null) {
             filter.country == null && filter.area == null && filter.industry == null && filter.salary == null && !filter.onlyWithSalary
         } else true
+    }
+
+    override fun addFilterToCache(filter: Filter?) {
+        filterLocalCache.addFilterToCache(filter)
     }
 
     override fun isTempFilterOptionsExists(): Boolean {

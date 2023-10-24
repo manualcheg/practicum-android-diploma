@@ -8,6 +8,7 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.domain.model.filter_models.Industries
 import ru.practicum.android.diploma.common.domain.model.filter_models.IndustryFilter
+import ru.practicum.android.diploma.common.util.debounce
 import ru.practicum.android.diploma.filter.domain.useCase.GetChosenIndustryUseCase
 import ru.practicum.android.diploma.filter.domain.useCase.GetIndustriesUseCase
 import ru.practicum.android.diploma.filter.domain.useCase.SetIndustryFilterUseCase
@@ -42,11 +43,18 @@ class FilteringIndustryViewModel(
             setState(IndustryState.Error(ErrorStatusUi.ERROR_OCCURRED))
         }
 
+    private val searchDebounce =
+        debounce<String>(SEARCH_DEBOUNCE_DELAY_MILLIS, viewModelScope, true) {
+            searchIndustry(it)
+        }
+
+    private var latestSearchText: String? = null
+
+
     init {
         industry = getChosenIndustryUseCase.execute()
 
         stateLiveData.value = IndustryState.Loading
-
 
         viewModelScope.launch(coroutineExceptionHandler) {
             getIndustriesUseCase.execute().collect { pair ->
@@ -65,6 +73,15 @@ class FilteringIndustryViewModel(
     fun observeRecycleViewScrollState(): LiveData<Int> = recycleViewScrollState
 
     fun searchIndustry(query: String) {
+    fun searchIndustryDebounce(changedText: String) {
+        if (changedText == latestSearchText) {
+            return
+        }
+        latestSearchText = changedText
+        searchDebounce(changedText)
+    }
+
+    private fun searchIndustry(query: String) {
         if (query.isBlank()) {
             setState(IndustryState.Success.Content(industriesListUi))
         } else {
@@ -174,5 +191,9 @@ class FilteringIndustryViewModel(
         if (industry != null) {
             setButtonState(ButtonState.Visible)
         } else setButtonState(ButtonState.Gone)
+    }
+
+    companion object {
+        private const val SEARCH_DEBOUNCE_DELAY_MILLIS = 500L
     }
 }

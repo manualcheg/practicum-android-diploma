@@ -1,9 +1,10 @@
-package ru.practicum.android.diploma.common.util.recycleView
+package ru.practicum.android.diploma.vacancy.ui
 
 import androidx.recyclerview.widget.DiffUtil
+import ru.practicum.android.diploma.common.ui.model.PhoneUi
 
-class DiffCallback(
-    private val oldList: List<ItemUiBase>, private val newList: List<ItemUiBase>
+class DiffCallbackContact(
+    private val oldList: List<PhoneUi>, private val newList: List<PhoneUi>
 ) : DiffUtil.Callback() {
     override fun getOldListSize(): Int {
         return oldList.size
