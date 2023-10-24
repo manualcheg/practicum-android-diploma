@@ -1,15 +1,20 @@
 package ru.practicum.android.diploma.filter.ui.fragment
 
+import android.content.Context
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.annotation.ColorRes
+import androidx.core.content.ContextCompat
 import androidx.activity.addCallback
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.textfield.TextInputLayout
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.custom_view.ButtonWithSelectedValues
@@ -88,6 +93,7 @@ class FilteringSettingsFragment : Fragment() {
             viewModel.clearSalary()
             viewModel.updateButtonsStates()
             binding.selectedEnterTheAmountTextInputEditText.clearFocus()
+            setTextInputLayoutHintColor(binding.enterTheAmountTextInputLayout, requireContext(), R.color.gray_white)
         }
 
         binding.filteringSettingsOnlyWithSalaryCheckbox.setOnClickListener {
@@ -189,6 +195,18 @@ class FilteringSettingsFragment : Fragment() {
                 }
             }
 
+            binding.selectedEnterTheAmountTextInputEditText.setOnFocusChangeListener { _, hasFocus ->
+                if (hasFocus){
+                    setTextInputLayoutHintColor(binding.enterTheAmountTextInputLayout, requireContext(), R.color.blue)
+                } else {
+                    if ( salary == "" || salary.isBlank()){
+                        setTextInputLayoutHintColor(binding.enterTheAmountTextInputLayout, requireContext(), R.color.gray_white)
+                    } else {
+                        setTextInputLayoutHintColor(binding.enterTheAmountTextInputLayout, requireContext(), R.color.black_universal)
+                    }
+                }
+            }
+
             binding.filteringSettingsOnlyWithSalaryCheckbox.setOnCheckedChangeListener { _, isChecked ->
                 binding.selectedEnterTheAmountTextInputEditText.clearFocus()
                 viewModel.setOnlyWithSalary(isChecked)
@@ -220,6 +238,10 @@ class FilteringSettingsFragment : Fragment() {
                 )
             )
         }
+    }
+
+    private fun setTextInputLayoutHintColor(textInputLayout: TextInputLayout, context: Context, @ColorRes colorIdRes: Int) {
+        textInputLayout.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(context, colorIdRes))
     }
 
     companion object {
