@@ -31,4 +31,8 @@ interface FiltersRepository {
     fun isTempFilterOptionsExists(): Boolean
 
     fun setFilterOptionsToCache(filter: Filter?)
+
+    fun getChosenIndustry(): IndustryFilter?
+    fun getChosenArea(): AreaFilter?
+    fun getChosenCountry(): CountryFilter?
 }
