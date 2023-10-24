@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.filter.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -64,9 +65,16 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
             val area = bundle.get(BUNDLE_KEY_FOR_AREA) as AreaFilter?
             if (country != null) {
                 viewModel.updateCountryField(country)
+                viewModel.updateAreaField(null)
             }
             if (area != null) {
                 viewModel.updateAreaField(area)
+                viewModel.updateCountryField(
+                    CountryFilter(
+                        id = area.countryId,
+                        name = area.countryName
+                    )
+                )
             }
         }
     }
@@ -96,6 +104,7 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
                 navigateToCountrySelection()
             } else {
                 viewModel.updateCountryField(null)
+                viewModel.updateAreaField(null)
                 viewModel.updateSelectButton()
             }
         }

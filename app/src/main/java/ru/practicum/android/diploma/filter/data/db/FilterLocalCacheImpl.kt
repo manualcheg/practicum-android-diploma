@@ -25,7 +25,7 @@ class FilterLocalCacheImpl : FilterLocalCache {
         )
     }
 
-    override fun addArea(area: AreaFilter) {
+    override fun addArea(area: AreaFilter?) {
         filterCache = Filter(
             country = filterCache?.country,
             area = area,

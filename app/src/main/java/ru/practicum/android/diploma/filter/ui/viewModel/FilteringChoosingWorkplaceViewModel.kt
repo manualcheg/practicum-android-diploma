@@ -39,6 +39,7 @@ class FilteringChoosingWorkplaceViewModel(
     }
 
     fun updateCountryField(countryFilter: CountryFilter?) {
+
         if (countryFilter != null) {
             setCountryState(
                 FilterFieldsState.Content(
@@ -67,7 +68,7 @@ class FilteringChoosingWorkplaceViewModel(
     }
 
     fun addAreaFilter() {
-        areaFilter?.let { setAreaFilterUseCase.execute(it) }
+        setAreaFilterUseCase.execute(areaFilter)
     }
 
     fun addCountryFilter() {
