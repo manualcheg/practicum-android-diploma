@@ -94,7 +94,7 @@ class FiltersRepositoryImpl(
         filtersLocalDataSourceImpl.addCountry(country)
     }
 
-    override fun addArea(area: AreaFilter) {
+    override fun addArea(area: AreaFilter?) {
         filtersLocalDataSourceImpl.addArea(area)
     }
 

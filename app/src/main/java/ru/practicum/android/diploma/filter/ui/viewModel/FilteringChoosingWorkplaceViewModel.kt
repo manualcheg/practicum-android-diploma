@@ -7,6 +7,7 @@ import ru.practicum.android.diploma.common.domain.model.filter_models.AreaFilter
 import ru.practicum.android.diploma.common.domain.model.filter_models.CountryFilter
 import ru.practicum.android.diploma.filter.domain.useCase.AddAreaFilterUseCase
 import ru.practicum.android.diploma.filter.domain.useCase.AddCountryFilterUseCase
+import ru.practicum.android.diploma.filter.domain.useCase.GetFilterOptionsUseCase
 import ru.practicum.android.diploma.filter.ui.mapper.FilterDomainToFilterUiConverter
 import ru.practicum.android.diploma.filter.ui.model.ButtonState
 import ru.practicum.android.diploma.filter.ui.model.FilterFieldsState
@@ -15,6 +16,7 @@ class FilteringChoosingWorkplaceViewModel(
     private val addAreaFilterUseCase: AddAreaFilterUseCase,
     private val addCountryFilterUseCase: AddCountryFilterUseCase,
     private val filterDomainToFilterUiConverter: FilterDomainToFilterUiConverter,
+    private val getFilterOptionsUseCase: GetFilterOptionsUseCase,
 ) : ViewModel() {
 
     var countryFilter: CountryFilter? = null
@@ -28,6 +30,10 @@ class FilteringChoosingWorkplaceViewModel(
 
     private val _selectButtonState = MutableLiveData<ButtonState>(ButtonState.Gone)
     val selectButtonState: LiveData<ButtonState> = _selectButtonState
+
+    init {
+        loadAreaAndCountryFromDataSource()
+    }
 
 
     fun updateCountryField(countryFilter: CountryFilter?) {
@@ -46,6 +52,11 @@ class FilteringChoosingWorkplaceViewModel(
         this.countryFilter = countryFilter
     }
 
+//    fun updateCountryFieldFromArea(areaFilter: AreaFilter?){
+//
+//    }
+
+
     fun updateAreaField(areaFilter: AreaFilter?) {
         if (areaFilter != null) {
             setRegionState(
@@ -59,8 +70,9 @@ class FilteringChoosingWorkplaceViewModel(
         this.areaFilter = areaFilter
     }
 
+
     fun addAreaFilter() {
-        areaFilter?.let { addAreaFilterUseCase.execute(it) }
+        addAreaFilterUseCase.execute((areaFilter))
     }
 
     fun addCountryFilter() {
@@ -73,6 +85,12 @@ class FilteringChoosingWorkplaceViewModel(
         } else {
             setSelectButtonState(ButtonState.Gone)
         }
+    }
+
+    private fun loadAreaAndCountryFromDataSource() {
+        val filterOptions = getFilterOptionsUseCase.execute()
+        updateCountryField(filterOptions?.country)
+        updateAreaField(filterOptions?.area)
     }
 
     private fun setCountryState(state: FilterFieldsState) {

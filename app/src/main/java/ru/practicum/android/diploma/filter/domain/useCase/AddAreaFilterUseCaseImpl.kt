@@ -5,7 +5,7 @@ import ru.practicum.android.diploma.filter.domain.repository.FiltersRepository
 
 class AddAreaFilterUseCaseImpl(private val filtersRepository: FiltersRepository) :
     AddAreaFilterUseCase {
-    override fun execute(area: AreaFilter) {
+    override fun execute(area: AreaFilter?) {
 
         filtersRepository.addArea(area)
     }

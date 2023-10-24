@@ -29,7 +29,7 @@ class FiltersLocalDataSourceImpl(
         filterLocalCache.addCountry(country)
     }
 
-    override fun addArea(area: AreaFilter) {
+    override fun addArea(area: AreaFilter?) {
         filterLocalCache.addArea(area)
     }
 
