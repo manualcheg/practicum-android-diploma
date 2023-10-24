@@ -72,7 +72,6 @@ class FilteringIndustryViewModel(
 
     fun observeRecycleViewScrollState(): LiveData<Int> = recycleViewScrollState
 
-    fun searchIndustry(query: String) {
     fun searchIndustryDebounce(changedText: String) {
         if (changedText == latestSearchText) {
             return
