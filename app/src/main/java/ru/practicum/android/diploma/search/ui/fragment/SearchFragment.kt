@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.ui.model.VacancyUi
-import ru.practicum.android.diploma.common.util.recycleView.RVAdapter
+import ru.practicum.android.diploma.common.util.recycleView.RecycleViewVacancyAdapter
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.search.ui.model.ErrorStatusUi
 import ru.practicum.android.diploma.search.ui.model.SearchError
@@ -36,7 +36,7 @@ open class SearchFragment : Fragment() {
     private val viewModel: SearchViewModel by viewModel()
 
     private var textWatcher: TextWatcher? = null
-    protected var vacanciesAdapter: RVAdapter? = null
+    protected var vacanciesAdapter: RecycleViewVacancyAdapter? = null
 
     private var inputSearchText: String = DEFAULT_TEXT
     protected var isClickAllowed = true
@@ -100,7 +100,7 @@ open class SearchFragment : Fragment() {
     }
 
     protected open fun recycleViewInit() {
-        vacanciesAdapter = RVAdapter { vacancy ->
+        vacanciesAdapter = RecycleViewVacancyAdapter { vacancy ->
             if (isClickDebounce()) {
                 val direction =
                     SearchFragmentDirections.actionSearchFragmentToVacancyFragment(vacancy.id)
@@ -240,7 +240,7 @@ open class SearchFragment : Fragment() {
     }
 
     protected fun setOnScrollForRecycleView(
-        recyclerView: RecyclerView, adapter: RVAdapter?, viewModel: SearchViewModel
+        recyclerView: RecyclerView, adapter: RecycleViewVacancyAdapter?, viewModel: SearchViewModel
     ) {
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
