@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.practicum.android.diploma.common.ui.model.VacancyUi
-import ru.practicum.android.diploma.common.util.recycleView.RVAdapter
+import ru.practicum.android.diploma.common.util.recycleView.RecycleViewVacancyAdapter
 import ru.practicum.android.diploma.databinding.FragmentSimilarVacanciesBinding
 import ru.practicum.android.diploma.search.ui.fragment.SearchFragment
 import ru.practicum.android.diploma.search.ui.model.ErrorStatusUi
@@ -63,7 +63,7 @@ class SimilarVacancyFragment : SearchFragment() {
     }
 
     override fun recycleViewInit() {
-        vacanciesAdapter = RVAdapter { vacancy ->
+        vacanciesAdapter = RecycleViewVacancyAdapter { vacancy ->
             if (isClickDebounce()) {
                 val direction =
                     SimilarVacancyFragmentDirections.actionSimilarVacancyFragmentToVacancyFragment(

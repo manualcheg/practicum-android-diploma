@@ -16,8 +16,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import ru.practicum.android.diploma.common.util.recycleView.RVAdapter
 import ru.practicum.android.diploma.databinding.FragmentFilteringAreaBinding
+import ru.practicum.android.diploma.filter.RecycleViewAreaAdapter
 import ru.practicum.android.diploma.filter.ui.model.AreaCountryUi
 import ru.practicum.android.diploma.filter.ui.model.AreaNavigationState
 import ru.practicum.android.diploma.filter.ui.model.AreasState
@@ -29,7 +29,7 @@ class FilteringAreaFragment : Fragment() {
     private val args: FilteringAreaFragmentArgs by navArgs()
     private var _binding: FragmentFilteringAreaBinding? = null
     private val binding get() = _binding!!
-    private var areasAdapter: RVAdapter? = null
+    private var areasAdapter: RecycleViewAreaAdapter? = null
 
     private var isClickAllowed = true
 
@@ -128,7 +128,7 @@ class FilteringAreaFragment : Fragment() {
     }
 
     private fun recycleViewInit() {
-        areasAdapter = RVAdapter { item ->
+        areasAdapter = RecycleViewAreaAdapter { item ->
             if (isClickDebounce()) {
                 viewModel.areaClicked(item.id)
             }

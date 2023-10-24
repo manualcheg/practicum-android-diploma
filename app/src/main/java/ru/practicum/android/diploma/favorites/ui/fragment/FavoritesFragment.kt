@@ -11,8 +11,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.common.ui.model.VacancyUi
-import ru.practicum.android.diploma.common.util.recycleView.ItemUiBase
-import ru.practicum.android.diploma.common.util.recycleView.RVAdapter
+import ru.practicum.android.diploma.common.util.recycleView.RecycleViewVacancyAdapter
 import ru.practicum.android.diploma.databinding.FragmentFavoritesBinding
 import ru.practicum.android.diploma.favorites.domain.FavoritesState
 import ru.practicum.android.diploma.favorites.ui.viewModel.FavoritesViewModel
@@ -23,12 +22,12 @@ class FavoritesFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val favouritesViewModel: FavoritesViewModel by viewModel()
-    private var vacanciesAdapter: RVAdapter? = RVAdapter {
+    private var vacanciesAdapter: RecycleViewVacancyAdapter? = RecycleViewVacancyAdapter {
         clickOnVacancy(it)
     }
     private var isClickAllowed = true
 
-    private fun clickOnVacancy(vacancy: ItemUiBase) {
+    private fun clickOnVacancy(vacancy: VacancyUi) {
         if (isClickDebounce()){
             val direction =
                 FavoritesFragmentDirections.actionFavoritesFragmentToVacancyFragment(vacancy.id)
