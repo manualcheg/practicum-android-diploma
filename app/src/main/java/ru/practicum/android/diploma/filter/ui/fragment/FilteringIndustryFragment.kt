@@ -66,6 +66,8 @@ class FilteringIndustryFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding.filteringSectorRecyclerView.adapter = null
+        industriesAdapter = null
         _binding = null
     }
 
