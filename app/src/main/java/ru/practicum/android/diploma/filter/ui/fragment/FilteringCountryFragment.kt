@@ -12,11 +12,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.common.domain.model.filter_models.CountryFilter
-import ru.practicum.android.diploma.common.util.recycleView.RVAdapter
 import ru.practicum.android.diploma.databinding.FragmentFilteringCountryBinding
+import ru.practicum.android.diploma.filter.RecycleViewAreaAdapter
 import ru.practicum.android.diploma.filter.ui.fragment.FilteringChoosingWorkplaceFragment.Companion.BUNDLE_KEY_FOR_COUNTRY
 import ru.practicum.android.diploma.filter.ui.fragment.FilteringChoosingWorkplaceFragment.Companion.REQUEST_KEY
-import ru.practicum.android.diploma.filter.ui.model.AreaCountryUi
 import ru.practicum.android.diploma.filter.ui.model.FilteringCountriesState
 import ru.practicum.android.diploma.filter.ui.viewModel.FilteringCountryViewModel
 import ru.practicum.android.diploma.search.ui.model.ErrorStatusUi
@@ -26,7 +25,7 @@ class FilteringCountryFragment : Fragment() {
     private var _binding: FragmentFilteringCountryBinding? = null
     private val binding get() = _binding!!
 
-    private var countriesAdapter: RVAdapter? = null
+    private var countriesAdapter: RecycleViewAreaAdapter? = null
 
     private val viewModel by viewModel<FilteringCountryViewModel>()
 
@@ -83,8 +82,8 @@ class FilteringCountryFragment : Fragment() {
 
 
     private fun recyclerViewInit() {
-        countriesAdapter = RVAdapter {
-            val item = it as AreaCountryUi
+        countriesAdapter = RecycleViewAreaAdapter {
+            val item = it
             setFragmentResult(
                 REQUEST_KEY,
                 bundleOf(BUNDLE_KEY_FOR_COUNTRY to CountryFilter(item.id, item.name))
