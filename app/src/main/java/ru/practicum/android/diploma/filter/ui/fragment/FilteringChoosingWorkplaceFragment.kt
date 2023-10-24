@@ -69,7 +69,12 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
             }
             if (area != null) {
                 viewModel.updateAreaField(area)
-                //viewModel.updateCountryFieldFromArea(area)
+                viewModel.updateCountryField(
+                    CountryFilter(
+                        id = area.countryId,
+                        name = area.countryName
+                    )
+                )
             }
         }
     }

@@ -5,9 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.practicum.android.diploma.common.domain.model.filter_models.AreaFilter
 import ru.practicum.android.diploma.common.domain.model.filter_models.CountryFilter
-import ru.practicum.android.diploma.filter.domain.useCase.AddAreaFilterUseCase
-import ru.practicum.android.diploma.filter.domain.useCase.AddCountryFilterUseCase
-import ru.practicum.android.diploma.filter.domain.useCase.GetFilterOptionsUseCase
 import ru.practicum.android.diploma.filter.domain.useCase.GetChosenAreaUseCase
 import ru.practicum.android.diploma.filter.domain.useCase.GetChosenCountryUseCase
 import ru.practicum.android.diploma.filter.domain.useCase.SetAreaFilterUseCase
@@ -75,7 +72,7 @@ class FilteringChoosingWorkplaceViewModel(
     }
 
     fun addCountryFilter() {
-        countryFilter?.let { addCountryFilterUseCase.execute(it) }
+        countryFilter?.let { setCountryFilterUseCase.execute(it) }
     }
 
     fun updateSelectButton() {

@@ -154,7 +154,7 @@ class FiltersRepositoryImpl(
     }
 
     override fun setFilterOptionsToCache(filter: Filter?) {
-        filtersLocalDataSourceImpl.setFilterOptions(filter)
+        filtersLocalDataSourceImpl.addFilterToCache(filter)
     }
 
     override fun getChosenIndustry(): IndustryFilter? {
