@@ -9,7 +9,9 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 import ru.practicum.android.diploma.common.util.constants.FilterConst.JOBSEEKER_SHARED_PREFS
 import ru.practicum.android.diploma.filter.data.dataSource.FiltersLocalDataSource
+import ru.practicum.android.diploma.filter.data.dataSource.FiltersLocalStorageDataSource
 import ru.practicum.android.diploma.filter.data.dataSourceImpl.FiltersLocalDataSourceImpl
+import ru.practicum.android.diploma.filter.data.dataSourceImpl.FiltersLocalStorageDataSourceImpl
 import ru.practicum.android.diploma.filter.data.db.FilterDataBase
 import ru.practicum.android.diploma.filter.data.db.FilterDataBaseImpl
 import ru.practicum.android.diploma.filter.data.db.FilterLocalCache
@@ -27,6 +29,7 @@ val filterDataModule = module {
 
     factoryOf(::FilterToOptionsConverter)
     singleOf(::FiltersLocalDataSourceImpl) bind FiltersLocalDataSource::class
+    singleOf(::FiltersLocalStorageDataSourceImpl) bind FiltersLocalStorageDataSource::class
     singleOf(::FiltersRepositoryImpl) bind FiltersRepository::class
     singleOf(::FilterDataBaseImpl) bind FilterDataBase::class
     singleOf(::FilterLocalCacheImpl) bind FilterLocalCache::class

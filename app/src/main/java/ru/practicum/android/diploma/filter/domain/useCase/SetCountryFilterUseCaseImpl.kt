@@ -3,9 +3,9 @@ package ru.practicum.android.diploma.filter.domain.useCase
 import ru.practicum.android.diploma.common.domain.model.filter_models.CountryFilter
 import ru.practicum.android.diploma.filter.domain.repository.FiltersRepository
 
-class AddCountryFilterUseCaseImpl(private val filtersRepository: FiltersRepository) :
-    AddCountryFilterUseCase {
+class SetCountryFilterUseCaseImpl(private val filtersRepository: FiltersRepository) :
+    SetCountryFilterUseCase {
     override fun execute(country: CountryFilter) {
-        filtersRepository.addCountry(country)
+        filtersRepository.setCountry(country)
     }
 }

@@ -1,11 +1,11 @@
-package ru.practicum.android.diploma.filter
+package ru.practicum.android.diploma.filter.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.databinding.ItemSectorBinding
-import ru.practicum.android.diploma.filter.ui.IndustryViewHolder
+import ru.practicum.android.diploma.filter.DiffCallbackIndustry
 import ru.practicum.android.diploma.filter.ui.model.IndustryUi
 
 class RecycleViewIndustryAdapter(

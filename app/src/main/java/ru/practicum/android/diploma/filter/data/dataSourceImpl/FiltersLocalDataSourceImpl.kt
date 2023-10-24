@@ -5,48 +5,40 @@ import ru.practicum.android.diploma.common.domain.model.filter_models.CountryFil
 import ru.practicum.android.diploma.common.domain.model.filter_models.Filter
 import ru.practicum.android.diploma.common.domain.model.filter_models.IndustryFilter
 import ru.practicum.android.diploma.filter.data.dataSource.FiltersLocalDataSource
-import ru.practicum.android.diploma.filter.data.db.FilterDataBase
 import ru.practicum.android.diploma.filter.data.db.FilterLocalCache
 
 class FiltersLocalDataSourceImpl(
-    private val filterDataBase: FilterDataBase, private val filterLocalCache: FilterLocalCache
+    private val filterLocalCache: FilterLocalCache
 ) : FiltersLocalDataSource {
     override fun getFilterOptions(): Filter? {
-        return if (filterLocalCache.getFilterCache() == null) {
-            filterDataBase.getFilterOptions()
-        } else {
-            filterLocalCache.getFilterCache()
-        }
+        return filterLocalCache.getFilterCache()
     }
 
-    override fun putFilterOptions(options: Filter) {
-        filterDataBase.putFilterOptions(options)
-        filterLocalCache.clearAll()
+    override fun setFilterOptions(filter: Filter?) {
+        filterLocalCache.addFilterToCache(filter)
     }
 
-
-    override fun addCountry(country: CountryFilter) {
+    override fun setCountry(country: CountryFilter) {
         filterLocalCache.addCountry(country)
     }
 
-    override fun addArea(area: AreaFilter?) {
+    override fun setArea(area: AreaFilter?) {
         filterLocalCache.addArea(area)
     }
 
-    override fun addIndustry(industry: IndustryFilter) {
+    override fun setIndustry(industry: IndustryFilter) {
         filterLocalCache.addIndustry(industry)
     }
 
-    override fun addSalary(salary: Int) {
+    override fun setSalary(salary: Int) {
         filterLocalCache.addSalary(salary)
     }
 
-    override fun addOnlyWithSalary(option: Boolean) {
+    override fun setOnlyWithSalary(option: Boolean) {
         filterLocalCache.addOnlyWithSalary(option)
     }
 
     override fun clearFilterOptions() {
-        filterDataBase.clearSavedFilter()
         filterLocalCache.clearAll()
     }
 
@@ -71,10 +63,6 @@ class FiltersLocalDataSourceImpl(
         return if (filter != null) {
             filter.country == null && filter.area == null && filter.industry == null && filter.salary == null && !filter.onlyWithSalary
         } else true
-    }
-
-    override fun addFilterToCache(filter: Filter?) {
-        filterLocalCache.addFilterToCache(filter)
     }
 
     override fun isTempFilterOptionsExists(): Boolean {

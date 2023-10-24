@@ -8,15 +8,20 @@ import ru.practicum.android.diploma.common.domain.model.filter_models.CountryFil
 import ru.practicum.android.diploma.filter.domain.useCase.AddAreaFilterUseCase
 import ru.practicum.android.diploma.filter.domain.useCase.AddCountryFilterUseCase
 import ru.practicum.android.diploma.filter.domain.useCase.GetFilterOptionsUseCase
+import ru.practicum.android.diploma.filter.domain.useCase.GetChosenAreaUseCase
+import ru.practicum.android.diploma.filter.domain.useCase.GetChosenCountryUseCase
+import ru.practicum.android.diploma.filter.domain.useCase.SetAreaFilterUseCase
+import ru.practicum.android.diploma.filter.domain.useCase.SetCountryFilterUseCase
 import ru.practicum.android.diploma.filter.ui.mapper.FilterDomainToFilterUiConverter
 import ru.practicum.android.diploma.filter.ui.model.ButtonState
 import ru.practicum.android.diploma.filter.ui.model.FilterFieldsState
 
 class FilteringChoosingWorkplaceViewModel(
-    private val addAreaFilterUseCase: AddAreaFilterUseCase,
-    private val addCountryFilterUseCase: AddCountryFilterUseCase,
+    private val setAreaFilterUseCase: SetAreaFilterUseCase,
+    private val setCountryFilterUseCase: SetCountryFilterUseCase,
     private val filterDomainToFilterUiConverter: FilterDomainToFilterUiConverter,
-    private val getFilterOptionsUseCase: GetFilterOptionsUseCase,
+    getChosenAreaUseCase: GetChosenAreaUseCase,
+    getChosenCountryUseCase: GetChosenCountryUseCase
 ) : ViewModel() {
 
     var countryFilter: CountryFilter? = null
@@ -32,9 +37,9 @@ class FilteringChoosingWorkplaceViewModel(
     val selectButtonState: LiveData<ButtonState> = _selectButtonState
 
     init {
-        loadAreaAndCountryFromDataSource()
+        updateCountryField(getChosenCountryUseCase.execute())
+        updateAreaField(getChosenAreaUseCase.execute())
     }
-
 
     fun updateCountryField(countryFilter: CountryFilter?) {
 
@@ -52,11 +57,6 @@ class FilteringChoosingWorkplaceViewModel(
         this.countryFilter = countryFilter
     }
 
-//    fun updateCountryFieldFromArea(areaFilter: AreaFilter?){
-//
-//    }
-
-
     fun updateAreaField(areaFilter: AreaFilter?) {
         if (areaFilter != null) {
             setRegionState(
@@ -70,9 +70,8 @@ class FilteringChoosingWorkplaceViewModel(
         this.areaFilter = areaFilter
     }
 
-
     fun addAreaFilter() {
-        addAreaFilterUseCase.execute((areaFilter))
+        areaFilter?.let { setAreaFilterUseCase.execute(it) }
     }
 
     fun addCountryFilter() {
@@ -85,12 +84,6 @@ class FilteringChoosingWorkplaceViewModel(
         } else {
             setSelectButtonState(ButtonState.Gone)
         }
-    }
-
-    private fun loadAreaAndCountryFromDataSource() {
-        val filterOptions = getFilterOptionsUseCase.execute()
-        updateCountryField(filterOptions?.country)
-        updateAreaField(filterOptions?.area)
     }
 
     private fun setCountryState(state: FilterFieldsState) {

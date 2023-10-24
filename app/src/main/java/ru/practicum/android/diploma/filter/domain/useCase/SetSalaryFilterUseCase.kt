@@ -1,5 +1,5 @@
 package ru.practicum.android.diploma.filter.domain.useCase
 
-interface AddSalaryFilterUseCase {
+interface SetSalaryFilterUseCase {
     fun execute(salary: Int)
 }

@@ -13,6 +13,7 @@ import ru.practicum.android.diploma.common.util.Resource
 import ru.practicum.android.diploma.common.util.constants.RepositoryConst.NO_CONNECTION
 import ru.practicum.android.diploma.common.util.constants.RepositoryConst.RESPONSE_SUCCESS
 import ru.practicum.android.diploma.filter.data.dataSource.FiltersLocalDataSource
+import ru.practicum.android.diploma.filter.data.dataSourceImpl.FiltersLocalStorageDataSourceImpl
 import ru.practicum.android.diploma.filter.data.mapper.FiltersDtoToDomainConverter
 import ru.practicum.android.diploma.filter.data.model.AllAreasRequest
 import ru.practicum.android.diploma.filter.data.model.AreasResponse
@@ -27,6 +28,7 @@ import ru.practicum.android.diploma.search.data.model.ErrorRemoteDataSource
 
 class FiltersRepositoryImpl(
     private val filtersLocalDataSourceImpl: FiltersLocalDataSource,
+    private val filtersLocalStorageDataSourceImpl: FiltersLocalStorageDataSourceImpl,
     private val filtersRemoteDataSource: VacancyRemoteDataSource,
     private val filtersDtoToDomainConverter: FiltersDtoToDomainConverter
 ) : FiltersRepository {
@@ -90,36 +92,41 @@ class FiltersRepositoryImpl(
         }
     }
 
-    override fun addCountry(country: CountryFilter) {
-        filtersLocalDataSourceImpl.addCountry(country)
-    }
-
-    override fun addArea(area: AreaFilter?) {
-        filtersLocalDataSourceImpl.addArea(area)
-    }
-
-    override fun addIndustry(industry: IndustryFilter) {
-        filtersLocalDataSourceImpl.addIndustry(industry)
-    }
-
-    override fun addSalary(salary: Int) {
-        filtersLocalDataSourceImpl.addSalary(salary)
-    }
-
-    override fun addOnlyWithSalary(option: Boolean) {
-        filtersLocalDataSourceImpl.addOnlyWithSalary(option)
-    }
-
     override fun getFilterOptions(): Filter? {
-        return filtersLocalDataSourceImpl.getFilterOptions()
+        return if (filtersLocalDataSourceImpl.getFilterOptions() == null) {
+            filtersLocalStorageDataSourceImpl.getFilterOptions()
+        } else {
+            filtersLocalDataSourceImpl.getFilterOptions()
+        }
     }
 
-    override fun putFilterOptions(options: Filter) {
-        filtersLocalDataSourceImpl.putFilterOptions(options)
+    override fun setFilterOptionsToStorage(options: Filter) {
+        filtersLocalStorageDataSourceImpl.setFilterOptions(options)
+        filtersLocalDataSourceImpl.clearFilterOptions()
+    }
+
+    override fun setCountry(country: CountryFilter) {
+        filtersLocalDataSourceImpl.setCountry(country)
+    }
+
+    override fun setArea(area: AreaFilter?) {
+        filtersLocalDataSourceImpl.setArea(area)
+    }
+
+    override fun setIndustry(industry: IndustryFilter) {
+        filtersLocalDataSourceImpl.setIndustry(industry)
+    }
+
+    override fun setSalary(salary: Int) {
+        filtersLocalDataSourceImpl.setSalary(salary)
+    }
+
+    override fun setOnlyWithSalary(option: Boolean) {
+        filtersLocalDataSourceImpl.setOnlyWithSalary(option)
     }
 
     override fun clearFilterOptions() {
-        filtersLocalDataSourceImpl.clearFilterOptions()
+        filtersLocalStorageDataSourceImpl.clearFilterOptions()
     }
 
     override fun clearArea() {
@@ -146,7 +153,19 @@ class FiltersRepositoryImpl(
         return filtersLocalDataSourceImpl.isTempFilterOptionsExists()
     }
 
-    override fun addFilterToTemp(filter: Filter?) {
-        filtersLocalDataSourceImpl.addFilterToCache(filter)
+    override fun setFilterOptionsToCache(filter: Filter?) {
+        filtersLocalDataSourceImpl.setFilterOptions(filter)
+    }
+
+    override fun getChosenIndustry(): IndustryFilter? {
+        return filtersLocalDataSourceImpl.getFilterOptions()?.industry
+    }
+
+    override fun getChosenArea(): AreaFilter? {
+        return filtersLocalDataSourceImpl.getFilterOptions()?.area
+    }
+
+    override fun getChosenCountry(): CountryFilter? {
+        return filtersLocalDataSourceImpl.getFilterOptions()?.country
     }
 }
