@@ -59,7 +59,7 @@ class FilteringAreaFragment : Fragment() {
         }
         binding.filteringRegionEditText.doOnTextChanged { text, _, _, _ ->
             if (text != null) {
-                viewModel.searchAreaInAreasListUi(text.toString().trim())
+                viewModel.searchAreaDebounce(text.toString().trim())
             }
         }
         binding.filteringRegionToolbar.setNavigationOnClickListener {

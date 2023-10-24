@@ -8,6 +8,7 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.domain.model.filter_models.AreaFilter
 import ru.practicum.android.diploma.common.domain.model.filter_models.Areas
+import ru.practicum.android.diploma.common.util.debounce
 import ru.practicum.android.diploma.filter.domain.useCase.GetAreasUseCase
 import ru.practicum.android.diploma.filter.ui.mapper.AreaFilterDomainToRegionCountryUiConverter
 import ru.practicum.android.diploma.filter.ui.model.AreaCountryUi
@@ -31,6 +32,12 @@ class FilteringAreaViewModel(
     private val coroutineExceptionHandler =
         CoroutineExceptionHandler { _, _ -> setState(AreasState.Error(ErrorStatusUi.ERROR_OCCURRED)) }
 
+    private val searchDebounce =
+        debounce<String>(SEARCH_DEBOUNCE_DELAY_MILLIS, viewModelScope, true) {
+            searchAreaInAreasListUi(it)
+        }
+
+    private var latestSearchText: String? = null
 
     fun observeStateLiveData(): LiveData<AreasState> = stateLiveData
     fun observeNavigationStateLiveData(): LiveData<AreaNavigationState> = navigationStateLiveData
@@ -67,7 +74,15 @@ class FilteringAreaViewModel(
         }
     }
 
-    fun searchAreaInAreasListUi(query: String) {
+    fun searchAreaDebounce(changedText: String) {
+        if (changedText == latestSearchText) {
+            return
+        }
+        latestSearchText = changedText
+        searchDebounce(changedText)
+    }
+
+    private fun searchAreaInAreasListUi(query: String) {
         if (query.isBlank()) {
             setState(AreasState.Success.Content(areasListUi))
         } else {
@@ -90,5 +105,9 @@ class FilteringAreaViewModel(
 
     fun proceedBack() {
         navigationStateLiveData.value = AreaNavigationState.NavigateEmpty
+    }
+
+    companion object {
+        private const val SEARCH_DEBOUNCE_DELAY_MILLIS = 500L
     }
 }
