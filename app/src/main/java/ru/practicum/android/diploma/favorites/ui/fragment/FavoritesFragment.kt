@@ -21,10 +21,9 @@ class FavoritesFragment : Fragment() {
     private var _binding: FragmentFavoritesBinding? = null
     private val binding get() = _binding!!
 
+    private var vacanciesAdapter: RecycleViewVacancyAdapter? = null
+
     private val favouritesViewModel: FavoritesViewModel by viewModel()
-    private var vacanciesAdapter: RecycleViewVacancyAdapter? = RecycleViewVacancyAdapter {
-        clickOnVacancy(it)
-    }
     private var isClickAllowed = true
 
     private fun clickOnVacancy(vacancy: VacancyUi) {
@@ -47,12 +46,17 @@ class FavoritesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        vacanciesAdapter = RecycleViewVacancyAdapter {
+            clickOnVacancy(it)
+        }
+
+        binding.favouritesRecyclerView.adapter = vacanciesAdapter
+
         favouritesViewModel.stateLiveData().observe(viewLifecycleOwner) { state ->
             render(state)
         }
         favouritesViewModel.getFavorites()
 
-        binding.favouritesRecyclerView.adapter = vacanciesAdapter
         isClickAllowed = true
     }
 
