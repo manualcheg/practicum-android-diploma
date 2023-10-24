@@ -51,6 +51,13 @@ class FilteringCountryFragment : Fragment() {
 
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding.filteringCountryRecyclerView.adapter = null
+        countriesAdapter = null
+        _binding = null
+    }
+
     private fun setOnBackClickListeners() {
 
         binding.filteringCountryToolbar.setNavigationOnClickListener {
@@ -72,12 +79,6 @@ class FilteringCountryFragment : Fragment() {
                     findNavController().popBackStack()
                 }
             })
-    }
-
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
     }
 
 

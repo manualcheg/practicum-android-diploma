@@ -56,9 +56,8 @@ class FavoritesFragment : Fragment() {
         isClickAllowed = true
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-
+    override fun onDestroyView() {
+        super.onDestroyView()
         binding.favouritesRecyclerView.adapter = null
         vacanciesAdapter = null
         _binding = null

@@ -78,8 +78,9 @@ class VacancyFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        binding.vacancyContactsPhoneRecycleView.adapter = null
         phonesAdapter = null
+        _binding = null
     }
 
     private fun render(state: VacancyState) {
