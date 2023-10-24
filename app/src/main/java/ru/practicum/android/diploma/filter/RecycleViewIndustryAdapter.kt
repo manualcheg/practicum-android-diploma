@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import ru.practicum.android.diploma.common.util.recycleView.DiffCallback
 import ru.practicum.android.diploma.databinding.ItemSectorBinding
 import ru.practicum.android.diploma.filter.ui.IndustryViewHolder
 import ru.practicum.android.diploma.filter.ui.model.IndustryUi
@@ -16,7 +15,7 @@ class RecycleViewIndustryAdapter(
     var items = listOf<IndustryUi>()
         set(newList) {
             val diffResult = DiffUtil.calculateDiff(
-                DiffCallback(field, newList)
+                DiffCallbackIndustry(field, newList)
             )
             field = newList
             diffResult.dispatchUpdatesTo(this)
