@@ -18,6 +18,7 @@ import ru.practicum.android.diploma.filter.ui.model.IndustryState
 import ru.practicum.android.diploma.filter.ui.model.IndustryUi
 import ru.practicum.android.diploma.search.domain.model.ErrorStatusDomain
 import ru.practicum.android.diploma.search.ui.model.ErrorStatusUi
+import ru.practicum.android.diploma.search.ui.model.SingleLiveEvent
 
 class FilteringIndustryViewModel(
     private val getIndustriesUseCase: GetIndustriesUseCase,
@@ -29,6 +30,7 @@ class FilteringIndustryViewModel(
     private val stateLiveData = MutableLiveData<IndustryState>()
     private val navigationStateLiveData = MutableLiveData<IndustryNavigationState>()
     private val buttonStateLiveData = MutableLiveData<ButtonState>(ButtonState.Gone)
+    private val recycleViewScrollState = SingleLiveEvent<Int>()
 
     private val industriesListUi = mutableListOf<IndustryUi>()
 
@@ -36,12 +38,15 @@ class FilteringIndustryViewModel(
 
     private val foundIndustriesList = mutableListOf<IndustryFilter>()
     private val coroutineExceptionHandler =
-        CoroutineExceptionHandler { _, _ -> setState(IndustryState.Error(ErrorStatusUi.ERROR_OCCURRED)) }
+        CoroutineExceptionHandler { _, _ ->
+            setState(IndustryState.Error(ErrorStatusUi.ERROR_OCCURRED))
+        }
 
     init {
         industry = getChosenIndustryUseCase.execute()
 
         stateLiveData.value = IndustryState.Loading
+
 
         viewModelScope.launch(coroutineExceptionHandler) {
             getIndustriesUseCase.execute().collect { pair ->
@@ -56,6 +61,8 @@ class FilteringIndustryViewModel(
         navigationStateLiveData
 
     fun observeButtonStateLiveData(): LiveData<ButtonState> = buttonStateLiveData
+
+    fun observeRecycleViewScrollState(): LiveData<Int> = recycleViewScrollState
 
     fun searchIndustry(query: String) {
         if (query.isBlank()) {
@@ -126,6 +133,7 @@ class FilteringIndustryViewModel(
                 } else {
                     setState(IndustryState.Success.Content(industriesListUi))
                     setButtonStateVisibilityWithCondition()
+                    setScrollState()
                 }
             }
         }
@@ -143,6 +151,11 @@ class FilteringIndustryViewModel(
                 it.isSelected = it.id == industry?.id
             }
         }
+    }
+
+    private fun setScrollState() {
+        val id = industry?.id ?: 0
+        recycleViewScrollState.value = id
     }
 
     private fun setState(state: IndustryState) {

@@ -57,6 +57,10 @@ class FilteringIndustryFragment : Fragment() {
             renderButtonState(it)
         }
 
+        viewModel.observeRecycleViewScrollState().observe(viewLifecycleOwner) {
+            scrollToPosition(it)
+        }
+
         binding.filteringSectorEditText.doOnTextChanged { text, _, _, _ ->
             if (text != null) {
                 viewModel.searchIndustry(text.toString().trim())
@@ -139,6 +143,11 @@ class FilteringIndustryFragment : Fragment() {
     private fun showContent(industries: List<IndustryUi>) {
         emptyScreen()
         industriesAdapter?.items = industries
+
+    }
+
+    private fun scrollToPosition(position: Int) {
+        binding.filteringSectorRecyclerView.layoutManager?.scrollToPosition(position)
     }
 
     private fun showError(errorStatus: ErrorStatusUi) {
