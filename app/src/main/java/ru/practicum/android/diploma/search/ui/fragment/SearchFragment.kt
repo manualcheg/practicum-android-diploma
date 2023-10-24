@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -64,6 +65,7 @@ open class SearchFragment : Fragment() {
 
     protected open fun initViews() {
         recycleViewInit()
+        fragmentResultListenerInit()
         setOnClicksAndActions()
         setOnTextWatchersTextChangeListeners()
         setOnScrollForRecycleView(
@@ -86,11 +88,18 @@ open class SearchFragment : Fragment() {
 
         viewModel.observeFilterButtonState().observe(viewLifecycleOwner) { isFilterSet ->
             renderButtonState(isFilterSet)
-            if (isFilterSet){
-                viewModel.searchFiltered(inputSearchText)
+        }
+
+        isClickAllowed = true
+    }
+
+    private fun fragmentResultListenerInit() {
+        setFragmentResultListener(IS_SEARCH_WITH_NEW_FILTER_NEED) { _, bundle ->
+            val isNewFilterSet = bundle.getBoolean(IS_SEARCH_WITH_NEW_FILTER_NEED)
+            if (isNewFilterSet){
+                viewModel.searchWithNewFilter(inputSearchText)
             }
         }
-        isClickAllowed = true
     }
 
     protected open fun destroyViews() {
@@ -334,5 +343,6 @@ open class SearchFragment : Fragment() {
     companion object {
         const val DEFAULT_TEXT = ""
         private const val CLICK_DEBOUNCE_DELAY_MILLIS = 1000L
+        private const val IS_SEARCH_WITH_NEW_FILTER_NEED = "Is search with new filter need"
     }
 }

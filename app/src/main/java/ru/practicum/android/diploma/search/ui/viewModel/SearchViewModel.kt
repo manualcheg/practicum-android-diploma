@@ -67,7 +67,7 @@ open class SearchViewModel(
         tracksSearchDebounce(changedText)
     }
 
-    fun searchFiltered(changedText: String) {
+    fun searchWithNewFilter(changedText: String) {
         latestSearchText = changedText
         nextPage = 0
         searchNewRequest(changedText)
