@@ -16,7 +16,7 @@ class FiltersDtoToDomainConverter {
         val listOfAreasDto = areasResponse.items
         val areas: MutableList<AreaFilter> = mutableListOf()
         listOfAreasDto.forEach { areasDto ->
-            fromTreeToListArea(root = areasDto, areas, areasDto.name)
+            fromTreeToListArea(root = areasDto, areas, areasDto.name, areasDto.id)
         }
         val countries = convertCountriesResponseToListOfCountries(countriesResponse)
         return filterCountriesFromAreas(countries, areas)
@@ -45,17 +45,17 @@ class FiltersDtoToDomainConverter {
     }
 
     private fun fromTreeToListArea(
-        root: AreasDto, saveList: MutableList<AreaFilter>, countryName: String
+        root: AreasDto, saveList: MutableList<AreaFilter>, countryName: String, countryId: Int
     ) {
         saveList.add(
             AreaFilter(
-                id = root.id, name = root.name, countryName = countryName
+                id = root.id, name = root.name, countryName = countryName, countryId = countryId
             )
         )
         if (root.areas.isEmpty()) {
             return
         } else for (area in root.areas) {
-            fromTreeToListArea(area, saveList, countryName)
+            fromTreeToListArea(area, saveList, countryName, countryId)
         }
     }
 
