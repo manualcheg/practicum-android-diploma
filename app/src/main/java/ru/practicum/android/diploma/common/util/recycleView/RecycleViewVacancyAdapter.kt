@@ -19,7 +19,6 @@ class RecycleViewVacancyAdapter(
             diffResult.dispatchUpdatesTo(this)
         }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VacancyViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         return VacancyViewHolder(

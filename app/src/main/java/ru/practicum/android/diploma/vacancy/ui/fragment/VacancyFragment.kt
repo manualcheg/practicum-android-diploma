@@ -32,9 +32,7 @@ class VacancyFragment : Fragment() {
     }
     private var _binding: FragmentVacancyBinding? = null
     private val binding get() = _binding!!
-
     private var phonesAdapter: RecycleViewContactsAdapter? = null
-
     private var vacancyId: Int? = null
     private val args: VacancyFragmentArgs by navArgs()
 
@@ -47,13 +45,13 @@ class VacancyFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
+
         vacancyId = args.vacancyId
         viewModel.checkFavorites()
         viewModel.state.observe(viewLifecycleOwner) {
             render(it)
         }
-        
+
         viewModel.inFavorites.observe(viewLifecycleOwner) { inFavorites ->
             val menu: Menu = binding.vacancyToolbar.menu
             if (inFavorites) {
@@ -65,7 +63,7 @@ class VacancyFragment : Fragment() {
             }
         }
         viewModel.findVacancy()
-        
+
         setOnClickListeners()
         initializePhonesAdapter()
 
@@ -116,7 +114,7 @@ class VacancyFragment : Fragment() {
         binding.vacancyToolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.share -> {
-                     viewModel.shareVacancy()
+                    viewModel.shareVacancy()
                 }
 
                 R.id.like -> {
@@ -218,7 +216,7 @@ class VacancyFragment : Fragment() {
             binding.vacancyContactsEmailTextView.visibility = View.GONE
             binding.vacancyContactsEmailTitleTextView.visibility = View.GONE
         }
-        
+
         if (state.vacancy.contactsPhones.isNotEmpty()) {
             phonesAdapter?.items = state.vacancy.contactsPhones
         }

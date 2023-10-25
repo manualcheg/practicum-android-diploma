@@ -20,7 +20,6 @@ class RecycleViewAreaAdapter(
             diffResult.dispatchUpdatesTo(this)
         }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AreaCountryViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         return AreaCountryViewHolder(

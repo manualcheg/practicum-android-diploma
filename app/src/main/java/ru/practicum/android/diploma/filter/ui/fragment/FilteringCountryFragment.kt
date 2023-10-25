@@ -24,9 +24,7 @@ class FilteringCountryFragment : Fragment() {
 
     private var _binding: FragmentFilteringCountryBinding? = null
     private val binding get() = _binding!!
-
     private var countriesAdapter: RecycleViewAreaAdapter? = null
-
     private val viewModel by viewModel<FilteringCountryViewModel>()
 
     override fun onCreateView(
@@ -46,9 +44,8 @@ class FilteringCountryFragment : Fragment() {
         viewModel.state.observe(viewLifecycleOwner) {
             render(it)
         }
+
         recyclerViewInit()
-
-
     }
 
     override fun onDestroyView() {

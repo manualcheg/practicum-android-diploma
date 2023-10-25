@@ -7,6 +7,6 @@ import androidx.room.RoomDatabase
     version = 1,
     entities = [FavoritesVacancyEntity::class]
 )
-abstract class AppDataBase: RoomDatabase() {
+abstract class AppDataBase : RoomDatabase() {
     abstract fun FavoritesVacanciesDao(): FavoritesVacanciesDao
 }

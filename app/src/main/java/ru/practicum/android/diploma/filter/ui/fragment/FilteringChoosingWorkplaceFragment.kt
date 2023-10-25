@@ -21,10 +21,8 @@ import ru.practicum.android.diploma.filter.ui.viewModel.FilteringChoosingWorkpla
 class FilteringChoosingWorkplaceFragment : Fragment() {
 
     private val viewModel by viewModel<FilteringChoosingWorkplaceViewModel>()
-
     private var _binding: FragmentFilteringChoosingWorkplaceBinding? = null
     private val binding get() = _binding!!
-
     private var emptyCountryField = true
     private var emptyAreaField = true
 
@@ -59,7 +57,6 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
     }
 
     private fun setOnFragmentResultListener() {
-
         setFragmentResultListener(REQUEST_KEY) { _, bundle ->
             val country = bundle.get(BUNDLE_KEY_FOR_COUNTRY) as CountryFilter?
             val area = bundle.get(BUNDLE_KEY_FOR_AREA) as AreaFilter?
@@ -80,7 +77,6 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
     }
 
     private fun setOnClickListeners() {
-
         binding.choosingWorkplaceToolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
@@ -192,9 +188,9 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
 
     private fun renderSelectButtonState(state: ButtonState) {
         when (state) {
-            is ButtonState.Visible -> binding.choosingWorkplaceSelectButtonTextView.visibility =
-                View.VISIBLE
-
+            is ButtonState.Visible -> {
+                binding.choosingWorkplaceSelectButtonTextView.visibility = View.VISIBLE
+            }
             is ButtonState.Gone -> {
                 binding.choosingWorkplaceSelectButtonTextView.visibility = View.GONE
             }

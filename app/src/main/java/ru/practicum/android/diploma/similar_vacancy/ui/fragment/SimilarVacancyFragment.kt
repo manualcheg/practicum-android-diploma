@@ -20,9 +20,7 @@ import ru.practicum.android.diploma.similar_vacancy.ui.viewModel.SimilarVacancyV
 class SimilarVacancyFragment : SearchFragment() {
     private var _binding: FragmentSimilarVacanciesBinding? = null
     private val binding get() = _binding!!
-
     private val args: SimilarVacancyFragmentArgs by navArgs()
-
     private val viewModel: SimilarVacancyViewModel by viewModel {
         parametersOf(args.vacancyId)
     }

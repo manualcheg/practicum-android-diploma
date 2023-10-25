@@ -31,7 +31,7 @@ class VacancyDtoConverter {
     fun mapVacanciesSearchResponseToVacancies(vacanciesSearchResponse: VacanciesSearchResponse): Vacancies {
         vacanciesSearchResponse.apply {
             return Vacancies(
-                vacancyList = items.map { mapVacncyDtoToVacancy(it) },
+                vacancyList = items.map { mapVacancyDtoToVacancy(it) },
                 page = page,
                 pages = pages,
                 found = found
@@ -39,7 +39,7 @@ class VacancyDtoConverter {
         }
     }
 
-    fun mapVacncyDtoToVacancy(vacancyDto: VacancyDto): Vacancy {
+    private fun mapVacancyDtoToVacancy(vacancyDto: VacancyDto): Vacancy {
         vacancyDto.apply {
             return Vacancy(
                 id,
@@ -74,7 +74,6 @@ class VacancyDtoConverter {
             )
         }
     }
-
 
     private fun mapEmployer(employerDto: EmployerDto): Employer {
         employerDto.apply {

@@ -7,7 +7,6 @@ import ru.practicum.android.diploma.favorites.domain.repository.FavoritesReposit
 
 class FavoritesRepositoryImpl(
     private val favoritesLocalDataSource: FavoritesLocalDataSource,
-
 ) : FavoritesRepository {
     override suspend fun addToFavorites(vacancy: Vacancy) {
         favoritesLocalDataSource.addToFavorites(vacancy)

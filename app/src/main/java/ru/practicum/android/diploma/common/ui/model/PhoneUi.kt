@@ -1,6 +1,6 @@
 package ru.practicum.android.diploma.common.ui.model
 
-data class PhoneUi (
+data class PhoneUi(
     val id: Int,
     val formattedNumber: String,
     val city: String,

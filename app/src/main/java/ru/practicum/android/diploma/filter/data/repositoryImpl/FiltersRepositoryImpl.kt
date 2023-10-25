@@ -36,7 +36,9 @@ class FiltersRepositoryImpl(
 
         val responseAreas = if (areaId == null) {
             vacancyRemoteDataSource.doRequest(AllAreasRequest())
-        } else vacancyRemoteDataSource.doRequest(CertainAreasRequest(areaId))
+        } else {
+            vacancyRemoteDataSource.doRequest(CertainAreasRequest(areaId))
+        }
 
         val responseCountries = vacancyRemoteDataSource.doRequest(CountriesRequest())
 
@@ -51,7 +53,9 @@ class FiltersRepositoryImpl(
                 )
             emit(Resource.Success(Areas(areas)))
 
-        } else emit(Resource.Error(ErrorRemoteDataSource.ERROR_OCCURRED))
+        } else {
+            emit(Resource.Error(ErrorRemoteDataSource.ERROR_OCCURRED))
+        }
     }
 
     override fun getCountries(): Flow<Resource<Countries>> = flow {

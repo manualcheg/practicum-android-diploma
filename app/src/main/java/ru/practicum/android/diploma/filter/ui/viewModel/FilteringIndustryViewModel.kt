@@ -32,12 +32,10 @@ class FilteringIndustryViewModel(
     private val navigationStateLiveData = MutableLiveData<IndustryNavigationState>()
     private val buttonStateLiveData = MutableLiveData<ButtonState>(ButtonState.Gone)
     private val recycleViewScrollState = SingleLiveEvent<Int>()
-
     private val industriesListUi = mutableListOf<IndustryUi>()
-
     private var industry: IndustryFilter? = null
-
     private val foundIndustriesList = mutableListOf<IndustryFilter>()
+
     private val coroutineExceptionHandler =
         CoroutineExceptionHandler { _, _ ->
             setState(IndustryState.Error(ErrorStatusUi.ERROR_OCCURRED))
@@ -49,7 +47,6 @@ class FilteringIndustryViewModel(
         }
 
     private var latestSearchText: String? = null
-
 
     init {
         industry = getChosenIndustryUseCase.execute()
@@ -189,7 +186,9 @@ class FilteringIndustryViewModel(
     private fun setButtonStateVisibilityWithCondition() {
         if (industry != null) {
             setButtonState(ButtonState.Visible)
-        } else setButtonState(ButtonState.Gone)
+        } else {
+            setButtonState(ButtonState.Gone)
+        }
     }
 
     companion object {

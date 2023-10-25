@@ -5,6 +5,5 @@ import org.koin.dsl.module
 import ru.practicum.android.diploma.similar_vacancy.ui.viewModel.SimilarVacancyViewModel
 
 val similarVacancyUiModule = module {
-
     viewModelOf(::SimilarVacancyViewModel)
 }

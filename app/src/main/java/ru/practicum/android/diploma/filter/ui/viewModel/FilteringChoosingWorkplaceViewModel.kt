@@ -39,7 +39,6 @@ class FilteringChoosingWorkplaceViewModel(
     }
 
     fun updateCountryField(countryFilter: CountryFilter?) {
-
         if (countryFilter != null) {
             setCountryState(
                 FilterFieldsState.Content(

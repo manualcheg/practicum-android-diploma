@@ -29,7 +29,6 @@ class SimilarVacancyViewModel(
     }
 
     private fun searchSimilarVacancyById(vacancyId: Int) {
-
         setState(SearchState.Loading.LoadingSearch)
 
         nextPage = DEFAULT_PAGE

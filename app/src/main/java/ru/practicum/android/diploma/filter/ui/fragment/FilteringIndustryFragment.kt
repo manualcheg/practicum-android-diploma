@@ -27,9 +27,7 @@ class FilteringIndustryFragment : Fragment() {
     private var _binding: FragmentFilteringIndustryBinding? = null
     private val binding get() = _binding!!
     private var industriesAdapter: RecycleViewIndustryAdapter? = null
-
     private var isClickAllowed = true
-
     private val viewModel by viewModel<FilteringIndustryViewModel>()
 
     override fun onCreateView(

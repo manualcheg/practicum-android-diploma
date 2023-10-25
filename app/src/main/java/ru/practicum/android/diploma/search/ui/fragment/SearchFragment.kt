@@ -33,22 +33,17 @@ open class SearchFragment : Fragment() {
 
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
-
     private val viewModel: SearchViewModel by viewModel()
-
     private var textWatcher: TextWatcher? = null
     protected var vacanciesAdapter: RecycleViewVacancyAdapter? = null
-
     private var inputSearchText: String = DEFAULT_TEXT
     protected var isClickAllowed = true
     private var isPaginationAllowed = true
-
     private var inputMethodManager: InputMethodManager? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -96,7 +91,7 @@ open class SearchFragment : Fragment() {
     private fun fragmentResultListenerInit() {
         setFragmentResultListener(IS_SEARCH_WITH_NEW_FILTER_NEED) { _, bundle ->
             val isNewFilterSet = bundle.getBoolean(IS_SEARCH_WITH_NEW_FILTER_NEED)
-            if (isNewFilterSet){
+            if (isNewFilterSet) {
                 viewModel.searchWithNewFilter(inputSearchText)
             }
         }
@@ -152,14 +147,19 @@ open class SearchFragment : Fragment() {
     }
 
     protected fun renderPaginationLoadingState(isLoading: Boolean) {
-        if (isLoading) showLoadingPages()
-        else hideLoadingPages()
+        if (isLoading) {
+            showLoadingPages()
+        } else {
+            hideLoadingPages()
+        }
     }
 
     private fun renderButtonState(isFiltersExist: Boolean) {
         if (isFiltersExist) {
             setMenuFilterIcon(R.drawable.ic_filters_selected)
-        } else setMenuFilterIcon(R.drawable.ic_filters_unselected)
+        } else {
+            setMenuFilterIcon(R.drawable.ic_filters_unselected)
+        }
     }
 
     private fun setMenuFilterIcon(drawableInt: Int) {
@@ -259,12 +259,12 @@ open class SearchFragment : Fragment() {
                     val pos =
                         (recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
                     val itemsCount = adapter?.itemCount
-                    if (itemsCount != null) {
-                        if (pos >= itemsCount - 1) {
-                            if (isPaginationDebounce()) {
-                                viewModel.onLastItemReached()
-                            }
-                        }
+                    if (
+                        itemsCount != null &&
+                        pos >= itemsCount - 1 &&
+                        isPaginationDebounce()
+                        ) {
+                        viewModel.onLastItemReached()
                     }
                 }
             }

@@ -27,7 +27,7 @@ class FavoritesFragment : Fragment() {
     private var isClickAllowed = true
 
     private fun clickOnVacancy(vacancy: VacancyUi) {
-        if (isClickDebounce()){
+        if (isClickDebounce()) {
             val direction =
                 FavoritesFragmentDirections.actionFavoritesFragmentToVacancyFragment(vacancy.id)
             findNavController().navigate(direction)
@@ -99,7 +99,6 @@ class FavoritesFragment : Fragment() {
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
-
             viewLifecycleOwner.lifecycleScope.launch {
                 delay(CLICK_DEBOUNCE_DELAY_MILLIS)
                 isClickAllowed = true

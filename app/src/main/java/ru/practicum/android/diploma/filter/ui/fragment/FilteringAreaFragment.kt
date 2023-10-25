@@ -30,9 +30,7 @@ class FilteringAreaFragment : Fragment() {
     private var _binding: FragmentFilteringAreaBinding? = null
     private val binding get() = _binding!!
     private var areasAdapter: RecycleViewAreaAdapter? = null
-
     private var isClickAllowed = true
-
 
     private val viewModel by viewModel<FilteringAreaViewModel> {
         parametersOf(args.parentId)
@@ -57,11 +55,13 @@ class FilteringAreaFragment : Fragment() {
         viewModel.observeNavigationStateLiveData().observe(viewLifecycleOwner) {
             renderNavigationState(it)
         }
+
         binding.filteringRegionEditText.doOnTextChanged { text, _, _, _ ->
             if (text != null) {
                 viewModel.searchAreaDebounce(text.toString().trim())
             }
         }
+
         binding.filteringRegionToolbar.setNavigationOnClickListener {
             viewModel.proceedBack()
         }

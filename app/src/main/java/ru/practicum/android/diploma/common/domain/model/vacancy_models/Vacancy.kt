@@ -1,4 +1,5 @@
 package ru.practicum.android.diploma.common.domain.model.vacancy_models
+
 data class Vacancy(
     val id: Int,
     val name: String, // "name": "Секретарь",

@@ -14,7 +14,6 @@ class FiltersLocalDataSourceImpl(
         return filterLocalCache.getFilterCache()
     }
 
-
     override fun setCountry(country: CountryFilter) {
         filterLocalCache.addCountry(country)
     }
@@ -59,7 +58,9 @@ class FiltersLocalDataSourceImpl(
         val filter = filterLocalCache.getFilterCache()
         return if (filter != null) {
             filter.country == null && filter.area == null && filter.industry == null && filter.salary == null && !filter.onlyWithSalary
-        } else true
+        } else {
+            true
+        }
     }
 
     override fun addFilterToCache(filter: Filter?) {

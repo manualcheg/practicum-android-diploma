@@ -19,7 +19,6 @@ class RecycleViewContactsAdapter(
             diffResult.dispatchUpdatesTo(this)
         }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactsPhoneViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         return ContactsPhoneViewHolder(

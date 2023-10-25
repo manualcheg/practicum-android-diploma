@@ -6,7 +6,7 @@ import ru.practicum.android.diploma.databinding.ItemSectorBinding
 import ru.practicum.android.diploma.filter.ui.model.IndustryUi
 
 class IndustryViewHolder(
-    private val binding: ItemSectorBinding,
+    private val binding: ItemSectorBinding
 ) :
     RecyclerView.ViewHolder(binding.root) {
     fun bind(items: IndustryUi) {
@@ -15,7 +15,6 @@ class IndustryViewHolder(
             binding.industryImageView.setImageResource(R.drawable.checkbox_circle_checked)
         } else {
             binding.industryImageView.setImageResource(R.drawable.checkbox_circle_unchecked)
-
         }
     }
 }

@@ -7,6 +7,5 @@ import ru.practicum.android.diploma.similar_vacancy.data.repositoryImpl.SimilarV
 import ru.practicum.android.diploma.similar_vacancy.domain.repository.SimilarVacancyRepository
 
 val similarVacancyDataModule = module {
-
     singleOf(::SimilarVacancyRepositoryImpl) bind (SimilarVacancyRepository::class)
 }

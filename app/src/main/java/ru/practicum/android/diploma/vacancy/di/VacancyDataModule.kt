@@ -9,7 +9,6 @@ import ru.practicum.android.diploma.vacancy.domain.repository.VacancyRepository
 import ru.practicum.android.diploma.vacancy.ui.navigator.ExternalNavigatorImpl
 
 val vacancyDataModule = module {
-
     singleOf(::ExternalNavigatorImpl) bind ExternalNavigator::class
     singleOf(::VacancyRepositoryImpl) bind VacancyRepository::class
 }

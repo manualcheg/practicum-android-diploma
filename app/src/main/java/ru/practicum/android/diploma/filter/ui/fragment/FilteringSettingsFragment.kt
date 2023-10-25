@@ -30,9 +30,7 @@ class FilteringSettingsFragment : Fragment() {
 
     private var _binding: FragmentFilteringSettingsBinding? = null
     private val binding get() = _binding!!
-
     private val viewModel by viewModel<FilteringSettingsViewModel>()
-
     private var salary = BLANK_STRING
 
     override fun onCreateView(
@@ -113,7 +111,6 @@ class FilteringSettingsFragment : Fragment() {
 
         binding.applyButton.setOnClickListener {
             viewModel.putFilterOptions()
-
             val bundle = Bundle()
             bundle.putBoolean(IS_SEARCH_WITH_NEW_FILTER_NEED, true)
             setFragmentResult(IS_SEARCH_WITH_NEW_FILTER_NEED, bundle)
@@ -202,13 +199,21 @@ class FilteringSettingsFragment : Fragment() {
             }
 
             binding.selectedEnterTheAmountTextInputEditText.setOnFocusChangeListener { _, hasFocus ->
-                if (hasFocus){
+                if (hasFocus) {
                     setTextInputLayoutHintColor(binding.enterTheAmountTextInputLayout, requireContext(), R.color.blue)
                 } else {
-                    if ( salary == "" || salary.isBlank()){
-                        setTextInputLayoutHintColor(binding.enterTheAmountTextInputLayout, requireContext(), R.color.gray_white)
+                    if (salary == "" || salary.isBlank()) {
+                        setTextInputLayoutHintColor(
+                            binding.enterTheAmountTextInputLayout,
+                            requireContext(),
+                            R.color.gray_white
+                        )
                     } else {
-                        setTextInputLayoutHintColor(binding.enterTheAmountTextInputLayout, requireContext(), R.color.black_universal)
+                        setTextInputLayoutHintColor(
+                            binding.enterTheAmountTextInputLayout,
+                            requireContext(),
+                            R.color.black_universal
+                        )
                     }
                 }
             }
@@ -246,7 +251,11 @@ class FilteringSettingsFragment : Fragment() {
         }
     }
 
-    private fun setTextInputLayoutHintColor(textInputLayout: TextInputLayout, context: Context, @ColorRes colorIdRes: Int) {
+    private fun setTextInputLayoutHintColor(
+        textInputLayout: TextInputLayout,
+        context: Context,
+        @ColorRes colorIdRes: Int
+    ) {
         textInputLayout.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(context, colorIdRes))
     }
 
