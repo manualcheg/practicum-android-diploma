@@ -27,8 +27,8 @@ import ru.practicum.android.diploma.search.data.dataSource.VacancyRemoteDataSour
 import ru.practicum.android.diploma.search.data.model.ErrorRemoteDataSource
 
 class FiltersRepositoryImpl(
-    private val filtersLocalDataSourceImpl: FiltersLocalDataSource,
-    private val filtersLocalStorageDataSourceImpl: FiltersLocalStorageDataSource,
+    private val filtersLocalDataSource: FiltersLocalDataSource,
+    private val filtersLocalStorageDataSource: FiltersLocalStorageDataSource,
     private val filtersRemoteDataSource: VacancyRemoteDataSource,
     private val filtersDtoToDomainConverter: FiltersDtoToDomainConverter
 ) : FiltersRepository {
@@ -93,79 +93,79 @@ class FiltersRepositoryImpl(
     }
 
     override fun getFilterOptions(): Filter? {
-        return if (filtersLocalDataSourceImpl.getFilterOptions() == null) {
-            filtersLocalStorageDataSourceImpl.getFilterOptions()
+        return if (filtersLocalDataSource.getFilterOptions() == null) {
+            filtersLocalStorageDataSource.getFilterOptions()
         } else {
-            filtersLocalDataSourceImpl.getFilterOptions()
+            filtersLocalDataSource.getFilterOptions()
         }
     }
 
     override fun setFilterOptionsToStorage(options: Filter) {
-        filtersLocalStorageDataSourceImpl.setFilterOptions(options)
-        filtersLocalDataSourceImpl.clearFilterOptions()
+        filtersLocalStorageDataSource.setFilterOptions(options)
+        filtersLocalDataSource.clearFilterOptions()
     }
 
     override fun setCountry(country: CountryFilter) {
-        filtersLocalDataSourceImpl.setCountry(country)
+        filtersLocalDataSource.setCountry(country)
     }
 
     override fun setArea(area: AreaFilter?) {
-        filtersLocalDataSourceImpl.setArea(area)
+        filtersLocalDataSource.setArea(area)
     }
 
     override fun setIndustry(industry: IndustryFilter) {
-        filtersLocalDataSourceImpl.setIndustry(industry)
+        filtersLocalDataSource.setIndustry(industry)
     }
 
     override fun setSalary(salary: Int) {
-        filtersLocalDataSourceImpl.setSalary(salary)
+        filtersLocalDataSource.setSalary(salary)
     }
 
     override fun setOnlyWithSalary(option: Boolean) {
-        filtersLocalDataSourceImpl.setOnlyWithSalary(option)
+        filtersLocalDataSource.setOnlyWithSalary(option)
     }
 
     override fun clearFilterOptions() {
-        filtersLocalStorageDataSourceImpl.clearFilterOptions()
+        filtersLocalStorageDataSource.clearFilterOptions()
     }
 
     override fun clearArea() {
-        filtersLocalDataSourceImpl.clearArea()
+        filtersLocalDataSource.clearArea()
     }
 
     override fun clearIndustry() {
-        filtersLocalDataSourceImpl.clearIndustry()
+        filtersLocalDataSource.clearIndustry()
     }
 
     override fun clearSalary() {
-        filtersLocalDataSourceImpl.clearSalary()
+        filtersLocalDataSource.clearSalary()
     }
 
     override fun clearTempFilterOptions() {
-        filtersLocalDataSourceImpl.clearTempFilterOptions()
+        filtersLocalDataSource.clearTempFilterOptions()
     }
 
     override fun isTempFilterOptionsEmpty(): Boolean {
-        return filtersLocalDataSourceImpl.isTempFilterOptionsEmpty()
+        return filtersLocalDataSource.isTempFilterOptionsEmpty()
     }
 
     override fun isTempFilterOptionsExists(): Boolean {
-        return filtersLocalDataSourceImpl.isTempFilterOptionsExists()
+        return filtersLocalDataSource.isTempFilterOptionsExists()
     }
 
     override fun setFilterOptionsToCache(filter: Filter?) {
-        filtersLocalDataSourceImpl.addFilterToCache(filter)
+        filtersLocalDataSource.addFilterToCache(filter)
     }
 
     override fun getChosenIndustry(): IndustryFilter? {
-        return filtersLocalDataSourceImpl.getFilterOptions()?.industry
+        return filtersLocalDataSource.getFilterOptions()?.industry
     }
 
     override fun getChosenArea(): AreaFilter? {
-        return filtersLocalDataSourceImpl.getFilterOptions()?.area
+        return filtersLocalDataSource.getFilterOptions()?.area
     }
 
     override fun getChosenCountry(): CountryFilter? {
-        return filtersLocalDataSourceImpl.getFilterOptions()?.country
+        return filtersLocalDataSource.getFilterOptions()?.country
     }
 }
