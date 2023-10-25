@@ -1,7 +1,5 @@
 package ru.practicum.android.diploma.search.di
 
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
@@ -21,17 +19,8 @@ import ru.practicum.android.diploma.search.domain.repository.SearchRepository
 val searchDataModule = module {
 
     single<HeadHunterApiService> {
-        val headerInterceptor = HeaderInterceptor()
-        val loggingInterceptor =
-            HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
-        loggingInterceptor.redactHeader(AUTHORIZATION)
-        val client = OkHttpClient.Builder()
-            .addInterceptor(headerInterceptor)
-            .addInterceptor(loggingInterceptor)
-            .build()
         Retrofit.Builder()
             .baseUrl(HH_API_BASE_URL)
-            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(HeadHunterApiService::class.java)
