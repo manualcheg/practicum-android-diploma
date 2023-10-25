@@ -13,7 +13,7 @@ import ru.practicum.android.diploma.common.util.Resource
 import ru.practicum.android.diploma.common.util.constants.RepositoryConst.NO_CONNECTION
 import ru.practicum.android.diploma.common.util.constants.RepositoryConst.RESPONSE_SUCCESS
 import ru.practicum.android.diploma.filter.data.dataSource.FiltersLocalDataSource
-import ru.practicum.android.diploma.filter.data.dataSourceImpl.FiltersLocalStorageDataSourceImpl
+import ru.practicum.android.diploma.filter.data.dataSource.FiltersLocalStorageDataSource
 import ru.practicum.android.diploma.filter.data.mapper.FiltersDtoToDomainConverter
 import ru.practicum.android.diploma.filter.data.model.AllAreasRequest
 import ru.practicum.android.diploma.filter.data.model.AreasResponse
@@ -28,7 +28,7 @@ import ru.practicum.android.diploma.search.data.model.ErrorRemoteDataSource
 
 class FiltersRepositoryImpl(
     private val filtersLocalDataSourceImpl: FiltersLocalDataSource,
-    private val filtersLocalStorageDataSourceImpl: FiltersLocalStorageDataSourceImpl,
+    private val filtersLocalStorageDataSourceImpl: FiltersLocalStorageDataSource,
     private val filtersRemoteDataSource: VacancyRemoteDataSource,
     private val filtersDtoToDomainConverter: FiltersDtoToDomainConverter
 ) : FiltersRepository {
