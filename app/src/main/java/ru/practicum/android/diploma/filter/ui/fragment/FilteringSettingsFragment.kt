@@ -1,20 +1,37 @@
 package ru.practicum.android.diploma.filter.ui.fragment
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
+import android.location.Location
+import android.location.LocationManager
+import android.os.Build
 import android.os.Bundle
+import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import androidx.annotation.ColorRes
-import androidx.core.content.ContextCompat
 import androidx.activity.addCallback
+import androidx.annotation.ColorRes
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
+import com.fondesa.kpermissions.allGranted
+import com.fondesa.kpermissions.extension.permissionsBuilder
+import com.fondesa.kpermissions.extension.send
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
@@ -23,6 +40,7 @@ import ru.practicum.android.diploma.common.custom_view.model.ButtonWithSelectedV
 import ru.practicum.android.diploma.databinding.FragmentFilteringSettingsBinding
 import ru.practicum.android.diploma.filter.ui.model.ButtonState
 import ru.practicum.android.diploma.filter.ui.model.ClearFieldButtonNavigationState
+import ru.practicum.android.diploma.filter.ui.model.DialogState
 import ru.practicum.android.diploma.filter.ui.model.FilterFieldsState
 import ru.practicum.android.diploma.filter.ui.viewModel.FilteringSettingsViewModel
 
@@ -35,6 +53,16 @@ class FilteringSettingsFragment : Fragment() {
 
     private var salary = BLANK_STRING
 
+    private var confirmDialog: MaterialAlertDialogBuilder? = null
+
+
+    // FusedLocationProviderClient - Main class for receiving location updates.
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+
+    // This will store current location info
+    private var currentLocation: Location? = null
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -42,6 +70,7 @@ class FilteringSettingsFragment : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.S)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -51,12 +80,69 @@ class FilteringSettingsFragment : Fragment() {
 
         initListeners()
 
+        initConfirmDialog()
+
         viewModel.updateStates()
+
+
+
+
+        fusedLocationProviderClient =
+            LocationServices.getFusedLocationProviderClient(requireActivity())
+
+
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    @SuppressLint("MissingPermission")
+    fun getLocation() {
+        fusedLocationProviderClient.lastLocation.addOnCompleteListener(requireActivity()) { task ->
+            val location: Location? = task.result
+            if (location == null) {
+                requestNewLocationData()
+            } else {
+                currentLocation = location
+                Log.d(
+                    "judjin",
+                    "latitude = ${currentLocation!!.latitude}, longitude= ${currentLocation!!.longitude}"
+                )
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun requestNewLocationData() {
+        val mLocationRequest = LocationRequest()
+        mLocationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        mLocationRequest.interval = 0
+        mLocationRequest.fastestInterval = 0
+        mLocationRequest.numUpdates = 1
+
+        fusedLocationProviderClient =
+            LocationServices.getFusedLocationProviderClient(requireActivity())
+        fusedLocationProviderClient.requestLocationUpdates(
+            mLocationRequest, mLocationCallback,
+            Looper.myLooper()
+        )
+    }
+
+    private val mLocationCallback = object : LocationCallback() {
+        override fun onLocationResult(locationResult: LocationResult) {
+            val mLastLocation: Location? = locationResult.lastLocation
+            currentLocation = mLastLocation
+        }
+    }
+
+    private fun isLocationEnabled(): Boolean {
+        val locationManager: LocationManager =
+            requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
+            LocationManager.NETWORK_PROVIDER
+        )
     }
 
     private fun initOnClicks() {
@@ -94,7 +180,9 @@ class FilteringSettingsFragment : Fragment() {
             viewModel.clearSalary()
             viewModel.updateButtonsStates()
             binding.selectedEnterTheAmountTextInputEditText.clearFocus()
-            setTextInputLayoutHintColor(binding.enterTheAmountTextInputLayout, requireContext(), R.color.gray_white)
+            setTextInputLayoutHintColor(
+                binding.enterTheAmountTextInputLayout, requireContext(), R.color.gray_white
+            )
         }
 
         binding.filteringSettingsOnlyWithSalaryCheckbox.setOnClickListener {
@@ -123,6 +211,14 @@ class FilteringSettingsFragment : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             viewModel.clearTempFilterOptions()
             findNavController().popBackStack()
+        }
+
+        binding.locationButton.setOnClickListener {
+            permissionsBuilder(Manifest.permission.ACCESS_FINE_LOCATION).build().send {
+                if (it.allGranted()) {
+                    getLocation()
+                } else viewModel.locationAccessDenied()
+            }
         }
     }
 
@@ -165,6 +261,27 @@ class FilteringSettingsFragment : Fragment() {
         viewModel.observeResetButtonState().observe(viewLifecycleOwner) {
             renderButtonState(it, binding.resetButton)
         }
+
+        viewModel.observeDialogState().observe(viewLifecycleOwner) {
+            renderDialogState(it)
+        }
+    }
+
+    private fun initConfirmDialog() {
+        confirmDialog = MaterialAlertDialogBuilder(
+            requireContext()
+        ).setTitle(R.string.location_permission)
+            .setNegativeButton(R.string.location_denied) { _, _ ->
+
+            }.setPositiveButton(R.string.location_procced) { _, _ ->
+
+            }
+    }
+
+    private fun renderDialogState(state: DialogState) {
+        when (state) {
+            DialogState.ShowDialog -> confirmDialog?.show()
+        }
     }
 
     private fun renderClearAreaButtonNavigation(state: ClearFieldButtonNavigationState) {
@@ -202,13 +319,23 @@ class FilteringSettingsFragment : Fragment() {
             }
 
             binding.selectedEnterTheAmountTextInputEditText.setOnFocusChangeListener { _, hasFocus ->
-                if (hasFocus){
-                    setTextInputLayoutHintColor(binding.enterTheAmountTextInputLayout, requireContext(), R.color.blue)
+                if (hasFocus) {
+                    setTextInputLayoutHintColor(
+                        binding.enterTheAmountTextInputLayout, requireContext(), R.color.blue
+                    )
                 } else {
-                    if ( salary == "" || salary.isBlank()){
-                        setTextInputLayoutHintColor(binding.enterTheAmountTextInputLayout, requireContext(), R.color.gray_white)
+                    if (salary == "" || salary.isBlank()) {
+                        setTextInputLayoutHintColor(
+                            binding.enterTheAmountTextInputLayout,
+                            requireContext(),
+                            R.color.gray_white
+                        )
                     } else {
-                        setTextInputLayoutHintColor(binding.enterTheAmountTextInputLayout, requireContext(), R.color.black_universal)
+                        setTextInputLayoutHintColor(
+                            binding.enterTheAmountTextInputLayout,
+                            requireContext(),
+                            R.color.black_universal
+                        )
                     }
                 }
             }
@@ -246,8 +373,11 @@ class FilteringSettingsFragment : Fragment() {
         }
     }
 
-    private fun setTextInputLayoutHintColor(textInputLayout: TextInputLayout, context: Context, @ColorRes colorIdRes: Int) {
-        textInputLayout.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(context, colorIdRes))
+    private fun setTextInputLayoutHintColor(
+        textInputLayout: TextInputLayout, context: Context, @ColorRes colorIdRes: Int
+    ) {
+        textInputLayout.defaultHintTextColor =
+            ColorStateList.valueOf(ContextCompat.getColor(context, colorIdRes))
     }
 
     companion object {

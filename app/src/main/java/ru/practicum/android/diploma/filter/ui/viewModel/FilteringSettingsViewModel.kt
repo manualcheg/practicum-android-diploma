@@ -21,7 +21,9 @@ import ru.practicum.android.diploma.filter.domain.useCase.SetSalaryFilterUseCase
 import ru.practicum.android.diploma.filter.ui.mapper.FilterDomainToFilterUiConverter
 import ru.practicum.android.diploma.filter.ui.model.ButtonState
 import ru.practicum.android.diploma.filter.ui.model.ClearFieldButtonNavigationState
+import ru.practicum.android.diploma.filter.ui.model.DialogState
 import ru.practicum.android.diploma.filter.ui.model.FilterFieldsState
+import ru.practicum.android.diploma.search.ui.model.SingleLiveEvent
 
 class FilteringSettingsViewModel(
     private val getFilterOptionsUseCase: GetFilterOptionsUseCase,
@@ -50,6 +52,11 @@ class FilteringSettingsViewModel(
     private val applyButtonState = MutableLiveData<ButtonState>()
     private val resetButtonState = MutableLiveData<ButtonState>()
 
+    private val dialogState = SingleLiveEvent<DialogState>()
+
+
+
+
     private var isFiltersSetBefore: Boolean = false
 
     var filter: Filter? = null
@@ -58,6 +65,9 @@ class FilteringSettingsViewModel(
     fun observeIndustryState(): LiveData<FilterFieldsState> = industryState
     fun observeSalaryState(): LiveData<String> = salaryState
     fun observeOnlyWithSalaryState(): LiveData<Boolean> = onlyWithSalaryState
+
+    fun observeDialogState(): LiveData<DialogState> = dialogState
+
 
     fun observeClearAreaButtonNavigation(): LiveData<ClearFieldButtonNavigationState> =
         clearAreaButtonNavigation
@@ -172,6 +182,14 @@ class FilteringSettingsViewModel(
 
     fun clearTempFilterOptions() {
         clearTempFilterOptionsUseCase.execute()
+    }
+
+    fun locationButtonClicked() {
+
+    }
+
+    fun locationAccessDenied() {
+        dialogState.value = DialogState.ShowDialog
     }
 
     private fun setButtonsStates(isTempFiltersNotEmpty: Boolean) {
