@@ -29,21 +29,21 @@ import ru.practicum.android.diploma.search.data.model.ErrorRemoteDataSource
 class FiltersRepositoryImpl(
     private val filtersLocalDataSource: FiltersLocalDataSource,
     private val filtersLocalStorageDataSource: FiltersLocalStorageDataSource,
-    private val filtersRemoteDataSource: VacancyRemoteDataSource,
+    private val vacancyRemoteDataSource: VacancyRemoteDataSource,
     private val filtersDtoToDomainConverter: FiltersDtoToDomainConverter
 ) : FiltersRepository {
     override fun getAreas(areaId: String?): Flow<Resource<Areas>> = flow {
 
         val responseAreas = if (areaId == null) {
-            filtersRemoteDataSource.doRequest(AllAreasRequest())
-        } else filtersRemoteDataSource.doRequest(CertainAreasRequest(areaId))
+            vacancyRemoteDataSource.doRequest(AllAreasRequest())
+        } else vacancyRemoteDataSource.doRequest(CertainAreasRequest(areaId))
 
-        val responseCountries = filtersRemoteDataSource.doRequest(CountriesRequest())
+        val responseCountries = vacancyRemoteDataSource.doRequest(CountriesRequest())
 
         if (responseAreas.resultCode == NO_CONNECTION || responseCountries.resultCode == NO_CONNECTION) {
             emit(Resource.Error(ErrorRemoteDataSource.NO_CONNECTION))
 
-        } else if (responseAreas.resultCode == RESPONSE_SUCCESS || responseCountries.resultCode == RESPONSE_SUCCESS) {
+        } else if (responseAreas.resultCode == RESPONSE_SUCCESS && responseCountries.resultCode == RESPONSE_SUCCESS) {
 
             val areas: List<AreaFilter> =
                 filtersDtoToDomainConverter.convertAreaResponseToListOfAreaWithoutCountries(
@@ -55,7 +55,7 @@ class FiltersRepositoryImpl(
     }
 
     override fun getCountries(): Flow<Resource<Countries>> = flow {
-        val response = filtersRemoteDataSource.doRequest(CountriesRequest())
+        val response = vacancyRemoteDataSource.doRequest(CountriesRequest())
         when (response.resultCode) {
             NO_CONNECTION -> {
                 emit(Resource.Error(ErrorRemoteDataSource.NO_CONNECTION))
@@ -74,7 +74,7 @@ class FiltersRepositoryImpl(
     }
 
     override fun getIndustries(): Flow<Resource<Industries>> = flow {
-        val response = filtersRemoteDataSource.doRequest(IndustriesRequest())
+        val response = vacancyRemoteDataSource.doRequest(IndustriesRequest())
         when (response.resultCode) {
             NO_CONNECTION -> {
                 emit(Resource.Error(ErrorRemoteDataSource.NO_CONNECTION))
