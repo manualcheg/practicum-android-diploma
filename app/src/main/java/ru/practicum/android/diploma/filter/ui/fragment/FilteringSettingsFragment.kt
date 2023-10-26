@@ -14,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.annotation.ColorRes
 import androidx.annotation.RequiresApi
@@ -36,12 +37,14 @@ import com.google.android.material.textfield.TextInputLayout
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.custom_view.ButtonWithSelectedValues
-import ru.practicum.android.diploma.common.custom_view.model.ButtonWithSelectedValuesState
+import ru.practicum.android.diploma.common.custom_view.model.ButtonWithSelectedValuesLocationState
+import ru.practicum.android.diploma.common.custom_view.model.ButtonWithSelectedValuesTextState
 import ru.practicum.android.diploma.databinding.FragmentFilteringSettingsBinding
 import ru.practicum.android.diploma.filter.ui.model.ButtonState
 import ru.practicum.android.diploma.filter.ui.model.ClearFieldButtonNavigationState
 import ru.practicum.android.diploma.filter.ui.model.DialogState
 import ru.practicum.android.diploma.filter.ui.model.FilterFieldsState
+import ru.practicum.android.diploma.filter.ui.model.LocationState
 import ru.practicum.android.diploma.filter.ui.viewModel.FilteringSettingsViewModel
 
 class FilteringSettingsFragment : Fragment() {
@@ -84,12 +87,8 @@ class FilteringSettingsFragment : Fragment() {
 
         viewModel.updateStates()
 
-
-
-
         fusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(requireActivity())
-
 
     }
 
@@ -98,55 +97,8 @@ class FilteringSettingsFragment : Fragment() {
         _binding = null
     }
 
-    @SuppressLint("MissingPermission")
-    fun getLocation() {
-        fusedLocationProviderClient.lastLocation.addOnCompleteListener(requireActivity()) { task ->
-            val location: Location? = task.result
-            if (location == null) {
-                requestNewLocationData()
-            } else {
-                currentLocation = location
-                Log.d(
-                    "judjin",
-                    "latitude = ${currentLocation!!.latitude}, longitude= ${currentLocation!!.longitude}"
-                )
-            }
-        }
-    }
-
-    @SuppressLint("MissingPermission")
-    private fun requestNewLocationData() {
-        val mLocationRequest = LocationRequest()
-        mLocationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        mLocationRequest.interval = 0
-        mLocationRequest.fastestInterval = 0
-        mLocationRequest.numUpdates = 1
-
-        fusedLocationProviderClient =
-            LocationServices.getFusedLocationProviderClient(requireActivity())
-        fusedLocationProviderClient.requestLocationUpdates(
-            mLocationRequest, mLocationCallback,
-            Looper.myLooper()
-        )
-    }
-
-    private val mLocationCallback = object : LocationCallback() {
-        override fun onLocationResult(locationResult: LocationResult) {
-            val mLastLocation: Location? = locationResult.lastLocation
-            currentLocation = mLastLocation
-        }
-    }
-
-    private fun isLocationEnabled(): Boolean {
-        val locationManager: LocationManager =
-            requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
-            LocationManager.NETWORK_PROVIDER
-        )
-    }
-
     private fun initOnClicks() {
-        binding.areaCustomView.onButtonClick {
+        binding.areaCustomView.onIconButtonClick {
             if (viewModel.observeAreaState().value is FilterFieldsState.Content) {
                 viewModel.clearAreaButtonClicked()
                 binding.selectedEnterTheAmountTextInputEditText.clearFocus()
@@ -159,7 +111,7 @@ class FilteringSettingsFragment : Fragment() {
             findNavController().navigate(R.id.action_filteringSettingsFragment_to_filteringChoosingWorkplaceFragment)
         }
 
-        binding.industryCustomView.onButtonClick {
+        binding.industryCustomView.onIconButtonClick {
             if (viewModel.observeIndustryState().value is FilterFieldsState.Content) {
                 viewModel.clearIndustryButtonClicked()
                 binding.selectedEnterTheAmountTextInputEditText.clearFocus()
@@ -173,6 +125,7 @@ class FilteringSettingsFragment : Fragment() {
 
         binding.filteringSettingsToolbar.setNavigationOnClickListener {
             viewModel.clearTempFilterOptions()
+            setFragmentResult()
             findNavController().popBackStack()
         }
 
@@ -201,21 +154,20 @@ class FilteringSettingsFragment : Fragment() {
 
         binding.applyButton.setOnClickListener {
             viewModel.putFilterOptions()
-
-            val bundle = Bundle()
-            bundle.putBoolean(IS_SEARCH_WITH_NEW_FILTER_NEED, true)
-            setFragmentResult(IS_SEARCH_WITH_NEW_FILTER_NEED, bundle)
+            setFragmentResult()
             findNavController().popBackStack()
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             viewModel.clearTempFilterOptions()
+            setFragmentResult()
             findNavController().popBackStack()
         }
 
-        binding.locationButton.setOnClickListener {
+        binding.areaCustomView.onLocationButtonClick {
             permissionsBuilder(Manifest.permission.ACCESS_FINE_LOCATION).build().send {
                 if (it.allGranted()) {
+                    viewModel.getLocation()
                     getLocation()
                 } else viewModel.locationAccessDenied()
             }
@@ -265,42 +217,10 @@ class FilteringSettingsFragment : Fragment() {
         viewModel.observeDialogState().observe(viewLifecycleOwner) {
             renderDialogState(it)
         }
-    }
 
-    private fun initConfirmDialog() {
-        confirmDialog = MaterialAlertDialogBuilder(
-            requireContext()
-        ).setTitle(R.string.location_permission)
-            .setNegativeButton(R.string.location_denied) { _, _ ->
+        viewModel.observeLocationState().observe(viewLifecycleOwner) {
+            renderLocationState(it)
 
-            }.setPositiveButton(R.string.location_procced) { _, _ ->
-
-            }
-    }
-
-    private fun renderDialogState(state: DialogState) {
-        when (state) {
-            DialogState.ShowDialog -> confirmDialog?.show()
-        }
-    }
-
-    private fun renderClearAreaButtonNavigation(state: ClearFieldButtonNavigationState) {
-        viewModel.updateButtonsStates()
-        when (state) {
-            ClearFieldButtonNavigationState.ClearField -> viewModel.clearArea()
-            ClearFieldButtonNavigationState.Navigate -> {
-                findNavController().navigate(R.id.action_filteringSettingsFragment_to_filteringChoosingWorkplaceFragment)
-            }
-        }
-    }
-
-    private fun renderClearIndustryButtonNavigation(state: ClearFieldButtonNavigationState) {
-        viewModel.updateButtonsStates()
-        when (state) {
-            ClearFieldButtonNavigationState.ClearField -> viewModel.clearIndustry()
-            ClearFieldButtonNavigationState.Navigate -> {
-                findNavController().navigate(R.id.action_filteringSettingsFragment_to_filteringSectorFragment)
-            }
         }
     }
 
@@ -348,6 +268,57 @@ class FilteringSettingsFragment : Fragment() {
         }
     }
 
+    private fun initConfirmDialog() {
+        confirmDialog = MaterialAlertDialogBuilder(
+            requireContext()
+        ).setTitle(R.string.location_title).setMessage(
+            R.string.location_permission
+        )
+            .setNegativeButton(R.string.location_denied) { _, _ ->
+
+            }.setPositiveButton(R.string.location_procced) { _, _ ->
+                viewModel.openAppsSettings()
+            }
+    }
+
+    private fun renderButtonWithSelectedValues(
+        state: FilterFieldsState, customView: ButtonWithSelectedValues, hint: String
+    ) {
+        when (state) {
+            is FilterFieldsState.Content -> customView.renderTextState(
+                ButtonWithSelectedValuesTextState.Content(
+                    text = state.text, hint = hint
+                )
+            )
+
+            FilterFieldsState.Empty -> customView.renderTextState(
+                ButtonWithSelectedValuesTextState.Empty(
+                    hint = hint
+                )
+            )
+        }
+    }
+
+    private fun renderClearAreaButtonNavigation(state: ClearFieldButtonNavigationState) {
+        viewModel.updateButtonsStates()
+        when (state) {
+            ClearFieldButtonNavigationState.ClearField -> viewModel.clearArea()
+            ClearFieldButtonNavigationState.Navigate -> {
+                findNavController().navigate(R.id.action_filteringSettingsFragment_to_filteringChoosingWorkplaceFragment)
+            }
+        }
+    }
+
+    private fun renderClearIndustryButtonNavigation(state: ClearFieldButtonNavigationState) {
+        viewModel.updateButtonsStates()
+        when (state) {
+            ClearFieldButtonNavigationState.ClearField -> viewModel.clearIndustry()
+            ClearFieldButtonNavigationState.Navigate -> {
+                findNavController().navigate(R.id.action_filteringSettingsFragment_to_filteringSectorFragment)
+            }
+        }
+    }
+
     private fun renderButtonState(state: ButtonState, button: Button) {
         when (state) {
             ButtonState.Gone -> button.isVisible = false
@@ -355,22 +326,99 @@ class FilteringSettingsFragment : Fragment() {
         }
     }
 
-    private fun renderButtonWithSelectedValues(
-        state: FilterFieldsState, customView: ButtonWithSelectedValues, hint: String
-    ) {
+    private fun renderDialogState(state: DialogState) {
         when (state) {
-            is FilterFieldsState.Content -> customView.render(
-                ButtonWithSelectedValuesState.Content(
-                    text = state.text, hint = hint
-                )
+            DialogState.ShowDialog -> confirmDialog?.show()
+        }
+    }
+
+    private fun setFragmentResult() {
+        val bundle = Bundle()
+        bundle.putBoolean(IS_SEARCH_WITH_NEW_FILTER_NEED, true)
+        setFragmentResult(IS_SEARCH_WITH_NEW_FILTER_NEED, bundle)
+    }
+
+    private fun renderLocationState(state: LocationState) {
+        when (state) {
+            LocationState.Empty -> binding.areaCustomView.renderLocationState(
+                ButtonWithSelectedValuesLocationState.LocationEmpty
             )
 
-            FilterFieldsState.Empty -> customView.render(
-                ButtonWithSelectedValuesState.Empty(
-                    hint = hint
-                )
+            LocationState.Error -> showLocationError()
+            LocationState.Loading -> binding.areaCustomView.renderLocationState(
+                ButtonWithSelectedValuesLocationState.LocationLoading
+            )
+
+            LocationState.Success -> binding.areaCustomView.renderLocationState(
+                ButtonWithSelectedValuesLocationState.LocationSuccess
             )
         }
+    }
+
+    private fun showLocationError() {
+        Toast.makeText(requireContext(), R.string.location_error, Toast.LENGTH_LONG).show()
+        binding.areaCustomView.renderLocationState(ButtonWithSelectedValuesLocationState.LocationEmpty)
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun getLocation() {
+        if (isLocationEnabled()) {
+            fusedLocationProviderClient.lastLocation.addOnCompleteListener(requireActivity()) { task ->
+                val location: Location? = task.result
+                if (location == null) {
+                    Log.d("MY_TAG", "location == null")
+
+                    requestNewLocationData()
+                } else {
+                    Log.d("MY_TAG", "location != null")
+                    currentLocation = location
+                    Log.d(
+                        "MY_TAG",
+                        "latitude = ${currentLocation!!.latitude}, longitude= ${currentLocation!!.longitude}"
+                    )
+                    val coordinates =
+                        "${currentLocation!!.longitude}, ${currentLocation!!.latitude}"
+                    viewModel.getFilterFromGeocoder(coordinates)
+                }
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun requestNewLocationData() {
+        val mLocationRequest =
+            LocationRequest.create().apply {
+                priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+                interval = 0
+                fastestInterval = 0
+                numUpdates = 1
+            }
+
+        fusedLocationProviderClient =
+            LocationServices.getFusedLocationProviderClient(requireActivity())
+        Log.d("MY_TAG", "getFusedLocationProviderClient")
+
+
+        fusedLocationProviderClient.requestLocationUpdates(
+            mLocationRequest, mLocationCallback, Looper.myLooper()
+        )
+        Log.d("MY_TAG", "requestLocationUpdates")
+
+    }
+
+    private val mLocationCallback = object : LocationCallback() {
+        override fun onLocationResult(locationResult: LocationResult) {
+            val mLastLocation: Location? = locationResult.lastLocation
+            currentLocation = mLastLocation
+        }
+    }
+
+    private fun isLocationEnabled(): Boolean {
+        val locationManager: LocationManager =
+            requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
+            LocationManager.NETWORK_PROVIDER
+        )
     }
 
     private fun setTextInputLayoutHintColor(

@@ -5,7 +5,7 @@ import ru.practicum.android.diploma.filter.domain.repository.FiltersRepository
 
 class SetCountryFilterUseCaseImpl(private val filtersRepository: FiltersRepository) :
     SetCountryFilterUseCase {
-    override fun execute(country: CountryFilter) {
+    override fun execute(country: CountryFilter?) {
         filtersRepository.setCountry(country)
     }
 }

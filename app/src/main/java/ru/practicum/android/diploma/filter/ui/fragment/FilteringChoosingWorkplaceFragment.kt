@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.filter.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,7 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.common.custom_view.model.ButtonWithSelectedValuesState
+import ru.practicum.android.diploma.common.custom_view.model.ButtonWithSelectedValuesTextState
 import ru.practicum.android.diploma.common.domain.model.filter_models.AreaFilter
 import ru.practicum.android.diploma.common.domain.model.filter_models.CountryFilter
 import ru.practicum.android.diploma.databinding.FragmentFilteringChoosingWorkplaceBinding
@@ -99,7 +98,7 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
             findNavController().popBackStack()
         }
 
-        binding.choosingWorkplaceCountryCustomView.onButtonClick {
+        binding.choosingWorkplaceCountryCustomView.onIconButtonClick {
             if (emptyCountryField) {
                 navigateToCountrySelection()
             } else {
@@ -109,7 +108,7 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
             }
         }
 
-        binding.choosingWorkplaceAreaCustomView.onButtonClick {
+        binding.choosingWorkplaceAreaCustomView.onIconButtonClick {
             if (emptyAreaField) {
                 navigateToAreaSelection()
             } else {
@@ -139,8 +138,8 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
     private fun renderCountryState(state: FilterFieldsState) {
         when (state) {
             is FilterFieldsState.Empty -> {
-                binding.choosingWorkplaceCountryCustomView.render(
-                    ButtonWithSelectedValuesState.Empty(
+                binding.choosingWorkplaceCountryCustomView.renderTextState(
+                    ButtonWithSelectedValuesTextState.Empty(
                         getString(
                             R.string.country
                         )
@@ -150,8 +149,8 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
             }
 
             is FilterFieldsState.Content -> {
-                binding.choosingWorkplaceCountryCustomView.render(
-                    ButtonWithSelectedValuesState.Content(
+                binding.choosingWorkplaceCountryCustomView.renderTextState(
+                    ButtonWithSelectedValuesTextState.Content(
                         state.text, getString(
                             R.string.country
                         )
@@ -166,8 +165,8 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
     private fun renderRegionState(state: FilterFieldsState) {
         when (state) {
             is FilterFieldsState.Empty -> {
-                binding.choosingWorkplaceAreaCustomView.render(
-                    ButtonWithSelectedValuesState.Empty(
+                binding.choosingWorkplaceAreaCustomView.renderTextState(
+                    ButtonWithSelectedValuesTextState.Empty(
                         getString(
                             R.string.region
                         )
@@ -177,8 +176,8 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
             }
 
             is FilterFieldsState.Content -> {
-                binding.choosingWorkplaceAreaCustomView.render(
-                    ButtonWithSelectedValuesState.Content(
+                binding.choosingWorkplaceAreaCustomView.renderTextState(
+                    ButtonWithSelectedValuesTextState.Content(
                         state.text, getString(
                             R.string.region
                         )

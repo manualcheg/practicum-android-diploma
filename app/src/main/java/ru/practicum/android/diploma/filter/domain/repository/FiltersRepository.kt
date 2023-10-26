@@ -15,7 +15,7 @@ interface FiltersRepository {
     fun getAreas(areaId: String?): Flow<Resource<Areas>>
     fun getCountries(): Flow<Resource<Countries>>
     fun getIndustries(): Flow<Resource<Industries>>
-    fun setCountry(country: CountryFilter)
+    fun setCountry(country: CountryFilter?)
     fun setArea(area: AreaFilter?)
     fun setIndustry(industry: IndustryFilter)
     fun setSalary(salary: Int)

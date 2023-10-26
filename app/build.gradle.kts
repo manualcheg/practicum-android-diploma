@@ -94,6 +94,8 @@ dependencies {
 
     implementation("com.github.fondesa:kpermissions:3.2.1")
 
+    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
+
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {

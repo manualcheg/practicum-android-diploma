@@ -105,7 +105,7 @@ class FiltersRepositoryImpl(
         filtersLocalDataSource.clearFilterOptions()
     }
 
-    override fun setCountry(country: CountryFilter) {
+    override fun setCountry(country: CountryFilter?) {
         filtersLocalDataSource.setCountry(country)
     }
 

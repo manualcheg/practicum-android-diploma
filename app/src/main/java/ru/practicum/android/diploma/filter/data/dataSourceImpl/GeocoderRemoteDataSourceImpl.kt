@@ -12,7 +12,7 @@ import ru.practicum.android.diploma.search.domain.repository.NetworkConnectionPr
 
 class GeocoderRemoteDataSourceImpl(
     private val yandexGeocoderApiService: YandexGeocoderApiService,
-    private val networkConnectionProvider: NetworkConnectionProvider
+    private val networkConnectionProvider: NetworkConnectionProvider,
 ) : GeocoderRemoteDataSource {
     override suspend fun getLocation(dto: Any): Response {
         if (!networkConnectionProvider.isConnected()) {

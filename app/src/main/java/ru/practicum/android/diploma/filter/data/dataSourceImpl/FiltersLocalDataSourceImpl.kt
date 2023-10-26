@@ -15,7 +15,7 @@ class FiltersLocalDataSourceImpl(
     }
 
 
-    override fun setCountry(country: CountryFilter) {
+    override fun setCountry(country: CountryFilter?) {
         filterLocalCache.addCountry(country)
     }
 

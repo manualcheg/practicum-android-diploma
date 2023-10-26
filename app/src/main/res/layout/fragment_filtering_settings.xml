@@ -95,13 +95,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/locationButton"
-        style="@style/Button"
-        android:text="@string/location"
-        app:layout_constraintBottom_toTopOf="@+id/applyButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/filtering_settings_only_with_salary_checkbox" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
