@@ -19,9 +19,7 @@ import ru.practicum.android.diploma.filter.domain.useCase.SetIndustryFilterUseCa
 import ru.practicum.android.diploma.filter.domain.useCase.SetOnlyWithSalaryFilterUseCase
 import ru.practicum.android.diploma.filter.domain.useCase.SetSalaryFilterUseCase
 import ru.practicum.android.diploma.filter.ui.mapper.FilterDomainToFilterUiConverter
-import ru.practicum.android.diploma.filter.ui.model.ButtonState
-import ru.practicum.android.diploma.filter.ui.model.ClearFieldButtonNavigationState
-import ru.practicum.android.diploma.filter.ui.model.FilterFieldsState
+import ru.practicum.android.diploma.filter.ui.model.FilterSettingsState
 
 class FilteringSettingsViewModel(
     private val getFilterOptionsUseCase: GetFilterOptionsUseCase,
@@ -41,73 +39,62 @@ class FilteringSettingsViewModel(
     private val filterDomainToFilterUiConverter: FilterDomainToFilterUiConverter
 ) : ViewModel() {
 
-    private val areaState = MutableLiveData<FilterFieldsState>(FilterFieldsState.Empty)
-    private val industryState = MutableLiveData<FilterFieldsState>(FilterFieldsState.Empty)
-    private val salaryState = MutableLiveData<String>(null)
-    private val onlyWithSalaryState = MutableLiveData(false)
-    private val clearAreaButtonNavigation = MutableLiveData<ClearFieldButtonNavigationState>()
-    private val clearIndustryButtonNavigation = MutableLiveData<ClearFieldButtonNavigationState>()
-    private val applyButtonState = MutableLiveData<ButtonState>()
-    private val resetButtonState = MutableLiveData<ButtonState>()
+    private val stateLiveData = MutableLiveData<FilterSettingsState>()
 
     private var isFiltersSetBefore: Boolean = false
 
     var filter: Filter? = null
 
-    fun observeAreaState(): LiveData<FilterFieldsState> = areaState
-    fun observeIndustryState(): LiveData<FilterFieldsState> = industryState
-    fun observeSalaryState(): LiveData<String> = salaryState
-    fun observeOnlyWithSalaryState(): LiveData<Boolean> = onlyWithSalaryState
-
-    fun observeClearAreaButtonNavigation(): LiveData<ClearFieldButtonNavigationState> =
-        clearAreaButtonNavigation
-
-    fun observeClearIndustryButtonNavigation(): LiveData<ClearFieldButtonNavigationState> =
-        clearIndustryButtonNavigation
-
-    fun observeApplyButtonState(): LiveData<ButtonState> = applyButtonState
-    fun observeResetButtonState(): LiveData<ButtonState> = resetButtonState
+    var salary: String = BLANK_STRING
+    private var currentState: FilterSettingsState.Content? = null
 
     init {
         filter = getFilterOptionsUseCase.execute()
         isFiltersSetBefore = filter != null
     }
 
+    fun observeStateLiveData(): LiveData<FilterSettingsState> = stateLiveData
+
     fun updateStates() {
         filter = getFilterOptionsUseCase.execute()
+        stateLiveData.value = FilterSettingsState.Content()
+        currentState = stateLiveData.value as FilterSettingsState.Content
 
         val filterUi = filterDomainToFilterUiConverter.mapFilterToFilterUi(filter)
 
-        if (filterUi.areaName.isNotBlank()) {
-            areaState.value = FilterFieldsState.Content(
-                text = "${filterUi.areaName}, ${filterUi.countryName}"
-            )
+        currentState = if (filterUi.areaName.isNotBlank()) {
+            currentState?.copy(areaField = "${filterUi.areaName}, ${filterUi.countryName}")
 
         } else if (filterUi.areaName.isBlank() && filterUi.countryName.isNotBlank()) {
-            areaState.value = FilterFieldsState.Content(
-                text = filterUi.countryName
-            )
+            currentState?.copy(areaField = filterUi.countryName)
+
         } else {
-            areaState.value = FilterFieldsState.Empty
+            currentState?.copy(areaField = BLANK_STRING)
         }
 
-        if (filterUi.industryName.isNotBlank()) {
-            industryState.value = FilterFieldsState.Content(
-                text = filterUi.industryName
-            )
+        currentState = if (filterUi.industryName.isNotBlank()) {
+            currentState?.copy(industryField = filterUi.industryName)
+
         } else {
-            industryState.value = FilterFieldsState.Empty
+            currentState?.copy(industryField = BLANK_STRING)
         }
 
-        salaryState.value = filterUi.salary
-        onlyWithSalaryState.value = filterUi.onlyWithSalary
+        currentState = currentState?.copy(salaryField = filterUi.salary)
+        currentState = currentState?.copy(onlyWithSalary = filterUi.onlyWithSalary)
+
+
+        currentState.let {
+            stateLiveData.value = it
+        }
 
         updateTempFilters()
-
         updateButtonsStates()
+
+        currentState = currentState?.copy(isItInitSalaryField = false)
+        currentState = currentState?.copy(isItInitOnlySalary = false)
     }
 
-    fun updateButtonsStates() {
+    private fun updateButtonsStates() {
         if (isFiltersSetBefore) {
             setButtonsStates(
                 isTempFiltersNotEmpty = isTempFilterOptionsExistsUseCase.execute()
@@ -119,47 +106,94 @@ class FilteringSettingsViewModel(
         }
     }
 
-    fun clearAreaButtonClicked() {
-        clearArea()
+    fun areaButtonClicked() {
+        if (currentState?.areaField?.isBlank() == true) {
+            stateLiveData.value = FilterSettingsState.Navigate.NavigateToChoosingWorkplace
+        } else {
+            clearArea()
+            updateButtonsStates()
+        }
+    }
+
+    fun industryButtonClicked() {
+        if (currentState?.industryField?.isBlank() == true) {
+            stateLiveData.value = FilterSettingsState.Navigate.NavigateToChoosingIndustry
+        } else {
+            clearIndustry()
+            updateButtonsStates()
+        }
+    }
+
+    fun backButtonClicked() {
+        clearTempFilterOptions()
+        stateLiveData.value = FilterSettingsState.Navigate.NavigateBackWithoutResult
+    }
+
+    fun clearSalaryButtonClicked() {
+        clearSalary()
         updateButtonsStates()
     }
 
-    fun clearIndustryButtonClicked() {
-        clearIndustry()
-        updateButtonsStates()
+    fun resetButtonClicked() {
+        clearAll()
+        updateStates()
     }
 
-    fun setSalary(salary: Int) {
-        setSalaryFilterUseCase.execute(salary)
-        salaryState.value = salary.toString()
+    fun setSalaryAmount(text: String) {
+        if (text != salary) {
+            salary = text
+            setSalaryFilterUseCase.execute(text.toInt())
+            currentState = currentState?.copy(salaryField = salary)
+            currentState.let {
+                stateLiveData.value = it
+            }
+            updateButtonsStates()
+        }
     }
 
     fun setOnlyWithSalary(isChecked: Boolean) {
         setOnlyWithSalaryFilterUseCase.execute(isChecked)
+        updateButtonsStates()
     }
 
-    fun clearAll() {
+    private fun clearAll() {
         clearFilterOptionsUseCase.execute()
         clearTempFilterOptionsUseCase.execute()
+        isFiltersSetBefore = false
     }
 
-    fun clearArea() {
-        areaState.value = FilterFieldsState.Empty
+    private fun clearArea() {
+        currentState = currentState?.copy(areaField = BLANK_STRING)
+        currentState.let {
+            stateLiveData.value = it
+        }
         clearAreaFilterUseCase.execute()
 
     }
 
-    fun clearIndustry() {
-        industryState.value = FilterFieldsState.Empty
+    private fun clearIndustry() {
+        currentState = currentState?.copy(industryField = BLANK_STRING)
+        currentState.let {
+            stateLiveData.value = it
+        }
         clearIndustryFilterUseCase.execute()
     }
 
     fun clearSalary() {
-        salaryState.value = BLANK_STRING
-        clearSalaryFilterUseCase.execute()
+        if (salary != BLANK_STRING) {
+            salary = BLANK_STRING
+            currentState =
+                currentState?.copy(salaryField = BLANK_STRING, isItInitSalaryField = true)
+            currentState.let {
+                stateLiveData.value = it
+            }
+            currentState = currentState?.copy(isItInitSalaryField = false)
+            clearSalaryFilterUseCase.execute()
+            updateButtonsStates()
+        }
     }
 
-    fun putFilterOptions() {
+    fun applyButtonClicked() {
         if (isTempFilterOptionsEmptyUseCase.execute()) {
             clearFilterOptionsUseCase.execute()
             clearTempFilterOptions()
@@ -168,19 +202,26 @@ class FilteringSettingsViewModel(
                 ?.let { filter -> setFilterOptionsUseCase.execute(filter) }
             clearTempFilterOptions()
         }
+        stateLiveData.value = FilterSettingsState.Navigate.NavigateBackWithResult
     }
 
-    fun clearTempFilterOptions() {
+    private fun clearTempFilterOptions() {
         clearTempFilterOptionsUseCase.execute()
     }
 
     private fun setButtonsStates(isTempFiltersNotEmpty: Boolean) {
         if (isTempFiltersNotEmpty) {
-            applyButtonState.value = ButtonState.Visible
-            resetButtonState.value = ButtonState.Visible
+            currentState = currentState?.copy(isApplyButtonVisible = true)
+            currentState = currentState?.copy(isResetButtonVisible = true)
+            currentState.let {
+                stateLiveData.value = it
+            }
         } else {
-            applyButtonState.value = ButtonState.Gone
-            resetButtonState.value = ButtonState.Gone
+            currentState = currentState?.copy(isApplyButtonVisible = false)
+            currentState = currentState?.copy(isResetButtonVisible = false)
+            currentState.let {
+                stateLiveData.value = it
+            }
         }
     }
 
