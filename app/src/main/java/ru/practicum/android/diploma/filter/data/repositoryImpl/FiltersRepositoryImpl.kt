@@ -1,38 +1,17 @@
 package ru.practicum.android.diploma.filter.data.repositoryImpl
 
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import ru.practicum.android.diploma.common.domain.model.filter_models.AreaFilter
-import ru.practicum.android.diploma.common.domain.model.filter_models.Areas
-import ru.practicum.android.diploma.common.domain.model.filter_models.Countries
-import ru.practicum.android.diploma.common.domain.model.filter_models.CountryFilter
 import ru.practicum.android.diploma.common.domain.model.filter_models.Filter
-import ru.practicum.android.diploma.common.domain.model.filter_models.Industries
-import ru.practicum.android.diploma.common.domain.model.filter_models.IndustryFilter
-import ru.practicum.android.diploma.common.util.Resource
-import ru.practicum.android.diploma.common.util.constants.RepositoryConst.NO_CONNECTION
-import ru.practicum.android.diploma.common.util.constants.RepositoryConst.RESPONSE_SUCCESS
 import ru.practicum.android.diploma.filter.data.dataSource.FiltersLocalDataSource
 import ru.practicum.android.diploma.filter.data.dataSource.FiltersLocalStorageDataSource
-import ru.practicum.android.diploma.filter.data.mapper.FiltersDtoToDomainConverter
-import ru.practicum.android.diploma.filter.data.model.AllAreasRequest
-import ru.practicum.android.diploma.filter.data.model.AreasResponse
-import ru.practicum.android.diploma.filter.data.model.CertainAreasRequest
-import ru.practicum.android.diploma.filter.data.model.CountriesRequest
-import ru.practicum.android.diploma.filter.data.model.CountriesResponse
-import ru.practicum.android.diploma.filter.data.model.IndustriesRequest
-import ru.practicum.android.diploma.filter.data.model.IndustriesResponse
 import ru.practicum.android.diploma.filter.domain.repository.FiltersRepository
-import ru.practicum.android.diploma.search.data.dataSource.VacancyRemoteDataSource
-import ru.practicum.android.diploma.search.data.model.ErrorRemoteDataSource
 
 class FiltersRepositoryImpl(
     private val filtersLocalDataSource: FiltersLocalDataSource,
     private val filtersLocalStorageDataSource: FiltersLocalStorageDataSource,
-    private val vacancyRemoteDataSource: VacancyRemoteDataSource,
-    private val filtersDtoToDomainConverter: FiltersDtoToDomainConverter
+//    private val vacancyRemoteDataSource: VacancyRemoteDataSource,
+//    private val filtersDtoToDomainConverter: FiltersDtoToDomainConverter
 ) : FiltersRepository {
-    override fun getAreas(areaId: String?): Flow<Resource<Areas>> = flow {
+    /*override fun getAreas(areaId: String?): Flow<Resource<Areas>> = flow {
 
         val responseAreas = if (areaId == null) {
             vacancyRemoteDataSource.doRequest(AllAreasRequest())
@@ -56,9 +35,9 @@ class FiltersRepositoryImpl(
         } else {
             emit(Resource.Error(ErrorRemoteDataSource.ERROR_OCCURRED))
         }
-    }
+    }*/
 
-    override fun getCountries(): Flow<Resource<Countries>> = flow {
+    /*override fun getCountries(): Flow<Resource<Countries>> = flow {
         val response = vacancyRemoteDataSource.doRequest(CountriesRequest())
         when (response.resultCode) {
             NO_CONNECTION -> {
@@ -75,9 +54,9 @@ class FiltersRepositoryImpl(
                 emit(Resource.Error(ErrorRemoteDataSource.ERROR_OCCURRED))
             }
         }
-    }
+    }*/
 
-    override fun getIndustries(): Flow<Resource<Industries>> = flow {
+    /*override fun getIndustries(): Flow<Resource<Industries>> = flow {
         val response = vacancyRemoteDataSource.doRequest(IndustriesRequest())
         when (response.resultCode) {
             NO_CONNECTION -> {
@@ -94,7 +73,7 @@ class FiltersRepositoryImpl(
                 emit(Resource.Error(ErrorRemoteDataSource.ERROR_OCCURRED))
             }
         }
-    }
+    }*/
 
     override fun getFilterOptions(): Filter? {
         return if (filtersLocalDataSource.getFilterOptions() == null) {
@@ -109,17 +88,17 @@ class FiltersRepositoryImpl(
         filtersLocalDataSource.clearFilterOptions()
     }
 
-    override fun setCountry(country: CountryFilter) {
+/*    override fun setCountry(country: CountryFilter) {
         filtersLocalDataSource.setCountry(country)
-    }
+    }*/
 
-    override fun setArea(area: AreaFilter?) {
+/*    override fun setArea(area: AreaFilter?) {
         filtersLocalDataSource.setArea(area)
-    }
+    }*/
 
-    override fun setIndustry(industry: IndustryFilter) {
+    /*override fun setIndustry(industry: IndustryFilter) {
         filtersLocalDataSource.setIndustry(industry)
-    }
+    }*/
 
     override fun setSalary(salary: Int) {
         filtersLocalDataSource.setSalary(salary)
@@ -161,15 +140,15 @@ class FiltersRepositoryImpl(
         filtersLocalDataSource.addFilterToCache(filter)
     }
 
-    override fun getChosenIndustry(): IndustryFilter? {
+    /*override fun getChosenIndustry(): IndustryFilter? {
         return filtersLocalDataSource.getFilterOptions()?.industry
-    }
+    }*/
 
-    override fun getChosenArea(): AreaFilter? {
+/*    override fun getChosenArea(): AreaFilter? {
         return filtersLocalDataSource.getFilterOptions()?.area
-    }
+    }*/
 
-    override fun getChosenCountry(): CountryFilter? {
+  /*  override fun getChosenCountry(): CountryFilter? {
         return filtersLocalDataSource.getFilterOptions()?.country
-    }
+    }*/
 }

@@ -18,7 +18,15 @@ import ru.practicum.android.diploma.filter.data.db.FilterLocalCache
 import ru.practicum.android.diploma.filter.data.db.FilterLocalCacheImpl
 import ru.practicum.android.diploma.filter.data.mapper.FiltersDtoToDomainConverter
 import ru.practicum.android.diploma.filter.data.repositoryImpl.FiltersRepositoryImpl
+import ru.practicum.android.diploma.filter.domain.repository.AreasRepository
+import ru.practicum.android.diploma.filter.data.repositoryImpl.AreasRepositoryImpl
+import ru.practicum.android.diploma.filter.domain.repository.WorkplaceRepository
+import ru.practicum.android.diploma.filter.data.repositoryImpl.WorkplaceRepositoryImpl
+import ru.practicum.android.diploma.filter.domain.repository.CountryRepository
+import ru.practicum.android.diploma.filter.data.repositoryImpl.CountryRepositoryImpl
 import ru.practicum.android.diploma.filter.domain.repository.FiltersRepository
+import ru.practicum.android.diploma.filter.domain.repository.IndustryRepository
+import ru.practicum.android.diploma.filter.data.repositoryImpl.IndustryRepositoryImpl
 import ru.practicum.android.diploma.search.domain.mapper.FilterToOptionsConverter
 
 val filterDataModule = module {
@@ -31,6 +39,10 @@ val filterDataModule = module {
     singleOf(::FiltersLocalDataSourceImpl) bind FiltersLocalDataSource::class
     singleOf(::FiltersLocalStorageDataSourceImpl) bind FiltersLocalStorageDataSource::class
     singleOf(::FiltersRepositoryImpl) bind FiltersRepository::class
+    singleOf(::AreasRepositoryImpl) bind AreasRepository::class
+    singleOf(::WorkplaceRepositoryImpl) bind WorkplaceRepository::class
+    singleOf(::CountryRepositoryImpl) bind CountryRepository::class
+    singleOf(::IndustryRepositoryImpl) bind IndustryRepository::class
     singleOf(::FilterDataBaseImpl) bind FilterDataBase::class
     singleOf(::FilterLocalCacheImpl) bind FilterLocalCache::class
     factoryOf(::FiltersDtoToDomainConverter)
