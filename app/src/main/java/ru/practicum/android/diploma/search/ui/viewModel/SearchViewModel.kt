@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.domain.model.vacancy_models.Vacancies
 import ru.practicum.android.diploma.common.ui.mapper.VacancyDomainToVacancyUiConverter
@@ -37,6 +38,8 @@ open class SearchViewModel(
     protected var nextPage = DEFAULT_PAGE
     protected var maxPages = DEFAULT_MAX_PAGES
     protected var perPage = DEFAULT_PER_PAGE
+    private var isPaginationAllowed = true
+
 
     protected var isNextPageLoading = false
     private val vacanciesList = mutableListOf<VacancyUi>()
@@ -75,7 +78,9 @@ open class SearchViewModel(
     }
 
     open fun onLastItemReached() {
-        latestSearchText?.let { searchSameRequest(it) }
+        if (isPaginationDebounce()) {
+            latestSearchText?.let { searchSameRequest(it) }
+        }
     }
 
     fun clearSearchInput() {
@@ -140,6 +145,11 @@ open class SearchViewModel(
                     latestSearchText = DEFAULT_TEXT
                 } else {
                     setState(SearchState.Error.ErrorPaginationSearch(ErrorStatusUi.NO_CONNECTION))
+                    setState(
+                        SearchState.Success.SearchContent(
+                            vacanciesList, foundVacancies, isFiltersExistsUseCase.execute()
+                        )
+                    )
                 }
             }
 
@@ -153,6 +163,11 @@ open class SearchViewModel(
                     latestSearchText = DEFAULT_TEXT
                 } else {
                     setState(SearchState.Error.ErrorPaginationSearch(ErrorStatusUi.ERROR_OCCURRED))
+                    setState(
+                        SearchState.Success.SearchContent(
+                            vacanciesList, foundVacancies, isFiltersExistsUseCase.execute()
+                        )
+                    )
                 }
             }
 
@@ -197,9 +212,23 @@ open class SearchViewModel(
         }
     }
 
+    protected fun isPaginationDebounce(): Boolean {
+        val current = isPaginationAllowed
+        if (isPaginationAllowed) {
+            isPaginationAllowed = false
+
+            viewModelScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY_MILLIS)
+                isPaginationAllowed = true
+            }
+        }
+        return current
+    }
+
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2000L
         private const val DEFAULT_TEXT = ""
         const val DEFAULT_FOUND_VACANCIES = 0
+        const val CLICK_DEBOUNCE_DELAY_MILLIS = 500L
     }
 }

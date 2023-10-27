@@ -39,7 +39,9 @@ class SimilarVacancyViewModel(
     }
 
     override fun onLastItemReached() {
-        searchSameRequest(vacancyId)
+        if (isPaginationDebounce()) {
+            searchSameRequest(vacancyId)
+        }
     }
 
     private fun searchSameRequest(vacancyId: Int) {
