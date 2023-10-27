@@ -7,9 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.activity.addCallback
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
-import androidx.activity.addCallback
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -112,8 +112,8 @@ class FilteringSettingsFragment : Fragment() {
         binding.applyButton.setOnClickListener {
             viewModel.putFilterOptions()
             val bundle = Bundle()
-            bundle.putBoolean(IS_SEARCH_WITH_NEW_FILTER_NEED, true)
-            setFragmentResult(IS_SEARCH_WITH_NEW_FILTER_NEED, bundle)
+            bundle.putBoolean(IS_FILTER_CHANGED, true)
+            setFragmentResult(IS_FILTER_CHANGED, bundle)
             findNavController().popBackStack()
         }
 
@@ -261,6 +261,6 @@ class FilteringSettingsFragment : Fragment() {
 
     companion object {
         const val BLANK_STRING = ""
-        private const val IS_SEARCH_WITH_NEW_FILTER_NEED = "Is search with new filter need"
+        private const val IS_FILTER_CHANGED = "Is filter changed"
     }
 }

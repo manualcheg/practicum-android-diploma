@@ -59,9 +59,19 @@ open class SearchViewModel(
         tracksSearchDebounce(changedText)
     }
 
-    fun searchWithNewFilter() {
-        nextPage = 0
-        latestSearchText?.let { searchNewRequest(it) }
+    fun filterChanged() {
+        when (val currentState = stateLiveData.value) {
+            is SearchState.Error.ErrorNewSearch -> {
+                setState(currentState.copy(isFilterExist = isFiltersExistsUseCase.execute()))
+            }
+
+            is SearchState.Success.Empty, is SearchState.Success.SearchContent -> {
+                nextPage = 0
+                latestSearchText?.let { searchNewRequest(it) }
+            }
+
+            else -> {}
+        }
     }
 
     open fun onLastItemReached() {
@@ -124,8 +134,7 @@ open class SearchViewModel(
                 if (isNewSearch) {
                     setState(
                         SearchState.Error.ErrorNewSearch(
-                            ErrorStatusUi.NO_CONNECTION,
-                            isFiltersExistsUseCase.execute()
+                            ErrorStatusUi.NO_CONNECTION, isFiltersExistsUseCase.execute()
                         )
                     )
                     latestSearchText = DEFAULT_TEXT
@@ -138,8 +147,7 @@ open class SearchViewModel(
                 if (isNewSearch) {
                     setState(
                         SearchState.Error.ErrorNewSearch(
-                            ErrorStatusUi.ERROR_OCCURRED,
-                            isFiltersExistsUseCase.execute()
+                            ErrorStatusUi.ERROR_OCCURRED, isFiltersExistsUseCase.execute()
                         )
                     )
                     latestSearchText = DEFAULT_TEXT
@@ -152,16 +160,13 @@ open class SearchViewModel(
                 if (vacanciesList.isEmpty()) {
                     setState(
                         SearchState.Error.ErrorNewSearch(
-                            ErrorStatusUi.NOTHING_FOUND,
-                            isFiltersExistsUseCase.execute()
+                            ErrorStatusUi.NOTHING_FOUND, isFiltersExistsUseCase.execute()
                         )
                     )
                 } else {
                     setState(
                         SearchState.Success.SearchContent(
-                            vacanciesList,
-                            foundVacancies,
-                            isFiltersExistsUseCase.execute()
+                            vacanciesList, foundVacancies, isFiltersExistsUseCase.execute()
                         )
                     )
                 }

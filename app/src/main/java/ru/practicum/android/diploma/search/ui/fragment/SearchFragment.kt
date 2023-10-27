@@ -66,10 +66,10 @@ open class SearchFragment : Fragment() {
     }
 
     private fun fragmentResultListenerInit() {
-        setFragmentResultListener(IS_SEARCH_WITH_NEW_FILTER_NEED) { _, bundle ->
-            val isNewFilterSet = bundle.getBoolean(IS_SEARCH_WITH_NEW_FILTER_NEED)
+        setFragmentResultListener(IS_FILTER_CHANGED) { _, bundle ->
+            val isNewFilterSet = bundle.getBoolean(IS_FILTER_CHANGED)
             if (isNewFilterSet) {
-                viewModel.searchWithNewFilter()
+                viewModel.filterChanged()
             }
         }
     }
@@ -290,6 +290,6 @@ open class SearchFragment : Fragment() {
 
     companion object {
         const val DEFAULT_TEXT = ""
-        private const val IS_SEARCH_WITH_NEW_FILTER_NEED = "Is search with new filter need"
+        private const val IS_FILTER_CHANGED = "Is filter changed"
     }
 }
