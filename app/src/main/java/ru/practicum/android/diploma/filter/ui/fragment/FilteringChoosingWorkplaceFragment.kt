@@ -15,6 +15,7 @@ import ru.practicum.android.diploma.common.domain.model.filter_models.AreaFilter
 import ru.practicum.android.diploma.common.domain.model.filter_models.CountryFilter
 import ru.practicum.android.diploma.databinding.FragmentFilteringChoosingWorkplaceBinding
 import ru.practicum.android.diploma.filter.ui.model.ButtonState
+import ru.practicum.android.diploma.filter.ui.model.ChoosingWorkplaceState
 import ru.practicum.android.diploma.filter.ui.model.FilterFieldsState
 import ru.practicum.android.diploma.filter.ui.viewModel.FilteringChoosingWorkplaceViewModel
 
@@ -37,14 +38,19 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.countryState.observe(viewLifecycleOwner) {
-            renderCountryState(it)
-        }
-        viewModel.regionState.observe(viewLifecycleOwner) {
-            renderRegionState(it)
-        }
-        viewModel.selectButtonState.observe(viewLifecycleOwner) {
-            renderSelectButtonState(it)
+//        viewModel.countryState.observe(viewLifecycleOwner) {
+//            renderCountryState(it)
+//        }
+//        viewModel.regionState.observe(viewLifecycleOwner) {
+//            renderRegionState(it)
+//        }
+//        viewModel.selectButtonState.observe(viewLifecycleOwner) {
+//            renderSelectButtonState(it)
+//        }
+
+        viewModel.state.observe(viewLifecycleOwner) {
+            Log.e("MyTag", "Fragment: ${it.toString()}")
+            render(it)
         }
 
         setOnClickListeners()
@@ -132,70 +138,91 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
         findNavController().navigate(direction)
     }
 
-    private fun renderCountryState(state: FilterFieldsState) {
+    private fun render(state: ChoosingWorkplaceState) {
+        //Log.e("MyTag", state.toString())
         when (state) {
-            is FilterFieldsState.Empty -> {
-                binding.choosingWorkplaceCountryCustomView.render(
-                    ButtonWithSelectedValuesState.Empty(
-                        getString(
-                            R.string.country
-                        )
-                    )
-                )
-                emptyCountryField = true
+            is ChoosingWorkplaceState.Country.Empty -> {
+                renderCountryEmpty()
+                //viewModel.updateSelectButton()
             }
 
-            is FilterFieldsState.Content -> {
-                binding.choosingWorkplaceCountryCustomView.render(
-                    ButtonWithSelectedValuesState.Content(
-                        state.text, getString(
-                            R.string.country
-                        )
-                    )
-                )
-                emptyCountryField = false
-            }
-        }
-        viewModel.updateSelectButton()
-    }
-
-    private fun renderRegionState(state: FilterFieldsState) {
-        when (state) {
-            is FilterFieldsState.Empty -> {
-                binding.choosingWorkplaceAreaCustomView.render(
-                    ButtonWithSelectedValuesState.Empty(
-                        getString(
-                            R.string.region
-                        )
-                    )
-                )
-                emptyAreaField = true
+            is ChoosingWorkplaceState.Country.Content -> {
+                renderCountryContent(state.country)
+                //viewModel.updateSelectButton()
             }
 
-            is FilterFieldsState.Content -> {
-                binding.choosingWorkplaceAreaCustomView.render(
-                    ButtonWithSelectedValuesState.Content(
-                        state.text, getString(
-                            R.string.region
-                        )
-                    )
-                )
-                emptyAreaField = false
+            is ChoosingWorkplaceState.Area.Empty -> {
+                renderAreaEmpty()
+                //viewModel.updateSelectButton()
             }
-        }
-        viewModel.updateSelectButton()
-    }
 
-    private fun renderSelectButtonState(state: ButtonState) {
-        when (state) {
-            is ButtonState.Visible -> {
-                binding.choosingWorkplaceSelectButtonTextView.visibility = View.VISIBLE
+            is ChoosingWorkplaceState.Area.Content -> {
+                renderAreaContent(state.area)
+                //viewModel.updateSelectButton()
             }
-            is ButtonState.Gone -> {
-                binding.choosingWorkplaceSelectButtonTextView.visibility = View.GONE
+
+            is ChoosingWorkplaceState.SelectButton.Visible -> {
+                renderSelectButtonVisible()
+            }
+
+            is ChoosingWorkplaceState.SelectButton.Gone -> {
+                renderSelectButtonGone()
             }
         }
     }
+
+    private fun renderCountryEmpty() {
+        binding.choosingWorkplaceCountryCustomView.render(
+            ButtonWithSelectedValuesState.Empty(
+                getString(
+                    R.string.country
+                )
+            )
+        )
+        emptyCountryField = true
+    }
+
+    private fun renderCountryContent(country: String) {
+        binding.choosingWorkplaceCountryCustomView.render(
+            ButtonWithSelectedValuesState.Content(
+                country, getString(
+                    R.string.country
+                )
+            )
+        )
+        emptyCountryField = false
+    }
+
+    private fun renderAreaEmpty() {
+        binding.choosingWorkplaceAreaCustomView.render(
+            ButtonWithSelectedValuesState.Empty(
+                getString(
+                    R.string.region
+                )
+            )
+        )
+        emptyAreaField = true
+    }
+
+    private fun renderAreaContent(area: String) {
+        binding.choosingWorkplaceAreaCustomView.render(
+            ButtonWithSelectedValuesState.Content(
+                area, getString(
+                    R.string.region
+                )
+            )
+        )
+        emptyAreaField = false
+    }
+
+    private fun renderSelectButtonVisible() {
+        binding.choosingWorkplaceSelectButtonTextView.visibility = View.VISIBLE
+    }
+
+    private fun renderSelectButtonGone() {
+        binding.choosingWorkplaceSelectButtonTextView.visibility = View.GONE
+    }
+
 
     companion object {
         const val REQUEST_KEY = "request key"
