@@ -52,16 +52,6 @@ class VacancyFragment : Fragment() {
             render(it)
         }
 
-        viewModel.inFavorites.observe(viewLifecycleOwner) { inFavorites ->
-            val menu: Menu = binding.vacancyToolbar.menu
-            if (inFavorites) {
-                menu.getItem(1).icon =
-                    AppCompatResources.getDrawable(requireContext(), R.drawable.ic_favorites_on)
-            } else {
-                menu.getItem(1).icon =
-                    AppCompatResources.getDrawable(requireContext(), R.drawable.ic_favorites_off)
-            }
-        }
         viewModel.findVacancy()
 
         setOnClickListeners()
@@ -102,6 +92,16 @@ class VacancyFragment : Fragment() {
                 setupContent(state)
             }
         }
+
+        val menu: Menu = binding.vacancyToolbar.menu
+        if (viewModel.isFavorite) {
+            menu.getItem(1).icon =
+                AppCompatResources.getDrawable(requireContext(), R.drawable.ic_favorites_on)
+        } else {
+            menu.getItem(1).icon =
+                AppCompatResources.getDrawable(requireContext(), R.drawable.ic_favorites_off)
+        }
+
     }
 
     private fun setOnClickListeners() {
