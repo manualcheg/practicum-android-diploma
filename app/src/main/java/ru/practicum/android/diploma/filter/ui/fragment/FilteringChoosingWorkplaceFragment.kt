@@ -126,25 +126,25 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
 
     private fun render(state: ChoosingWorkplaceState) {
         when (state) {
-            is ChoosingWorkplaceState.CountryAndArea.EmptyCountryEmptyArea -> {
+            is ChoosingWorkplaceState.EmptyCountryEmptyArea -> {
                 renderCountryEmpty()
                 renderAreaEmpty()
                 binding.choosingWorkplaceSelectButtonTextView.visibility = View.GONE
             }
 
-            is ChoosingWorkplaceState.CountryAndArea.ContentCountryEmptyArea -> {
+            is ChoosingWorkplaceState.ContentCountryEmptyArea -> {
                 renderCountryContent(state.country)
                 renderAreaEmpty()
                 binding.choosingWorkplaceSelectButtonTextView.visibility = View.VISIBLE
             }
 
-            is ChoosingWorkplaceState.CountryAndArea.EmptyCountryContentArea -> {
+            is ChoosingWorkplaceState.EmptyCountryContentArea -> {
                 renderCountryEmpty()
                 renderAreaContent(state.area)
                 binding.choosingWorkplaceSelectButtonTextView.visibility = View.VISIBLE
             }
 
-            is ChoosingWorkplaceState.CountryAndArea.ContentCountryContentArea -> {
+            is ChoosingWorkplaceState.ContentCountryContentArea -> {
                 renderCountryContent(state.country)
                 renderAreaContent(state.area)
                 binding.choosingWorkplaceSelectButtonTextView.visibility = View.VISIBLE

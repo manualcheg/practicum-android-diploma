@@ -31,20 +31,20 @@ class FilteringChoosingWorkplaceViewModel(
     fun updateCountryAndAreaField(countryFilter: CountryFilter?, areaFilter: AreaFilter?) {
         when {
             countryFilter == null && areaFilter == null -> {
-                setState(ChoosingWorkplaceState.CountryAndArea.EmptyCountryEmptyArea)
+                setState(ChoosingWorkplaceState.EmptyCountryEmptyArea)
             }
 
             countryFilter != null && areaFilter == null -> {
-                setState(ChoosingWorkplaceState.CountryAndArea.ContentCountryEmptyArea(countryFilter.name))
+                setState(ChoosingWorkplaceState.ContentCountryEmptyArea(countryFilter.name))
             }
 
             countryFilter == null && areaFilter != null -> {
-                setState(ChoosingWorkplaceState.CountryAndArea.EmptyCountryContentArea(areaFilter.name))
+                setState(ChoosingWorkplaceState.EmptyCountryContentArea(areaFilter.name))
             }
 
             countryFilter != null && areaFilter != null -> {
                 setState(
-                    ChoosingWorkplaceState.CountryAndArea.ContentCountryContentArea(
+                    ChoosingWorkplaceState.ContentCountryContentArea(
                         countryFilter.name,
                         areaFilter.name
                     )
