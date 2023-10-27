@@ -19,9 +19,7 @@ import ru.practicum.android.diploma.search.domain.model.ErrorStatusDomain
 import ru.practicum.android.diploma.search.domain.useCase.IsFiltersExistsUseCase
 import ru.practicum.android.diploma.search.domain.useCase.SearchUseCase
 import ru.practicum.android.diploma.search.ui.model.ErrorStatusUi
-import ru.practicum.android.diploma.search.ui.model.SearchError
 import ru.practicum.android.diploma.search.ui.model.SearchState
-import ru.practicum.android.diploma.search.ui.model.SingleLiveEvent
 
 open class SearchViewModel(
     private val searchUseCase: SearchUseCase,
@@ -31,10 +29,8 @@ open class SearchViewModel(
 
     private var latestSearchText: String? = null
 
-    private val stateLiveData = MutableLiveData<SearchState>()
-    private val paginationLoadingState = SingleLiveEvent<Boolean>()
-    private val toastErrorStateLiveData = SingleLiveEvent<SearchError>()
-    private val filterButtonStateLiveData = MutableLiveData<Boolean>()
+    private val stateLiveData =
+        MutableLiveData<SearchState>(SearchState.Success.Empty(isFiltersExistsUseCase.execute()))
 
     private var foundVacancies = DEFAULT_FOUND_VACANCIES
     protected var currentPages = DEFAULT_PAGE
@@ -53,10 +49,6 @@ open class SearchViewModel(
         }
 
     fun observeState(): LiveData<SearchState> = stateLiveData
-    fun observeErrorToastState(): LiveData<SearchError> = toastErrorStateLiveData
-    fun observePaginationLoadingState(): LiveData<Boolean> = paginationLoadingState
-    fun observeFilterButtonState(): LiveData<Boolean> = filterButtonStateLiveData
-
 
     fun searchDebounced(changedText: String) {
         if (changedText == latestSearchText) {
@@ -67,10 +59,9 @@ open class SearchViewModel(
         tracksSearchDebounce(changedText)
     }
 
-    fun searchWithNewFilter(changedText: String) {
-        latestSearchText = changedText
+    fun searchWithNewFilter() {
         nextPage = 0
-        searchNewRequest(changedText)
+        latestSearchText?.let { searchNewRequest(it) }
     }
 
     open fun onLastItemReached() {
@@ -78,36 +69,21 @@ open class SearchViewModel(
     }
 
     fun clearSearchInput() {
-        setState(SearchState.Success.Empty)
+        setState(SearchState.Success.Empty(isFiltersExistsUseCase.execute()))
         tracksSearchDebounce(DEFAULT_TEXT)
         job?.cancel()
-    }
-
-    fun getButtonState() {
-        setFilterButtonState(isFiltersExistsUseCase.execute())
     }
 
     fun setState(state: SearchState) {
         stateLiveData.value = state
     }
 
-    private fun setToastErrorState(state: SearchError) {
-        toastErrorStateLiveData.value = state
-    }
-
-    protected fun setPaginationLoadingState(isLoading: Boolean) {
-        paginationLoadingState.value = isLoading
-    }
-
-    private fun setFilterButtonState(isFiltersExist: Boolean) {
-        filterButtonStateLiveData.value = isFiltersExist
-    }
 
     private fun searchNewRequest(inputSearchText: String) {
         if (inputSearchText.isBlank()) {
             return
         }
-        setState(SearchState.Loading.LoadingSearch)
+        setState(SearchState.Loading.LoadingNewSearch(isFiltersExistsUseCase.execute()))
         foundVacancies = DEFAULT_FOUND_VACANCIES
 
         nextPage = DEFAULT_PAGE
@@ -123,7 +99,7 @@ open class SearchViewModel(
             return
         }
         isNextPageLoading = true
-        setPaginationLoadingState(true)
+        setState(SearchState.Loading.LoadingPaginationSearch)
 
         if (PAGE_LIMIT - currentPages <= DEFAULT_PER_PAGE) {
             perPage = PAGE_LIMIT - currentPages
@@ -143,31 +119,51 @@ open class SearchViewModel(
         vacancies: Vacancies?, errorStatus: ErrorStatusDomain?, isNewSearch: Boolean
     ) {
         updateVacanciesListAndFields(vacancies, isNewSearch)
-        setPaginationLoadingState(false)
         when (errorStatus) {
             ErrorStatusDomain.NO_CONNECTION -> {
                 if (isNewSearch) {
-                    setState(SearchState.Error(ErrorStatusUi.NO_CONNECTION))
+                    setState(
+                        SearchState.Error.ErrorNewSearch(
+                            ErrorStatusUi.NO_CONNECTION,
+                            isFiltersExistsUseCase.execute()
+                        )
+                    )
                     latestSearchText = DEFAULT_TEXT
                 } else {
-                    setToastErrorState(SearchError.NO_CONNECTION)
+                    setState(SearchState.Error.ErrorPaginationSearch(ErrorStatusUi.NO_CONNECTION))
                 }
             }
 
             ErrorStatusDomain.ERROR_OCCURRED -> {
                 if (isNewSearch) {
-                    setState(SearchState.Error(ErrorStatusUi.ERROR_OCCURRED))
+                    setState(
+                        SearchState.Error.ErrorNewSearch(
+                            ErrorStatusUi.ERROR_OCCURRED,
+                            isFiltersExistsUseCase.execute()
+                        )
+                    )
                     latestSearchText = DEFAULT_TEXT
                 } else {
-                    setToastErrorState(SearchError.ERROR_OCCURRED)
+                    setState(SearchState.Error.ErrorPaginationSearch(ErrorStatusUi.ERROR_OCCURRED))
                 }
             }
 
             null -> {
                 if (vacanciesList.isEmpty()) {
-                    setState(SearchState.Error(ErrorStatusUi.NOTHING_FOUND))
+                    setState(
+                        SearchState.Error.ErrorNewSearch(
+                            ErrorStatusUi.NOTHING_FOUND,
+                            isFiltersExistsUseCase.execute()
+                        )
+                    )
                 } else {
-                    setState(SearchState.Success.SearchContent(vacanciesList, foundVacancies))
+                    setState(
+                        SearchState.Success.SearchContent(
+                            vacanciesList,
+                            foundVacancies,
+                            isFiltersExistsUseCase.execute()
+                        )
+                    )
                 }
             }
         }
