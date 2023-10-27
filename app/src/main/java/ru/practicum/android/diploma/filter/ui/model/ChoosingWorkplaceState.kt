@@ -1,19 +1,20 @@
 package ru.practicum.android.diploma.filter.ui.model
 
 sealed interface ChoosingWorkplaceState {
-    sealed class Country(open val country: String?) : ChoosingWorkplaceState {
-        object Empty : Country(null)
-        data class Content(override val country: String) : Country(country)
-    }
 
-    sealed class Area(open val area: String?) : ChoosingWorkplaceState {
-        object Empty : Area(null)
-        data class Content(override val area: String) : Area(area)
-    }
+    sealed class CountryAndArea(open val country: String?, open val area: String?) :
+        ChoosingWorkplaceState {
+        object EmptyCountryEmptyArea : CountryAndArea(null, null)
+        data class ContentCountryEmptyArea(override val country: String) :
+            CountryAndArea(country, null)
 
-    sealed interface SelectButton : ChoosingWorkplaceState {
-        object Visible : SelectButton
-        object Gone : SelectButton
-    }
+        data class EmptyCountryContentArea(override val area: String) :
+            CountryAndArea(null, area)
 
+        data class ContentCountryContentArea(
+            override val country: String,
+            override val area: String
+        ) :
+            CountryAndArea(country, area)
+    }
 }
