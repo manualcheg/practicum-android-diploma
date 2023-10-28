@@ -66,5 +66,4 @@ class FilteringChoosingWorkplaceViewModel(
     private fun setState(state: ChoosingWorkplaceState) {
         _state.value = state
     }
-
 }

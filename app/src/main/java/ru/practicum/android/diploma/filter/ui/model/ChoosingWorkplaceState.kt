@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.filter.ui.model
 
-
 sealed interface ChoosingWorkplaceState {
     object EmptyCountryEmptyArea : ChoosingWorkplaceState
     data class ContentCountryEmptyArea(val country: String) :

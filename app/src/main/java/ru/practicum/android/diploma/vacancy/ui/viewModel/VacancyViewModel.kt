@@ -91,6 +91,5 @@ class VacancyViewModel(
             }
             _state.value = _state.value?.apply { isFavorite = !isFavorite }
         }
-
     }
 }

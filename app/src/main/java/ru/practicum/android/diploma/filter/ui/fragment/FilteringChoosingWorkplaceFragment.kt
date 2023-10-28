@@ -23,9 +23,6 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
     private val viewModel by viewModel<FilteringChoosingWorkplaceViewModel>()
     private var _binding: FragmentFilteringChoosingWorkplaceBinding? = null
     private val binding get() = _binding!!
-//    private var emptyCountryField = true
-//    private var emptyAreaField = true
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -149,7 +146,6 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
                 renderAreaContent(state.area)
                 binding.choosingWorkplaceSelectButtonTextView.visibility = View.VISIBLE
             }
-
         }
     }
 
@@ -200,7 +196,6 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
     private fun renderSelectButtonGone() {
         binding.choosingWorkplaceSelectButtonTextView.visibility = View.GONE
     }
-
 
     companion object {
         const val REQUEST_KEY = "request key"
