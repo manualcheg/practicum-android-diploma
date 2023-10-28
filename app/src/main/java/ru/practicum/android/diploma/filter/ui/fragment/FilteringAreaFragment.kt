@@ -79,7 +79,6 @@ class FilteringAreaFragment : Fragment() {
         }
     }
 
-
     override fun onDestroy() {
         super.onDestroy()
         binding.filteringRegionRecyclerView.adapter = null
