@@ -1,17 +1,17 @@
 package ru.practicum.android.diploma.filter.ui.model
 
 
-sealed class ChoosingWorkplaceState(open val country: String?, open val area: String?) {
-    object EmptyCountryEmptyArea : ChoosingWorkplaceState(null, null)
-    data class ContentCountryEmptyArea(override val country: String) :
-        ChoosingWorkplaceState(country, null)
+sealed interface ChoosingWorkplaceState {
+    object EmptyCountryEmptyArea : ChoosingWorkplaceState
+    data class ContentCountryEmptyArea(val country: String) :
+        ChoosingWorkplaceState
 
-    data class EmptyCountryContentArea(override val area: String) :
-        ChoosingWorkplaceState(null, area)
+    data class EmptyCountryContentArea(val area: String) :
+        ChoosingWorkplaceState
 
     data class ContentCountryContentArea(
-        override val country: String,
-        override val area: String
+        val country: String,
+        val area: String
     ) :
-        ChoosingWorkplaceState(country, area)
+        ChoosingWorkplaceState
 }

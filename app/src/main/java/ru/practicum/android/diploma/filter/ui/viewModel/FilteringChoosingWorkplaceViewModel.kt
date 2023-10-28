@@ -19,7 +19,7 @@ class FilteringChoosingWorkplaceViewModel(
 ) : ViewModel() {
 
     var countryFilter: CountryFilter? = null
-    private var areaFilter: AreaFilter? = null
+    var areaFilter: AreaFilter? = null
 
     private val _state = MutableLiveData<ChoosingWorkplaceState>()
     val state: LiveData<ChoosingWorkplaceState> = _state
@@ -68,16 +68,3 @@ class FilteringChoosingWorkplaceViewModel(
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

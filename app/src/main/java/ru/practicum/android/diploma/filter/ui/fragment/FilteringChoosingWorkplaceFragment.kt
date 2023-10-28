@@ -23,8 +23,8 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
     private val viewModel by viewModel<FilteringChoosingWorkplaceViewModel>()
     private var _binding: FragmentFilteringChoosingWorkplaceBinding? = null
     private val binding get() = _binding!!
-    private var emptyCountryField = true
-    private var emptyAreaField = true
+//    private var emptyCountryField = true
+//    private var emptyAreaField = true
 
 
     override fun onCreateView(
@@ -89,7 +89,7 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
         }
 
         binding.choosingWorkplaceCountryCustomView.onButtonClick {
-            if (emptyCountryField) {
+            if (viewModel.countryFilter == null) {
                 navigateToCountrySelection()
             } else {
                 viewModel.updateCountryAndAreaField(null, null)
@@ -98,7 +98,7 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
         }
 
         binding.choosingWorkplaceAreaCustomView.onButtonClick {
-            if (emptyAreaField) {
+            if (viewModel.areaFilter == null) {
                 navigateToAreaSelection()
             } else {
                 viewModel.updateCountryAndAreaField(viewModel.countryFilter, null)
@@ -161,7 +161,6 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
                 )
             )
         )
-        emptyCountryField = true
     }
 
     private fun renderCountryContent(country: String) {
@@ -172,7 +171,6 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
                 )
             )
         )
-        emptyCountryField = false
     }
 
     private fun renderAreaEmpty() {
@@ -183,7 +181,6 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
                 )
             )
         )
-        emptyAreaField = true
     }
 
     private fun renderAreaContent(area: String) {
@@ -194,7 +191,6 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
                 )
             )
         )
-        emptyAreaField = false
     }
 
     private fun renderSelectButtonVisible() {
