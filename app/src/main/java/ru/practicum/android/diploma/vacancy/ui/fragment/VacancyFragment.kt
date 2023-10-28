@@ -47,12 +47,9 @@ class VacancyFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         vacancyId = args.vacancyId
-        viewModel.checkFavorites()
         viewModel.state.observe(viewLifecycleOwner) {
             render(it)
         }
-
-        viewModel.findVacancy()
 
         setOnClickListeners()
         initializePhonesAdapter()
@@ -92,16 +89,6 @@ class VacancyFragment : Fragment() {
                 setupContent(state)
             }
         }
-
-        val menu: Menu = binding.vacancyToolbar.menu
-        if (viewModel.state.value!!.isFavorite) {
-            menu.getItem(1).icon =
-                AppCompatResources.getDrawable(requireContext(), R.drawable.ic_favorites_on)
-        } else {
-            menu.getItem(1).icon =
-                AppCompatResources.getDrawable(requireContext(), R.drawable.ic_favorites_off)
-        }
-
     }
 
     private fun setOnClickListeners() {
@@ -134,8 +121,16 @@ class VacancyFragment : Fragment() {
         binding.vacancyContactsPhoneRecycleView.adapter = phonesAdapter
     }
 
-
     private fun setupContent(state: VacancyState.Content) {
+        val menu: Menu = binding.vacancyToolbar.menu
+        if (state.isFavorite) {
+            menu.getItem(1).icon =
+                AppCompatResources.getDrawable(requireContext(), R.drawable.ic_favorites_on)
+        } else {
+            menu.getItem(1).icon =
+                AppCompatResources.getDrawable(requireContext(), R.drawable.ic_favorites_off)
+        }
+
         if (state.vacancy.name.isNotBlank()) {
             binding.vacancyHeaderTextView.text = state.vacancy.name
         } else {
