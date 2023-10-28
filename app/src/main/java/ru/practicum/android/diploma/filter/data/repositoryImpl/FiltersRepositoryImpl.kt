@@ -109,67 +109,35 @@ class FiltersRepositoryImpl(
         filtersLocalDataSource.clearFilterOptions()
     }
 
-    override fun setCountry(country: CountryFilter) {
-        filtersLocalDataSource.setCountry(country)
-    }
+    override fun setCountry(country: CountryFilter) = filtersLocalDataSource.setCountry(country)
 
-    override fun setArea(area: AreaFilter?) {
-        filtersLocalDataSource.setArea(area)
-    }
+    override fun setArea(area: AreaFilter?) = filtersLocalDataSource.setArea(area)
 
-    override fun setIndustry(industry: IndustryFilter) {
-        filtersLocalDataSource.setIndustry(industry)
-    }
+    override fun setIndustry(industry: IndustryFilter) = filtersLocalDataSource.setIndustry(industry)
 
-    override fun setSalary(salary: Int) {
-        filtersLocalDataSource.setSalary(salary)
-    }
+    override fun setSalary(salary: Int) = filtersLocalDataSource.setSalary(salary)
 
-    override fun setOnlyWithSalary(option: Boolean) {
-        filtersLocalDataSource.setOnlyWithSalary(option)
-    }
+    override fun setOnlyWithSalary(option: Boolean) = filtersLocalDataSource.setOnlyWithSalary(option)
 
-    override fun clearFilterOptions() {
-        filtersLocalStorageDataSource.clearFilterOptions()
-    }
+    override fun clearFilterOptions() = filtersLocalStorageDataSource.clearFilterOptions()
 
-    override fun clearArea() {
-        filtersLocalDataSource.clearArea()
-    }
+    override fun clearArea() = filtersLocalDataSource.clearArea()
 
-    override fun clearIndustry() {
-        filtersLocalDataSource.clearIndustry()
-    }
+    override fun clearIndustry() = filtersLocalDataSource.clearIndustry()
 
-    override fun clearSalary() {
-        filtersLocalDataSource.clearSalary()
-    }
+    override fun clearSalary() = filtersLocalDataSource.clearSalary()
 
-    override fun clearTempFilterOptions() {
-        filtersLocalDataSource.clearTempFilterOptions()
-    }
+    override fun clearTempFilterOptions() = filtersLocalDataSource.clearTempFilterOptions()
 
-    override fun isTempFilterOptionsEmpty(): Boolean {
-        return filtersLocalDataSource.isTempFilterOptionsEmpty()
-    }
+    override fun isTempFilterOptionsEmpty(): Boolean = filtersLocalDataSource.isTempFilterOptionsEmpty()
 
-    override fun isTempFilterOptionsExists(): Boolean {
-        return filtersLocalDataSource.isTempFilterOptionsExists()
-    }
+    override fun isTempFilterOptionsExists(): Boolean = filtersLocalDataSource.isTempFilterOptionsExists()
 
-    override fun setFilterOptionsToCache(filter: Filter?) {
-        filtersLocalDataSource.addFilterToCache(filter)
-    }
+    override fun setFilterOptionsToCache(filter: Filter?) = filtersLocalDataSource.addFilterToCache(filter)
 
-    override fun getChosenIndustry(): IndustryFilter? {
-        return filtersLocalDataSource.getFilterOptions()?.industry
-    }
+    override fun getChosenIndustry(): IndustryFilter? = filtersLocalDataSource.getFilterOptions()?.industry
 
-    override fun getChosenArea(): AreaFilter? {
-        return filtersLocalDataSource.getFilterOptions()?.area
-    }
+    override fun getChosenArea(): AreaFilter? = filtersLocalDataSource.getFilterOptions()?.area
 
-    override fun getChosenCountry(): CountryFilter? {
-        return filtersLocalDataSource.getFilterOptions()?.country
-    }
+    override fun getChosenCountry(): CountryFilter? = filtersLocalDataSource.getFilterOptions()?.country
 }

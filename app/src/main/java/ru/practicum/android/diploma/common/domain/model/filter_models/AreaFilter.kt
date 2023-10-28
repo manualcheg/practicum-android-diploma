@@ -28,12 +28,8 @@ data class AreaFilter(
     }
 
     companion object CREATOR : Parcelable.Creator<AreaFilter> {
-        override fun createFromParcel(parcel: Parcel): AreaFilter {
-            return AreaFilter(parcel)
-        }
+        override fun createFromParcel(parcel: Parcel): AreaFilter = AreaFilter(parcel)
 
-        override fun newArray(size: Int): Array<AreaFilter?> {
-            return arrayOfNulls(size)
-        }
+        override fun newArray(size: Int): Array<AreaFilter?> = arrayOfNulls(size)
     }
 }

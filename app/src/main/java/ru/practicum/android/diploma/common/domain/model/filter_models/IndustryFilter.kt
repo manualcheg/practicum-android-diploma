@@ -25,12 +25,8 @@ data class IndustryFilter(
     }
 
     companion object CREATOR : Parcelable.Creator<IndustryFilter> {
-        override fun createFromParcel(parcel: Parcel): IndustryFilter {
-            return IndustryFilter(parcel)
-        }
+        override fun createFromParcel(parcel: Parcel): IndustryFilter = IndustryFilter(parcel)
 
-        override fun newArray(size: Int): Array<IndustryFilter?> {
-            return arrayOfNulls(size)
-        }
+        override fun newArray(size: Int): Array<IndustryFilter?> = arrayOfNulls(size)
     }
 }
