@@ -6,4 +6,6 @@ import ru.practicum.android.diploma.common.domain.model.filter_models.CountryFil
 interface WorkplaceRepository {
     fun getChosenArea(): AreaFilter?
     fun getChosenCountry(): CountryFilter?
+    fun setArea(area: AreaFilter?)
+    fun setCountry(country: CountryFilter)
 }

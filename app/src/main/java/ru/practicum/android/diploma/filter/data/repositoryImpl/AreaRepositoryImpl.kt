@@ -6,22 +6,20 @@ import ru.practicum.android.diploma.common.domain.model.filter_models.AreaFilter
 import ru.practicum.android.diploma.common.domain.model.filter_models.Areas
 import ru.practicum.android.diploma.common.util.Resource
 import ru.practicum.android.diploma.common.util.constants.RepositoryConst
-import ru.practicum.android.diploma.filter.data.dataSource.FiltersLocalDataSource
 import ru.practicum.android.diploma.filter.data.mapper.FiltersDtoToDomainConverter
 import ru.practicum.android.diploma.filter.data.model.AllAreasRequest
 import ru.practicum.android.diploma.filter.data.model.AreasResponse
 import ru.practicum.android.diploma.filter.data.model.CertainAreasRequest
 import ru.practicum.android.diploma.filter.data.model.CountriesRequest
 import ru.practicum.android.diploma.filter.data.model.CountriesResponse
-import ru.practicum.android.diploma.filter.domain.repository.AreasRepository
+import ru.practicum.android.diploma.filter.domain.repository.AreaRepository
 import ru.practicum.android.diploma.search.data.dataSource.VacancyRemoteDataSource
 import ru.practicum.android.diploma.search.data.model.ErrorRemoteDataSource
 
-class AreasRepositoryImpl(
+class AreaRepositoryImpl(
     private val vacancyRemoteDataSource: VacancyRemoteDataSource,
-    private val filtersLocalDataSource: FiltersLocalDataSource,
     private val filtersDtoToDomainConverter:FiltersDtoToDomainConverter
-) : AreasRepository {
+) : AreaRepository {
     override fun getAreas(areaId: String?): Flow<Resource<Areas>> = flow {
 
         val responseAreas = if (areaId == null) {
@@ -46,9 +44,5 @@ class AreasRepositoryImpl(
         } else {
             emit(Resource.Error(ErrorRemoteDataSource.ERROR_OCCURRED))
         }
-    }
-
-    override fun setArea(area: AreaFilter?) {
-        filtersLocalDataSource.setArea(area)
     }
 }

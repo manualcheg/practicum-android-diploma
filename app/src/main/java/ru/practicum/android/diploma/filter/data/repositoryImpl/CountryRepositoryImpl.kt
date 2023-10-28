@@ -6,7 +6,6 @@ import ru.practicum.android.diploma.common.domain.model.filter_models.Countries
 import ru.practicum.android.diploma.common.domain.model.filter_models.CountryFilter
 import ru.practicum.android.diploma.common.util.Resource
 import ru.practicum.android.diploma.common.util.constants.RepositoryConst
-import ru.practicum.android.diploma.filter.data.dataSource.FiltersLocalDataSource
 import ru.practicum.android.diploma.filter.data.mapper.FiltersDtoToDomainConverter
 import ru.practicum.android.diploma.filter.data.model.CountriesRequest
 import ru.practicum.android.diploma.filter.data.model.CountriesResponse
@@ -15,14 +14,9 @@ import ru.practicum.android.diploma.search.data.dataSource.VacancyRemoteDataSour
 import ru.practicum.android.diploma.search.data.model.ErrorRemoteDataSource
 
 class CountryRepositoryImpl(
-    private val filtersLocalDataSource: FiltersLocalDataSource,
-    private val vacancyRemoteDataSource:VacancyRemoteDataSource,
-    private val filtersDtoToDomainConverter:FiltersDtoToDomainConverter
-): CountryRepository {
-    override fun setCountry(country: CountryFilter) {
-        filtersLocalDataSource.setCountry(country)
-    }
-
+    private val vacancyRemoteDataSource: VacancyRemoteDataSource,
+    private val filtersDtoToDomainConverter: FiltersDtoToDomainConverter
+) : CountryRepository {
     override fun getCountries(): Flow<Resource<Countries>> = flow {
         val response = vacancyRemoteDataSource.doRequest(CountriesRequest())
         when (response.resultCode) {
