@@ -31,12 +31,10 @@ class VacancyViewModel(
     private val _state = MutableLiveData<VacancyState>()
     val state: LiveData<VacancyState> = _state
 
-
     private var vacancy: Vacancy? = null
-    var isFavorite: Boolean = false
 
     init {
-        setState(VacancyState.Load)
+        setState(VacancyState.Load(false))
         checkFavorites()
         findVacancy()
     }
@@ -59,6 +57,7 @@ class VacancyViewModel(
             if (vacancyUI.vacancy != null) {
                 setState(
                     VacancyState.Content(
+                        state.value!!.isFavorite,
                         vacancyDomainToVacancyUiConverter.mapVacancyToVacancyUi(
                             vacancyUI.vacancy
                         )
@@ -66,7 +65,7 @@ class VacancyViewModel(
                 )
                 vacancy = vacancyUI.vacancy
             } else {
-                setState(VacancyState.Error)
+                setState(VacancyState.Error(state.value!!.isFavorite))
             }
         }
     }
@@ -78,20 +77,19 @@ class VacancyViewModel(
     fun checkFavorites() {
         viewModelScope.launch {
             checkInFavoritesUseCase.execute(vacancyId).collect { isInFavorites ->
-                isFavorite = isInFavorites
+                _state.value = _state.value?.apply { isFavorite = isInFavorites }
             }
         }
     }
 
     fun toggleFavorites() {
         viewModelScope.launch {
-            if (isFavorite) {
+            if (state.value!!.isFavorite) {
                 vacancy?.let { deleteVacancyFromFavoritesUseCase.execute(it) }
             } else {
                 vacancy?.let { addVacancyToFavoritesUseCase.execute(it) }
             }
-            isFavorite = !isFavorite
-            state.value.apply { isFavorite }?.let { setState(it) }
+            _state.value = _state.value?.apply { isFavorite = !isFavorite }
         }
 
     }

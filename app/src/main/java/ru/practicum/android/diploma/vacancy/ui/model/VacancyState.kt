@@ -2,10 +2,10 @@ package ru.practicum.android.diploma.vacancy.ui.model
 
 import ru.practicum.android.diploma.common.ui.model.VacancyUi
 
-sealed interface VacancyState {
-    object Load : VacancyState
+sealed class VacancyState(open var isFavorite: Boolean) {
+    data class Load(override var isFavorite: Boolean) : VacancyState(isFavorite)
 
-    object Error : VacancyState
+    data class Error(override var isFavorite: Boolean) : VacancyState(isFavorite)
 
-    class Content(val vacancy: VacancyUi) : VacancyState
+    data class Content(override var isFavorite: Boolean, val vacancy: VacancyUi) : VacancyState(isFavorite)
 }

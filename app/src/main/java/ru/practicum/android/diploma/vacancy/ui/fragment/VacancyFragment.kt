@@ -94,7 +94,7 @@ class VacancyFragment : Fragment() {
         }
 
         val menu: Menu = binding.vacancyToolbar.menu
-        if (viewModel.isFavorite) {
+        if (viewModel.state.value!!.isFavorite) {
             menu.getItem(1).icon =
                 AppCompatResources.getDrawable(requireContext(), R.drawable.ic_favorites_on)
         } else {
