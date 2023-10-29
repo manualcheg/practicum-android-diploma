@@ -49,8 +49,8 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
 
     private fun setOnFragmentResultListener() {
         setFragmentResultListener(REQUEST_KEY) { _, bundle ->
-            val country = bundle.get(BUNDLE_KEY_FOR_COUNTRY) as CountryFilter?
-            val area = bundle.get(BUNDLE_KEY_FOR_AREA) as AreaFilter?
+            val country = bundle.getParcelable(BUNDLE_KEY_FOR_COUNTRY) as CountryFilter?
+            val area = bundle.getParcelable(BUNDLE_KEY_FOR_AREA) as AreaFilter?
 
             if (country != null) {
                 viewModel.updateCountryAndAreaField(country, null)
