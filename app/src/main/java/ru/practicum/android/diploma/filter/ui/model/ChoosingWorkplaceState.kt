@@ -10,4 +10,10 @@ sealed interface ChoosingWorkplaceState {
         val country: String,
         val area: String
     ) : ChoosingWorkplaceState
+
+    sealed interface Navigate : ChoosingWorkplaceState {
+        object NavigateToCountry : Navigate
+        class NavigateToArea(val countryId: String?) : Navigate
+        object NavigateBack : Navigate
+    }
 }

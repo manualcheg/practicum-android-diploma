@@ -32,6 +32,8 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.initializeChoosingWorkplace()
+
         viewModel.state.observe(viewLifecycleOwner) {
             render(it)
         }
@@ -51,10 +53,10 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
             val area = bundle.getParcelable(BUNDLE_KEY_FOR_AREA) as AreaFilter?
 
             if (country != null) {
-                viewModel.updateCountryAndAreaField(country, null)
+                viewModel.updateCountryFilter(country)
             }
             if (area != null) {
-                viewModel.updateCountryAndAreaField(
+                viewModel.updateCountryAndAreaFilter(
                     CountryFilter(
                         id = area.countryId,
                         name = area.countryName
@@ -66,56 +68,28 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
 
     private fun setOnClickListeners() {
         binding.choosingWorkplaceToolbar.setNavigationOnClickListener {
-            findNavController().popBackStack()
+            viewModel.backButtonClicked()
         }
 
         binding.choosingWorkplaceCountryCustomView.setOnClickListener {
-            navigateToCountrySelection()
+            viewModel.countryFieldClicked()
         }
 
         binding.choosingWorkplaceAreaCustomView.setOnClickListener {
-            navigateToAreaSelection()
+            viewModel.areaFieldClicked()
         }
 
         binding.choosingWorkplaceSelectButtonTextView.setOnClickListener {
-            viewModel.addCountryFilter()
-            viewModel.addAreaFilter()
-            findNavController().popBackStack()
+            viewModel.selectButtonClicked()
         }
 
         binding.choosingWorkplaceCountryCustomView.onButtonClick {
-            if (viewModel.countryFilter == null) {
-                navigateToCountrySelection()
-            } else {
-                viewModel.updateCountryAndAreaField(null, null)
-                binding.choosingWorkplaceSelectButtonTextView.visibility = View.GONE
-            }
+            viewModel.countryButtonClicked()
         }
 
         binding.choosingWorkplaceAreaCustomView.onButtonClick {
-            if (viewModel.areaFilter == null) {
-                navigateToAreaSelection()
-            } else {
-                viewModel.updateCountryAndAreaField(viewModel.countryFilter, null)
-                binding.choosingWorkplaceSelectButtonTextView.visibility = View.VISIBLE
-            }
+            viewModel.areaButtonClicked()
         }
-    }
-
-    private fun navigateToCountrySelection() {
-        val direction =
-            FilteringChoosingWorkplaceFragmentDirections.actionFilteringChoosingWorkplaceFragmentToFilteringCountryFragment()
-        findNavController().navigate(direction)
-    }
-
-    private fun navigateToAreaSelection() {
-        val countryFilter = viewModel.countryFilter
-        val countryFilterId = countryFilter?.id?.toString()
-        val direction =
-            FilteringChoosingWorkplaceFragmentDirections.actionFilteringChoosingWorkplaceFragmentToFilteringRegionFragment(
-                countryFilterId
-            )
-        findNavController().navigate(direction)
     }
 
     private fun render(state: ChoosingWorkplaceState) {
@@ -143,7 +117,33 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
                 renderAreaContent(state.area)
                 binding.choosingWorkplaceSelectButtonTextView.visibility = View.VISIBLE
             }
+
+            is ChoosingWorkplaceState.Navigate.NavigateToArea -> {
+                navigateToAreaSelection(state.countryId)
+            }
+
+            is ChoosingWorkplaceState.Navigate.NavigateToCountry -> {
+                navigateToCountrySelection()
+            }
+
+            is ChoosingWorkplaceState.Navigate.NavigateBack -> {
+                findNavController().popBackStack()
+            }
         }
+    }
+
+    private fun navigateToCountrySelection() {
+        val direction =
+            FilteringChoosingWorkplaceFragmentDirections.actionFilteringChoosingWorkplaceFragmentToFilteringCountryFragment()
+        findNavController().navigate(direction)
+    }
+
+    private fun navigateToAreaSelection(countryId: String?) {
+        val direction =
+            FilteringChoosingWorkplaceFragmentDirections.actionFilteringChoosingWorkplaceFragmentToFilteringRegionFragment(
+                countryId
+            )
+        findNavController().navigate(direction)
     }
 
     private fun renderCountryEmpty() {

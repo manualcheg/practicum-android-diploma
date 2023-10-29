@@ -74,10 +74,7 @@ open class SearchFragment : Fragment() {
 
     protected open fun recycleViewInit() {
         vacanciesAdapter = RecycleViewVacancyAdapter { vacancy ->
-            val direction =
-                SearchFragmentDirections.actionSearchFragmentToVacancyFragment(vacancy.id)
-            findNavController().navigate(direction)
-
+            viewModel.vacancyClicked(vacancy.id)
         }
 
         binding.searchScreenRecyclerView.layoutManager =
@@ -98,7 +95,19 @@ open class SearchFragment : Fragment() {
 
             is SearchState.Error.ErrorNewSearch -> showError(state.errorStatus, state.isFilterExist)
             is SearchState.Error.ErrorPaginationSearch -> showPaginationError(state.errorStatus)
+            SearchState.Navigate.NavigateToFilterSettings -> navigateToFilterSettings()
+            is SearchState.Navigate.NavigateToVacancy -> navigateToVacancy(state.vacancyId)
         }
+    }
+
+    protected open fun navigateToVacancy(vacancyId: Int) {
+        val direction = SearchFragmentDirections.actionSearchFragmentToVacancyFragment(vacancyId)
+        findNavController().navigate(direction)
+    }
+
+    private fun navigateToFilterSettings() {
+        val direction = SearchFragmentDirections.actionSearchFragmentToFilteringSettingsFragment()
+        findNavController().navigate(direction)
     }
 
     protected open fun showErrorToast(message: String) {
@@ -184,9 +193,10 @@ open class SearchFragment : Fragment() {
         binding.searchVacanciesToolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.searchScreenToolbarFilterMenu -> {
-                    val direction =
-                        SearchFragmentDirections.actionSearchFragmentToFilteringSettingsFragment()
-                    findNavController().navigate(direction)
+                    viewModel.filterSettingsButtonClicked()
+//                    val direction =
+//                        SearchFragmentDirections.actionSearchFragmentToFilteringSettingsFragment()
+//                    findNavController().navigate(direction)
                 }
             }
             true

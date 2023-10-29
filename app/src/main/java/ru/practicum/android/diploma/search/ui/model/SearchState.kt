@@ -35,4 +35,9 @@ sealed interface SearchState {
         data class ErrorPaginationSearch(override val errorStatus: ErrorStatusUi) :
             Error(errorStatus)
     }
+
+    sealed interface Navigate : SearchState {
+        data class NavigateToVacancy(val vacancyId: Int) : Navigate
+        object NavigateToFilterSettings : Navigate
+    }
 }

@@ -29,6 +29,7 @@ open class SearchViewModel(
 ) : ViewModel() {
 
     private var latestSearchText: String? = null
+    private var isClickAllowed = true
 
     private val stateLiveData =
         MutableLiveData<SearchState>(SearchState.Success.Empty(isFiltersExistsUseCase.execute()))
@@ -63,14 +64,28 @@ open class SearchViewModel(
 
     fun filterChanged() {
         when (stateLiveData.value) {
-            is SearchState.Success.Empty,
-            is SearchState.Success.SearchContent,
-            is SearchState.Error.ErrorNewSearch -> {
+            is SearchState.Success.Empty, is SearchState.Success.SearchContent, is SearchState.Error.ErrorNewSearch -> {
                 nextPage = 0
                 latestSearchText?.let { searchNewRequest(it) }
             }
 
             else -> {}
+        }
+    }
+
+    fun filterSettingsButtonClicked() {
+        if (isClickDebounce()) {
+            val currentState: SearchState? = getCurrentState()
+            setState(SearchState.Navigate.NavigateToFilterSettings)
+            currentState?.let { setState(it) }
+        }
+    }
+
+    fun vacancyClicked(vacancyId: Int) {
+        if (isClickDebounce()) {
+            val currentState: SearchState? = getCurrentState()
+            setState(SearchState.Navigate.NavigateToVacancy(vacancyId))
+            currentState?.let { setState(it) }
         }
     }
 
@@ -162,6 +177,21 @@ open class SearchViewModel(
         return current
     }
 
+    private fun getCurrentState(): SearchState? {
+        val currentState: SearchState? = when (stateLiveData.value) {
+            is SearchState.Success.SearchContent -> (stateLiveData.value as SearchState.Success.SearchContent).copy()
+            is SearchState.Error.ErrorNewSearch -> (stateLiveData.value as SearchState.Error.ErrorNewSearch).copy()
+            is SearchState.Error.ErrorPaginationSearch -> (stateLiveData.value as SearchState.Error.ErrorPaginationSearch).copy()
+            is SearchState.Loading.LoadingNewSearch -> (stateLiveData.value as SearchState.Loading.LoadingNewSearch).copy()
+            SearchState.Loading.LoadingPaginationSearch -> SearchState.Loading.LoadingPaginationSearch
+            SearchState.Navigate.NavigateToFilterSettings -> SearchState.Navigate.NavigateToFilterSettings
+            is SearchState.Navigate.NavigateToVacancy -> (stateLiveData.value as SearchState.Navigate.NavigateToVacancy).copy()
+            is SearchState.Success.Empty -> (stateLiveData.value as SearchState.Success.Empty).copy()
+            null -> null
+        }
+        return currentState
+    }
+
     private fun searchNewRequest(inputSearchText: String) {
         if (inputSearchText.isBlank()) {
             return
@@ -219,6 +249,19 @@ open class SearchViewModel(
         searchUseCase.search(inputSearchText, nextPage, perPage = perPage).collect {
             processResult(it.first, it.second, isNewSearch)
         }
+    }
+
+    private fun isClickDebounce(): Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+
+            viewModelScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY_MILLIS)
+                isClickAllowed = true
+            }
+        }
+        return current
     }
 
     companion object {
