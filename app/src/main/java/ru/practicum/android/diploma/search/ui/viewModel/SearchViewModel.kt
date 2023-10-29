@@ -40,7 +40,6 @@ open class SearchViewModel(
     protected var perPage = DEFAULT_PER_PAGE
     private var isPaginationAllowed = true
 
-
     protected var isNextPageLoading = false
     private val vacanciesList = mutableListOf<VacancyUi>()
 
