@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.domain.model.vacancy_models.Vacancies
 import ru.practicum.android.diploma.common.ui.mapper.VacancyDomainToVacancyUiConverter
@@ -19,9 +20,7 @@ import ru.practicum.android.diploma.search.domain.model.ErrorStatusDomain
 import ru.practicum.android.diploma.search.domain.useCase.IsFiltersExistsUseCase
 import ru.practicum.android.diploma.search.domain.useCase.SearchUseCase
 import ru.practicum.android.diploma.search.ui.model.ErrorStatusUi
-import ru.practicum.android.diploma.search.ui.model.SearchError
 import ru.practicum.android.diploma.search.ui.model.SearchState
-import ru.practicum.android.diploma.search.ui.model.SingleLiveEvent
 
 open class SearchViewModel(
     private val searchUseCase: SearchUseCase,
@@ -31,16 +30,16 @@ open class SearchViewModel(
 
     private var latestSearchText: String? = null
 
-    private val stateLiveData = MutableLiveData<SearchState>()
-    private val paginationLoadingState = SingleLiveEvent<Boolean>()
-    private val toastErrorStateLiveData = SingleLiveEvent<SearchError>()
-    private val filterButtonStateLiveData = MutableLiveData<Boolean>()
+    private val stateLiveData =
+        MutableLiveData<SearchState>(SearchState.Success.Empty(isFiltersExistsUseCase.execute()))
 
     private var foundVacancies = DEFAULT_FOUND_VACANCIES
     protected var currentPages = DEFAULT_PAGE
     protected var nextPage = DEFAULT_PAGE
     protected var maxPages = DEFAULT_MAX_PAGES
     protected var perPage = DEFAULT_PER_PAGE
+    private var isPaginationAllowed = true
+
 
     protected var isNextPageLoading = false
     private val vacanciesList = mutableListOf<VacancyUi>()
@@ -53,10 +52,6 @@ open class SearchViewModel(
         }
 
     fun observeState(): LiveData<SearchState> = stateLiveData
-    fun observeErrorToastState(): LiveData<SearchError> = toastErrorStateLiveData
-    fun observePaginationLoadingState(): LiveData<Boolean> = paginationLoadingState
-    fun observeFilterButtonState(): LiveData<Boolean> = filterButtonStateLiveData
-
 
     fun searchDebounced(changedText: String) {
         if (changedText == latestSearchText) {
@@ -67,47 +62,43 @@ open class SearchViewModel(
         tracksSearchDebounce(changedText)
     }
 
-    fun searchWithNewFilter(changedText: String) {
-        latestSearchText = changedText
-        nextPage = 0
-        searchNewRequest(changedText)
+    fun filterChanged() {
+        when (val currentState = stateLiveData.value) {
+            is SearchState.Error.ErrorNewSearch -> {
+                setState(currentState.copy(isFilterExist = isFiltersExistsUseCase.execute()))
+            }
+
+            is SearchState.Success.Empty, is SearchState.Success.SearchContent -> {
+                nextPage = 0
+                latestSearchText?.let { searchNewRequest(it) }
+            }
+
+            else -> {}
+        }
     }
 
     open fun onLastItemReached() {
-        latestSearchText?.let { searchSameRequest(it) }
+        if (isPaginationDebounce()) {
+            latestSearchText?.let { searchSameRequest(it) }
+        }
     }
 
     fun clearSearchInput() {
-        setState(SearchState.Success.Empty)
+        setState(SearchState.Success.Empty(isFiltersExistsUseCase.execute()))
         tracksSearchDebounce(DEFAULT_TEXT)
         job?.cancel()
-    }
-
-    fun getButtonState() {
-        setFilterButtonState(isFiltersExistsUseCase.execute())
     }
 
     fun setState(state: SearchState) {
         stateLiveData.value = state
     }
 
-    private fun setToastErrorState(state: SearchError) {
-        toastErrorStateLiveData.value = state
-    }
-
-    protected fun setPaginationLoadingState(isLoading: Boolean) {
-        paginationLoadingState.value = isLoading
-    }
-
-    private fun setFilterButtonState(isFiltersExist: Boolean) {
-        filterButtonStateLiveData.value = isFiltersExist
-    }
 
     private fun searchNewRequest(inputSearchText: String) {
         if (inputSearchText.isBlank()) {
             return
         }
-        setState(SearchState.Loading.LoadingSearch)
+        setState(SearchState.Loading.LoadingNewSearch(isFiltersExistsUseCase.execute()))
         foundVacancies = DEFAULT_FOUND_VACANCIES
 
         nextPage = DEFAULT_PAGE
@@ -123,7 +114,7 @@ open class SearchViewModel(
             return
         }
         isNextPageLoading = true
-        setPaginationLoadingState(true)
+        setState(SearchState.Loading.LoadingPaginationSearch)
 
         if (PAGE_LIMIT - currentPages <= DEFAULT_PER_PAGE) {
             perPage = PAGE_LIMIT - currentPages
@@ -143,31 +134,56 @@ open class SearchViewModel(
         vacancies: Vacancies?, errorStatus: ErrorStatusDomain?, isNewSearch: Boolean
     ) {
         updateVacanciesListAndFields(vacancies, isNewSearch)
-        setPaginationLoadingState(false)
         when (errorStatus) {
             ErrorStatusDomain.NO_CONNECTION -> {
                 if (isNewSearch) {
-                    setState(SearchState.Error(ErrorStatusUi.NO_CONNECTION))
+                    setState(
+                        SearchState.Error.ErrorNewSearch(
+                            ErrorStatusUi.NO_CONNECTION, isFiltersExistsUseCase.execute()
+                        )
+                    )
                     latestSearchText = DEFAULT_TEXT
                 } else {
-                    setToastErrorState(SearchError.NO_CONNECTION)
+                    setState(SearchState.Error.ErrorPaginationSearch(ErrorStatusUi.NO_CONNECTION))
+                    setState(
+                        SearchState.Success.SearchContent(
+                            vacanciesList, foundVacancies, isFiltersExistsUseCase.execute()
+                        )
+                    )
                 }
             }
 
             ErrorStatusDomain.ERROR_OCCURRED -> {
                 if (isNewSearch) {
-                    setState(SearchState.Error(ErrorStatusUi.ERROR_OCCURRED))
+                    setState(
+                        SearchState.Error.ErrorNewSearch(
+                            ErrorStatusUi.ERROR_OCCURRED, isFiltersExistsUseCase.execute()
+                        )
+                    )
                     latestSearchText = DEFAULT_TEXT
                 } else {
-                    setToastErrorState(SearchError.ERROR_OCCURRED)
+                    setState(SearchState.Error.ErrorPaginationSearch(ErrorStatusUi.ERROR_OCCURRED))
+                    setState(
+                        SearchState.Success.SearchContent(
+                            vacanciesList, foundVacancies, isFiltersExistsUseCase.execute()
+                        )
+                    )
                 }
             }
 
             null -> {
                 if (vacanciesList.isEmpty()) {
-                    setState(SearchState.Error(ErrorStatusUi.NOTHING_FOUND))
+                    setState(
+                        SearchState.Error.ErrorNewSearch(
+                            ErrorStatusUi.NOTHING_FOUND, isFiltersExistsUseCase.execute()
+                        )
+                    )
                 } else {
-                    setState(SearchState.Success.SearchContent(vacanciesList, foundVacancies))
+                    setState(
+                        SearchState.Success.SearchContent(
+                            vacanciesList, foundVacancies, isFiltersExistsUseCase.execute()
+                        )
+                    )
                 }
             }
         }
@@ -196,9 +212,23 @@ open class SearchViewModel(
         }
     }
 
+    protected fun isPaginationDebounce(): Boolean {
+        val current = isPaginationAllowed
+        if (isPaginationAllowed) {
+            isPaginationAllowed = false
+
+            viewModelScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY_MILLIS)
+                isPaginationAllowed = true
+            }
+        }
+        return current
+    }
+
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2000L
         private const val DEFAULT_TEXT = ""
         const val DEFAULT_FOUND_VACANCIES = 0
+        const val CLICK_DEBOUNCE_DELAY_MILLIS = 500L
     }
 }
