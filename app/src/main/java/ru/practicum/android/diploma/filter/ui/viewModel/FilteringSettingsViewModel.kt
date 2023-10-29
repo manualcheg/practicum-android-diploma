@@ -42,6 +42,7 @@ class FilteringSettingsViewModel(
     private val stateLiveData = MutableLiveData<FilterSettingsState>()
 
     private var isFiltersSetBefore: Boolean = false
+    private var isResetButtonClicked: Boolean = false
 
     var filter: Filter? = null
 
@@ -125,8 +126,12 @@ class FilteringSettingsViewModel(
     }
 
     fun backButtonClicked() {
+        if (isResetButtonClicked) {
+            stateLiveData.value = FilterSettingsState.Navigate.NavigateBackWithResult
+        } else {
+            stateLiveData.value = FilterSettingsState.Navigate.NavigateBackWithoutResult
+        }
         clearTempFilterOptions()
-        stateLiveData.value = FilterSettingsState.Navigate.NavigateBackWithoutResult
     }
 
     fun clearSalaryButtonClicked() {
@@ -135,6 +140,10 @@ class FilteringSettingsViewModel(
     }
 
     fun resetButtonClicked() {
+        if (isFiltersSetBefore) {
+            isResetButtonClicked = true
+        }
+        isFiltersSetBefore = false
         clearAll()
         updateStates()
     }
@@ -159,7 +168,6 @@ class FilteringSettingsViewModel(
     private fun clearAll() {
         clearFilterOptionsUseCase.execute()
         clearTempFilterOptionsUseCase.execute()
-        isFiltersSetBefore = false
     }
 
     private fun clearArea() {
