@@ -90,7 +90,6 @@ open class SearchViewModel(
         stateLiveData.value = state
     }
 
-
     protected fun processResult(
         vacancies: Vacancies?, errorStatus: ErrorStatusDomain?, isNewSearch: Boolean
     ) {

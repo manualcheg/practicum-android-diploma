@@ -212,13 +212,15 @@ open class SearchFragment : Fragment() {
     }
 
     protected open fun emptyScreen() {
-        binding.counterVacanciesTextView.isVisible = false
-        binding.searchScreenFirstLoadingProgressBar.isVisible = false
-        binding.searchScreenPaginationProgressBar.isVisible = false
-        binding.placeholderSearchVacanciesImageView.isVisible = false
-        binding.searchScreenNoInternetPlaceholder.isVisible = false
-        binding.searchScreenNothingFoundPlaceholder.isVisible = false
-        binding.searchScreenServerErrorPlaceholder.isVisible = false
+        binding.apply {
+            counterVacanciesTextView.isVisible = false
+            searchScreenFirstLoadingProgressBar.isVisible = false
+            searchScreenPaginationProgressBar.isVisible = false
+            placeholderSearchVacanciesImageView.isVisible = false
+            searchScreenNoInternetPlaceholder.isVisible = false
+            searchScreenNothingFoundPlaceholder.isVisible = false
+            searchScreenServerErrorPlaceholder.isVisible = false
+        }
         setMenuFilterIcon(R.drawable.ic_filters_unselected)
     }
 
