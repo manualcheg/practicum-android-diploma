@@ -91,42 +91,6 @@ open class SearchViewModel(
     }
 
 
-    private fun searchNewRequest(inputSearchText: String) {
-        if (inputSearchText.isBlank()) {
-            return
-        }
-        setState(SearchState.Loading.LoadingNewSearch(isFiltersExistsUseCase.execute()))
-        foundVacancies = DEFAULT_FOUND_VACANCIES
-
-        nextPage = DEFAULT_PAGE
-        job = viewModelScope.launch {
-            getVacancies(inputSearchText, nextPage, perPage, isNewSearch = true)
-        }
-        nextPage++
-    }
-
-
-    private fun searchSameRequest(inputSearchText: String) {
-        if ((currentPages + 1) >= maxPages || currentPages == PAGE_LIMIT || isNextPageLoading) {
-            return
-        }
-        isNextPageLoading = true
-        setState(SearchState.Loading.LoadingPaginationSearch)
-
-        if (PAGE_LIMIT - currentPages <= DEFAULT_PER_PAGE) {
-            perPage = PAGE_LIMIT - currentPages
-        }
-
-        job = viewModelScope.launch {
-            val resultDeferred = async {
-                getVacancies(inputSearchText, nextPage, perPage, isNewSearch = false)
-            }
-            nextPage++
-            resultDeferred.await()
-            isNextPageLoading = false
-        }
-    }
-
     protected fun processResult(
         vacancies: Vacancies?, errorStatus: ErrorStatusDomain?, isNewSearch: Boolean
     ) {
@@ -186,6 +150,55 @@ open class SearchViewModel(
         }
     }
 
+    protected fun isPaginationDebounce(): Boolean {
+        val current = isPaginationAllowed
+        if (isPaginationAllowed) {
+            isPaginationAllowed = false
+
+            viewModelScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY_MILLIS)
+                isPaginationAllowed = true
+            }
+        }
+        return current
+    }
+
+    private fun searchNewRequest(inputSearchText: String) {
+        if (inputSearchText.isBlank()) {
+            return
+        }
+        setState(SearchState.Loading.LoadingNewSearch(isFiltersExistsUseCase.execute()))
+        foundVacancies = DEFAULT_FOUND_VACANCIES
+
+        nextPage = DEFAULT_PAGE
+        job = viewModelScope.launch {
+            getVacancies(inputSearchText, nextPage, perPage, isNewSearch = true)
+        }
+        nextPage++
+    }
+
+
+    private fun searchSameRequest(inputSearchText: String) {
+        if ((currentPages + 1) >= maxPages || currentPages == PAGE_LIMIT || isNextPageLoading) {
+            return
+        }
+        isNextPageLoading = true
+        setState(SearchState.Loading.LoadingPaginationSearch)
+
+        if (PAGE_LIMIT - currentPages <= DEFAULT_PER_PAGE) {
+            perPage = PAGE_LIMIT - currentPages
+        }
+
+        job = viewModelScope.launch {
+            val resultDeferred = async {
+                getVacancies(inputSearchText, nextPage, perPage, isNewSearch = false)
+            }
+            nextPage++
+            resultDeferred.await()
+            isNextPageLoading = false
+        }
+    }
+
     private fun updateVacanciesListAndFields(vacancies: Vacancies?, isNewSearch: Boolean) {
         if (vacancies != null) {
             val foundVacancyUi = vacancies.vacancyList.map {
@@ -207,19 +220,6 @@ open class SearchViewModel(
         searchUseCase.search(inputSearchText, nextPage, perPage = perPage).collect {
             processResult(it.first, it.second, isNewSearch)
         }
-    }
-
-    protected fun isPaginationDebounce(): Boolean {
-        val current = isPaginationAllowed
-        if (isPaginationAllowed) {
-            isPaginationAllowed = false
-
-            viewModelScope.launch {
-                delay(CLICK_DEBOUNCE_DELAY_MILLIS)
-                isPaginationAllowed = true
-            }
-        }
-        return current
     }
 
     companion object {

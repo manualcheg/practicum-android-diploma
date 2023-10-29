@@ -28,6 +28,12 @@ class SimilarVacancyViewModel(
         searchSimilarVacancyById(vacancyId)
     }
 
+    override fun onLastItemReached() {
+        if (isPaginationDebounce()) {
+            searchSameRequest(vacancyId)
+        }
+    }
+
     private fun searchSimilarVacancyById(vacancyId: Int) {
         setState(SearchState.Loading.LoadingNewSearch(isFilterExist = false))
 
@@ -36,12 +42,6 @@ class SimilarVacancyViewModel(
             getVacancies(vacancyId, nextPage, perPage, isNewSearch = true)
         }
         nextPage++
-    }
-
-    override fun onLastItemReached() {
-        if (isPaginationDebounce()) {
-            searchSameRequest(vacancyId)
-        }
     }
 
     private fun searchSameRequest(vacancyId: Int) {

@@ -51,15 +51,10 @@ class FiltersRepositoryImpl(
         filtersLocalDataSource.clearTempFilterOptions()
     }
 
-    override fun isTempFilterOptionsEmpty(): Boolean {
-        return filtersLocalDataSource.isTempFilterOptionsEmpty()
-    }
+    override fun isTempFilterOptionsEmpty() = filtersLocalDataSource.isTempFilterOptionsEmpty()
 
-    override fun isTempFilterOptionsExists(): Boolean {
-        return filtersLocalDataSource.isTempFilterOptionsExists()
-    }
+    override fun isTempFilterOptionsExists() = filtersLocalDataSource.isTempFilterOptionsExists()
 
-    override fun setFilterOptionsToCache(filter: Filter?) {
+    override fun setFilterOptionsToCache(filter: Filter?) =
         filtersLocalDataSource.addFilterToCache(filter)
-    }
 }

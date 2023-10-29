@@ -13,9 +13,7 @@ import ru.practicum.android.diploma.common.custom_view.model.ButtonWithSelectedV
 import ru.practicum.android.diploma.common.domain.model.filter_models.AreaFilter
 import ru.practicum.android.diploma.common.domain.model.filter_models.CountryFilter
 import ru.practicum.android.diploma.databinding.FragmentFilteringChoosingWorkplaceBinding
-import ru.practicum.android.diploma.filter.ui.model.ButtonState
 import ru.practicum.android.diploma.filter.ui.model.ChoosingWorkplaceState
-import ru.practicum.android.diploma.filter.ui.model.FilterFieldsState
 import ru.practicum.android.diploma.filter.ui.viewModel.FilteringChoosingWorkplaceViewModel
 
 class FilteringChoosingWorkplaceFragment : Fragment() {
@@ -102,7 +100,6 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
                 binding.choosingWorkplaceSelectButtonTextView.visibility = View.VISIBLE
             }
         }
-
     }
 
     private fun navigateToCountrySelection() {
@@ -187,14 +184,6 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
                 )
             )
         )
-    }
-
-    private fun renderSelectButtonVisible() {
-        binding.choosingWorkplaceSelectButtonTextView.visibility = View.VISIBLE
-    }
-
-    private fun renderSelectButtonGone() {
-        binding.choosingWorkplaceSelectButtonTextView.visibility = View.GONE
     }
 
     companion object {

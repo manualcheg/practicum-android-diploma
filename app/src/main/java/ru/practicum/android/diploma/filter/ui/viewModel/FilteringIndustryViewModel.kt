@@ -178,13 +178,9 @@ class FilteringIndustryViewModel(
         }
     }
 
-    private fun scrollPosition(): Int {
-        return industry?.id ?: 0
-    }
+    private fun scrollPosition() = industry?.id ?: 0
 
-    private fun isIndustryChosen(): Boolean {
-        return industry != null
-    }
+    private fun isIndustryChosen() = industry != null
 
     private fun setState(state: IndustryState) {
         stateLiveData.value = state
