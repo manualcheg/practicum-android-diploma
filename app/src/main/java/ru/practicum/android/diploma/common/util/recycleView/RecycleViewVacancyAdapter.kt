@@ -33,6 +33,5 @@ class RecycleViewVacancyAdapter(
         holder.itemView.setOnClickListener {
             clickListener(items[holder.adapterPosition])
         }
-
     }
 }
