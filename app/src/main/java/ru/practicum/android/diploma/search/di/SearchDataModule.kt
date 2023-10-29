@@ -24,6 +24,7 @@ val searchDataModule = module {
         val client = OkHttpClient.Builder()
             .addInterceptor(headerInterceptor)
             .build()
+
         Retrofit.Builder()
             .baseUrl(HH_API_BASE_URL)
             .client(client)
