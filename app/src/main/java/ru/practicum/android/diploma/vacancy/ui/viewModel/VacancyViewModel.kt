@@ -31,13 +31,13 @@ class VacancyViewModel(
     private val _state = MutableLiveData<VacancyState>()
     val state: LiveData<VacancyState> = _state
 
-    private var _inFavorites = MutableLiveData<Boolean>()
-    val inFavorites: LiveData<Boolean> = _inFavorites
-
     private var vacancy: Vacancy? = null
+    private var isFavorite: Boolean = false
 
     init {
         setState(VacancyState.Load)
+        checkFavorite()
+        loadVacancy()
     }
 
     fun openMail(mailTo: String) {
@@ -45,18 +45,51 @@ class VacancyViewModel(
     }
 
     fun shareVacancy() {
-        shareVacancyByIdUseCase.execute(vacancyId)
+        if (state.value is VacancyState.Content) {
+            shareVacancyByIdUseCase.execute(vacancyId)
+        }
     }
 
     fun dialPhone(phoneNumber: String) {
         callPhoneUseCase.execute(phoneNumber)
     }
 
-    fun findVacancy() {
+    fun toggleFavorites() {
+        if (state.value is VacancyState.Content) {
+            viewModelScope.launch {
+                val currentState = (state.value as VacancyState.Content)
+                if (currentState.isFavorite) {
+                    vacancy?.let { deleteVacancyFromFavoritesUseCase.execute(it) }
+                } else {
+                    vacancy?.let { addVacancyToFavoritesUseCase.execute(it) }
+                }
+                setState(
+                    VacancyState.Content(!currentState.isFavorite, currentState.vacancy)
+                )
+            }
+        }
+    }
+
+    private fun checkFavorite() {
+        viewModelScope.launch {
+            checkInFavoritesUseCase.execute(vacancyId).collect { isInFavorites ->
+                isFavorite = isInFavorites
+            }
+        }
+    }
+
+    private fun loadVacancy() {
         viewModelScope.launch {
             val vacancyUI = findVacancyByIdUseCase.findVacancyById(vacancyId)
             if (vacancyUI.vacancy != null) {
-                setState(VacancyState.Content(vacancyDomainToVacancyUiConverter.mapVacancyToVacancyUi(vacancyUI.vacancy)))
+                setState(
+                    VacancyState.Content(
+                        isFavorite,
+                        vacancyDomainToVacancyUiConverter.mapVacancyToVacancyUi(
+                            vacancyUI.vacancy
+                        )
+                    )
+                )
                 vacancy = vacancyUI.vacancy
             } else {
                 setState(VacancyState.Error)
@@ -66,23 +99,5 @@ class VacancyViewModel(
 
     private fun setState(state: VacancyState) {
         _state.value = state
-    }
-
-    fun checkFavorites() {
-        viewModelScope.launch {
-            checkInFavoritesUseCase.execute(vacancyId).collect { isInFavorites ->
-                _inFavorites.postValue(isInFavorites)
-            }
-        }
-    }
-
-    fun toggleFavorites() {
-        viewModelScope.launch {
-            if (inFavorites.value == true) {
-                vacancy?.let { deleteVacancyFromFavoritesUseCase.execute(it) }
-            } else {
-                vacancy?.let { addVacancyToFavoritesUseCase.execute(it) }
-            }
-        }
     }
 }
