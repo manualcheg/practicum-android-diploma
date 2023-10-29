@@ -131,9 +131,9 @@ class FilteringSettingsFragment : Fragment() {
                     binding.filteringSettingsOnlyWithSalaryCheckbox.isChecked = state.onlyWithSalary
                 }
 
-                binding.applyButton.isVisible = state.isApplyButtonVisible
+                binding.applyButton.isVisible = state.isDataChanged
 
-                binding.resetButton.isVisible = state.isResetButtonVisible
+                binding.resetButton.isVisible = state.isDataChanged
             }
 
             FilterSettingsState.Navigate.NavigateBackWithResult -> {

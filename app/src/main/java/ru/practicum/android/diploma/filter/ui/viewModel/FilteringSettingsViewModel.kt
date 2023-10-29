@@ -220,14 +220,12 @@ class FilteringSettingsViewModel(
 
     private fun setButtonsStates(isTempFiltersNotEmpty: Boolean) {
         if (isTempFiltersNotEmpty) {
-            currentState = currentState?.copy(isApplyButtonVisible = true)
-            currentState = currentState?.copy(isResetButtonVisible = true)
+            currentState = currentState?.copy(isDataChanged = true)
             currentState.let {
                 stateLiveData.value = it
             }
         } else {
-            currentState = currentState?.copy(isApplyButtonVisible = false)
-            currentState = currentState?.copy(isResetButtonVisible = false)
+            currentState = currentState?.copy(isDataChanged = false)
             currentState.let {
                 stateLiveData.value = it
             }
