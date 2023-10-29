@@ -63,12 +63,10 @@ open class SearchViewModel(
     }
 
     fun filterChanged() {
-        when (val currentState = stateLiveData.value) {
+        when (stateLiveData.value) {
+            is SearchState.Success.Empty,
+            is SearchState.Success.SearchContent,
             is SearchState.Error.ErrorNewSearch -> {
-                setState(currentState.copy(isFilterExist = isFiltersExistsUseCase.execute()))
-            }
-
-            is SearchState.Success.Empty, is SearchState.Success.SearchContent -> {
                 nextPage = 0
                 latestSearchText?.let { searchNewRequest(it) }
             }
