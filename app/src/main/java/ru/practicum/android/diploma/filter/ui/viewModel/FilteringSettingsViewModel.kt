@@ -205,6 +205,15 @@ class FilteringSettingsViewModel(
         stateLiveData.value = FilterSettingsState.Navigate.NavigateBackWithResult
     }
 
+    fun onAreaFieldClicked() {
+        stateLiveData.value = FilterSettingsState.Navigate.NavigateToChoosingWorkplace
+    }
+
+    fun onIndustryFieldClicked() {
+        stateLiveData.value = FilterSettingsState.Navigate.NavigateToChoosingIndustry
+    }
+
+
     private fun clearTempFilterOptions() {
         clearTempFilterOptionsUseCase.execute()
     }

@@ -60,7 +60,7 @@ class FilteringSettingsFragment : Fragment() {
         }
 
         binding.areaCustomView.setOnClickListener {
-            findNavController().navigate(R.id.action_filteringSettingsFragment_to_filteringChoosingWorkplaceFragment)
+            viewModel.onAreaFieldClicked()
         }
 
         binding.industryCustomView.onButtonClick {
@@ -69,7 +69,7 @@ class FilteringSettingsFragment : Fragment() {
         }
 
         binding.industryCustomView.setOnClickListener {
-            findNavController().navigate(R.id.action_filteringSettingsFragment_to_filteringSectorFragment)
+            viewModel.onIndustryFieldClicked()
         }
 
         binding.filteringSettingsToolbar.setNavigationOnClickListener {
@@ -167,7 +167,6 @@ class FilteringSettingsFragment : Fragment() {
                     viewModel.clearSalary()
                 }
                 setHintColor(input.toString())
-
             }
         }
 
@@ -176,8 +175,6 @@ class FilteringSettingsFragment : Fragment() {
             viewModel.setOnlyWithSalary(isChecked)
         }
     }
-
-
     private fun renderButtonWithSelectedValues(
         text: String, customView: ButtonWithSelectedValues, hint: String
     ) {
@@ -203,9 +200,7 @@ class FilteringSettingsFragment : Fragment() {
             } else {
                 if (text.isBlank()) {
                     setTextInputLayoutHintColor(
-                        binding.enterTheAmountTextInputLayout,
-                        requireContext(),
-                        R.color.gray_white
+                        binding.enterTheAmountTextInputLayout, requireContext(), R.color.gray_white
                     )
                 } else {
                     setTextInputLayoutHintColor(
