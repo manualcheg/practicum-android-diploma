@@ -40,10 +40,6 @@ class FilteringAreaViewModel(
     private var isClickAllowed = true
 
     fun observeStateLiveData(): LiveData<AreasState> = stateLiveData
-    private fun setState(state: AreasState) {
-        stateLiveData.value = state
-    }
-
     init {
         setState(AreasState.Loading)
         viewModelScope.launch(coroutineExceptionHandler) {
@@ -71,6 +67,10 @@ class FilteringAreaViewModel(
 
     fun proceedBack() {
         stateLiveData.value = AreasState.Navigate.NavigateEmpty
+    }
+
+    private fun setState(state: AreasState) {
+        stateLiveData.value = state
     }
 
     private fun proceedResult(areas: Areas?, errorStatusDomain: ErrorStatusDomain?) {
