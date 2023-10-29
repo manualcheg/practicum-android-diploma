@@ -90,6 +90,7 @@ class FilteringIndustryFragment : Fragment() {
             }
 
             is IndustryState.Error -> showError(state.errorStatus)
+
             IndustryState.Navigate.NavigateEmpty -> {
                 findNavController().popBackStack()
             }
