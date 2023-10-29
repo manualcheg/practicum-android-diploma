@@ -23,10 +23,9 @@ class FilteringAreaViewModel(
 ) : ViewModel() {
 
     private val stateLiveData = MutableLiveData<AreasState>()
-
     private val areasListUi = mutableListOf<AreaCountryUi>()
-
     private val foundAreasList = mutableListOf<AreaFilter>()
+
     private val coroutineExceptionHandler =
         CoroutineExceptionHandler { _, _ -> setState(AreasState.Error(ErrorStatusUi.ERROR_OCCURRED)) }
 
@@ -36,7 +35,6 @@ class FilteringAreaViewModel(
         }
 
     private var latestSearchText: String? = null
-
     private var isClickAllowed = true
 
     fun observeStateLiveData(): LiveData<AreasState> = stateLiveData
