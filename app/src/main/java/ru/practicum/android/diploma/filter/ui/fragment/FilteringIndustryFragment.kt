@@ -7,16 +7,11 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.databinding.FragmentFilteringIndustryBinding
 import ru.practicum.android.diploma.filter.ui.RecycleViewIndustryAdapter
-import ru.practicum.android.diploma.filter.ui.model.ButtonState
-import ru.practicum.android.diploma.filter.ui.model.IndustryNavigationState
 import ru.practicum.android.diploma.filter.ui.model.IndustryState
 import ru.practicum.android.diploma.filter.ui.model.IndustryUi
 import ru.practicum.android.diploma.filter.ui.viewModel.FilteringIndustryViewModel
@@ -27,7 +22,6 @@ class FilteringIndustryFragment : Fragment() {
     private var _binding: FragmentFilteringIndustryBinding? = null
     private val binding get() = _binding!!
     private var industriesAdapter: RecycleViewIndustryAdapter? = null
-    private var isClickAllowed = true
     private val viewModel by viewModel<FilteringIndustryViewModel>()
 
     override fun onCreateView(
@@ -47,18 +41,6 @@ class FilteringIndustryFragment : Fragment() {
             renderState(it)
         }
 
-        viewModel.observeNavigationStateLiveData().observe(viewLifecycleOwner) {
-            renderNavigationState(it)
-        }
-
-        viewModel.observeButtonStateLiveData().observe(viewLifecycleOwner) {
-            renderButtonState(it)
-        }
-
-        viewModel.observeRecycleViewScrollState().observe(viewLifecycleOwner) {
-            scrollToPosition(it)
-        }
-
         binding.filteringSectorEditText.doOnTextChanged { text, _, _, _ ->
             if (text != null) {
                 viewModel.searchIndustryDebounce(text.toString().trim())
@@ -75,9 +57,7 @@ class FilteringIndustryFragment : Fragment() {
 
     private fun recycleViewInit() {
         industriesAdapter = RecycleViewIndustryAdapter { item ->
-            if (isClickDebounce()) {
-                viewModel.industryClicked(item.id)
-            }
+            viewModel.industryClicked(item.id)
         }
 
         binding.filteringSectorRecyclerView.layoutManager =
@@ -87,15 +67,11 @@ class FilteringIndustryFragment : Fragment() {
 
     private fun initClicks() {
         binding.filteringIndustriesButton.setOnClickListener {
-            if (isClickDebounce()) {
-                viewModel.chooseButtonClicked()
-            }
+            viewModel.chooseButtonClicked()
         }
 
         binding.filteringSectorToolbar.setNavigationOnClickListener {
-            if (isClickDebounce()) {
-                viewModel.proceedBack()
-            }
+            viewModel.proceedBack()
         }
     }
 
@@ -106,31 +82,23 @@ class FilteringIndustryFragment : Fragment() {
             }
 
             is IndustryState.Success -> {
-                showContent(state.industryList)
+                showContent(
+                    state.industryList,
+                    state.chosenIndustryPosition,
+                    state.isIndustryChosen
+                )
             }
 
             is IndustryState.Error -> showError(state.errorStatus)
-        }
-    }
 
-    private fun renderNavigationState(state: IndustryNavigationState) {
-        when (state) {
-            is IndustryNavigationState.NavigateEmpty -> {
+            IndustryState.Navigate.NavigateEmpty -> {
                 findNavController().popBackStack()
             }
 
-            is IndustryNavigationState.NavigateWithContent -> {
+            is IndustryState.Navigate.NavigateWithContent -> {
                 viewModel.saveIndustry()
                 findNavController().popBackStack()
             }
-        }
-
-    }
-
-    private fun renderButtonState(state: ButtonState) {
-        when (state) {
-            ButtonState.Gone -> binding.filteringIndustriesButton.isVisible = false
-            ButtonState.Visible -> binding.filteringIndustriesButton.isVisible = true
         }
     }
 
@@ -140,14 +108,13 @@ class FilteringIndustryFragment : Fragment() {
         binding.industryScreenProgressBar.isVisible = true
     }
 
-    private fun showContent(industries: List<IndustryUi>) {
+    private fun showContent(
+        industries: List<IndustryUi>, scrollPosition: Int, isIndustryChosen: Boolean
+    ) {
         emptyScreen()
         industriesAdapter?.items = industries
-
-    }
-
-    private fun scrollToPosition(position: Int) {
-        binding.filteringSectorRecyclerView.layoutManager?.scrollToPosition(position)
+        binding.filteringSectorRecyclerView.layoutManager?.scrollToPosition(scrollPosition)
+        binding.filteringIndustriesButton.isVisible = isIndustryChosen
     }
 
     private fun showError(errorStatus: ErrorStatusUi) {
@@ -170,22 +137,6 @@ class FilteringIndustryFragment : Fragment() {
         binding.industryScreenProgressBar.isVisible = false
         binding.industriesScreenNotFoundPlaceholder.isVisible = false
         binding.industriesScreenErrorPlaceholder.isVisible = false
-    }
-
-    private fun isClickDebounce(): Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-
-            viewLifecycleOwner.lifecycleScope.launch {
-                delay(CLICK_DEBOUNCE_DELAY_MILLIS)
-                isClickAllowed = true
-            }
-        }
-        return current
-    }
-
-    companion object {
-        private const val CLICK_DEBOUNCE_DELAY_MILLIS = 200L
+        binding.filteringIndustriesButton.isVisible = false
     }
 }

@@ -6,8 +6,7 @@ sealed interface FilterSettingsState {
         val industryField: String = "",
         val salaryField: String = "",
         val onlyWithSalary: Boolean = false,
-        val isApplyButtonVisible: Boolean = false,
-        val isResetButtonVisible: Boolean = false,
+        val isDataChanged: Boolean = false,
         val isItInitSalaryField: Boolean = true,
         val isItInitOnlySalary: Boolean = true,
     ) : FilterSettingsState
@@ -15,7 +14,6 @@ sealed interface FilterSettingsState {
     sealed interface Navigate : FilterSettingsState {
         object NavigateToChoosingWorkplace : Navigate
         object NavigateToChoosingIndustry : Navigate
-
         object NavigateBackWithoutResult : Navigate
         object NavigateBackWithResult : Navigate
     }
