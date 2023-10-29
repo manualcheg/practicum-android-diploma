@@ -8,18 +8,14 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.practicum.android.diploma.databinding.FragmentFilteringAreaBinding
 import ru.practicum.android.diploma.filter.RecycleViewAreaAdapter
 import ru.practicum.android.diploma.filter.ui.model.AreaCountryUi
-import ru.practicum.android.diploma.filter.ui.model.AreaNavigationState
 import ru.practicum.android.diploma.filter.ui.model.AreasState
 import ru.practicum.android.diploma.filter.ui.viewModel.FilteringAreaViewModel
 import ru.practicum.android.diploma.search.ui.model.ErrorStatusUi
@@ -30,7 +26,6 @@ class FilteringAreaFragment : Fragment() {
     private var _binding: FragmentFilteringAreaBinding? = null
     private val binding get() = _binding!!
     private var areasAdapter: RecycleViewAreaAdapter? = null
-    private var isClickAllowed = true
 
     private val viewModel by viewModel<FilteringAreaViewModel> {
         parametersOf(args.parentId)
@@ -52,10 +47,6 @@ class FilteringAreaFragment : Fragment() {
             renderState(it)
         }
 
-        viewModel.observeNavigationStateLiveData().observe(viewLifecycleOwner) {
-            renderNavigationState(it)
-        }
-
         binding.filteringRegionEditText.doOnTextChanged { text, _, _, _ ->
             if (text != null) {
                 viewModel.searchAreaDebounce(text.toString().trim())
@@ -64,18 +55,6 @@ class FilteringAreaFragment : Fragment() {
 
         binding.filteringRegionToolbar.setNavigationOnClickListener {
             viewModel.proceedBack()
-        }
-    }
-
-    private fun renderNavigationState(state: AreaNavigationState) {
-        when (state) {
-            AreaNavigationState.NavigateEmpty -> findNavController().popBackStack()
-            is AreaNavigationState.NavigateWithContent -> {
-                val bundle = Bundle()
-                bundle.putParcelable(BUNDLE_KEY_FOR_AREA, state.areaFilter)
-                setFragmentResult(REQUEST_KEY, bundle)
-                findNavController().popBackStack()
-            }
         }
     }
 
@@ -91,6 +70,16 @@ class FilteringAreaFragment : Fragment() {
             is AreasState.Error -> showError(state.errorStatus)
             AreasState.Loading -> showLoading()
             is AreasState.Success.Content -> showContent(state.arealList)
+            AreasState.Navigate.NavigateEmpty -> {
+                findNavController().popBackStack()
+            }
+
+            is AreasState.Navigate.NavigateWithContent -> {
+                val bundle = Bundle()
+                bundle.putParcelable(BUNDLE_KEY_FOR_AREA, state.areaFilter)
+                setFragmentResult(REQUEST_KEY, bundle)
+                findNavController().popBackStack()
+            }
         }
     }
 
@@ -130,9 +119,7 @@ class FilteringAreaFragment : Fragment() {
 
     private fun recycleViewInit() {
         areasAdapter = RecycleViewAreaAdapter { item ->
-            if (isClickDebounce()) {
-                viewModel.areaClicked(item.id)
-            }
+            viewModel.areaClicked(item.id)
         }
 
         binding.filteringRegionRecyclerView.layoutManager =
@@ -140,21 +127,7 @@ class FilteringAreaFragment : Fragment() {
         binding.filteringRegionRecyclerView.adapter = areasAdapter
     }
 
-    private fun isClickDebounce(): Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-
-            viewLifecycleOwner.lifecycleScope.launch {
-                delay(CLICK_DEBOUNCE_DELAY_MILLIS)
-                isClickAllowed = true
-            }
-        }
-        return current
-    }
-
     companion object {
-        private const val CLICK_DEBOUNCE_DELAY_MILLIS = 1000L
         private const val TOP_POSITION_TO_SCROLL = 0
         const val REQUEST_KEY = "request key"
         const val BUNDLE_KEY_FOR_AREA = "bundle key for area"
