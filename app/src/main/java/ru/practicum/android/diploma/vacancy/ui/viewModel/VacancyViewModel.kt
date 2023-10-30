@@ -34,7 +34,7 @@ class VacancyViewModel(
     private var vacancy: Vacancy? = null
     private var isFavorite: Boolean = false
 
-    init {
+    fun initializeVacancy() {
         setState(VacancyState.Load)
         checkFavorite()
         loadVacancy()
@@ -68,6 +68,10 @@ class VacancyViewModel(
                 )
             }
         }
+    }
+
+    fun similarVacanciesButtonClicked() {
+        setState(VacancyState.Navigate(vacancyId = vacancyId))
     }
 
     private fun checkFavorite() {

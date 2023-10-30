@@ -52,16 +52,18 @@ class SimilarVacancyFragment : SearchFragment() {
 
     override fun recycleViewInit() {
         vacanciesAdapter = RecycleViewVacancyAdapter { vacancy ->
-                val direction =
-                    SimilarVacancyFragmentDirections.actionSimilarVacancyFragmentToVacancyFragment(
-                        vacancy.id
-                    )
-                findNavController().navigate(direction)
+            viewModel.vacancyClicked(vacancyId = vacancy.id)
         }
 
         binding.similarVacanciesRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.similarVacanciesRecyclerView.adapter = vacanciesAdapter
+    }
+
+    override fun navigateToVacancy(vacancyId: Int) {
+        val direction =
+            SimilarVacancyFragmentDirections.actionSimilarVacancyFragmentToVacancyFragment(vacancyId)
+        findNavController().navigate(direction)
     }
 
     override fun showErrorToast(message: String) {

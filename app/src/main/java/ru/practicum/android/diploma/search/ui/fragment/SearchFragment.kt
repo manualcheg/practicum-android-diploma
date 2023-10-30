@@ -65,15 +65,6 @@ open class SearchFragment : Fragment() {
         }
     }
 
-    private fun fragmentResultListenerInit() {
-        setFragmentResultListener(IS_FILTER_CHANGED) { _, bundle ->
-            val isNewFilterSet = bundle.getBoolean(IS_FILTER_CHANGED)
-            if (isNewFilterSet) {
-                viewModel.filterChanged()
-            }
-        }
-    }
-
     protected open fun destroyViews() {
         textWatcher?.let { binding.searchScreenEditText.removeTextChangedListener(it) }
         binding.searchScreenRecyclerView.adapter = null
@@ -83,10 +74,7 @@ open class SearchFragment : Fragment() {
 
     protected open fun recycleViewInit() {
         vacanciesAdapter = RecycleViewVacancyAdapter { vacancy ->
-            val direction =
-                SearchFragmentDirections.actionSearchFragmentToVacancyFragment(vacancy.id)
-            findNavController().navigate(direction)
-
+            viewModel.vacancyClicked(vacancy.id)
         }
 
         binding.searchScreenRecyclerView.layoutManager =
@@ -102,22 +90,24 @@ open class SearchFragment : Fragment() {
             is SearchState.Loading.LoadingPaginationSearch -> showLoadingPages()
             is SearchState.Success.Empty -> showEmpty(state.isFilterExist)
             is SearchState.Success.SearchContent -> showContent(
-                state.vacancies,
-                state.foundVacancy,
-                state.isFilterExist
+                state.vacancies, state.foundVacancy, state.isFilterExist
             )
 
             is SearchState.Error.ErrorNewSearch -> showError(state.errorStatus, state.isFilterExist)
             is SearchState.Error.ErrorPaginationSearch -> showPaginationError(state.errorStatus)
+            SearchState.Navigate.NavigateToFilterSettings -> navigateToFilterSettings()
+            is SearchState.Navigate.NavigateToVacancy -> navigateToVacancy(state.vacancyId)
         }
     }
 
-    private fun showPaginationError(errorStatus: ErrorStatusUi) {
-        when (errorStatus) {
-            ErrorStatusUi.NO_CONNECTION -> showErrorToast(resources.getString(R.string.no_internet))
-            ErrorStatusUi.ERROR_OCCURRED -> showErrorToast(resources.getString(R.string.failed_to_get_a_list_of_vacancies))
-            ErrorStatusUi.NOTHING_FOUND -> {}
-        }
+    protected open fun navigateToVacancy(vacancyId: Int) {
+        val direction = SearchFragmentDirections.actionSearchFragmentToVacancyFragment(vacancyId)
+        findNavController().navigate(direction)
+    }
+
+    private fun navigateToFilterSettings() {
+        val direction = SearchFragmentDirections.actionSearchFragmentToFilteringSettingsFragment()
+        findNavController().navigate(direction)
     }
 
     protected open fun showErrorToast(message: String) {
@@ -125,23 +115,8 @@ open class SearchFragment : Fragment() {
         binding.searchScreenPaginationProgressBar.isVisible = false
     }
 
-    private fun filterButtonBehavior(isFiltersExist: Boolean) {
-        if (isFiltersExist) {
-            setMenuFilterIcon(R.drawable.ic_filters_selected)
-        } else {
-            setMenuFilterIcon(R.drawable.ic_filters_unselected)
-        }
-    }
-
-    private fun setMenuFilterIcon(drawableInt: Int) {
-        binding.searchVacanciesToolbar.menu.findItem(R.id.searchScreenToolbarFilterMenu).icon =
-            AppCompatResources.getDrawable(requireContext(), drawableInt)
-    }
-
     protected open fun showContent(
-        vacancies: List<VacancyUi>,
-        foundVacancies: Int,
-        isFilterExist: Boolean
+        vacancies: List<VacancyUi>, foundVacancies: Int, isFilterExist: Boolean
     ) {
         emptyScreen()
         vacanciesAdapter?.items = vacancies
@@ -218,9 +193,10 @@ open class SearchFragment : Fragment() {
         binding.searchVacanciesToolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.searchScreenToolbarFilterMenu -> {
-                    val direction =
-                        SearchFragmentDirections.actionSearchFragmentToFilteringSettingsFragment()
-                    findNavController().navigate(direction)
+                    viewModel.filterSettingsButtonClicked()
+//                    val direction =
+//                        SearchFragmentDirections.actionSearchFragmentToFilteringSettingsFragment()
+//                    findNavController().navigate(direction)
                 }
             }
             true
@@ -245,8 +221,54 @@ open class SearchFragment : Fragment() {
         })
     }
 
-    private fun setOnTextWatchersTextChangeListeners() {
+    protected open fun emptyScreen() {
+        binding.apply {
+            counterVacanciesTextView.isVisible = false
+            searchScreenFirstLoadingProgressBar.isVisible = false
+            searchScreenPaginationProgressBar.isVisible = false
+            placeholderSearchVacanciesImageView.isVisible = false
+            searchScreenNoInternetPlaceholder.isVisible = false
+            searchScreenNothingFoundPlaceholder.isVisible = false
+            searchScreenServerErrorPlaceholder.isVisible = false
+        }
+        setMenuFilterIcon(R.drawable.ic_filters_unselected)
+    }
 
+    protected fun showToast(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showPaginationError(errorStatus: ErrorStatusUi) {
+        when (errorStatus) {
+            ErrorStatusUi.NO_CONNECTION -> showErrorToast(resources.getString(R.string.no_internet))
+            ErrorStatusUi.ERROR_OCCURRED -> showErrorToast(resources.getString(R.string.failed_to_get_a_list_of_vacancies))
+            ErrorStatusUi.NOTHING_FOUND -> {}
+        }
+    }
+
+    private fun fragmentResultListenerInit() {
+        setFragmentResultListener(IS_FILTER_CHANGED) { _, bundle ->
+            val isNewFilterSet = bundle.getBoolean(IS_FILTER_CHANGED)
+            if (isNewFilterSet) {
+                viewModel.filterChanged()
+            }
+        }
+    }
+
+    private fun filterButtonBehavior(isFiltersExist: Boolean) {
+        if (isFiltersExist) {
+            setMenuFilterIcon(R.drawable.ic_filters_selected)
+        } else {
+            setMenuFilterIcon(R.drawable.ic_filters_unselected)
+        }
+    }
+
+    private fun setMenuFilterIcon(drawableInt: Int) {
+        binding.searchVacanciesToolbar.menu.findItem(R.id.searchScreenToolbarFilterMenu).icon =
+            AppCompatResources.getDrawable(requireContext(), drawableInt)
+    }
+
+    private fun setOnTextWatchersTextChangeListeners() {
         textWatcher = object : TextWatcherJustOnTextChanged {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -261,7 +283,6 @@ open class SearchFragment : Fragment() {
                 )
             }
         }
-
         textWatcher?.let { binding.searchScreenEditText.addTextChangedListener(it) }
     }
 
@@ -271,21 +292,6 @@ open class SearchFragment : Fragment() {
         } else {
             binding.searchFormButton.setImageResource(R.drawable.ic_cross)
         }
-    }
-
-    protected open fun emptyScreen() {
-        binding.counterVacanciesTextView.isVisible = false
-        binding.searchScreenFirstLoadingProgressBar.isVisible = false
-        binding.searchScreenPaginationProgressBar.isVisible = false
-        binding.placeholderSearchVacanciesImageView.isVisible = false
-        binding.searchScreenNoInternetPlaceholder.isVisible = false
-        binding.searchScreenNothingFoundPlaceholder.isVisible = false
-        binding.searchScreenServerErrorPlaceholder.isVisible = false
-        setMenuFilterIcon(R.drawable.ic_filters_unselected)
-    }
-
-    protected fun showToast(message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
     companion object {

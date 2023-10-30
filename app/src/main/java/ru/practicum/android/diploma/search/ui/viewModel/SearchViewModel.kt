@@ -29,6 +29,7 @@ open class SearchViewModel(
 ) : ViewModel() {
 
     private var latestSearchText: String? = null
+    private var isClickAllowed = true
 
     private val stateLiveData =
         MutableLiveData<SearchState>(SearchState.Success.Empty(isFiltersExistsUseCase.execute()))
@@ -63,14 +64,28 @@ open class SearchViewModel(
 
     fun filterChanged() {
         when (stateLiveData.value) {
-            is SearchState.Success.Empty,
-            is SearchState.Success.SearchContent,
-            is SearchState.Error.ErrorNewSearch -> {
+            is SearchState.Success.Empty, is SearchState.Success.SearchContent, is SearchState.Error.ErrorNewSearch -> {
                 nextPage = 0
                 latestSearchText?.let { searchNewRequest(it) }
             }
 
             else -> {}
+        }
+    }
+
+    fun filterSettingsButtonClicked() {
+        if (isClickDebounce()) {
+            val currentState: SearchState? = getCurrentState()
+            setState(SearchState.Navigate.NavigateToFilterSettings)
+            currentState?.let { setState(it) }
+        }
+    }
+
+    fun vacancyClicked(vacancyId: Int) {
+        if (isClickDebounce()) {
+            val currentState: SearchState? = getCurrentState()
+            setState(SearchState.Navigate.NavigateToVacancy(vacancyId))
+            currentState?.let { setState(it) }
         }
     }
 
@@ -88,43 +103,6 @@ open class SearchViewModel(
 
     fun setState(state: SearchState) {
         stateLiveData.value = state
-    }
-
-
-    private fun searchNewRequest(inputSearchText: String) {
-        if (inputSearchText.isBlank()) {
-            return
-        }
-        setState(SearchState.Loading.LoadingNewSearch(isFiltersExistsUseCase.execute()))
-        foundVacancies = DEFAULT_FOUND_VACANCIES
-
-        nextPage = DEFAULT_PAGE
-        job = viewModelScope.launch {
-            getVacancies(inputSearchText, nextPage, perPage, isNewSearch = true)
-        }
-        nextPage++
-    }
-
-
-    private fun searchSameRequest(inputSearchText: String) {
-        if ((currentPages + 1) >= maxPages || currentPages == PAGE_LIMIT || isNextPageLoading) {
-            return
-        }
-        isNextPageLoading = true
-        setState(SearchState.Loading.LoadingPaginationSearch)
-
-        if (PAGE_LIMIT - currentPages <= DEFAULT_PER_PAGE) {
-            perPage = PAGE_LIMIT - currentPages
-        }
-
-        job = viewModelScope.launch {
-            val resultDeferred = async {
-                getVacancies(inputSearchText, nextPage, perPage, isNewSearch = false)
-            }
-            nextPage++
-            resultDeferred.await()
-            isNextPageLoading = false
-        }
     }
 
     protected fun processResult(
@@ -186,6 +164,70 @@ open class SearchViewModel(
         }
     }
 
+    protected fun isPaginationDebounce(): Boolean {
+        val current = isPaginationAllowed
+        if (isPaginationAllowed) {
+            isPaginationAllowed = false
+
+            viewModelScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY_MILLIS)
+                isPaginationAllowed = true
+            }
+        }
+        return current
+    }
+
+    private fun getCurrentState(): SearchState? {
+        val currentState: SearchState? = when (stateLiveData.value) {
+            is SearchState.Success.SearchContent -> (stateLiveData.value as SearchState.Success.SearchContent).copy()
+            is SearchState.Error.ErrorNewSearch -> (stateLiveData.value as SearchState.Error.ErrorNewSearch).copy()
+            is SearchState.Error.ErrorPaginationSearch -> (stateLiveData.value as SearchState.Error.ErrorPaginationSearch).copy()
+            is SearchState.Loading.LoadingNewSearch -> (stateLiveData.value as SearchState.Loading.LoadingNewSearch).copy()
+            SearchState.Loading.LoadingPaginationSearch -> SearchState.Loading.LoadingPaginationSearch
+            SearchState.Navigate.NavigateToFilterSettings -> SearchState.Navigate.NavigateToFilterSettings
+            is SearchState.Navigate.NavigateToVacancy -> (stateLiveData.value as SearchState.Navigate.NavigateToVacancy).copy()
+            is SearchState.Success.Empty -> (stateLiveData.value as SearchState.Success.Empty).copy()
+            null -> null
+        }
+        return currentState
+    }
+
+    private fun searchNewRequest(inputSearchText: String) {
+        if (inputSearchText.isBlank()) {
+            return
+        }
+        setState(SearchState.Loading.LoadingNewSearch(isFiltersExistsUseCase.execute()))
+        foundVacancies = DEFAULT_FOUND_VACANCIES
+
+        nextPage = DEFAULT_PAGE
+        job = viewModelScope.launch {
+            getVacancies(inputSearchText, nextPage, perPage, isNewSearch = true)
+        }
+        nextPage++
+    }
+
+
+    private fun searchSameRequest(inputSearchText: String) {
+        if ((currentPages + 1) >= maxPages || currentPages == PAGE_LIMIT || isNextPageLoading) {
+            return
+        }
+        isNextPageLoading = true
+        setState(SearchState.Loading.LoadingPaginationSearch)
+
+        if (PAGE_LIMIT - currentPages <= DEFAULT_PER_PAGE) {
+            perPage = PAGE_LIMIT - currentPages
+        }
+
+        job = viewModelScope.launch {
+            val resultDeferred = async {
+                getVacancies(inputSearchText, nextPage, perPage, isNewSearch = false)
+            }
+            nextPage++
+            resultDeferred.await()
+            isNextPageLoading = false
+        }
+    }
+
     private fun updateVacanciesListAndFields(vacancies: Vacancies?, isNewSearch: Boolean) {
         if (vacancies != null) {
             val foundVacancyUi = vacancies.vacancyList.map {
@@ -209,14 +251,14 @@ open class SearchViewModel(
         }
     }
 
-    protected fun isPaginationDebounce(): Boolean {
-        val current = isPaginationAllowed
-        if (isPaginationAllowed) {
-            isPaginationAllowed = false
+    private fun isClickDebounce(): Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
 
             viewModelScope.launch {
                 delay(CLICK_DEBOUNCE_DELAY_MILLIS)
-                isPaginationAllowed = true
+                isClickAllowed = true
             }
         }
         return current

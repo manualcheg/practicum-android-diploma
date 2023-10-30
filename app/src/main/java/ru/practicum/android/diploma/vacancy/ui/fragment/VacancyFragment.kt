@@ -27,13 +27,12 @@ class VacancyFragment : Fragment() {
 
     private val viewModel: VacancyViewModel by viewModel {
         parametersOf(
-            vacancyId
+            args.vacancyId
         )
     }
     private var _binding: FragmentVacancyBinding? = null
     private val binding get() = _binding!!
     private var phonesAdapter: RecycleViewContactsAdapter? = null
-    private var vacancyId: Int? = null
     private val args: VacancyFragmentArgs by navArgs()
 
     override fun onCreateView(
@@ -46,7 +45,8 @@ class VacancyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        vacancyId = args.vacancyId
+        viewModel.initializeVacancy()
+
         viewModel.state.observe(viewLifecycleOwner) {
             render(it)
         }
@@ -55,9 +55,7 @@ class VacancyFragment : Fragment() {
         initializePhonesAdapter()
 
         binding.vacancySimilarVacanciesButtonTextView.setOnClickListener {
-            val direction =
-                VacancyFragmentDirections.actionVacancyFragmentToSimilarVacancyFragment(vacancyId!!)
-            findNavController().navigate(direction)
+            viewModel.similarVacanciesButtonClicked()
         }
     }
 
@@ -87,6 +85,12 @@ class VacancyFragment : Fragment() {
                 binding.vacancyServerErrorPlaceholder.visibility = View.GONE
                 binding.vacancyContentScrollView.visibility = View.VISIBLE
                 setupContent(state)
+            }
+
+            is VacancyState.Navigate -> {
+                val direction =
+                    VacancyFragmentDirections.actionVacancyFragmentToSimilarVacancyFragment(state.vacancyId)
+                findNavController().navigate(direction)
             }
         }
     }
@@ -181,7 +185,8 @@ class VacancyFragment : Fragment() {
             binding.vacancyExperienceLinearLayout.visibility = View.GONE
 
         if (state.vacancy.description.isNotBlank()) {
-            binding.vacancyDescriptionTextView.text = Html.fromHtml(state.vacancy.description, FROM_HTML_MODE_COMPACT)
+            binding.vacancyDescriptionTextView.text =
+                Html.fromHtml(state.vacancy.description, FROM_HTML_MODE_COMPACT)
 
         } else {
             binding.vacancyDescriptionLinearLayout.visibility = View.GONE

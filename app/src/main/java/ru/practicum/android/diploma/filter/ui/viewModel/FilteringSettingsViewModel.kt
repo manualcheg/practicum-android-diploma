@@ -3,6 +3,9 @@ package ru.practicum.android.diploma.filter.ui.viewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.common.domain.model.filter_models.Filter
 import ru.practicum.android.diploma.filter.domain.useCase.ClearAreaFilterUseCase
 import ru.practicum.android.diploma.filter.domain.useCase.ClearFilterOptionsUseCase
@@ -48,6 +51,8 @@ class FilteringSettingsViewModel(
 
     var salary: String = BLANK_STRING
     private var currentState: FilterSettingsState.Content? = null
+
+    private var isClickAllowed = true
 
     init {
         filter = getFilterOptionsUseCase.execute()
@@ -108,30 +113,36 @@ class FilteringSettingsViewModel(
     }
 
     fun areaButtonClicked() {
-        if (currentState?.areaField?.isBlank() == true) {
-            stateLiveData.value = FilterSettingsState.Navigate.NavigateToChoosingWorkplace
-        } else {
-            clearArea()
-            updateButtonsStates()
+        if (isClickDebounce()) {
+            if (currentState?.areaField?.isBlank() == true) {
+                stateLiveData.value = FilterSettingsState.Navigate.NavigateToChoosingWorkplace
+            } else {
+                clearArea()
+                updateButtonsStates()
+            }
         }
     }
 
     fun industryButtonClicked() {
-        if (currentState?.industryField?.isBlank() == true) {
-            stateLiveData.value = FilterSettingsState.Navigate.NavigateToChoosingIndustry
-        } else {
-            clearIndustry()
-            updateButtonsStates()
+        if (isClickDebounce()) {
+            if (currentState?.industryField?.isBlank() == true) {
+                stateLiveData.value = FilterSettingsState.Navigate.NavigateToChoosingIndustry
+            } else {
+                clearIndustry()
+                updateButtonsStates()
+            }
         }
     }
 
     fun backButtonClicked() {
-        if (isResetButtonClicked) {
-            stateLiveData.value = FilterSettingsState.Navigate.NavigateBackWithResult
-        } else {
-            stateLiveData.value = FilterSettingsState.Navigate.NavigateBackWithoutResult
+        if (isClickDebounce()) {
+            if (isResetButtonClicked) {
+                stateLiveData.value = FilterSettingsState.Navigate.NavigateBackWithResult
+            } else {
+                stateLiveData.value = FilterSettingsState.Navigate.NavigateBackWithoutResult
+            }
+            clearTempFilterOptions()
         }
-        clearTempFilterOptions()
     }
 
     fun clearSalaryButtonClicked() {
@@ -140,12 +151,14 @@ class FilteringSettingsViewModel(
     }
 
     fun resetButtonClicked() {
-        if (isFiltersSetBefore) {
-            isResetButtonClicked = true
+        if (isClickDebounce()) {
+            if (isFiltersSetBefore) {
+                isResetButtonClicked = true
+            }
+            isFiltersSetBefore = false
+            clearAll()
+            updateStates()
         }
-        isFiltersSetBefore = false
-        clearAll()
-        updateStates()
     }
 
     fun setSalaryAmount(text: String) {
@@ -202,23 +215,29 @@ class FilteringSettingsViewModel(
     }
 
     fun applyButtonClicked() {
-        if (isTempFilterOptionsEmptyUseCase.execute()) {
-            clearFilterOptionsUseCase.execute()
-            clearTempFilterOptions()
-        } else {
-            getFilterOptionsUseCase.execute()
-                ?.let { filter -> setFilterOptionsUseCase.execute(filter) }
-            clearTempFilterOptions()
+        if (isClickDebounce()) {
+            if (isTempFilterOptionsEmptyUseCase.execute()) {
+                clearFilterOptionsUseCase.execute()
+                clearTempFilterOptions()
+            } else {
+                getFilterOptionsUseCase.execute()
+                    ?.let { filter -> setFilterOptionsUseCase.execute(filter) }
+                clearTempFilterOptions()
+            }
+            stateLiveData.value = FilterSettingsState.Navigate.NavigateBackWithResult
         }
-        stateLiveData.value = FilterSettingsState.Navigate.NavigateBackWithResult
     }
 
     fun onAreaFieldClicked() {
-        stateLiveData.value = FilterSettingsState.Navigate.NavigateToChoosingWorkplace
+        if (isClickDebounce()) {
+            stateLiveData.value = FilterSettingsState.Navigate.NavigateToChoosingWorkplace
+        }
     }
 
     fun onIndustryFieldClicked() {
-        stateLiveData.value = FilterSettingsState.Navigate.NavigateToChoosingIndustry
+        if (isClickDebounce()) {
+            stateLiveData.value = FilterSettingsState.Navigate.NavigateToChoosingIndustry
+        }
     }
 
 
@@ -261,7 +280,21 @@ class FilteringSettingsViewModel(
         }
     }
 
+    private fun isClickDebounce(): Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+
+            viewModelScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY_MILLIS)
+                isClickAllowed = true
+            }
+        }
+        return current
+    }
+
     companion object {
         const val BLANK_STRING = ""
+        private const val CLICK_DEBOUNCE_DELAY_MILLIS = 300L
     }
 }
