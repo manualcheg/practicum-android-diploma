@@ -96,6 +96,7 @@ dependencies {
     // debugImplementation because LeakCanary should only run in debug builds.
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.12")
 
+    implementation("androidx.core:core-splashscreen:1.0.1")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
