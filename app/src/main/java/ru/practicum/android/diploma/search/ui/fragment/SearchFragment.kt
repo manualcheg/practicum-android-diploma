@@ -194,9 +194,6 @@ open class SearchFragment : Fragment() {
             when (it.itemId) {
                 R.id.searchScreenToolbarFilterMenu -> {
                     viewModel.filterSettingsButtonClicked()
-//                    val direction =
-//                        SearchFragmentDirections.actionSearchFragmentToFilteringSettingsFragment()
-//                    findNavController().navigate(direction)
                 }
             }
             true

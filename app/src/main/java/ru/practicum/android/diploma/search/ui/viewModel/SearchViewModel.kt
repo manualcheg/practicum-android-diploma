@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
@@ -49,6 +50,25 @@ open class SearchViewModel(
     private val tracksSearchDebounce =
         debounce<String>(SEARCH_DEBOUNCE_DELAY_MILLIS, viewModelScope, true) {
             searchNewRequest(it)
+        }
+
+    private val coroutineExceptionHandlerNewRequest =
+        CoroutineExceptionHandler { _, _ ->
+            setState(
+                SearchState.Error.ErrorNewSearch(
+                    ErrorStatusUi.ERROR_OCCURRED,
+                    isFiltersExistsUseCase.execute()
+                )
+            )
+        }
+
+    private val coroutineExceptionHandlerSameRequest =
+        CoroutineExceptionHandler { _, _ ->
+            setState(
+                SearchState.Error.ErrorPaginationSearch(
+                    ErrorStatusUi.ERROR_OCCURRED
+                )
+            )
         }
 
     fun observeState(): LiveData<SearchState> = stateLiveData
@@ -200,7 +220,7 @@ open class SearchViewModel(
         foundVacancies = DEFAULT_FOUND_VACANCIES
 
         nextPage = DEFAULT_PAGE
-        job = viewModelScope.launch {
+        job = viewModelScope.launch(coroutineExceptionHandlerNewRequest) {
             getVacancies(inputSearchText, nextPage, perPage, isNewSearch = true)
         }
         nextPage++
@@ -218,7 +238,7 @@ open class SearchViewModel(
             perPage = PAGE_LIMIT - currentPages
         }
 
-        job = viewModelScope.launch {
+        job = viewModelScope.launch(coroutineExceptionHandlerSameRequest) {
             val resultDeferred = async {
                 getVacancies(inputSearchText, nextPage, perPage, isNewSearch = false)
             }

@@ -7,7 +7,7 @@ sealed interface VacancyState {
 
     object Error : VacancyState
 
-    class Content(var isFavorite: Boolean, val vacancy: VacancyUi) : VacancyState
+    data class Content(var isFavorite: Boolean, val vacancy: VacancyUi) : VacancyState
 
-    class Navigate(val vacancyId: Int) : VacancyState
+    data class Navigate(val vacancyId: Int) : VacancyState
 }
