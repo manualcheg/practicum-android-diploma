@@ -13,6 +13,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFilteringAreaBinding
 import ru.practicum.android.diploma.filter.RecycleViewAreaAdapter
 import ru.practicum.android.diploma.filter.ui.model.AreaCountryUi
@@ -48,6 +49,7 @@ class FilteringAreaFragment : Fragment() {
         }
 
         binding.filteringRegionEditText.doOnTextChanged { text, _, _, _ ->
+            setSearchEditTextEndDrawable(text)
             if (text != null) {
                 viewModel.searchAreaDebounce(text.toString().trim())
             }
@@ -55,6 +57,10 @@ class FilteringAreaFragment : Fragment() {
 
         binding.filteringRegionToolbar.setNavigationOnClickListener {
             viewModel.proceedBack()
+        }
+
+        binding.filteringRegionFormButton.setOnClickListener {
+            binding.filteringRegionEditText.setText(DEFAULT_TEXT)
         }
     }
 
@@ -127,9 +133,18 @@ class FilteringAreaFragment : Fragment() {
         binding.filteringRegionRecyclerView.adapter = areasAdapter
     }
 
+    private fun setSearchEditTextEndDrawable(charSequence: CharSequence?) {
+        if (charSequence.isNullOrEmpty()) {
+            binding.filteringRegionFormButton.setImageResource(R.drawable.ic_search)
+        } else {
+            binding.filteringRegionFormButton.setImageResource(R.drawable.ic_cross)
+        }
+    }
+
     companion object {
         private const val TOP_POSITION_TO_SCROLL = 0
         const val REQUEST_KEY = "request key"
         const val BUNDLE_KEY_FOR_AREA = "bundle key for area"
+        const val DEFAULT_TEXT = ""
     }
 }

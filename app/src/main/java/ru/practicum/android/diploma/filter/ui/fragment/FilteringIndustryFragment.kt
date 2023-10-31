@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFilteringIndustryBinding
 import ru.practicum.android.diploma.filter.ui.RecycleViewIndustryAdapter
 import ru.practicum.android.diploma.filter.ui.model.IndustryState
@@ -42,9 +43,14 @@ class FilteringIndustryFragment : Fragment() {
         }
 
         binding.filteringSectorEditText.doOnTextChanged { text, _, _, _ ->
+            setSearchEditTextEndDrawable(text)
             if (text != null) {
                 viewModel.searchIndustryDebounce(text.toString().trim())
             }
+        }
+
+        binding.filteringSectorFormButton.setOnClickListener {
+            binding.filteringSectorEditText.setText(DEFAULT_TEXT)
         }
     }
 
@@ -138,5 +144,17 @@ class FilteringIndustryFragment : Fragment() {
         binding.industriesScreenNotFoundPlaceholder.isVisible = false
         binding.industriesScreenErrorPlaceholder.isVisible = false
         binding.filteringIndustriesButton.isVisible = false
+    }
+
+    private fun setSearchEditTextEndDrawable(charSequence: CharSequence?) {
+        if (charSequence.isNullOrEmpty()) {
+            binding.filteringSectorFormButton.setImageResource(R.drawable.ic_search)
+        } else {
+            binding.filteringSectorFormButton.setImageResource(R.drawable.ic_cross)
+        }
+    }
+
+    companion object {
+        const val DEFAULT_TEXT = ""
     }
 }
