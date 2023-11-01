@@ -2,7 +2,7 @@ package ru.practicum.android.diploma.favorites.data.mapper
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import ru.practicum.android.diploma.common.domain.model.vacancy_models.Area
+import ru.practicum.android.diploma.common.domain.model.vacancy_models.AreaVacancy
 import ru.practicum.android.diploma.common.domain.model.vacancy_models.Contacts
 import ru.practicum.android.diploma.common.domain.model.vacancy_models.Employer
 import ru.practicum.android.diploma.common.domain.model.vacancy_models.Employment
@@ -16,25 +16,28 @@ import java.util.Calendar
 
 class VacancyDbConverter {
 
-    fun map(vacancyEntity: FavoritesVacancyEntity): Vacancy {
+    fun mapFavoriteVacancyEntityToVacancy(vacancyEntity: FavoritesVacancyEntity): Vacancy {
         vacancyEntity.apply {
             return Vacancy(
                 id = id,
                 name = name,
-                area = Gson().fromJson(area, object : TypeToken<Area>() {}.type),
+                area = Gson().fromJson(area, object : TypeToken<AreaVacancy>() {}.type),
                 employer = Gson().fromJson(employer, object : TypeToken<Employer>() {}.type),
                 salary = Gson().fromJson(salary, object : TypeToken<Salary>() {}.type),
                 experience = Gson().fromJson(experience, object : TypeToken<Experience>() {}.type),
                 employment = Gson().fromJson(employment, object : TypeToken<Employment>() {}.type),
                 description = description,
-                keySkills = Gson().fromJson(keySkills, object : TypeToken<List<KeySkill>>() {}.type),
+                keySkills = Gson().fromJson(
+                    keySkills,
+                    object : TypeToken<List<KeySkill>>() {}.type
+                ),
                 schedule = Gson().fromJson(schedule, object : TypeToken<Schedule>() {}.type),
                 contacts = Gson().fromJson(contacts, object : TypeToken<Contacts>() {}.type),
             )
         }
     }
 
-    fun map(vacancy: Vacancy): FavoritesVacancyEntity {
+    fun mapVacancyToFavoriteVacancyEntity(vacancy: Vacancy): FavoritesVacancyEntity {
         vacancy.apply {
             return FavoritesVacancyEntity(
                 id = id,

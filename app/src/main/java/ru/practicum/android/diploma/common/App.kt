@@ -6,6 +6,9 @@ import org.koin.core.context.startKoin
 import ru.practicum.android.diploma.favorites.di.favoritesDataModule
 import ru.practicum.android.diploma.favorites.di.favoritesDomainModule
 import ru.practicum.android.diploma.favorites.di.favoritesUiModule
+import ru.practicum.android.diploma.filter.di.filterDataModule
+import ru.practicum.android.diploma.filter.di.filterDomainModule
+import ru.practicum.android.diploma.filter.di.filterUiModule
 import ru.practicum.android.diploma.search.di.searchDataModule
 import ru.practicum.android.diploma.search.di.searchDomainModule
 import ru.practicum.android.diploma.search.di.searchUiModule
@@ -35,7 +38,10 @@ class App : Application() {
                     vacancyUiModule,
                     similarVacancyDataModule,
                     similarVacancyDomainModule,
-                    similarVacancyUiModule
+                    similarVacancyUiModule,
+                    filterDataModule,
+                    filterDomainModule,
+                    filterUiModule
                 )
             )
         }

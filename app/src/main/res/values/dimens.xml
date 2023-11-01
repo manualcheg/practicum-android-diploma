@@ -34,4 +34,6 @@
     <dimen name="corner_radius">12dp</dimen>
     <dimen name="text_input_layout_height">60dp</dimen>
     <dimen name="icon_size_bottom_nav">24dp</dimen>
+
+    <dimen name="bottom_navigation_height">56dp</dimen>
 </resources>

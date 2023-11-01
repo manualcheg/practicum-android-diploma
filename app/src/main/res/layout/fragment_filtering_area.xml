@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".filter.ui.fragment.FilteringAreaFragment">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/filteringRegionToolbar"
+        style="@style/Toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_arrow_left"
+        app:title="@string/choosing_a_region"
+        app:titleTextAppearance="@style/TitleText" />
+
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/edit_text_height"
+        android:layout_marginHorizontal="@dimen/padding_horizontal"
+        android:layout_marginTop="@dimen/padding_vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/filteringRegionToolbar">
+        <EditText
+            android:id="@+id/filteringRegionEditText"
+            style="@style/SearchEditText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:hint="@string/type_a_region"
+            tools:ignore="Autofill,RtlSymmetry"/>
+        <ImageView
+            android:id="@+id/filteringRegionFormButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center"
+            android:layout_marginStart="@dimen/padding_horizontal"
+            android:src="@drawable/ic_search"
+            app:tint="@color/black_universal"
+            android:contentDescription="@string/type_a_region" />
+    </FrameLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/filteringRegionRecyclerView"
+        android:layout_marginTop="@dimen/margin_vertical_small"
+        android:layout_width="@dimen/_0dp"
+        android:layout_height="@dimen/_0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/container"
+        tools:listitem="@layout/item_country_and_region" />
+
+    <ProgressBar
+        android:id="@+id/areasScreenProgressBar"
+        android:layout_width="@dimen/progress_bar"
+        android:layout_height="@dimen/progress_bar"
+        android:indeterminateTint="@color/blue"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/areasScreenNotFoundPlaceholder"
+        style="@style/PlaceholderStyle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/no_such_region"
+        app:drawableTopCompat="@drawable/placeholder_not_found"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/areasScreenErrorPlaceholder"
+        style="@style/PlaceholderStyle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/failed_to_get_a_list"
+        app:drawableTopCompat="@drawable/placeholder_failed_to_get_a_list"
+        android:visibility="gone" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

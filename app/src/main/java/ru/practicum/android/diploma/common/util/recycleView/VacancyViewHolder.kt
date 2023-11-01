@@ -19,17 +19,24 @@ class VacancyViewHolder(
                 append(vacancy.areaName)
             }
             binding.vacancyHeaderTextView.text = header
-        } else binding.vacancyHeaderTextView.text = vacancy.name
+        } else {
+            binding.vacancyHeaderTextView.text = vacancy.name
+        }
 
         binding.vacancyDescriptionTextView.text = vacancy.employerName
-        Glide.with(itemView).load(vacancy.employerLogoUrl90).placeholder(R.drawable.ic_placeholder)
-            .centerCrop().transform(
+        Glide
+            .with(itemView)
+            .load(vacancy.employerLogoUrl90)
+            .placeholder(R.drawable.ic_placeholder)
+            .centerCrop()
+            .transform(
                 RoundedCorners(
                     itemView.resources.getDimensionPixelSize(
                         R.dimen.corner_radius
                     )
                 )
-            ).into(binding.vacancyLayoutLogoImageView)
+            )
+            .into(binding.vacancyLayoutLogoImageView)
 
         binding.vacancySalaryTextView.text = vacancy.salaryAmount
     }

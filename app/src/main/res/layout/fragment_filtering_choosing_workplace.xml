@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".filter.ui.fragment.FilteringChoosingWorkplaceFragment">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/choosingWorkplaceToolbar"
+        style="@style/Toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_arrow_left"
+        app:title="@string/choosing_a_place_of_work"
+        app:titleTextAppearance="@style/TitleText" />
+
+    <ru.practicum.android.diploma.common.custom_view.ButtonWithSelectedValues
+        android:id="@+id/choosingWorkplaceCountryCustomView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_vertical_small"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/choosingWorkplaceToolbar" />
+
+    <ru.practicum.android.diploma.common.custom_view.ButtonWithSelectedValues
+        android:id="@+id/choosingWorkplaceAreaCustomView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/choosingWorkplaceCountryCustomView" />
+
+    <TextView
+        android:id="@+id/choosingWorkplaceSelectButtonTextView"
+        style="@style/MediumTextWhite"
+        android:layout_width="@dimen/_0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/padding_horizontal"
+        android:layout_marginVertical="@dimen/margin_vertical"
+        android:background="@drawable/rectangle_with_corners"
+        android:gravity="center"
+        android:paddingVertical="@dimen/button_vertical_padding"
+        android:text="@string/select"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

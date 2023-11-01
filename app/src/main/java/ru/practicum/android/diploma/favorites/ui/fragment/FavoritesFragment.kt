@@ -5,15 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.common.ui.model.VacancyUi
-import ru.practicum.android.diploma.common.util.recycleView.ItemUiBase
-import ru.practicum.android.diploma.common.util.recycleView.RVAdapter
+import ru.practicum.android.diploma.common.util.recycleView.RecycleViewVacancyAdapter
 import ru.practicum.android.diploma.databinding.FragmentFavoritesBinding
 import ru.practicum.android.diploma.favorites.domain.FavoritesState
 import ru.practicum.android.diploma.favorites.ui.viewModel.FavoritesViewModel
@@ -23,14 +18,12 @@ class FavoritesFragment : Fragment() {
     private var _binding: FragmentFavoritesBinding? = null
     private val binding get() = _binding!!
 
-    private val favouritesViewModel: FavoritesViewModel by viewModel()
-    private var vacanciesAdapter: RVAdapter? = RVAdapter {
-        clickOnVacancy(it)
-    }
-    private var isClickAllowed = true
+    private var vacanciesAdapter: RecycleViewVacancyAdapter? = null
 
-    private fun clickOnVacancy(vacancy: ItemUiBase) {
-        if (isClickDebounce()){
+    private val favouritesViewModel: FavoritesViewModel by viewModel()
+
+    private fun clickOnVacancy(vacancy: VacancyUi) {
+        if (favouritesViewModel.isClickDebounce()) {
             val direction =
                 FavoritesFragmentDirections.actionFavoritesFragmentToVacancyFragment(vacancy.id)
             findNavController().navigate(direction)
@@ -49,18 +42,20 @@ class FavoritesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        vacanciesAdapter = RecycleViewVacancyAdapter {
+            clickOnVacancy(it)
+        }
+
+        binding.favouritesRecyclerView.adapter = vacanciesAdapter
+
         favouritesViewModel.stateLiveData().observe(viewLifecycleOwner) { state ->
             render(state)
         }
         favouritesViewModel.getFavorites()
-
-        binding.favouritesRecyclerView.adapter = vacanciesAdapter
-        isClickAllowed = true
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-
+    override fun onDestroyView() {
+        super.onDestroyView()
         binding.favouritesRecyclerView.adapter = null
         vacanciesAdapter = null
         _binding = null
@@ -70,7 +65,7 @@ class FavoritesFragment : Fragment() {
         when (state) {
             is FavoritesState.Empty -> showEmpty()
             is FavoritesState.Content -> showContent(state.vacancies)
-            else -> showError()
+            is FavoritesState.Error -> showError()
         }
     }
 
@@ -92,22 +87,5 @@ class FavoritesFragment : Fragment() {
         binding.favouritesPlaceholderEmptyList.visibility = View.GONE
         binding.favouritesRecyclerView.visibility = View.GONE
         binding.favouritesPlaceholderNotFound.visibility = View.VISIBLE
-    }
-
-    private fun isClickDebounce(): Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-
-            viewLifecycleOwner.lifecycleScope.launch {
-                delay(CLICK_DEBOUNCE_DELAY_MILLIS)
-                isClickAllowed = true
-            }
-        }
-        return current
-    }
-
-    companion object {
-        private const val CLICK_DEBOUNCE_DELAY_MILLIS = 1000L
     }
 }

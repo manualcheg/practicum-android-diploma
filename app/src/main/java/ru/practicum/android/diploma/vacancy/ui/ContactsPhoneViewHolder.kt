@@ -12,7 +12,9 @@ class ContactsPhoneViewHolder(
     fun bind(phone: PhoneUi) {
         if (phone.comment.isNotBlank()) {
             binding.commentPhoneTextView.text = phone.comment
-        } else binding.commentPhoneLinearLayout.isVisible = false
+        } else {
+            binding.commentPhoneLinearLayout.isVisible = false
+        }
 
         binding.contactsPhoneTextView.text = phone.formattedNumber
         binding.contactsPhoneTextView.setOnClickListener {

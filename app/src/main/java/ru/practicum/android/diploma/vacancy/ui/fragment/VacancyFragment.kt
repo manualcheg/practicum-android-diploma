@@ -17,9 +17,8 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.common.ui.model.PhoneUi
-import ru.practicum.android.diploma.common.util.recycleView.RVAdapter
 import ru.practicum.android.diploma.databinding.FragmentVacancyBinding
+import ru.practicum.android.diploma.vacancy.ui.RecycleViewContactsAdapter
 import ru.practicum.android.diploma.vacancy.ui.model.VacancyState
 import ru.practicum.android.diploma.vacancy.ui.viewModel.VacancyViewModel
 
@@ -28,15 +27,12 @@ class VacancyFragment : Fragment() {
 
     private val viewModel: VacancyViewModel by viewModel {
         parametersOf(
-            vacancyId
+            args.vacancyId
         )
     }
     private var _binding: FragmentVacancyBinding? = null
     private val binding get() = _binding!!
-
-    private var phonesAdapter: RVAdapter? = null
-
-    private var vacancyId: Int? = null
+    private var phonesAdapter: RecycleViewContactsAdapter? = null
     private val args: VacancyFragmentArgs by navArgs()
 
     override fun onCreateView(
@@ -48,39 +44,26 @@ class VacancyFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
-        vacancyId = args.vacancyId
-        viewModel.checkFavorites()
+
+        viewModel.initializeVacancy()
+
         viewModel.state.observe(viewLifecycleOwner) {
             render(it)
         }
-        
-        viewModel.inFavorites.observe(viewLifecycleOwner) { inFavorites ->
-            val menu: Menu = binding.vacancyToolbar.menu
-            if (inFavorites) {
-                menu.getItem(1).icon =
-                    AppCompatResources.getDrawable(requireContext(), R.drawable.ic_favorites_on)
-            } else {
-                menu.getItem(1).icon =
-                    AppCompatResources.getDrawable(requireContext(), R.drawable.ic_favorites_off)
-            }
-        }
-        viewModel.findVacancy()
-        
+
         setOnClickListeners()
         initializePhonesAdapter()
 
         binding.vacancySimilarVacanciesButtonTextView.setOnClickListener {
-            val direction =
-                VacancyFragmentDirections.actionVacancyFragmentToSimilarVacancyFragment(vacancyId!!)
-            findNavController().navigate(direction)
+            viewModel.similarVacanciesButtonClicked()
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        binding.vacancyContactsPhoneRecycleView.adapter = null
         phonesAdapter = null
+        _binding = null
     }
 
     private fun render(state: VacancyState) {
@@ -103,6 +86,12 @@ class VacancyFragment : Fragment() {
                 binding.vacancyContentScrollView.visibility = View.VISIBLE
                 setupContent(state)
             }
+
+            is VacancyState.Navigate -> {
+                val direction =
+                    VacancyFragmentDirections.actionVacancyFragmentToSimilarVacancyFragment(state.vacancyId)
+                findNavController().navigate(direction)
+            }
         }
     }
 
@@ -116,7 +105,7 @@ class VacancyFragment : Fragment() {
         binding.vacancyToolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.share -> {
-                     viewModel.shareVacancy()
+                    viewModel.shareVacancy()
                 }
 
                 R.id.like -> {
@@ -128,16 +117,24 @@ class VacancyFragment : Fragment() {
     }
 
     private fun initializePhonesAdapter() {
-        phonesAdapter = RVAdapter { item ->
-            viewModel.dialPhone((item as PhoneUi).formattedNumber)
+        phonesAdapter = RecycleViewContactsAdapter { item ->
+            viewModel.dialPhone(item.formattedNumber)
         }
         binding.vacancyContactsPhoneRecycleView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.vacancyContactsPhoneRecycleView.adapter = phonesAdapter
     }
 
-
     private fun setupContent(state: VacancyState.Content) {
+        val menu: Menu = binding.vacancyToolbar.menu
+        if (state.isFavorite) {
+            menu.getItem(1).icon =
+                AppCompatResources.getDrawable(requireContext(), R.drawable.ic_favorites_on)
+        } else {
+            menu.getItem(1).icon =
+                AppCompatResources.getDrawable(requireContext(), R.drawable.ic_favorites_off)
+        }
+
         if (state.vacancy.name.isNotBlank()) {
             binding.vacancyHeaderTextView.text = state.vacancy.name
         } else {
@@ -188,7 +185,8 @@ class VacancyFragment : Fragment() {
             binding.vacancyExperienceLinearLayout.visibility = View.GONE
 
         if (state.vacancy.description.isNotBlank()) {
-            binding.vacancyDescriptionTextView.text = Html.fromHtml(state.vacancy.description, FROM_HTML_MODE_COMPACT)
+            binding.vacancyDescriptionTextView.text =
+                Html.fromHtml(state.vacancy.description, FROM_HTML_MODE_COMPACT)
 
         } else {
             binding.vacancyDescriptionLinearLayout.visibility = View.GONE
@@ -218,7 +216,7 @@ class VacancyFragment : Fragment() {
             binding.vacancyContactsEmailTextView.visibility = View.GONE
             binding.vacancyContactsEmailTitleTextView.visibility = View.GONE
         }
-        
+
         if (state.vacancy.contactsPhones.isNotEmpty()) {
             phonesAdapter?.items = state.vacancy.contactsPhones
         }
