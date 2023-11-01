@@ -149,9 +149,7 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
     private fun renderCountryEmpty() {
         binding.choosingWorkplaceCountryCustomView.render(
             ButtonWithSelectedValuesState.Empty(
-                getString(
-                    R.string.country
-                )
+                getString(R.string.country)
             )
         )
     }
@@ -159,9 +157,7 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
     private fun renderCountryContent(country: String) {
         binding.choosingWorkplaceCountryCustomView.render(
             ButtonWithSelectedValuesState.Content(
-                country, getString(
-                    R.string.country
-                )
+                country, getString(R.string.country)
             )
         )
     }
@@ -169,9 +165,7 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
     private fun renderAreaEmpty() {
         binding.choosingWorkplaceAreaCustomView.render(
             ButtonWithSelectedValuesState.Empty(
-                getString(
-                    R.string.region
-                )
+                getString(R.string.region)
             )
         )
     }
@@ -179,9 +173,7 @@ class FilteringChoosingWorkplaceFragment : Fragment() {
     private fun renderAreaContent(area: String) {
         binding.choosingWorkplaceAreaCustomView.render(
             ButtonWithSelectedValuesState.Content(
-                area, getString(
-                    R.string.region
-                )
+                area, getString(R.string.region)
             )
         )
     }

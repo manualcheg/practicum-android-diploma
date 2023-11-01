@@ -23,37 +23,32 @@ class FiltersRepositoryImpl(
         filtersLocalDataSource.clearFilterOptions()
     }
 
-    override fun setSalary(salary: Int) {
+    override fun setSalary(salary: Int) =
         filtersLocalDataSource.setSalary(salary)
-    }
 
-    override fun setOnlyWithSalary(option: Boolean) {
+    override fun setOnlyWithSalary(option: Boolean) =
         filtersLocalDataSource.setOnlyWithSalary(option)
-    }
 
-    override fun clearFilterOptions() {
+    override fun clearFilterOptions() =
         filtersLocalStorageDataSource.clearFilterOptions()
-    }
 
-    override fun clearArea() {
+    override fun clearArea() =
         filtersLocalDataSource.clearArea()
-    }
 
-    override fun clearIndustry() {
+    override fun clearIndustry() =
         filtersLocalDataSource.clearIndustry()
-    }
 
-    override fun clearSalary() {
+    override fun clearSalary() =
         filtersLocalDataSource.clearSalary()
-    }
 
-    override fun clearTempFilterOptions() {
+    override fun clearTempFilterOptions() =
         filtersLocalDataSource.clearTempFilterOptions()
-    }
 
-    override fun isTempFilterOptionsEmpty() = filtersLocalDataSource.isTempFilterOptionsEmpty()
+    override fun isTempFilterOptionsEmpty() =
+        filtersLocalDataSource.isTempFilterOptionsEmpty()
 
-    override fun isTempFilterOptionsExists() = filtersLocalDataSource.isTempFilterOptionsExists()
+    override fun isTempFilterOptionsExists() =
+        filtersLocalDataSource.isTempFilterOptionsExists()
 
     override fun setFilterOptionsToCache(filter: Filter?) =
         filtersLocalDataSource.addFilterToCache(filter)

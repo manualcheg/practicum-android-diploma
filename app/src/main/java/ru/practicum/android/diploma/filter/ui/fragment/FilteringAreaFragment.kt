@@ -76,9 +76,7 @@ class FilteringAreaFragment : Fragment() {
             is AreasState.Error -> showError(state.errorStatus)
             AreasState.Loading -> showLoading()
             is AreasState.Success.Content -> showContent(state.arealList)
-            AreasState.Navigate.NavigateEmpty -> {
-                findNavController().popBackStack()
-            }
+            AreasState.Navigate.NavigateEmpty -> findNavController().popBackStack()
 
             is AreasState.Navigate.NavigateWithContent -> {
                 val bundle = Bundle()
