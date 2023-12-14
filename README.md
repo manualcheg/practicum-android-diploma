@@ -44,6 +44,8 @@ hhAccessToken=my_access_token
 На этом экране пользователь может искать вакансии по любому непустому набору слов поискового запроса. Результаты поиска
 представляют собой список, содержащий краткую информацию о вакансиях.
 
+![image](https://github.com/manualcheg/practicum-android-diploma/assets/27849738/4016ff4b-76a1-40a1-836e-9ef3d16201a0) ![image](https://github.com/manualcheg/practicum-android-diploma/assets/27849738/1370a179-264e-49c8-95f5-043073df6b77)
+
 ### Особенности экрана
 
 Несколько особенностей экрана, которые нужно учитывать при реализации:
@@ -87,6 +89,11 @@ hhAccessToken=my_access_token
 - Уровень зарплаты - уровень ЗП, соответствующий указанному в вакансии.
 - Возможность скрывать вакансии, для которых не указана ЗП.
 
+  ![image](https://github.com/manualcheg/practicum-android-diploma/assets/27849738/cbb8f6a0-0780-4e13-a219-b0ac5696f319)
+  ![image](https://github.com/manualcheg/practicum-android-diploma/assets/27849738/8122ef06-9ade-41cf-8b8b-814536fbb7ad) ![image](https://github.com/manualcheg/practicum-android-diploma/assets/27849738/9783b530-1c1d-4deb-ae94-69aa87ae95f2)
+  ![image](https://github.com/manualcheg/practicum-android-diploma/assets/27849738/d851b61b-144f-4b6f-9fcb-e7e1c0e2df2e)
+  ![image](https://github.com/manualcheg/practicum-android-diploma/assets/27849738/2c6db33a-372f-4f33-88a4-988b6d8e3226) ![image](https://github.com/manualcheg/practicum-android-diploma/assets/27849738/31443a6c-295b-4d4e-a1d1-d58dca22e563)
+
 ### Особенности экранов
 
 Несколько особенностей, которые нужно учитывать при реализации:
@@ -118,6 +125,8 @@ hhAccessToken=my_access_token
 - Подробное описание вакансии
 - Перечень требуемых ключевых навыков
 - Контактную информацию
+  
+![image](https://github.com/manualcheg/practicum-android-diploma/assets/27849738/fd62e9ed-96ca-4564-8f66-2ad5433126bf) ![image](https://github.com/manualcheg/practicum-android-diploma/assets/27849738/434d8c00-4fc5-492f-8a3c-2bd23facbed1)
 
 Также пользователь может ознакомиться со списком похожих вакансий, поделиться ссылкой на данную вакансию, а также
 связаться с работодателем через указанные контакты.
@@ -145,6 +154,8 @@ hhAccessToken=my_access_token
 предложению. Добавить вакансию в "избранное" (или удалить из "избранного") можно на экране "Вакансия". На экране списка
 избранных вакансий пользователь может удалить вакансию из закладок. Все вакансии, добавленные в закладки, можно увидеть
 на отдельном экране в приложении.
+
+![image](https://github.com/manualcheg/practicum-android-diploma/assets/27849738/1b59dc86-da44-4b36-a515-f79da364fb4b)
 
 ### Особенности экрана
 
